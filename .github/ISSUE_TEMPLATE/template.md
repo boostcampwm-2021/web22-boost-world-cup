@@ -7,10 +7,10 @@ assignees: ''
 
 ---
 
-## 🦄이슈설명
+## 🦄 이슈설명
 
 
-## ✅체크리스트
-[] todo
-[] todo
-[] todo
+## ✅ 체크리스트
+- [ ] todo
+- [ ] todo
+- [ ] todo
