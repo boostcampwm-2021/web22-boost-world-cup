@@ -2,7 +2,6 @@
 
 <img width="420" alt="Logo" src="https://user-images.githubusercontent.com/56618964/139171179-d285ff52-0f06-44fb-96c1-44444c5b4761.png">
 
-### 선택의 갈림길에서 당신의 선택은?
 
 # 🌈 Members
 
