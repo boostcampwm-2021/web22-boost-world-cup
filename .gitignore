@@ -32,3 +32,4 @@
 /back/build/
 /back/tmp/
 /back/temp/
+.env
