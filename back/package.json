@@ -3,8 +3,13 @@
    "version": "0.0.1",
    "description": "Awesome project developed with TypeORM.",
    "devDependencies": {
-      "ts-node": "3.3.0",
       "@types/node": "^8.0.29",
+      "@typescript-eslint/eslint-plugin": "^5.2.0",
+      "@typescript-eslint/parser": "^5.2.0",
+      "eslint": "^7.32.0",
+      "eslint-config-airbnb-base": "^14.2.1",
+      "eslint-plugin-import": "^2.25.2",
+      "ts-node": "3.3.0",
       "typescript": "3.3.3333"
    },
    "dependencies": {
