@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Candidate } from './Candidate';
 
 @Entity()
 export class Info {
@@ -28,4 +29,8 @@ export class Info {
 
   @Column({ default: '0' })
   etc: number;
+
+  @OneToOne((type) => Candidate, (candidate) => candidate.info)
+  @JoinColumn({ name: 'candidate_id' })
+  candidate: Candidate;
 }

@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
-
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToOne } from 'typeorm';
+import { Info } from './Info';
 @Entity()
 export class Candidate {
   @PrimaryGeneratedColumn()
@@ -19,4 +19,7 @@ export class Candidate {
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @OneToOne((type) => Info, (info) => info.candidate, { cascade: true })
+  info: Info;
 }
