@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { Candidate } from './Candidate';
 
 @Entity()
 export class Worldcup {
@@ -25,4 +26,7 @@ export class Worldcup {
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @OneToMany((type) => Candidate, (candidate) => candidate.worldcup)
+  candidates: Candidate[];
 }

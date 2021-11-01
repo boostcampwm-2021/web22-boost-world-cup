@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
 import { Info } from './Info';
+import { Worldcup } from './Worldcup';
+
 @Entity()
 export class Candidate {
   @PrimaryGeneratedColumn()
@@ -22,4 +24,8 @@ export class Candidate {
 
   @OneToOne((type) => Info, (info) => info.candidate, { cascade: true })
   info: Info;
+
+  @ManyToOne((type) => Worldcup, (worldcup) => worldcup.candidates)
+  @JoinColumn({ name: 'worldcup_id' })
+  worldcup: Worldcup;
 }
