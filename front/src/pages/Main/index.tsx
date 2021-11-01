@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Header from '../../components/Header';
 
 function Main(): JSX.Element {
-  return <div>Main</div>;
+  const [isLogin, setIsLogin] = useState(true);
+  const canSearch = true;
+  return <Header isLogin={isLogin} canSearch={canSearch} />;
 }
 
 export default Main;
