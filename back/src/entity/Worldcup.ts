@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
 import { Candidate } from './Candidate';
+import { Keyword } from './Keyword';
 
 @Entity()
 export class Worldcup {
@@ -29,4 +30,7 @@ export class Worldcup {
 
   @OneToMany((type) => Candidate, (candidate) => candidate.worldcup)
   candidates: Candidate[];
+
+  @OneToMany((type) => Keyword, (keyword) => keyword.worldcup)
+  keywords: Keyword[];
 }
