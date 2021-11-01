@@ -3,7 +3,7 @@ import { createConnection } from 'typeorm';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { Request, Response } from 'express';
-import { Routes } from './api/routes';
+import indexRouter from './api/indexRouter';
 import ormConfig from './config/ormConfig';
 
 createConnection(ormConfig)
@@ -11,7 +11,7 @@ createConnection(ormConfig)
     const app = express();
     app.use(bodyParser.json());
 
-    Routes.forEach((route) => {
+    indexRouter.forEach((route) => {
       (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
         const result = new (route.controller as any)()[route.action](req, res, next);
         if (result instanceof Promise) {
