@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Worldcup } from './Worldcup';
 
 @Entity()
 export class Comment {
@@ -10,4 +11,8 @@ export class Comment {
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @ManyToOne((type) => Worldcup, (worldcup) => worldcup.comments)
+  @JoinColumn({ name: 'worldcup_id' })
+  worldcup: Worldcup;
 }
