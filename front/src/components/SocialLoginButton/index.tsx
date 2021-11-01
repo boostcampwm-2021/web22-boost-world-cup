@@ -1,17 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import { GoMarkGithub } from 'react-icons/go';
 
-function GithubLoginButton(): JSX.Element {
+type Props = {
+  mark: JSX.Element;
+  contents: string;
+};
+
+const GithubLoginButton = ({ mark, contents }: Props): JSX.Element => {
   return (
     <Container>
-      <GoMarkGithub />
-      <span>Continue with Github</span>
+      {mark}
+      <span>{contents}</span>
     </Container>
   );
-}
+};
 
-const Container = styled('div')`
+const Container = styled.div`
   display: flex;
   align-items: center;
   padding-left: 20px;
@@ -19,7 +23,7 @@ const Container = styled('div')`
   width: 390px;
   height: 61px;
   background-color: ${({ theme }) => theme.color.primary};
-  & span {
+  span {
     padding-left: 20px;
     position: relative;
     top: 2px;
