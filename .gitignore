@@ -20,3 +20,12 @@
 /front/npm-debug.log*
 /front/yarn-debug.log*
 /front/yarn-error.log*
+
+
+# back
+/back/.idea/
+/back/.vscode/
+/back/node_modules/
+/back/build/
+/back/tmp/
+/back/temp/
