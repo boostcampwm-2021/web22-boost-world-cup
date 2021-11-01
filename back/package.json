@@ -22,6 +22,7 @@
     "typeorm": "0.2.38"
   },
   "scripts": {
-    "start": "ts-node src/app.ts"
+    "dev": "ts-node-dev src/index.ts",
+    "start": "ts-node src/index.ts"
   }
 }
