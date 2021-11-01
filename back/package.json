@@ -1,25 +1,25 @@
 {
-   "name": "back",
-   "version": "0.0.1",
-   "description": "Awesome project developed with TypeORM.",
-   "devDependencies": {
-      "@types/node": "^8.0.29",
-      "@typescript-eslint/eslint-plugin": "^5.2.0",
-      "@typescript-eslint/parser": "^5.2.0",
-      "eslint": "^7.32.0",
-      "eslint-config-airbnb-base": "^14.2.1",
-      "eslint-plugin-import": "^2.25.2",
-      "ts-node": "3.3.0",
-      "typescript": "3.3.3333"
-   },
-   "dependencies": {
-      "typeorm": "0.2.38",
-      "reflect-metadata": "^0.1.10",
-      "mysql": "^2.14.1",
-      "express": "^4.15.4",
-      "body-parser": "^1.18.1"
-   },
-   "scripts": {
-      "start": "ts-node src/index.ts"
-   }
+  "name": "back",
+  "version": "0.0.1",
+  "description": "Awesome project developed with TypeORM.",
+  "devDependencies": {
+    "@types/node": "^8.0.29",
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
+    "@typescript-eslint/parser": "^5.2.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.25.2",
+    "ts-node": "3.3.0",
+    "typescript": "3.3.3333"
+  },
+  "dependencies": {
+    "typeorm": "0.2.38",
+    "reflect-metadata": "^0.1.10",
+    "mysql": "^2.14.1",
+    "express": "^4.15.4",
+    "body-parser": "^1.18.1"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  }
 }
