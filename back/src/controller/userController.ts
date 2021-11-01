@@ -7,14 +7,14 @@ export class UserController {
   }
 
   async one(request: Request, response: Response, next: NextFunction) {
-    return userService.findById(request.params.id);
+    return await userService.findById(request.params.id);
   }
 
   async save(request: Request, response: Response, next: NextFunction) {
-    return userService.save(request.body);
+    return await userService.save(request.body);
   }
 
   async remove(request: Request, response: Response, next: NextFunction) {
-    return userService.removeById(request.params.id);
+    return await userService.removeById(request.params.id);
   }
 }
