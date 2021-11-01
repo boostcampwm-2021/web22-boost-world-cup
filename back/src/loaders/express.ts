@@ -1,9 +1,10 @@
-import * as bodyParser from 'body-parser';
 import { Request, Response } from 'express';
 import router from '../api';
+import * as express from 'express';
 
 const expressLoader = (app) => {
-  app.use(bodyParser.json());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
 
   router.forEach((route) => {
     (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
