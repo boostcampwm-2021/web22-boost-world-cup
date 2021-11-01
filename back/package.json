@@ -20,6 +20,6 @@
     "body-parser": "^1.18.1"
   },
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/app.ts"
   }
 }
