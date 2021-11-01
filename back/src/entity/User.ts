@@ -8,7 +8,7 @@ export class User {
   @Column({ name: 'provider_id' })
   providerId: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 45 })
   nickname: string;
 
   @Column()
