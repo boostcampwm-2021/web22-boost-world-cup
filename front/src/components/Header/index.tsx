@@ -33,7 +33,7 @@ const UserIcon = styled(FaUserAlt)`
   width: 58px;
   height: 58px;
   color: ${theme.color.gray[0]};
-  cursor: hover;
+  cursor: pointer;
 `;
 interface Props {
   isLogin: boolean;

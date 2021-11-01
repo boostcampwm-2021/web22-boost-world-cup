@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CardList from '../../components/CardList';
+import CardList from '../../components/WorldcupList';
 import Header from '../../components/Header';
 import TagList from '../../components/TagList';
 

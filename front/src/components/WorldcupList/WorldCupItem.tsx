@@ -70,7 +70,7 @@ interface Props {
   title: string;
   desc: string;
 }
-function CardItem({ thumbnail, title, desc }: Props): JSX.Element {
+function WorldCupItem({ thumbnail, title, desc }: Props): JSX.Element {
   return (
     <Item>
       <Thumbnail src={thumbnail} alt="thumbnail" />
@@ -94,4 +94,4 @@ function CardItem({ thumbnail, title, desc }: Props): JSX.Element {
   );
 }
 
-export default CardItem;
+export default WorldCupItem;
