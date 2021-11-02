@@ -6,7 +6,12 @@ export const findByProviderId = async (providerId) => {
   return await userRepository.findOne({ providerId });
 };
 
-export const save = async (providerId) => {
+export const saveUser = async (user) => {
+  const userRepository = getRepository(User);
+  return await userRepository.save(user);
+};
+
+export const saveInitUser = async (providerId) => {
   const userRepository = getRepository(User);
   const newUser = new User();
   newUser.providerId = providerId;
