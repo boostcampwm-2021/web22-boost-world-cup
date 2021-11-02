@@ -9,13 +9,13 @@ export class User {
   @Column({ name: 'provider_id' })
   providerId: string;
 
-  @Column({ type: 'varchar', length: 45 })
+  @Column({ type: 'varchar', length: 45, nullable: true })
   nickname: string;
 
-  @Column()
+  @Column({ nullable: true })
   gender: number;
 
-  @Column()
+  @Column({ nullable: true })
   age: number;
 
   @CreateDateColumn({ name: 'created_at' })
