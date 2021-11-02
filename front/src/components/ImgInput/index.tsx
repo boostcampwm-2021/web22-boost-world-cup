@@ -8,9 +8,11 @@ interface Props {
 function ImgInput({ onChange }: Props): JSX.Element {
   return (
     <Container>
-      Drop files here or click to upload.
-      <hr />
-      여기 파일을 놓거나 클릭하여 업로드하세요.
+      <div>
+        Drop files here or click to upload.
+        <hr />
+        여기 파일을 놓거나 클릭하여 업로드하세요.
+      </div>
       <input type="file" multiple onChange={onChange} accept="image/*" />
     </Container>
   );
