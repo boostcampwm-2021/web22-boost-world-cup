@@ -22,5 +22,6 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     'react/jsx-props-no-spreading': 0,
     'react/require-default-props': 0,
+    'no-param-reassign': 0,
   },
 };
