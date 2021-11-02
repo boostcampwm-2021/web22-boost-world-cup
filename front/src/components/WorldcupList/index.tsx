@@ -1,65 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import WorldCupItem from './WorldCupItem';
-import thumbnailImg from '../../images/logo.png';
+import CardItem from './WorldCupItem';
+import Loader from './Loader';
+import items from './dummy';
+import infiniteScroll from '../../utils/hooks';
 
-const items = [
-  {
-    thumbnail: thumbnailImg,
-    title: '여자배우 이상형 월드컵',
-    desc: '나의 이상형은 누구? 여배우 중 나의 이상형을 찾아보자. 가나다라마바사아',
-    keyword: '연예인',
-  },
-  {
-    thumbnail: thumbnailImg,
-    title: '재미있는 영화 이상형 월드컵',
-    desc: '나의 이상형은 누구? 여배우 중 나의 이상형을 찾아보자. 가나다라마바사아',
-    keyword: '영화',
-  },
-  {
-    thumbnail: thumbnailImg,
-    title: '맛없는 음식 이상형 월드컵',
-    desc: '나의 이상형은 누구? 여배우 중 나의 이상형을 찾아보자. 가나다라마바사아',
-    keyword: '음식',
-  },
-  {
-    thumbnail: thumbnailImg,
-    title: '여자배우 이상형 월드컵',
-    desc: '나의 이상형은 누구? 여배우 중 나의 이상형을 찾아보자. 가나다라마바사아',
-    keyword: '연예인',
-  },
-  {
-    thumbnail: thumbnailImg,
-    title: '재미있는 영화 이상형 월드컵',
-    desc: '나의 이상형은 누구? 여배우 중 나의 이상형을 찾아보자. 가나다라마바사아',
-    keyword: '영화',
-  },
-  {
-    thumbnail: thumbnailImg,
-    title: '맛없는 음식 이상형 월드컵',
-    desc: '나의 이상형은 누구? 여배우 중 나의 이상형을 찾아보자. 가나다라마바사아',
-    keyword: '음식',
-  },
-  {
-    thumbnail: thumbnailImg,
-    title: '여자배우 이상형 월드컵',
-    desc: '나의 이상형은 누구? 여배우 중 나의 이상형을 찾아보자. 가나다라마바사아',
-    keyword: '연예인',
-  },
-  {
-    thumbnail: thumbnailImg,
-    title: '재미있는 영화 이상형 월드컵',
-    desc: '나의 이상형은 누구? 여배우 중 나의 이상형을 찾아보자. 가나다라마바사아',
-    keyword: '영화',
-  },
-];
 function WorldcupList(): JSX.Element {
+  const [itemList, setItemList] = useState(items.slice(0, 8));
+  const [target, setTarget] = useState<HTMLDivElement | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [isClickMore, setIsClickMore] = useState(false);
+  const onClickMoreButton = () => {
+    setIsClickMore(true);
+  };
+  const getItems = async () => {
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    setItemList((prevList) => items.slice(0, prevList.length + 4 < items.length ? prevList.length + 4 : items.length));
+    setLoading(false);
+  };
+  const onIntersect = async ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+    if (entry.isIntersecting && !loading) {
+      observer.unobserve(entry.target);
+      await getItems();
+      observer.observe(entry.target);
+    }
+  };
+  infiniteScroll(target, onIntersect, 0.4, isClickMore);
   return (
-    <Container>
-      {items.map((item) => (
-        <WorldCupItem thumbnail={item.thumbnail} title={item.title} desc={item.desc} />
-      ))}
-    </Container>
+    <>
+      <Container>
+        {itemList.map((item) => (
+          <CardItem thumbnail={item.thumbnail} title={item.title} desc={item.desc} />
+        ))}
+      </Container>
+      {!isClickMore ? (
+        <MoreButton onClick={onClickMoreButton}>
+          <Title>더보기</Title>
+        </MoreButton>
+      ) : (
+        ''
+      )}
+      <div ref={setTarget}>{loading && <Loader />}</div>
+    </>
   );
 }
 
@@ -67,6 +50,22 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px 10px;
+`;
+const MoreButton = styled.div`
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  margin: 20px;
+`;
+const Title = styled.p`
+  margin: auto;
+  background-color: black;
+  color: white;
+  width: 70%;
+  height: 40px;
+  border-radius: 12px;
+  cursor: pointer;
 `;
 
 export default WorldcupList;
