@@ -15,10 +15,11 @@ const githubPassportInit = () => {
     }),
   );
   passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.providerId);
   });
-  passport.deserializeUser((user, done) => {
-    done(null, user);
+  passport.deserializeUser(async (providerId, done) => {
+    const user = await findByProviderId(providerId);
+    await done(null, user);
   });
 };
 
