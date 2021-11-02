@@ -53,6 +53,7 @@ const Desc = styled.p`
 const Buttons = styled.div`
   display: flex;
   padding-top: 20px;
+  margin-bottom: 20px;
 `;
 const Start = styled.div`
   display: flex;
@@ -66,6 +67,11 @@ const Start = styled.div`
     margin-left: 4px;
   }
   cursor: pointer;
+  transition: all 300ms ease-in;
+  &:hover {
+    color: white;
+    background-color: red;
+  }
 `;
 const Ranking = styled.div`
   display: flex;
@@ -79,6 +85,11 @@ const Ranking = styled.div`
     margin-left: 4px;
   }
   cursor: pointer;
+  transition: all 300ms ease-in;
+  &:hover {
+    color: white;
+    background-color: orange;
+  }
 `;
 const Share = styled.div`
   display: flex;
@@ -91,6 +102,11 @@ const Share = styled.div`
     margin-left: 4px;
   }
   cursor: pointer;
+  transition: all 300ms ease-in;
+  &:hover {
+    color: white;
+    background-color: blue;
+  }
 `;
 
 export default WorldCupItem;

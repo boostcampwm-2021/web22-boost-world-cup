@@ -33,5 +33,4 @@ function Main(): JSX.Element {
 const Wrapper = styled.body`
   background-color: #fdf8f7;
 `;
-
 export default Main;

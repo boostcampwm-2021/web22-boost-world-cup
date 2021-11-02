@@ -44,10 +44,9 @@ const TagContainer = styled(Slider)`
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
   margin: auto;
   margin-top: 20px;
-  width: 90vw;
+  width: 80vw;
   .slick-slide {
     margin: 0 14px;
     background-color: ${({ theme }) => theme.color.primary};
