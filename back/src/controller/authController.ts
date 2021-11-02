@@ -3,10 +3,6 @@ import * as authService from '../services/authService';
 import { NextFunction, Request, Response } from 'express';
 
 const authController = {
-  github: async (request: Request, response: Response, next: NextFunction) => {
-    passport.authenticate('github');
-  },
-
   githubCallback: async (request: Request, response: Response, next: NextFunction) => {
     if (request.user.nickname) {
       response.redirect(`http://localhost:3000/`);
