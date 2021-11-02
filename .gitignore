@@ -33,3 +33,5 @@
 /back/tmp/
 /back/temp/
 .env
+
+/back/package-lock.json
