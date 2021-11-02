@@ -12,12 +12,36 @@ const Login = (): JSX.Element => {
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
       <ButtonContainer>
-        <SocialLoginButton mark={<GoMarkGithub />} contents="Continue with Github" />
-        <SocialLoginButton mark={<FcGoogle />} contents="Continue with Google" />
-        <SocialLoginButton mark={<SiKakaotalk />} contents="Continue with Kakao" />
+        <SocialLoginButton
+          mark={<GoMarkGithub />}
+          contents="Continue with Github"
+          onClickEventHandler={githubLoginBtnClickEventHandler}
+        />
+        <SocialLoginButton
+          mark={<FcGoogle />}
+          contents="Continue with Google"
+          onClickEventHandler={googleLoginBtnClickEventHandler}
+        />
+        <SocialLoginButton
+          mark={<SiKakaotalk />}
+          contents="Continue with Kakao"
+          onClickEventHandler={kakaoLoginBtnClickEventHandler}
+        />
       </ButtonContainer>
     </Container>
   );
+};
+
+const githubLoginBtnClickEventHandler = (event: React.MouseEvent) => {
+  event.stopPropagation();
+};
+
+const googleLoginBtnClickEventHandler = (event: React.MouseEvent) => {
+  event.stopPropagation();
+};
+
+const kakaoLoginBtnClickEventHandler = (event: React.MouseEvent) => {
+  event.stopPropagation();
 };
 
 const Container = styled.div`

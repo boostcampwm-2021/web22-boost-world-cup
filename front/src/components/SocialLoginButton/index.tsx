@@ -4,11 +4,12 @@ import styled from 'styled-components';
 type Props = {
   mark: JSX.Element;
   contents: string;
+  onClickEventHandler: React.MouseEventHandler;
 };
 
-const GithubLoginButton = ({ mark, contents }: Props): JSX.Element => {
+const GithubLoginButton = ({ mark, contents, onClickEventHandler }: Props): JSX.Element => {
   return (
-    <Container>
+    <Container onClick={onClickEventHandler}>
       {mark}
       <span>{contents}</span>
     </Container>
