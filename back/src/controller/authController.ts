@@ -16,7 +16,6 @@ const authController = {
   },
 
   signup: async (request: Request, response: Response, next: NextFunction) => {
-    console.log(request.body);
     const { clientId: providerId, nickname, gender, age } = request.body;
     const user = await authService.findByProviderId(providerId);
     user.nickname = nickname;
