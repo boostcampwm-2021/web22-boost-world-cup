@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle, Reset, theme } from './commons/style';
-import { ROUTE_MAIN, ROUTE_MAKE, ROUTE_LOGIN } from './commons/constants/route';
-import { Main, Make, Login } from './pages';
+import { ROUTE_MAIN, ROUTE_MAKE, ROUTE_LOGIN, ROUTE_SIGNUP } from './commons/constants/route';
+import { Main, Make, Login, SignUp } from './pages';
 
 function App(): JSX.Element {
   return (
@@ -14,6 +14,7 @@ function App(): JSX.Element {
         <Switch>
           <Route path={ROUTE_MAIN} component={Main} exact />
           <Route path={ROUTE_LOGIN} component={Login} />
+          <Route path={ROUTE_SIGNUP} component={SignUp} />
           <Route path={ROUTE_MAKE} component={Make} />
         </Switch>
       </Router>
