@@ -60,12 +60,17 @@ const MoreButton = styled.div`
 `;
 const Title = styled.p`
   margin: auto;
-  background-color: black;
-  color: white;
+  background-color: ${({ theme }) => theme.color.primary};
+  color: ${({ theme }) => theme.color.gray[0]};
   width: 70%;
   height: 40px;
   border-radius: 12px;
   cursor: pointer;
+  transition: all 300ms ease-in;
+  &:hover {
+    background-color: ${({ theme }) => theme.color.pink};
+    color: ${({ theme }) => theme.color.black};
+  }
 `;
 
 export default WorldcupList;
