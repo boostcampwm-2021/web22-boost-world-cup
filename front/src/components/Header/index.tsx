@@ -3,12 +3,16 @@ import styled from 'styled-components';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
 import Modal from '../Modal';
+import SearchBar from '../SearchBar';
 
 interface Props {
   isLogin: boolean;
   canSearch: boolean;
+  onSubmit: React.MouseEventHandler<HTMLButtonElement>;
+  onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
+  searchWord: string;
 }
-function Header({ isLogin, canSearch }: Props): JSX.Element {
+function Header({ isLogin, canSearch, onSubmit, onSearchWordChange, searchWord }: Props): JSX.Element {
   const [modal, setModal] = useState(false);
   const toggleModal = () => {
     setModal(!modal);
@@ -17,7 +21,11 @@ function Header({ isLogin, canSearch }: Props): JSX.Element {
     <MainHeader>
       <Logo>world cup</Logo>
       <RightHeader>
-        {canSearch ? <input /> : ''}
+        {canSearch ? (
+          <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={searchWord} />
+        ) : (
+          ''
+        )}
         {isLogin ? <UserIcon onClick={toggleModal} /> : <Login>로그인</Login>}
         <Modal open={modal} />
       </RightHeader>
@@ -40,7 +48,7 @@ const Logo = styled.span`
   cursor: pointer;
 `;
 const RightHeader = styled.span`
-  width: 400px;
+  width: 50%;
   display: flex;
   justify-content: space-between;
 `;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CardList from '../../components/WorldcupList';
 import Header from '../../components/Header';
@@ -6,10 +6,24 @@ import TagList from '../../components/TagList';
 
 function Main(): JSX.Element {
   const [isLogin, setIsLogin] = useState(true);
+  const [searchWord, setSearchWord] = useState('');
   const canSearch = true;
+  const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
+    event.preventDefault();
+    setSearchWord('');
+  };
+  const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(event.target.value);
+  };
   return (
     <Wrapper>
-      <Header isLogin={isLogin} canSearch={canSearch} />
+      <Header
+        isLogin={isLogin}
+        canSearch={canSearch}
+        onSubmit={onSubmit}
+        onSearchWordChange={onSearchWordChange}
+        searchWord={searchWord}
+      />
       <TagList />
       <CardList />
     </Wrapper>
