@@ -1,24 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import theme from '../../commons/style/theme';
 
-const TagContainer = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const Tag = styled.section`
-  background-color: ${theme.color.primary};
-  padding: 10px 20px;
-  margin: 10px;
-  white-space: noWrap;
-  border-radius: 8px;
-  cursor: pointer;
-  &:hover {
-    background-color: ${theme.color.pink};
-    color: ${theme.color.highlight};
-  }
-`;
 const tagList: Array<string> = [
   '전체',
   '아이돌',
@@ -42,5 +24,23 @@ function TagList() {
     </TagContainer>
   );
 }
+
+const TagContainer = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Tag = styled.section`
+  background-color: ${({ theme }) => theme.color.primary};
+  padding: 10px 20px;
+  margin: 10px;
+  white-space: noWrap;
+  border-radius: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.color.pink};
+    color: ${({ theme }) => theme.color.highlight};
+  }
+`;
 
 export default TagList;

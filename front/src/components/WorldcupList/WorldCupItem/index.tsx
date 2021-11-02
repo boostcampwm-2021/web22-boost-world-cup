@@ -1,7 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
-import theme from '../../../commons/style/theme';
+
+interface Props {
+  thumbnail: string;
+  title: string;
+  desc: string;
+}
+function WorldCupItem({ thumbnail, title, desc }: Props): JSX.Element {
+  return (
+    <Item>
+      <Thumbnail src={thumbnail} alt="thumbnail" />
+      <Title>{title}</Title>
+      <Desc>{desc}</Desc>
+      <Buttons>
+        <Start>
+          <FaPlay />
+          <span>시작하기</span>
+        </Start>
+        <Ranking>
+          <FaList />
+          <span>랭킹보기</span>
+        </Ranking>
+        <Share>
+          <FaShare />
+          <span>공유하기</span>
+        </Share>
+      </Buttons>
+    </Item>
+  );
+}
 
 const Item = styled.section`
   display: flex;
@@ -10,17 +38,17 @@ const Item = styled.section`
   justify-content: space-around;
   margin: 10px;
   padding: 0px 20px;
-  background-color: ${theme.color.white};
+  background-color: ${({ theme }) => theme.color.white};
 `;
 const Thumbnail = styled.img`
   width: 280px;
   height: 180px;
 `;
 const Title = styled.p`
-  font: ${theme.fontStyle.h3Bold};
+  font: ${({ theme }) => theme.fontStyle.h3Bold};
 `;
 const Desc = styled.p`
-  font: ${theme.fontStyle.caption};
+  font: ${({ theme }) => theme.fontStyle.caption};
 `;
 const Buttons = styled.div`
   display: flex;
@@ -64,34 +92,5 @@ const Share = styled.div`
   }
   cursor: pointer;
 `;
-
-interface Props {
-  thumbnail: string;
-  title: string;
-  desc: string;
-}
-function WorldCupItem({ thumbnail, title, desc }: Props): JSX.Element {
-  return (
-    <Item>
-      <Thumbnail src={thumbnail} alt="thumbnail" />
-      <Title>{title}</Title>
-      <Desc>{desc}</Desc>
-      <Buttons>
-        <Start>
-          <FaPlay />
-          <span>시작하기</span>
-        </Start>
-        <Ranking>
-          <FaList />
-          <span>랭킹보기</span>
-        </Ranking>
-        <Share>
-          <FaShare />
-          <span>공유하기</span>
-        </Share>
-      </Buttons>
-    </Item>
-  );
-}
 
 export default WorldCupItem;

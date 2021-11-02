@@ -3,11 +3,6 @@ import styled from 'styled-components';
 import WorldCupItem from './WorldCupItem';
 import thumbnailImg from '../../images/logo.png';
 
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px 10px;
-`;
 const items = [
   {
     thumbnail: thumbnailImg,
@@ -67,4 +62,11 @@ function WorldcupList(): JSX.Element {
     </Container>
   );
 }
+
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px 10px;
+`;
+
 export default WorldcupList;

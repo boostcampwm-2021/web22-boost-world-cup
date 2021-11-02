@@ -1,45 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import theme from '../../commons/style/theme';
-
-const MenuBox = styled.ul`
-  position: absolute;
-  right: 40px;
-  top: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: stretch;
-  text-align: center;
-  width: 180px;
-  height: 220px;
-  border: 1px solid ${theme.color.gray[0]};
-  border-radius: 12px;
-  background-color: ${theme.color.white};
-  color: ${theme.color.gray[0]};
-  li {
-    box-shadow: 0px 26px 2px -26px ${theme.color.gray[0]};
-    height: 100%;
-    line-height: 40px;
-    padding: 6px;
-    cursor: pointer;
-    &:hover {
-      background-color: ${theme.color.primary};
-      color: ${theme.color.black};
-    }
-  }
-  li:last-child {
-    border-bottom: 0;
-  }
-  li:last-child:hover {
-    border-bottom-right-radius: 12px;
-    border-bottom-left-radius: 12px;
-  }
-  li:first-child:hover {
-    border-top-right-radius: 12px;
-    border-top-left-radius: 12px;
-  }
-`;
 
 interface Props {
   open: boolean;
@@ -60,4 +20,43 @@ function Modal({ open }: Props): JSX.Element {
     </>
   );
 }
+const MenuBox = styled.ul`
+  position: absolute;
+  right: 40px;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: stretch;
+  text-align: center;
+  width: 180px;
+  height: 220px;
+  border: 1px solid ${({ theme }) => theme.color.gray[0]};
+  border-radius: 12px;
+  background-color: ${({ theme }) => theme.color.white};
+  color: ${({ theme }) => theme.color.gray[0]};
+  li {
+    box-shadow: 0px 26px 2px -26px ${({ theme }) => theme.color.gray[0]};
+    height: 100%;
+    line-height: 40px;
+    padding: 6px;
+    cursor: pointer;
+    &:hover {
+      background-color: ${({ theme }) => theme.color.primary};
+      color: ${({ theme }) => theme.color.black};
+    }
+  }
+  li:last-child {
+    border-bottom: 0;
+  }
+  li:last-child:hover {
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+  li:first-child:hover {
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+  }
+`;
+
 export default Modal;
