@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import ormConfig from '../config/ormConfig';
+import ormConfig from '../config/orm';
 import { createConnection } from 'typeorm';
 
 const ormLoader = async () => {
