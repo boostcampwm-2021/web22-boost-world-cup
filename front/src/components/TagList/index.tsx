@@ -70,11 +70,11 @@ const TagContainer = styled(Slider)`
   }
   .slick-prev {
     left: 3% 
-    z-index: 1;
+    z-index: 10;
   }
   .slick-next {
     right: 3% 
-    z-index: 1;
+    z-index: 10;
   }
 `;
 export default TagList;

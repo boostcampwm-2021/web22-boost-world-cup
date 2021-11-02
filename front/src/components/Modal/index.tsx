@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 interface Props {
   open: boolean;
@@ -20,6 +20,21 @@ function Modal({ open }: Props): JSX.Element {
     </>
   );
 }
+
+const openModal = keyframes`
+  0% {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+  80% {
+    transform: rotateY(-10deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: rotateY(0);
+    opacity: 1;
+  }
+`;
 const MenuBox = styled.ul`
   position: absolute;
   right: 40px;
@@ -31,10 +46,13 @@ const MenuBox = styled.ul`
   text-align: center;
   width: 180px;
   height: 220px;
+  z-index: 1;
   border: 1px solid ${({ theme }) => theme.color.gray[0]};
   border-radius: 12px;
   background-color: ${({ theme }) => theme.color.white};
   color: ${({ theme }) => theme.color.gray[0]};
+  animation: ${openModal} 400ms ease-in-out forwards;
+  transform-origin: top center;
   li {
     box-shadow: 0px 26px 2px -26px ${({ theme }) => theme.color.gray[0]};
     height: 100%;
