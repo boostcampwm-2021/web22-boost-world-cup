@@ -3,8 +3,7 @@ import * as passport from 'passport';
 import * as passportGithub from 'passport-github';
 import githubStrategyConfig from '../../config/githubStrategy';
 const GitHubStrategy = passportGithub.Strategy;
-
-import { findByProviderId, saveInitUser } from '../../services/authService';
+import { findById, findByProviderId, saveInitUser } from '../../services/authService';
 
 const githubPassportInit = () => {
   passport.use(
@@ -15,11 +14,11 @@ const githubPassportInit = () => {
     }),
   );
   passport.serializeUser((user, done) => {
-    done(null, user.providerId);
+    done(null, user.id);
   });
-  passport.deserializeUser(async (providerId, done) => {
-    const user = await findByProviderId(providerId);
-    await done(null, user);
+  passport.deserializeUser(async (id, done) => {
+    const user = await findById(id);
+    done(null, user);
   });
 };
 

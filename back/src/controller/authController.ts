@@ -1,14 +1,11 @@
-import * as passport from 'passport';
 import * as authService from '../services/authService';
 import { NextFunction, Request, Response } from 'express';
 
 const authController = {
   githubCallback: async (request: Request, response: Response, next: NextFunction) => {
-    if (request.user.nickname) {
-      response.redirect(`http://localhost:3000/`);
-    } else {
-      response.redirect(`http://localhost:3000/signup?client_id=${request.user.providerId}`);
-    }
+    request.user.nickname
+      ? response.redirect(`http://localhost:3000/`)
+      : response.redirect(`http://localhost:3000/signup?client_id=${request.user.providerId}`);
   },
 
   signup: async (request: Request, response: Response, next: NextFunction) => {
