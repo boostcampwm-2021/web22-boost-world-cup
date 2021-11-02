@@ -1,8 +1,12 @@
+import * as passport from 'passport';
 import { NextFunction, Request, Response } from 'express';
 
-export class AuthController {
-  async githubCallback(request: Request, response: Response, next: NextFunction) {
-    console.log('Here');
-    response.send('Here');
-  }
-}
+const authController = {
+  github: async (request: Request, response: Response, next: NextFunction) => {
+    passport.authenticate('github');
+  },
+
+  githubCallback: async (request: Request, response: Response, next: NextFunction) => {},
+};
+
+export default authController;

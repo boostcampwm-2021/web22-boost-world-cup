@@ -1,20 +1,23 @@
 import * as userService from '../services/userService';
 import { NextFunction, Request, Response } from 'express';
 
-export class UserController {
-  async all(request: Request, response: Response, next: NextFunction) {
-    return await userService.findAll();
-  }
+const userController = {
+  all: async (request: Request, response: Response, next: NextFunction) => {
+    const users = await userService.findAll();
+    response.json(users);
+  },
 
-  async one(request: Request, response: Response, next: NextFunction) {
+  one: async (request: Request, response: Response, next: NextFunction) => {
     return await userService.findById(request.params.id);
-  }
+  },
 
-  async save(request: Request, response: Response, next: NextFunction) {
+  save: async (request: Request, response: Response, next: NextFunction) => {
     return await userService.save(request.body);
-  }
+  },
 
-  async remove(request: Request, response: Response, next: NextFunction) {
+  remove: async (request: Request, response: Response, next: NextFunction) => {
     return await userService.removeById(request.params.id);
-  }
-}
+  },
+};
+
+export default userController;

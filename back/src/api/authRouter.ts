@@ -1,12 +1,10 @@
-import { AuthController } from '../controller/authController';
+import controller from '../controller/authController';
 
-const userRouter = [
-  {
-    method: 'get',
-    route: '/api/auth/github/callback',
-    controller: AuthController,
-    action: 'githubCallback',
-  },
-];
+import { Router } from 'express';
 
-export default userRouter;
+const router = Router();
+
+router.get('/github', controller.github);
+router.get('/github/callback', controller.githubCallback);
+
+export default router;
