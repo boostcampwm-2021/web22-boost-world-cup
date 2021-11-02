@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
-import theme from '../../commons/style/theme';
+import theme from '../../../commons/style/theme';
 
 const Item = styled.section`
   display: flex;

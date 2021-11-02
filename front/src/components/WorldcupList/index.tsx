@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import CardItem from './WorldCupItem';
+import WorldCupItem from './WorldCupItem';
 import thumbnailImg from '../../images/logo.png';
 
 const Container = styled.div`
@@ -62,7 +62,7 @@ function WorldcupList(): JSX.Element {
   return (
     <Container>
       {items.map((item) => (
-        <CardItem thumbnail={item.thumbnail} title={item.title} desc={item.desc} />
+        <WorldCupItem thumbnail={item.thumbnail} title={item.title} desc={item.desc} />
       ))}
     </Container>
   );
