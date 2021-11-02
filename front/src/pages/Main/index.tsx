@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import CardList from '../../components/WorldcupList';
 import Header from '../../components/Header';
@@ -19,6 +19,7 @@ function Main(): JSX.Element {
     <Wrapper>
       <Header
         isLogin={isLogin}
+        setIsLogin={setIsLogin}
         canSearch={canSearch}
         onSubmit={onSubmit}
         onSearchWordChange={onSearchWordChange}

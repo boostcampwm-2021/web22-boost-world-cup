@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
@@ -7,29 +8,39 @@ import SearchBar from '../SearchBar';
 
 interface Props {
   isLogin: boolean;
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   canSearch: boolean;
   onSubmit: React.MouseEventHandler<HTMLButtonElement>;
   onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
   searchWord: string;
 }
-function Header({ isLogin, canSearch, onSubmit, onSearchWordChange, searchWord }: Props): JSX.Element {
+function Header({ isLogin, setIsLogin, canSearch, onSubmit, onSearchWordChange, searchWord }: Props): JSX.Element {
   const [modal, setModal] = useState(false);
   const toggleModal = () => {
     setModal(!modal);
   };
   return (
-    <MainHeader>
-      <Logo>world cup</Logo>
-      <RightHeader>
-        {canSearch ? (
-          <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={searchWord} />
-        ) : (
-          ''
-        )}
-        {isLogin ? <UserIcon onClick={toggleModal} /> : <Login>로그인</Login>}
-        <Modal open={modal} />
-      </RightHeader>
-    </MainHeader>
+    <>
+      {modal && <Overlay onClick={() => setModal(false)} />}
+      <MainHeader>
+        <Logo>world cup</Logo>
+        <RightHeader>
+          {canSearch ? (
+            <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={searchWord} />
+          ) : (
+            ''
+          )}
+          {isLogin ? (
+            <UserIcon onClick={toggleModal} />
+          ) : (
+            <Login>
+              <Link to="/login">로그인</Link>
+            </Login>
+          )}
+          {modal && <Modal open={modal} setIsLogin={setIsLogin} setModal={setModal} />}
+        </RightHeader>
+      </MainHeader>
+    </>
   );
 }
 const MainHeader = styled.header`
@@ -61,6 +72,14 @@ const UserIcon = styled(FaUserAlt)`
   height: 58px;
   color: ${({ theme }) => theme.color.gray[0]}
   cursor: pointer;
+`;
+const Overlay = styled.div`
+  position: fixed;
+  overflow-y: scroll;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 `;
 
 export default Header;

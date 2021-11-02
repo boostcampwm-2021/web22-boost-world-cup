@@ -1,18 +1,31 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 interface Props {
   open: boolean;
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function Modal({ open }: Props): JSX.Element {
+function Modal({ open, setIsLogin, setModal }: Props): JSX.Element {
+  const setLogout = () => {
+    setModal(false);
+    setIsLogin(false);
+  };
   return (
     <>
       {open ? (
         <MenuBox>
           <li>내 정보</li>
           <li>내가 만든 월드컵</li>
-          <li>월드컵 만들기</li>
-          <li>로그아웃</li>
+          <li>
+            <Link to="/make">월드컵 만들기</Link>
+          </li>
+          <li>
+            <button type="button" onClick={setLogout}>
+              로그아웃
+            </button>
+          </li>
         </MenuBox>
       ) : (
         ''
@@ -62,6 +75,9 @@ const MenuBox = styled.ul`
     &:hover {
       background-color: ${({ theme }) => theme.color.primary};
       color: ${({ theme }) => theme.color.black};
+    }
+    button {
+      all: unset;
     }
   }
   li:last-child {
