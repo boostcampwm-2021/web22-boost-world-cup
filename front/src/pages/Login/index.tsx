@@ -6,7 +6,8 @@ import { FcGoogle } from 'react-icons/fc';
 import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 
-const githubOauthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_OAUTH_CLIENT_ID}`;
+const githubOauthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_OAUTH_GITHUB_CLIENT_ID}`;
+const kakaoOauthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_OAUTH_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_OAUTH_CLIENT_ID}&response_type=code`;
 
 const Login = (): JSX.Element => {
   return (
@@ -17,8 +18,10 @@ const Login = (): JSX.Element => {
         <a href={githubOauthUrl}>
           <SocialLoginButton mark={<GoMarkGithub />} contents="Continue with Github" />
         </a>
+        <a href={kakaoOauthUrl}>
+          <SocialLoginButton mark={<SiKakaotalk />} contents="Continue with Kakao" />
+        </a>
         <SocialLoginButton mark={<FcGoogle />} contents="Continue with Google" />
-        <SocialLoginButton mark={<SiKakaotalk />} contents="Continue with Kakao" />
       </ButtonContainer>
     </Container>
   );

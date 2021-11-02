@@ -7,6 +7,11 @@ const authController = {
       ? response.redirect(`http://localhost:3000/`)
       : response.redirect(`http://localhost:3000/signup?client_id=${request.user.providerId}`);
   },
+  kakaoCallback: async (request: Request, response: Response, next: NextFunction) => {
+    request.user.nickname
+      ? response.redirect(`http://localhost:3000/`)
+      : response.redirect(`http://localhost:3000/signup?client_id=${request.user.providerId}`);
+  },
 
   signup: async (request: Request, response: Response, next: NextFunction) => {
     const { clientId: providerId, nickname, gender, age } = request.body;
