@@ -20,6 +20,7 @@
     "express": "^4.15.4",
     "express-session": "^1.17.2",
     "mysql": "^2.14.1",
+    "passport": "^0.5.0",
     "reflect-metadata": "^0.1.10",
     "typeorm": "0.2.38"
   },
