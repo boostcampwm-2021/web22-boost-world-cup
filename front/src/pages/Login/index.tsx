@@ -6,42 +6,22 @@ import { FcGoogle } from 'react-icons/fc';
 import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 
+const githubOauthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_OAUTH_CLIENT_ID}`;
+
 const Login = (): JSX.Element => {
   return (
     <Container>
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
       <ButtonContainer>
-        <SocialLoginButton
-          mark={<GoMarkGithub />}
-          contents="Continue with Github"
-          onClickEventHandler={githubLoginBtnClickEventHandler}
-        />
-        <SocialLoginButton
-          mark={<FcGoogle />}
-          contents="Continue with Google"
-          onClickEventHandler={googleLoginBtnClickEventHandler}
-        />
-        <SocialLoginButton
-          mark={<SiKakaotalk />}
-          contents="Continue with Kakao"
-          onClickEventHandler={kakaoLoginBtnClickEventHandler}
-        />
+        <a href={githubOauthUrl}>
+          <SocialLoginButton mark={<GoMarkGithub />} contents="Continue with Github" />
+        </a>
+        <SocialLoginButton mark={<FcGoogle />} contents="Continue with Google" />
+        <SocialLoginButton mark={<SiKakaotalk />} contents="Continue with Kakao" />
       </ButtonContainer>
     </Container>
   );
-};
-
-const githubLoginBtnClickEventHandler = (event: React.MouseEvent) => {
-  event.stopPropagation();
-};
-
-const googleLoginBtnClickEventHandler = (event: React.MouseEvent) => {
-  event.stopPropagation();
-};
-
-const kakaoLoginBtnClickEventHandler = (event: React.MouseEvent) => {
-  event.stopPropagation();
 };
 
 const Container = styled.div`
