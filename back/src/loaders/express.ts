@@ -2,11 +2,14 @@ import { Request, Response } from 'express';
 import router from '../api';
 import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
+import * as session from 'express-session';
+import sessionConfig from '../config/sessionConfig';
 
 const expressLoader = (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
+  app.use(session(sessionConfig));
 
   router.forEach((route) => {
     (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
