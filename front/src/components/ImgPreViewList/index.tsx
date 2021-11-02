@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ImgInputMini from '../ImgInputMini';
 import ImgPreView from '../ImgPreView';
 
 interface Props {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  imgURLs: string[];
+  onImgDelete: (key: string) => void;
+  imgInfos: any;
 }
 
-function ImgPreViewList({ onChange, imgURLs }: Props): JSX.Element {
-  const imgs = imgURLs.map((src) => <ImgPreView onDelete={() => console.log(1)} src={src} />);
+function ImgPreViewList({ onChange, onImgDelete, imgInfos }: Props): JSX.Element {
+  const imgListRef = useRef<HTMLUListElement | null>(null);
+  const imgs = imgInfos.map((info: any) => <ImgPreView key={info.key} onDelete={onImgDelete} info={info} />);
+  useEffect(() => {
+    const imgList = imgListRef.current;
+    if (!imgList) return;
+    imgList.scrollLeft = imgList.scrollWidth - 1075;
+  }, [imgInfos]);
   return (
     <Container>
       <ImgInputMini onChange={onChange} />
-      <ImgsWrapper>{imgs}</ImgsWrapper>
+      <ImgsWrapper ref={imgListRef}>{imgs}</ImgsWrapper>
     </Container>
   );
 }

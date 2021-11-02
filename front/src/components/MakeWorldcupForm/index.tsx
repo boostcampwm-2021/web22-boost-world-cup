@@ -1,31 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
+import ImgPreViewList from '../ImgPreViewList';
 
-function MakeWorldcupForm(): JSX.Element {
-  const [title, setTitle] = useState('');
-  const [desc, setDesc] = useState('');
-  const [files, setFiles] = useState<File[]>([]);
+interface Props {
+  onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
+  onDescChange: React.ChangeEventHandler<HTMLInputElement>;
+  onFilesChange: React.ChangeEventHandler<HTMLInputElement>;
+  onImgDelete: (key: string) => void;
+  onStore: React.MouseEventHandler<HTMLButtonElement>;
+  imgInfos: any;
+}
 
-  const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    setTitle(target.value);
-  };
-  const onDescChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    setDesc(target.value);
-  };
-  const onFilesChange: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
-    if (!target.files) {
-      setFiles([]);
-      return;
-    }
-    setFiles([...target.files]);
-  };
-  const onStore: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-    console.log(title, desc, files);
-  };
-
+function MakeWorldcupForm({
+  onTitleChange,
+  onDescChange,
+  onFilesChange,
+  onImgDelete,
+  onStore,
+  imgInfos,
+}: Props): JSX.Element {
   return (
     <Container onSubmit={(e) => e.preventDefault()}>
       <Title>이상형 월드컵 기본정보</Title>
@@ -58,7 +53,11 @@ function MakeWorldcupForm(): JSX.Element {
       </HorizontalWrapper>
       <VerticalWrapper>
         <Label>이상형 월드컵 이미지 업로드</Label>
-        <ImgInput onChange={onFilesChange} />
+        {imgInfos.length ? (
+          <ImgPreViewList onChange={onFilesChange} imgInfos={imgInfos} onImgDelete={onImgDelete} />
+        ) : (
+          <ImgInput onChange={onFilesChange} />
+        )}
       </VerticalWrapper>
       <BtnsWrapper>
         <Btn type="button">임시저장</Btn>
