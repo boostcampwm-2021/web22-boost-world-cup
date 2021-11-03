@@ -1,17 +1,21 @@
 import React from 'react';
+import { RiImageAddLine } from 'react-icons/ri';
 import styled from 'styled-components';
 
 interface Props {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-function ImgInput({ onChange }: Props): JSX.Element {
+function ImgInputMini({ onChange }: Props): JSX.Element {
   return (
     <Container>
+      <RiImageAddLine size={50} />
       <div>
-        Drop files here or click to upload.
+        Drop files here
         <hr />
-        여기 파일을 놓거나 클릭하여 업로드하세요.
+        or
+        <hr />
+        click to upload.
       </div>
       <input type="file" multiple onChange={onChange} accept="image/*" />
     </Container>
@@ -19,17 +23,17 @@ function ImgInput({ onChange }: Props): JSX.Element {
 }
 
 const Container = styled.div`
+  width: 143px;
+  height: 160px;
   background-color: ${({ theme }) => theme.color.white};
   border: 1px solid ${({ theme }) => theme.color.black};
-  border-radius: 10px;
+  border-radius: 20px;
   position: relative;
-  width: 1312px;
-  height: 260px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  ${({ theme }) => theme.fontStyle.h3};
+  ${({ theme }) => theme.fontStyle.caption};
   input {
     position: absolute;
     width: 100%;
@@ -37,6 +41,10 @@ const Container = styled.div`
     cursor: pointer;
     opacity: 0;
   }
+  div {
+    text-align: center;
+    margin-top: 18px;
+  }
 `;
 
-export default ImgInput;
+export default ImgInputMini;
