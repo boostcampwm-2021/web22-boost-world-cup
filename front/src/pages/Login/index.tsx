@@ -34,6 +34,9 @@ const Container = styled.div`
   width: 628px;
   height: 811px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
 `;
 
 const Title = styled.div`
