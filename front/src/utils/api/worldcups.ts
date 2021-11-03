@@ -5,7 +5,7 @@ interface pagingQueryType {
   limit: number;
 }
 const instance = axios.create({
-  baseURL: 'http://localhost:8000/api/worldcups/',
+  baseURL: 'http://localhost:8000/tmp/worldcups/',
   headers: {
     'Content-type': 'application/json',
   },
