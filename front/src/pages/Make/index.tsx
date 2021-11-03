@@ -40,7 +40,7 @@ function Make(): JSX.Element {
     axios.delete(`http://localhost:8000/api/images/${imgKey}`);
   };
 
-  const onImgURLChange = (imgKey: string, newURL: string) => {
+  const imgURLChange = (imgKey: string, newURL: string) => {
     const targetIdx = imgInfos.findIndex((info: ImgInfo) => info.key === imgKey);
     worldcupFormDispatcher({
       type: 'CHANGE_IMG_INFOS',
@@ -63,6 +63,7 @@ function Make(): JSX.Element {
         onDescChange={onDescChange}
         onFilesChange={onFilesChange}
         onImgDelete={onImgDelete}
+        imgURLChange={imgURLChange}
         onStore={onStore}
         imgInfos={imgInfos}
       />

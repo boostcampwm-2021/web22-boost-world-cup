@@ -7,12 +7,15 @@ import { ImgInfo } from '../../types/Datas';
 interface Props {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onImgDelete: (key: string) => void;
+  imgURLChange: (key: string, newURL: string) => void;
   imgInfos: ImgInfo[];
 }
 
-function ImgPreViewList({ onChange, onImgDelete, imgInfos }: Props): JSX.Element {
+function ImgPreViewList({ onChange, onImgDelete, imgURLChange, imgInfos }: Props): JSX.Element {
   const imgListRef = useRef<HTMLUListElement | null>(null);
-  const imgs = imgInfos.map((info: ImgInfo) => <ImgPreView key={info.key} onDelete={onImgDelete} info={info} />);
+  const imgs = imgInfos.map((info: ImgInfo) => (
+    <ImgPreView key={info.key} onDelete={onImgDelete} imgURLChange={imgURLChange} info={info} />
+  ));
   useEffect(() => {
     const imgList = imgListRef.current;
     if (!imgList) return;

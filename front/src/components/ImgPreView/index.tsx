@@ -7,10 +7,11 @@ import { ImgInfo } from '../../types/Datas';
 
 interface Props {
   onDelete: (key: string) => void;
+  imgURLChange: (key: string, newURL: string) => void;
   info: ImgInfo;
 }
 
-function ImgPreView({ onDelete, info }: Props): JSX.Element {
+function ImgPreView({ onDelete, imgURLChange, info }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const uploadImg = async () => {
@@ -21,7 +22,8 @@ function ImgPreView({ onDelete, info }: Props): JSX.Element {
       });
       fileData.append('file', file);
       await axios.post(preSignedURL, fileData);
-      info.url = `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/raw/${key}`;
+      const newURL = `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/raw/${key}`;
+      imgURLChange(key, newURL);
       setIsLoading(false);
     };
     uploadImg();
