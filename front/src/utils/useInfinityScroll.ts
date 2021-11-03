@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const infiniteScroll = (
+const useInfiniteScroll = (
   target: HTMLDivElement | null,
   onIntersect: (callback: IntersectionObserverEntry[], observer: IntersectionObserver) => void,
   threshold: number,
@@ -18,4 +18,4 @@ const infiniteScroll = (
   }, [target, threshold, onIntersect, condition]);
 };
 
-export default infiniteScroll;
+export default useInfiniteScroll;

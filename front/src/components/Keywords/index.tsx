@@ -19,7 +19,7 @@ const tagList: Array<string> = [
   '핫한',
   '음식',
 ];
-function TagList() {
+function Keywords() {
   const settings = {
     dots: false,
     slidesToShow: 1,
@@ -76,4 +76,4 @@ const TagContainer = styled(Slider)`
     z-index: 10;
   }
 `;
-export default TagList;
+export default Keywords;

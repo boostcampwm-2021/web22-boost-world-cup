@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import CardItem from './WorldCupItem';
 import Loader from './Loader';
 import items from './dummy';
-import infiniteScroll from '../../utils/hooks';
+import useInfiniteScroll from '../../utils/useInfinityScroll';
 
 function WorldcupList(): JSX.Element {
   const [itemList, setItemList] = useState(items.slice(0, 8));
   const [target, setTarget] = useState<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [isClickMore, setIsClickMore] = useState(false);
+  const threshold = 0.4;
   const onClickMoreButton = () => {
     setIsClickMore(true);
   };
@@ -26,7 +27,7 @@ function WorldcupList(): JSX.Element {
       observer.observe(entry.target);
     }
   };
-  infiniteScroll(target, onIntersect, 0.4, isClickMore);
+  useInfiniteScroll(target, onIntersect, threshold, isClickMore);
   return (
     <>
       <Container>
