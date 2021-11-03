@@ -6,12 +6,13 @@ import TextInput from '../TextInput';
 interface Props {
   onSubmit: React.MouseEventHandler<HTMLButtonElement>;
   onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
+  searchWord: string;
 }
 
-function SearchBar({ onSubmit, onSearchWordChange }: Props): JSX.Element {
+function SearchBar({ onSubmit, onSearchWordChange, searchWord }: Props): JSX.Element {
   return (
     <Container>
-      <TextInput name="searchWord" onChange={onSearchWordChange} width="486px" />
+      <TextInput name="searchWord" value={searchWord} onChange={onSearchWordChange} width="486px" />
       <SubmitButton onClick={onSubmit}>
         <FaSearch size={30} />
       </SubmitButton>
