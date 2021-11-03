@@ -6,16 +6,22 @@ import { FaUserAlt } from 'react-icons/fa';
 import Modal from '../Modal';
 import SearchBar from '../SearchBar';
 
-interface Props {
+interface notSearchProps {
+  type: 'header';
+  isLogin: boolean;
+}
+interface searchProps {
+  type: 'search';
   isLogin: boolean;
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
-  canSearch: boolean;
   onSubmit: React.MouseEventHandler<HTMLButtonElement>;
   onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
   searchWord: string;
 }
-function Header({ isLogin, setIsLogin, canSearch, onSubmit, onSearchWordChange, searchWord }: Props): JSX.Element {
+type Props = notSearchProps | searchProps;
+function Header(props: Props): JSX.Element {
   const [modal, setModal] = useState(false);
+  const prop = { ...props };
   const toggleModal = () => {
     setModal(!modal);
   };
@@ -25,19 +31,23 @@ function Header({ isLogin, setIsLogin, canSearch, onSubmit, onSearchWordChange, 
       <MainHeader>
         <Logo>world cup</Logo>
         <RightHeader>
-          {canSearch ? (
-            <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={searchWord} />
+          {prop.type === 'search' ? (
+            <SearchBar
+              onSubmit={prop.onSubmit}
+              onSearchWordChange={prop.onSearchWordChange}
+              searchWord={prop.searchWord}
+            />
           ) : (
             ''
           )}
-          {isLogin ? (
+          {prop.isLogin ? (
             <UserIcon onClick={toggleModal} />
           ) : (
             <Login>
               <Link to="/login">로그인</Link>
             </Login>
           )}
-          {modal && <Modal open={modal} setIsLogin={setIsLogin} setModal={setModal} />}
+          {modal && prop.type === 'search' && <Modal open={modal} setIsLogin={prop.setIsLogin} setModal={setModal} />}
         </RightHeader>
       </MainHeader>
     </>
@@ -61,17 +71,20 @@ const Logo = styled.span`
 const RightHeader = styled.span`
   width: 50%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  align-items: center;
 `;
 const Login = styled.span`
   font:  ${({ theme }) => theme.fontStyle.h2Bold}
   cursor: pointer;
+  margin-left: 40px;
 `;
 const UserIcon = styled(FaUserAlt)`
   width: 58px;
   height: 58px;
   color: ${({ theme }) => theme.color.gray[0]}
   cursor: pointer;
+  margin-left: 50px;
 `;
 const Overlay = styled.div`
   position: fixed;

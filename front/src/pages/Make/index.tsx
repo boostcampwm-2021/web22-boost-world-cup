@@ -42,7 +42,7 @@ function Make(): JSX.Element {
 
   return (
     <>
-      <Header isLogin canSearch={false} />
+      <Header type="header" isLogin />
       <MakeWorldcupForm
         onTitleChange={onTitleChange}
         onDescChange={onDescChange}

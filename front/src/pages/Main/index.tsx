@@ -7,7 +7,6 @@ import TagList from '../../components/TagList';
 function Main(): JSX.Element {
   const [isLogin, setIsLogin] = useState(true);
   const [searchWord, setSearchWord] = useState('');
-  const canSearch = true;
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setSearchWord('');
@@ -18,9 +17,9 @@ function Main(): JSX.Element {
   return (
     <Wrapper>
       <Header
+        type="search"
         isLogin={isLogin}
         setIsLogin={setIsLogin}
-        canSearch={canSearch}
         onSubmit={onSubmit}
         onSearchWordChange={onSearchWordChange}
         searchWord={searchWord}
