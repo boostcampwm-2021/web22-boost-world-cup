@@ -4,6 +4,7 @@ import { Router } from 'express';
 
 const router = Router();
 
+router.get('/info', controller.info);
 router.post('/signup', controller.signup);
 router.get('/github/callback', passport.authenticate('github'), controller.githubCallback);
 router.get('/kakao/callback', passport.authenticate('kakao'), controller.kakaoCallback);
