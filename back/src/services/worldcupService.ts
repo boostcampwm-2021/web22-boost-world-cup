@@ -12,3 +12,6 @@ export const findPart = async (offset: number, limit: number) => {
     take: limit,
   });
 };
+export const findByKeyword = async (keyword: string) => {
+  const worldcupRepository = getRepository(Worldcup);
+};
