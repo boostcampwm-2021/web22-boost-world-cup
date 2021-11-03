@@ -29,7 +29,6 @@ function WorldcupList(): JSX.Element {
     setLoading(true);
     const newItems = await get({ offset, limit: 8 });
     setItems([...items, ...newItems]);
-    console.log(items);
     setOffset(offset + 8);
     setLoading(false);
   };
