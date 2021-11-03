@@ -18,6 +18,10 @@ const SignupButton = ({ location, nickname, gender, age, changeAuthenticated }: 
 
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
+    if (nickname === '' || gender === 0 || age === 0) {
+      alert('정보를 모두 입력해주세요.');
+      return;
+    }
     const response = await signup(clientId, nickname, gender, age);
     const { result } = response;
     if (result === 'success') {
