@@ -5,6 +5,7 @@ import qs from 'qs';
 import axios from 'axios';
 import logo from '../../images/logo.png';
 import AgeSelector from './AgeSelector';
+import GenderSelector from './GenderSelector';
 
 interface Props {
   location: Location;
@@ -20,6 +21,10 @@ const SignUp = ({ location }: Props): JSX.Element => {
 
   const ageSelector = (newAge: string) => {
     setAge(newAge);
+  };
+
+  const genderSelector = (newGender: number) => {
+    setGender(newGender);
   };
 
   const nicknameOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,14 +50,6 @@ const SignUp = ({ location }: Props): JSX.Element => {
       setAuthenticated(true);
     }
   };
-  const genderClickHandler: React.MouseEventHandler = (event: React.MouseEvent<HTMLElement>) => {
-    const {
-      dataset: { value },
-    } = event.target as HTMLElement;
-    if (value) {
-      setGender(parseInt(value, 10));
-    }
-  };
 
   return authenticated ? (
     <Redirect to="/" />
@@ -62,14 +59,7 @@ const SignUp = ({ location }: Props): JSX.Element => {
       <Title>Welcome to world cup</Title>
       <InputContainer>
         <NameInput type="text" placeholder="닉네임" onChange={nicknameOnchange} />
-        <GenderContainer>
-          <div onClick={genderClickHandler} data-value="1" aria-hidden="true">
-            남자
-          </div>
-          <div onClick={genderClickHandler} data-value="2" aria-hidden="true">
-            여자
-          </div>
-        </GenderContainer>
+        <GenderSelector gender={gender} genderSelector={genderSelector} />
         <AgeSelector age={age} ageSelector={ageSelector} />
         <SubmitButton onClick={onSubmit}>회원가입</SubmitButton>
       </InputContainer>
@@ -111,25 +101,6 @@ const NameInput = styled.input`
   height: 61px;
   border: 0;
   border-radius: 10px;
-`;
-
-const GenderContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 61px;
-  div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    ${({ theme }) => theme.fontStyle.h3}
-    color: ${({ theme }) => theme.color.gray[0]};
-    background-color: ${({ theme }) => theme.color.primary};
-    height: 100%;
-    width: 186px;
-    border-radius: 10px;
-  }
 `;
 
 const SubmitButton = styled.button`
