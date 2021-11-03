@@ -53,6 +53,11 @@ function Make(): JSX.Element {
   };
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
+    axios.post('http://localhost:8000/api/worldcups', {
+      title,
+      desc,
+      imgInfos: imgInfos.map((imgInfo) => ({ key: imgInfo.key, name: imgInfo.name, url: imgInfo.url })),
+    });
   };
 
   return (
