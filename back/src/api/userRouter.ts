@@ -1,30 +1,12 @@
-import { UserController } from '../controller/userController';
+import controller from '../controller/userController';
 
-const userRouter = [
-  {
-    method: 'get',
-    route: '/users',
-    controller: UserController,
-    action: 'all',
-  },
-  {
-    method: 'get',
-    route: '/users/:id',
-    controller: UserController,
-    action: 'one',
-  },
-  {
-    method: 'post',
-    route: '/users',
-    controller: UserController,
-    action: 'save',
-  },
-  {
-    method: 'delete',
-    route: '/users/:id',
-    controller: UserController,
-    action: 'remove',
-  },
-];
+import { Router } from 'express';
 
-export default userRouter;
+const router = Router();
+
+router.get('/', controller.all);
+router.get('/:id', controller.one);
+router.post('/', controller.save);
+router.delete('/:id', controller.remove);
+
+export default router;

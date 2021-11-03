@@ -1,21 +1,22 @@
-import { Request, Response } from 'express';
-import router from '../api';
 import * as express from 'express';
+import * as cookieParser from 'cookie-parser';
+import * as session from 'express-session';
+import * as passport from 'passport';
+import sessionConfig from '../config/session';
+import indexRouter from '../api';
+import passportInit from './passport';
 
 const expressLoader = (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(session(sessionConfig));
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-  router.forEach((route) => {
-    (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-      const result = new (route.controller as any)()[route.action](req, res, next);
-      if (result instanceof Promise) {
-        result.then((result) => (result !== null && result !== undefined ? res.send(result) : undefined));
-      } else if (result !== null && result !== undefined) {
-        res.json(result);
-      }
-    });
-  });
+  passportInit();
+
+  app.use('/api', indexRouter);
 };
 
 export default expressLoader;

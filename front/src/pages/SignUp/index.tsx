@@ -1,27 +1,77 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+import qs from 'qs';
+import axios from 'axios';
 import logo from '../../images/logo.png';
 import AgeSelector from './AgeSelector';
 
-const SignUp = (): JSX.Element => {
+interface Props {
+  location: Location;
+}
+
+const SignUp = ({ location }: Props): JSX.Element => {
+  const [nickname, setNickname] = useState('');
+  const [gender, setGender] = useState(0);
   const [age, setAge] = useState('');
+  const [authenticated, setAuthenticated] = useState(false);
+  const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const { client_id: clientId } = query;
 
   const ageSelector = (newAge: string) => {
     setAge(newAge);
   };
 
-  return (
+  const nicknameOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value },
+    } = event;
+    setNickname(value);
+  };
+
+  const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    const response = await axios.post('/api/auth/signup', {
+      clientId,
+      nickname,
+      gender,
+      age: 1,
+    });
+    const {
+      data: { result },
+    } = response;
+
+    if (result === 'success') {
+      setAuthenticated(true);
+    }
+  };
+  const genderClickHandler: React.MouseEventHandler = (event: React.MouseEvent<HTMLElement>) => {
+    const {
+      dataset: { value },
+    } = event.target as HTMLElement;
+    if (value) {
+      setGender(parseInt(value, 10));
+    }
+  };
+
+  return authenticated ? (
+    <Redirect to="/" />
+  ) : (
     <Container>
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
       <InputContainer>
-        <NameInput type="text" placeholder="닉네임" />
+        <NameInput type="text" placeholder="닉네임" onChange={nicknameOnchange} />
         <GenderContainer>
-          <div>남자</div>
-          <div>여자</div>
+          <div onClick={genderClickHandler} data-value="1" aria-hidden="true">
+            남자
+          </div>
+          <div onClick={genderClickHandler} data-value="2" aria-hidden="true">
+            여자
+          </div>
         </GenderContainer>
         <AgeSelector age={age} ageSelector={ageSelector} />
-        <SubmitButton type="submit">회원가입</SubmitButton>
+        <SubmitButton onClick={onSubmit}>회원가입</SubmitButton>
       </InputContainer>
     </Container>
   );

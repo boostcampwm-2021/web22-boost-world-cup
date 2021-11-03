@@ -14,14 +14,20 @@
     "typescript": "3.3.3333"
   },
   "dependencies": {
+    "@types/passport": "^1.0.7",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^8.6.0",
     "express": "^4.15.4",
+    "express-session": "^1.17.2",
     "mysql": "^2.14.1",
+    "passport": "^0.5.0",
+    "passport-github": "^1.1.0",
+    "passport-kakao": "^1.0.1",
     "reflect-metadata": "^0.1.10",
     "typeorm": "0.2.38"
   },
   "scripts": {
-    "dev": "ts-node-dev src/index.ts",
-    "start": "ts-node src/index.ts"
+    "dev": "ts-node-dev --files src/index.ts",
+    "start": "ts-node --files src/index.ts"
   }
 }

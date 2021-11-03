@@ -29,6 +29,7 @@ const Container = styled.div`
     top: 2px;
     font-size: 28px;
   }
+  cursor: pointer;
 `;
 
 export default GithubLoginButton;

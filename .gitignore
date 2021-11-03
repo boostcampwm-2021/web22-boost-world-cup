@@ -24,6 +24,9 @@
 /front/package-lock.json
 /front/yarn.lock
 
+.env.development
+.env.production
+
 
 # back
 /back/.idea/

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-type Props = {
+interface Props {
   age: string;
   ageSelector: (newAge: string) => void;
-};
+}
+const ages = ['10대', '20대', '30대', '40대', '50대', '그외'];
 
 const AgeSelector = ({ age, ageSelector }: Props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
-  const ages = ['10대', '20대', '30대', '40대', '50대', '그외'];
 
   const toggleHandler = (): void => {
     setIsOpen((v) => !v);
