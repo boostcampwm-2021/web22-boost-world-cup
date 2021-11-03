@@ -50,6 +50,7 @@ const SignUp = ({ location }: Props): JSX.Element => {
           location={location}
           nickname={nickname}
           gender={gender}
+          age={age}
           changeAuthenticated={changeAuthenticated}
         />
       </InputContainer>

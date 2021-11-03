@@ -8,16 +8,17 @@ interface Props {
   location: Location;
   nickname: string;
   gender: number;
+  age: number;
   changeAuthenticated: (authenticated: boolean) => void;
 }
 
-const SignupButton = ({ location, nickname, gender, changeAuthenticated }: Props): JSX.Element => {
+const SignupButton = ({ location, nickname, gender, age, changeAuthenticated }: Props): JSX.Element => {
   const query = qs.parse(location.search, { ignoreQueryPrefix: true });
   const { client_id: clientId } = query;
 
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    const response = await signup(clientId, nickname, gender);
+    const response = await signup(clientId, nickname, gender, age);
     const { result } = response;
     if (result === 'success') {
       changeAuthenticated(true);

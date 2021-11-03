@@ -5,12 +5,12 @@ interface ServerResponse {
   message: string | null;
 }
 
-export const signup = async (clientId: any, nickname: string, gender: number): Promise<ServerResponse> => {
+export const signup = async (clientId: any, nickname: string, gender: number, age: number): Promise<ServerResponse> => {
   const response = await axios.post('/api/auth/signup', {
     clientId,
     nickname,
     gender,
-    age: 1,
+    age,
   });
   return response.data;
 };
