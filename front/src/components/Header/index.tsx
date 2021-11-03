@@ -5,8 +5,19 @@ import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
 import Modal from '../Modal';
 import SearchBar from '../SearchBar';
-import { headerProps, searchHeaderProps } from '../../utils/interfaces';
 
+export interface headerProps {
+  type: 'header';
+  isLogin: boolean;
+}
+export interface searchHeaderProps {
+  type: 'searchHeader';
+  isLogin: boolean;
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  onSubmit: React.MouseEventHandler<HTMLButtonElement>;
+  onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
+  searchWord: string;
+}
 type Props = headerProps | searchHeaderProps;
 function Header(props: Props): JSX.Element {
   const [modal, setModal] = useState(false);
