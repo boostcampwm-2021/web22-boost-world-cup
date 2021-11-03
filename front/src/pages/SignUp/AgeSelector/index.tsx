@@ -13,13 +13,13 @@ const AgeSelector = ({ age, ageSelector }: Props): JSX.Element => {
     setIsOpen(false);
   }, [age]);
 
-  const toggleHandler = (): void => {
+  const toggleHandler = useCallback(() => {
     setIsOpen((v) => !v);
-  };
+  }, []);
 
-  const ageSelectHandler = (age: number): void => {
+  const ageSelectHandler = useCallback((age: number) => {
     ageSelector(age);
-  };
+  }, []);
 
   const clickBackWindow = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setIsOpen((v) => !v);
