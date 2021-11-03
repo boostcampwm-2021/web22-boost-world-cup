@@ -51,7 +51,7 @@ export default {
     caption: `
       font-weight: 500;
       font-size: 16px;
-      line-height: 23px;
+      line-height: 16px;
     `,
     captionBold: `
       font-weight: bold;
