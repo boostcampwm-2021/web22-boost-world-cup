@@ -3,10 +3,11 @@ import { MdCancel } from 'react-icons/md';
 import styled from 'styled-components';
 import Loading from 'react-loading';
 import axios from 'axios';
+import { ImgInfo } from '../../types/Datas';
 
 interface Props {
   onDelete: (key: string) => void;
-  info: any;
+  info: ImgInfo;
 }
 
 function ImgPreView({ onDelete, info }: Props): JSX.Element {
