@@ -2,11 +2,22 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CardItem from './WorldCupItem';
 import Loader from './Loader';
-import items from './dummy';
-import useInfiniteScroll from '../../utils/useInfinityScroll';
+import useInfiniteScroll from '../../utils/hooks/useInfinityScroll';
+import { get } from '../../utils/api/worldcups';
 
+interface WorldcupType {
+  createdAt: string;
+  description: string;
+  id: number;
+  isTemp: boolean;
+  thumbnail1: string;
+  thumbnail2: string;
+  title: string;
+  totalCnt: number;
+}
 function WorldcupList(): JSX.Element {
-  const [itemList, setItemList] = useState(items.slice(0, 8));
+  const [offset, setOffset] = useState(0);
+  const [items, setItems] = useState<WorldcupType[]>([]);
   const [target, setTarget] = useState<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [isClickMore, setIsClickMore] = useState(false);
@@ -14,25 +25,36 @@ function WorldcupList(): JSX.Element {
   const onClickMoreButton = () => {
     setIsClickMore(true);
   };
-  const getItems = async () => {
+  const fetchData = async () => {
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    setItemList((prevList) => items.slice(0, prevList.length + 4 < items.length ? prevList.length + 4 : items.length));
+    const newItems = await get({ offset, limit: 8 });
+    setItems([...items, ...newItems]);
+    console.log(items);
+    setOffset(offset + 8);
     setLoading(false);
   };
   const onIntersect = async ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     if (entry.isIntersecting && !loading) {
       observer.unobserve(entry.target);
-      await getItems();
+      await fetchData();
       observer.observe(entry.target);
     }
   };
+  useEffect(() => {
+    fetchData();
+  }, []);
   useInfiniteScroll(target, onIntersect, threshold, isClickMore);
   return (
     <>
       <Container>
-        {itemList.map((item) => (
-          <CardItem thumbnail={item.thumbnail} title={item.title} desc={item.desc} />
+        {items.map((item) => (
+          <CardItem
+            key={item.id}
+            thumbnail1={item.thumbnail1}
+            thumbnail2={item.thumbnail2}
+            title={item.title}
+            desc={item.description}
+          />
         ))}
       </Container>
       {!isClickMore ? (
