@@ -7,39 +7,49 @@ import { ImgInfo } from '../../types/Datas';
 
 interface Props {
   onDelete: (key: string) => void;
-  imgURLChange: (key: string, newURL: string) => void;
   info: ImgInfo;
 }
 
-function ImgPreView({ onDelete, imgURLChange, info }: Props): JSX.Element {
+function ImgPreView({ onDelete, info }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
+  const [imgURL, setImgURL] = useState('');
+
   useEffect(() => {
     const uploadImg = async () => {
-      const { preSignedURL, fields, file, key } = info;
+      const { preSignedURL, fields, file } = info;
       const fileData = new FormData();
       Object.keys(fields).forEach((key) => {
         fileData.append(key, fields[key]);
       });
       fileData.append('file', file);
       await axios.post(preSignedURL, fileData);
-      const newURL = `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/raw/${key}`;
-      imgURLChange(key, newURL);
-      setIsLoading(false);
     };
     uploadImg();
   }, []);
+
+  useEffect(() => {
+    const { key } = info;
+    const intervalId = setInterval(() => {
+      if (!isLoading) {
+        clearInterval(intervalId);
+        return;
+      }
+      const newImgURL = `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/w143h160/${key}?${Date.now()}`;
+      setImgURL(newImgURL);
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [isLoading]);
+
   return (
     <Container isLoading={isLoading}>
       {isLoading ? (
         <Loading type="spin" color="black" />
       ) : (
-        <>
-          <Btn type="button" onClick={() => onDelete(info.key)}>
-            <MdCancel size={40} color="red" />
-          </Btn>
-          <img src={info.url} width="143px" height="160px" style={{ borderRadius: '20px' }} alt="" />
-        </>
+        <Btn type="button" onClick={() => onDelete(info.key)}>
+          <MdCancel size={40} color="red" />
+        </Btn>
       )}
+      <Img src={imgURL} onLoad={() => setIsLoading(false)} alt="" isLoading={isLoading} />
     </Container>
   );
 }
@@ -65,6 +75,11 @@ const Btn = styled.button`
   height: 40px;
   right: -20px;
   top: -20px;
+`;
+
+const Img = styled.img<{ isLoading: boolean }>`
+  border-radius: 20px;
+  display: ${({ isLoading }) => (isLoading ? `none` : `inline`)};
 `;
 
 export default ImgPreView;

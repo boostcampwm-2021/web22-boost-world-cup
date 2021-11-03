@@ -10,7 +10,6 @@ interface Props {
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
   onFilesChange: React.ChangeEventHandler<HTMLInputElement>;
   onImgDelete: (key: string) => void;
-  imgURLChange: (key: string, newURL: string) => void;
   onStore: React.MouseEventHandler<HTMLButtonElement>;
   imgInfos: ImgInfo[];
 }
@@ -20,7 +19,6 @@ function MakeWorldcupForm({
   onDescChange,
   onFilesChange,
   onImgDelete,
-  imgURLChange,
   onStore,
   imgInfos,
 }: Props): JSX.Element {
@@ -57,12 +55,7 @@ function MakeWorldcupForm({
       <VerticalWrapper>
         <Label>이상형 월드컵 이미지 업로드</Label>
         {imgInfos.length ? (
-          <ImgPreViewList
-            onChange={onFilesChange}
-            imgInfos={imgInfos}
-            onImgDelete={onImgDelete}
-            imgURLChange={imgURLChange}
-          />
+          <ImgPreViewList onChange={onFilesChange} imgInfos={imgInfos} onImgDelete={onImgDelete} />
         ) : (
           <ImgInput onChange={onFilesChange} />
         )}

@@ -40,23 +40,12 @@ function Make(): JSX.Element {
     axios.delete(`http://localhost:8000/api/images/${imgKey}`);
   };
 
-  const imgURLChange = (imgKey: string, newURL: string) => {
-    const targetIdx = imgInfos.findIndex((info: ImgInfo) => info.key === imgKey);
-    worldcupFormDispatcher({
-      type: 'CHANGE_IMG_INFOS',
-      payload: [
-        ...imgInfos.slice(0, targetIdx),
-        { ...imgInfos[targetIdx], url: newURL },
-        ...imgInfos.slice(targetIdx + 1),
-      ],
-    });
-  };
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     axios.post('http://localhost:8000/api/worldcups', {
       title,
       desc,
-      imgInfos: imgInfos.map((imgInfo) => ({ key: imgInfo.key, name: imgInfo.name, url: imgInfo.url })),
+      imgInfos: imgInfos.map((imgInfo) => ({ key: imgInfo.key, name: imgInfo.name })),
     });
   };
 
@@ -68,7 +57,6 @@ function Make(): JSX.Element {
         onDescChange={onDescChange}
         onFilesChange={onFilesChange}
         onImgDelete={onImgDelete}
-        imgURLChange={imgURLChange}
         onStore={onStore}
         imgInfos={imgInfos}
       />

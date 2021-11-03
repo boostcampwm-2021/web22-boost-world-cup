@@ -20,7 +20,6 @@ export interface ImgInfo {
   preSignedURL: string;
   fields: PreSignedDataFields;
   file: File;
-  url?: string;
 }
 
 export interface FetchPreSigned {
