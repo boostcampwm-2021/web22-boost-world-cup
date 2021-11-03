@@ -1,37 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  age: string;
-  ageSelector: (newAge: string) => void;
+  age: number;
+  ageSelector: (newAge: number) => void;
 }
-const ages = ['10대', '20대', '30대', '40대', '50대', '그외'];
 
 const AgeSelector = ({ age, ageSelector }: Props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [age]);
 
   const toggleHandler = (): void => {
     setIsOpen((v) => !v);
   };
 
-  const ageSelectHandler = (age: string): void => {
+  const ageSelectHandler = (age: number): void => {
     ageSelector(age);
+  };
+
+  const clickBackWindow = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setIsOpen((v) => !v);
+    event.stopPropagation();
+  }, []);
+
+  const ages = ['10대', '20대', '30대', '40대', '50대', '그외'];
+
+  const selectedAgeText = () => {
+    return age === 0 ? '연령' : ages[age - 1];
   };
 
   return (
     <>
       <AgeInput onClick={toggleHandler}>
-        <span>{age || '연령'}</span>
+        <span>{selectedAgeText()}</span>
         <AgeList isOpen={isOpen}>
-          {ages.map((age) => (
-            <Item onClick={() => ageSelectHandler(age)}>{age}</Item>
+          {ages.map((age, idx) => (
+            <Item onClick={() => ageSelectHandler(idx + 1)}>{age}</Item>
           ))}
         </AgeList>
       </AgeInput>
+      <BackWindow onClick={clickBackWindow} isOpen={isOpen} />
     </>
   );
 };
+
+const Item = styled.div`
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
+  padding-left: 50px;
+  height: 51px;
+  border-bottom: 1px solid ${({ theme }) => theme.color.pink};
+  &:last-child {
+    border-bottom: 0;
+  }
+`;
+
+const BackWindow = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+`;
 
 const AgeInput = styled.div`
   display: flex;
@@ -47,6 +84,7 @@ const AgeInput = styled.div`
   span {
     color: ${({ theme }) => theme.color.gray[0]};
   }
+  cursor: pointer;
 `;
 
 const AgeList = styled.div<{ isOpen: boolean }>`
@@ -59,19 +97,8 @@ const AgeList = styled.div<{ isOpen: boolean }>`
   ${({ theme }) => theme.fontStyle.h3}
   color: ${({ theme }) => theme.color.gray[0]};
   background-color: ${({ theme }) => theme.color.primary};
-  div {
-    padding-top: 5px;
-    display: flex;
-    align-items: center;
-    padding-left: 50px;
-    height: 51px;
-    border-bottom: 1px solid ${({ theme }) => theme.color.pink};
-    &:last-child {
-      border-bottom: 0;
-    }
-  }
+  z-index: 3;
+  border-radius: 10px;
 `;
-
-const Item = styled.div``;
 
 export default AgeSelector;

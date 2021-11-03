@@ -14,10 +14,10 @@ interface Props {
 const SignUp = ({ location }: Props): JSX.Element => {
   const [nickname, setNickname] = useState('');
   const [gender, setGender] = useState(0);
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState(0);
   const [authenticated, setAuthenticated] = useState(false);
 
-  const ageSelector = useCallback((newAge: string) => {
+  const ageSelector = useCallback((newAge: number) => {
     setAge(newAge);
   }, []);
 
@@ -29,12 +29,12 @@ const SignUp = ({ location }: Props): JSX.Element => {
     setAuthenticated(newAuthenticated);
   }, []);
 
-  const nicknameOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const nicknameOnchange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
     setNickname(value);
-  };
+  }, []);
 
   return authenticated ? (
     <Redirect to="/" />
