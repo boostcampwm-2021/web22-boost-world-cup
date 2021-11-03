@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Candidate } from './Candidate';
 import { Keyword } from './Keyword';
 import { Comment } from './Comment';
@@ -21,7 +21,7 @@ export class Worldcup {
   totalCnt: number;
 
   @Column({ nullable: true })
-  desc: string;
+  description: string;
 
   @Column({ name: 'is_temp', default: '0' })
   isTemp: boolean;
@@ -32,7 +32,12 @@ export class Worldcup {
   @OneToMany((type) => Candidate, (candidate) => candidate.worldcup)
   candidates: Candidate[];
 
-  @OneToMany((type) => Keyword, (keyword) => keyword.worldcup)
+  @ManyToMany((type) => Keyword, (keyword) => keyword)
+  @JoinTable({
+    name: 'worldcup_keyword',
+    joinColumn: { name: 'worldcup_id' },
+    inverseJoinColumn: { name: 'keyword_id' },
+  })
   keywords: Keyword[];
 
   @OneToMany((type) => Comment, (comment) => comment.worldcup)
