@@ -86,7 +86,7 @@ const Container = styled.div`
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
   position: relative;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%, 5%);
 `;
 
 const Title = styled.div`
