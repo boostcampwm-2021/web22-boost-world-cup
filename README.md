@@ -10,6 +10,8 @@
 
 # 👩‍💻 데모
 
+## http://www.wiziboost.ga
+
 # 📄 WIKI
 
 [위키 바로가기](https://github.com/boostcampwm-2021/web22-boost-world-cup/wiki)
@@ -36,6 +38,7 @@
 - /main : 메인 월드컵 페이지
 - /login : 로그인 페이지
 - /make : 월드컵 생성 페이지
+- /signup : 회원가입 페이지
 
 # 👁‍🗨 기술스택
 
