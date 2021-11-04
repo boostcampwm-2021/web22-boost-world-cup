@@ -15,11 +15,6 @@ function ImgPreViewList({ onChange, onDeleteImg, imgInfos }: Props): JSX.Element
   const imgs = imgInfos.map((info: ImgInfo) => (
     <ImgPreView key={info.key} onDelete={onDeleteImg} info={info} width={143} height={160} deleteBtnExist />
   ));
-  useEffect(() => {
-    const imgList = imgListRef.current;
-    if (!imgList) return;
-    imgList.scrollLeft = imgList.scrollWidth - 1075;
-  }, [imgInfos]);
   return (
     <Container>
       <ImgInput onChange={onChange} type="addAdditionalImgs" />

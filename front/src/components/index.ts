@@ -6,3 +6,4 @@ export { default as ImgPreView } from './ImgPreView';
 export { default as ImgPreViewList } from './ImgPreViewList';
 export { default as Header } from './Header';
 export { default as ImgTable } from './ImgTable';
+export { default as MakePageTabBar } from './MakePageTabBar';
