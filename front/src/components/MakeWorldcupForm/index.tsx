@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
+import StoreBtns from '../StoreBtns';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {
@@ -60,12 +61,7 @@ function MakeWorldcupForm({
           <ImgInput onChange={onFilesChange} />
         )}
       </VerticalWrapper>
-      <BtnsWrapper>
-        <Btn type="button">임시저장</Btn>
-        <Btn type="button" onClick={onStore}>
-          저장하기
-        </Btn>
-      </BtnsWrapper>
+      <StoreBtns onStore={onStore} />
     </Container>
   );
 }
@@ -103,21 +99,6 @@ const VerticalWrapper = styled.div`
   label {
     margin-bottom: 30px;
   }
-`;
-
-const Btn = styled.button`
-  background-color: ${({ theme }) => theme.color.primary};
-  ${({ theme }) => theme.fontStyle.h3};
-  width: 124px;
-  height: 57px;
-  border-radius: 10px;
-  margin-left: 30px;
-`;
-
-const BtnsWrapper = styled.div`
-  display: flex;
-  margin-right: 296px;
-  margin-top: 11px;
 `;
 
 const Label = styled.label`
