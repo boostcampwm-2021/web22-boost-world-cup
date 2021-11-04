@@ -2,16 +2,17 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ImgInputMini from '../ImgInputMini';
 import ImgPreView from '../ImgPreView';
+import { ImgInfo } from '../../types/Datas';
 
 interface Props {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onImgDelete: (key: string) => void;
-  imgInfos: any;
+  imgInfos: ImgInfo[];
 }
 
 function ImgPreViewList({ onChange, onImgDelete, imgInfos }: Props): JSX.Element {
   const imgListRef = useRef<HTMLUListElement | null>(null);
-  const imgs = imgInfos.map((info: any) => <ImgPreView key={info.key} onDelete={onImgDelete} info={info} />);
+  const imgs = imgInfos.map((info: ImgInfo) => <ImgPreView key={info.key} onDelete={onImgDelete} info={info} />);
   useEffect(() => {
     const imgList = imgListRef.current;
     if (!imgList) return;

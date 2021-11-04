@@ -13,10 +13,12 @@ const expressLoader = (app) => {
   app.use(session(sessionConfig));
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(express.static('public'));
 
   passportInit();
 
   app.use('/api', indexRouter);
+  app.use('/tmp', indexRouter);
 };
 
 export default expressLoader;

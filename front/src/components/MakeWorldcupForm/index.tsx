@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
+import { ImgInfo } from '../../types/Datas';
 
 interface Props {
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -10,7 +11,7 @@ interface Props {
   onFilesChange: React.ChangeEventHandler<HTMLInputElement>;
   onImgDelete: (key: string) => void;
   onStore: React.MouseEventHandler<HTMLButtonElement>;
-  imgInfos: any;
+  imgInfos: ImgInfo[];
 }
 
 function MakeWorldcupForm({

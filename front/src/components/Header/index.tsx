@@ -6,19 +6,19 @@ import { FaUserAlt } from 'react-icons/fa';
 import Modal from '../Modal';
 import SearchBar from '../SearchBar';
 
-interface notSearchProps {
+export interface headerProps {
   type: 'header';
   isLogin: boolean;
 }
-interface searchProps {
-  type: 'search';
+export interface searchHeaderProps {
+  type: 'searchHeader';
   isLogin: boolean;
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: React.MouseEventHandler<HTMLButtonElement>;
   onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
   searchWord: string;
 }
-type Props = notSearchProps | searchProps;
+type Props = headerProps | searchHeaderProps;
 function Header(props: Props): JSX.Element {
   const [modal, setModal] = useState(false);
   const prop = { ...props };
@@ -31,7 +31,7 @@ function Header(props: Props): JSX.Element {
       <MainHeader>
         <Logo>world cup</Logo>
         <RightHeader>
-          {prop.type === 'search' ? (
+          {prop.type === 'searchHeader' ? (
             <SearchBar
               onSubmit={prop.onSubmit}
               onSearchWordChange={prop.onSearchWordChange}
@@ -47,7 +47,9 @@ function Header(props: Props): JSX.Element {
               <Link to="/login">로그인</Link>
             </Login>
           )}
-          {modal && prop.type === 'search' && <Modal open={modal} setIsLogin={prop.setIsLogin} setModal={setModal} />}
+          {modal && prop.type === 'searchHeader' && (
+            <Modal open={modal} setIsLogin={prop.setIsLogin} setModal={setModal} />
+          )}
         </RightHeader>
       </MainHeader>
     </>
