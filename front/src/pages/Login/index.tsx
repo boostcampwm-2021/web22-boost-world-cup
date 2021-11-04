@@ -38,7 +38,9 @@ const Login = (): JSX.Element => {
         <a href={kakaoOauthUrl}>
           <SocialLoginButton mark={<SiKakaotalk />} contents="Continue with Kakao" />
         </a>
-        <SocialLoginButton mark={<FcGoogle />} contents="Continue with Google" />
+        <a href="http://localhost:8000/api/auth/google">
+          <SocialLoginButton mark={<FcGoogle />} contents="Continue with Google" />
+        </a>
       </ButtonContainer>
     </Container>
   );
