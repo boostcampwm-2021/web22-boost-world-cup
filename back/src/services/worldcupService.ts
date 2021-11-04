@@ -15,14 +15,23 @@ export const findAll = async () => {
     },
   };
 };
-export const findFromPage = async (offset: number, limit: number) => {
+
+export const findFromPage = async (offset, limit) => {
   const worldcupRepository = getRepository(Worldcup);
-  return await worldcupRepository.find({
+  const worldcups = await worldcupRepository.find({
     select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
     where: { isTemp: false },
-    skip: offset,
-    take: limit,
+    skip: Number(offset),
+    take: Number(limit),
   });
+
+  return {
+    result: 'success',
+    message: null,
+    data: {
+      worldcup: worldcups,
+    },
+  };
 };
 
 export const findById = async (id) => {
