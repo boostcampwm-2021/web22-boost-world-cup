@@ -9,8 +9,8 @@ import { ImgInfo } from '../../types/Datas';
 interface Props {
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
-  onFilesChange: React.ChangeEventHandler<HTMLInputElement>;
-  onImgDelete: (key: string) => void;
+  onAddImgs: React.ChangeEventHandler<HTMLInputElement>;
+  onDeleteImg: (key: string) => void;
   onStore: React.MouseEventHandler<HTMLButtonElement>;
   imgInfos: ImgInfo[];
 }
@@ -18,8 +18,8 @@ interface Props {
 function MakeWorldcupForm({
   onTitleChange,
   onDescChange,
-  onFilesChange,
-  onImgDelete,
+  onAddImgs,
+  onDeleteImg,
   onStore,
   imgInfos,
 }: Props): JSX.Element {
@@ -56,9 +56,9 @@ function MakeWorldcupForm({
       <VerticalWrapper>
         <Label>이상형 월드컵 이미지 업로드</Label>
         {imgInfos.length ? (
-          <ImgPreViewList onChange={onFilesChange} imgInfos={imgInfos} onImgDelete={onImgDelete} />
+          <ImgPreViewList onChange={onAddImgs} imgInfos={imgInfos} onDeleteImg={onDeleteImg} />
         ) : (
-          <ImgInput onChange={onFilesChange} />
+          <ImgInput onChange={onAddImgs} />
         )}
       </VerticalWrapper>
       <StoreBtns onStore={onStore} />

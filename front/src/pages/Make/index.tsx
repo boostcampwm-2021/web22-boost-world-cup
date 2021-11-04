@@ -15,7 +15,7 @@ function Make(): JSX.Element {
     worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
   };
 
-  const onFilesChange: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
+  const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
     const { files } = target;
     if (!files) {
       return;
@@ -37,7 +37,7 @@ function Make(): JSX.Element {
     worldcupFormDispatcher({ type: 'CHANGE_IMG_INFOS', payload: [...imgInfos, ...newImgInfos] });
   };
 
-  const onImgDelete = (imgKey: string) => {
+  const onDeleteImg = (imgKey: string) => {
     const targetIdx = imgInfos.findIndex((info: ImgInfo) => info.key === imgKey);
     worldcupFormDispatcher({
       type: 'CHANGE_IMG_INFOS',
@@ -61,8 +61,8 @@ function Make(): JSX.Element {
       <MakeWorldcupForm
         onTitleChange={onTitleChange}
         onDescChange={onDescChange}
-        onFilesChange={onFilesChange}
-        onImgDelete={onImgDelete}
+        onAddImgs={onAddImgs}
+        onDeleteImg={onDeleteImg}
         onStore={onStore}
         imgInfos={imgInfos}
       />
