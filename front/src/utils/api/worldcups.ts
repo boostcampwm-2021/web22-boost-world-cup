@@ -1,27 +1,21 @@
-import axios from 'axios';
+import axios, { AxiosResponseHeaders } from 'axios';
 
 interface pagingQueryType {
   offset: number;
   limit: number;
 }
-const instance = axios.create({
-  baseURL: 'http://localhost:8000/tmp/worldcups/',
-  headers: {
-    'Content-type': 'application/json',
-  },
-});
 
-export const get = async (query: pagingQueryType) => {
+export const getWorldcupList = async (query: pagingQueryType) => {
   try {
-    const response = await instance.get('', {
+    const response = await axios.get('/api/worldcups', {
       params: {
         offset: query.offset,
         limit: query.limit,
       },
     });
-    return response.data;
+    return response.data.data.worldcup;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return error;
   }
 };
