@@ -7,11 +7,12 @@ import { ImgInfo } from '../../types/Datas';
 interface Props {
   onDelete: (key: string) => void;
   info: ImgInfo;
+  deleteBtnExist: boolean;
   width: 143 | 120;
   height: 160 | 120;
 }
 
-function ImgPreView({ onDelete, info, width, height }: Props): JSX.Element {
+function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [imgURL, setImgURL] = useState('');
 
@@ -30,9 +31,8 @@ function ImgPreView({ onDelete, info, width, height }: Props): JSX.Element {
 
   return (
     <Container isLoading={isLoading} style={{ width, height }}>
-      {isLoading ? (
-        <Loading type="spin" color="black" />
-      ) : (
+      {isLoading && <Loading type="spin" color="black" />}
+      {!isLoading && deleteBtnExist && (
         <Btn type="button" onClick={() => onDelete(info.key)}>
           <MdCancel size={40} color="red" />
         </Btn>
