@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import CardList from '../../components/WorldcupList';
 import Header from '../../components/Header';
-import TagList from '../../components/TagList';
+import Keywords from '../../components/Keywords';
 
 function Main(): JSX.Element {
   const [isLogin, setIsLogin] = useState(true);
@@ -17,14 +17,14 @@ function Main(): JSX.Element {
   return (
     <Wrapper>
       <Header
-        type="search"
+        type="searchHeader"
         isLogin={isLogin}
         setIsLogin={setIsLogin}
         onSubmit={onSubmit}
         onSearchWordChange={onSearchWordChange}
         searchWord={searchWord}
       />
-      <TagList />
+      <Keywords />
       <CardList />
     </Wrapper>
   );
