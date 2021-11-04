@@ -8,6 +8,7 @@ function Main(): JSX.Element {
   const [isLogin, setIsLogin] = useState(true);
   const [searchWord, setSearchWord] = useState('');
   const [clickTag, setClickTag] = useState('');
+  const [offset, setOffset] = useState(0);
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setSearchWord('');
@@ -15,9 +16,11 @@ function Main(): JSX.Element {
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchWord(event.target.value);
   };
-  useEffect(() => {
-    console.log(clickTag);
-  }, [clickTag]);
+  const onClickTag = (keyword: string) => {
+    setOffset(0);
+    setClickTag(keyword);
+  };
+
   return (
     <Wrapper>
       <Header
@@ -28,8 +31,8 @@ function Main(): JSX.Element {
         onSearchWordChange={onSearchWordChange}
         searchWord={searchWord}
       />
-      <Keywords setClickTag={setClickTag} />
-      <WorldCupList clickTag={clickTag} />
+      <Keywords onClickTag={onClickTag} />
+      <WorldCupList offset={offset} setOffset={setOffset} clickTag={clickTag} searchWord={searchWord} />
     </Wrapper>
   );
 }

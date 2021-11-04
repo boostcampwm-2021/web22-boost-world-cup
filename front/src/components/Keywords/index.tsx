@@ -6,9 +6,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import { getWorldcupList } from '../../utils/api/keywords';
 
 interface Props {
-  setClickTag: React.Dispatch<React.SetStateAction<string>>;
+  onClickTag: (keyword: string) => void;
 }
-function Keywords({ setClickTag }: Props) {
+function Keywords({ onClickTag }: Props) {
   const settings = {
     dots: false,
     slidesToShow: 1,
@@ -24,10 +24,10 @@ function Keywords({ setClickTag }: Props) {
     const data = await getWorldcupList();
     setTagList(data);
   };
-  const onClickTag = (event: React.SyntheticEvent<HTMLDivElement>) => {
+  const onClickKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
     const element = event.target as HTMLElement;
     setSelectedTag(element.innerText);
-    setClickTag(element.innerText);
+    onClickTag(element.innerText);
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function Keywords({ setClickTag }: Props) {
   return (
     <TagContainer {...settings}>
       {tagList.map((tag) => (
-        <div key={tagList.indexOf(tag)} onClick={onClickTag} onKeyDown={onClickTag} aria-hidden="true">
+        <div key={tagList.indexOf(tag)} onClick={onClickKeyword} onKeyDown={onClickKeyword} aria-hidden="true">
           <TagName selected={selectedTag === tag}>{tag}</TagName>
         </div>
       ))}

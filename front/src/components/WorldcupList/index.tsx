@@ -13,10 +13,12 @@ interface WorldcupType {
   description: string;
 }
 interface Props {
+  offset: number;
+  setOffset: React.Dispatch<React.SetStateAction<number>>;
   clickTag: string;
+  searchWord: string;
 }
-function WorldcupList({ clickTag }: Props): JSX.Element {
-  const [offset, setOffset] = useState(0);
+function WorldcupList({ clickTag, searchWord, offset, setOffset }: Props): JSX.Element {
   const [items, setItems] = useState<WorldcupType[]>([]);
   const [target, setTarget] = useState<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false);
@@ -27,9 +29,11 @@ function WorldcupList({ clickTag }: Props): JSX.Element {
   };
   const fetchData = async () => {
     setLoading(true);
-    const newItems =
-      clickTag === '' ? await getWorldcupList({ offset, limit: 8 }) : await getWorldcupList({ offset, limit: 8 });
-    setItems([...items, ...newItems]);
+    let newItems;
+    if (clickTag !== '') newItems = await getWorldcupList({ offset, limit: 8 });
+    else if (searchWord !== '') newItems = await getWorldcupList({ offset, limit: 8 });
+    else newItems = await getWorldcupList({ offset, limit: 8 });
+    setItems(offset === 0 ? [...newItems] : [...items, ...newItems]);
     setOffset(offset + 8);
     setLoading(false);
   };
@@ -44,14 +48,13 @@ function WorldcupList({ clickTag }: Props): JSX.Element {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [clickTag, searchWord]);
   useInfiniteScroll(target, onIntersect, threshold, isClickMore);
   return (
     <>
       <Container>
         {items.map((item) => (
           <CardItem
-            key={item.id}
             thumbnail1={item.thumbnail1}
             thumbnail2={item.thumbnail2}
             title={item.title}
