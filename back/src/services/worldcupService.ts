@@ -18,6 +18,8 @@ export const findAll = async () => {
 export const findFromPage = async (offset: number, limit: number) => {
   const worldcupRepository = getRepository(Worldcup);
   return await worldcupRepository.find({
+    select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
+    where: { isTemp: false },
     skip: offset,
     take: limit,
   });

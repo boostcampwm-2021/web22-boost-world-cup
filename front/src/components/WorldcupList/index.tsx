@@ -6,14 +6,11 @@ import useInfiniteScroll from '../../utils/hooks/useInfinityScroll';
 import { getWorldcupList } from '../../utils/api/worldcups';
 
 interface WorldcupType {
-  createdAt: string;
-  description: string;
   id: number;
-  isTemp: boolean;
   thumbnail1: string;
   thumbnail2: string;
   title: string;
-  totalCnt: number;
+  description: string;
 }
 function WorldcupList(): JSX.Element {
   const [offset, setOffset] = useState(0);
