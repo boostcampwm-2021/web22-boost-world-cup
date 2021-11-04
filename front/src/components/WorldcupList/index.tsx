@@ -12,7 +12,10 @@ interface WorldcupType {
   title: string;
   description: string;
 }
-function WorldcupList(): JSX.Element {
+interface Props {
+  clickTag: string;
+}
+function WorldcupList({ clickTag }: Props): JSX.Element {
   const [offset, setOffset] = useState(0);
   const [items, setItems] = useState<WorldcupType[]>([]);
   const [target, setTarget] = useState<HTMLDivElement | null>(null);
@@ -24,11 +27,13 @@ function WorldcupList(): JSX.Element {
   };
   const fetchData = async () => {
     setLoading(true);
-    const newItems = await getWorldcupList({ offset, limit: 8 });
+    const newItems =
+      clickTag === '' ? await getWorldcupList({ offset, limit: 8 }) : await getWorldcupList({ offset, limit: 8 });
     setItems([...items, ...newItems]);
     setOffset(offset + 8);
     setLoading(false);
   };
+
   const onIntersect = async ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     if (entry.isIntersecting && !loading) {
       observer.unobserve(entry.target);
@@ -36,6 +41,7 @@ function WorldcupList(): JSX.Element {
       observer.observe(entry.target);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);

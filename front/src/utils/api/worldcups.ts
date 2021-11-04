@@ -11,5 +11,5 @@ export const getWorldcupList = async (query: pagingQueryType) => {
       limit: query.limit,
     },
   });
-  return response.data;
+  return response.data.data.worldcup;
 };

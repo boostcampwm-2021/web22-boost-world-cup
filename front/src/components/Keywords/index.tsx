@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { getWorldcupList } from '../../utils/api/keywords';
 
-function Keywords(): JSX.Element {
+interface Props {
+  setClickTag: React.Dispatch<React.SetStateAction<string>>;
+}
+function Keywords({ setClickTag }: Props) {
   const settings = {
     dots: false,
     slidesToShow: 1,
@@ -16,9 +19,15 @@ function Keywords(): JSX.Element {
     speed: 300,
   };
   const [tagList, setTagList] = useState<Array<string>>([]);
+  const [selectedTag, setSelectedTag] = useState('');
   const getTagList = async () => {
     const data = await getWorldcupList();
     setTagList(data);
+  };
+  const onClickTag = (event: React.SyntheticEvent<HTMLDivElement>) => {
+    const element = event.target as HTMLElement;
+    setSelectedTag(element.innerText);
+    setClickTag(element.innerText);
   };
 
   useEffect(() => {
@@ -27,8 +36,8 @@ function Keywords(): JSX.Element {
   return (
     <TagContainer {...settings}>
       {tagList.map((tag) => (
-        <div key={tagList.indexOf(tag)}>
-          <h3>{tag}</h3>
+        <div key={tagList.indexOf(tag)} onClick={onClickTag} onKeyDown={onClickTag} aria-hidden="true">
+          <TagName selected={selectedTag === tag}>{tag}</TagName>
         </div>
       ))}
     </TagContainer>
@@ -53,7 +62,6 @@ const TagContainer = styled(Slider)`
     &:hover {
       background-color: ${({ theme }) => theme.color.pink};
       color: ${({ theme }) => theme.color.highlight};
-      transform: scale(1.1);
     }
   }
   .slick-prev:before {
@@ -70,5 +78,9 @@ const TagContainer = styled(Slider)`
     right: 3% 
     z-index: 10;
   }
+`;
+const TagName = styled.h3<{ selected: boolean }>`
+  color: ${(props) => (props.selected ? '#D28078' : 'black')};
+  font-weight: ${(props) => (props.selected ? 'bold' : '400')};
 `;
 export default Keywords;
