@@ -33,7 +33,17 @@ function ImgTable({ imgInfos, onDeleteImg, getOnImgNameChange, getOnImgChange, o
         <TableHeaderItem style={{ width: '625px' }}>이미지 변경</TableHeaderItem>
         <TableHeaderItem style={{ width: '450px' }}>삭제</TableHeaderItem>
       </TableHeader>
-      <RowsWrapper>{rows}</RowsWrapper>
+      <RowsWrapper>
+        {rows.length ? (
+          rows
+        ) : (
+          <Placeholder>
+            아직 이미지를 추가하지 않았습니다.
+            <hr />
+            기본정보 수정 / 이미지 업로드 탭에서 이미지를 업로드해보세요!
+          </Placeholder>
+        )}
+      </RowsWrapper>
       <StoreBtns onStore={onStore} />
     </Container>
   );
@@ -73,7 +83,14 @@ const TableHeaderItem = styled.div`
 
 const RowsWrapper = styled.div`
   height: 545px;
+  width: 100%;
   overflow: scroll;
+`;
+
+const Placeholder = styled.div`
+  ${({ theme }) => theme.fontStyle.h2};
+  text-align: center;
+  margin-top: 200px;
 `;
 
 export default ImgTable;
