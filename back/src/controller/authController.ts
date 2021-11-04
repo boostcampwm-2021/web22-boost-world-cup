@@ -12,7 +12,18 @@ const authController = {
       ? response.redirect(`http://localhost:3000/`)
       : response.redirect(`http://localhost:3000/signup?client_id=${request.user.providerId}`);
   },
-
+  info: async (request: Request, response: Response, next: NextFunction) => {
+    let data = {};
+    if (request.user) {
+      const { nickname, gender, age } = request.user;
+      data = { nickname, gender, age };
+    }
+    response.json({
+      result: 'success',
+      message: null,
+      data,
+    });
+  },
   signup: async (request: Request, response: Response, next: NextFunction) => {
     const { clientId: providerId, nickname, gender, age } = request.body;
     const user = await authService.findByProviderId(providerId);

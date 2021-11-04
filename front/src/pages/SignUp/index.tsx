@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import qs from 'qs';
-import axios from 'axios';
+
 import logo from '../../images/logo.png';
 import AgeSelector from './AgeSelector';
+import GenderSelector from './GenderSelector';
+import SignupButton from './SingupButton';
 
 interface Props {
   location: Location;
@@ -13,46 +14,27 @@ interface Props {
 const SignUp = ({ location }: Props): JSX.Element => {
   const [nickname, setNickname] = useState('');
   const [gender, setGender] = useState(0);
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState(0);
   const [authenticated, setAuthenticated] = useState(false);
-  const query = qs.parse(location.search, { ignoreQueryPrefix: true });
-  const { client_id: clientId } = query;
 
-  const ageSelector = (newAge: string) => {
+  const ageSelector = useCallback((newAge: number) => {
     setAge(newAge);
-  };
+  }, []);
 
-  const nicknameOnchange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const genderSelector = useCallback((newGender: number) => {
+    setGender(newGender);
+  }, []);
+
+  const changeAuthenticated = useCallback((newAuthenticated: boolean) => {
+    setAuthenticated(newAuthenticated);
+  }, []);
+
+  const nicknameOnchange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
     setNickname(value);
-  };
-
-  const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    const response = await axios.post('/api/auth/signup', {
-      clientId,
-      nickname,
-      gender,
-      age: 1,
-    });
-    const {
-      data: { result },
-    } = response;
-
-    if (result === 'success') {
-      setAuthenticated(true);
-    }
-  };
-  const genderClickHandler: React.MouseEventHandler = (event: React.MouseEvent<HTMLElement>) => {
-    const {
-      dataset: { value },
-    } = event.target as HTMLElement;
-    if (value) {
-      setGender(parseInt(value, 10));
-    }
-  };
+  }, []);
 
   return authenticated ? (
     <Redirect to="/" />
@@ -62,16 +44,15 @@ const SignUp = ({ location }: Props): JSX.Element => {
       <Title>Welcome to world cup</Title>
       <InputContainer>
         <NameInput type="text" placeholder="닉네임" onChange={nicknameOnchange} />
-        <GenderContainer>
-          <div onClick={genderClickHandler} data-value="1" aria-hidden="true">
-            남자
-          </div>
-          <div onClick={genderClickHandler} data-value="2" aria-hidden="true">
-            여자
-          </div>
-        </GenderContainer>
+        <GenderSelector gender={gender} genderSelector={genderSelector} />
         <AgeSelector age={age} ageSelector={ageSelector} />
-        <SubmitButton onClick={onSubmit}>회원가입</SubmitButton>
+        <SignupButton
+          location={location}
+          nickname={nickname}
+          gender={gender}
+          age={age}
+          changeAuthenticated={changeAuthenticated}
+        />
       </InputContainer>
     </Container>
   );
@@ -84,6 +65,9 @@ const Container = styled.div`
   width: 628px;
   height: 811px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 5%);
 `;
 
 const Title = styled.div`
@@ -107,32 +91,6 @@ const NameInput = styled.input`
   width: 100%;
   height: 61px;
   border: 0;
-  border-radius: 10px;
-`;
-
-const GenderContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 61px;
-  div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    ${({ theme }) => theme.fontStyle.h3}
-    color: ${({ theme }) => theme.color.gray[0]};
-    background-color: ${({ theme }) => theme.color.primary};
-    height: 100%;
-    width: 186px;
-    border-radius: 10px;
-  }
-`;
-
-const SubmitButton = styled.button`
-  background-color: ${({ theme }) => theme.color.pink};
-  width: 100%;
-  height: 61px;
   border-radius: 10px;
 `;
 
