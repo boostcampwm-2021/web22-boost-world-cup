@@ -16,9 +16,8 @@ interface Props {
   offset: number;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
   clickTag: string;
-  searchWord: string;
 }
-function WorldcupList({ clickTag, searchWord, offset, setOffset }: Props): JSX.Element {
+function WorldcupList({ clickTag, offset, setOffset }: Props): JSX.Element {
   const [items, setItems] = useState<WorldcupType[]>([]);
   const [target, setTarget] = useState<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false);
@@ -29,10 +28,8 @@ function WorldcupList({ clickTag, searchWord, offset, setOffset }: Props): JSX.E
   };
   const fetchData = async () => {
     setLoading(true);
-    let newItems;
-    if (clickTag !== '') newItems = await getWorldcupList({ offset, limit: 8 });
-    else if (searchWord !== '') newItems = await getWorldcupList({ offset, limit: 8 });
-    else newItems = await getWorldcupList({ offset, limit: 8 });
+    const newItems =
+      clickTag === '' ? await getWorldcupList({ offset, limit: 8 }) : await getWorldcupList({ offset, limit: 8 });
     setItems(offset === 0 ? [...newItems] : [...items, ...newItems]);
     setOffset(offset + 8);
     setLoading(false);
@@ -48,7 +45,7 @@ function WorldcupList({ clickTag, searchWord, offset, setOffset }: Props): JSX.E
 
   useEffect(() => {
     fetchData();
-  }, [clickTag, searchWord]);
+  }, [clickTag]);
   useInfiniteScroll(target, onIntersect, threshold, isClickMore);
   return (
     <>

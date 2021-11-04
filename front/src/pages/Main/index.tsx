@@ -11,6 +11,8 @@ function Main(): JSX.Element {
   const [offset, setOffset] = useState(0);
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
+    setOffset(0);
+    setClickTag(searchWord);
     setSearchWord('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +34,7 @@ function Main(): JSX.Element {
         searchWord={searchWord}
       />
       <Keywords onClickTag={onClickTag} />
-      <WorldCupList offset={offset} setOffset={setOffset} clickTag={clickTag} searchWord={searchWord} />
+      <WorldCupList offset={offset} setOffset={setOffset} clickTag={clickTag} />
     </Wrapper>
   );
 }
