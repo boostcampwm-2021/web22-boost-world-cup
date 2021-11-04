@@ -8,9 +8,6 @@ import { getUser } from '../../utils/api/auth';
 import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 
-const githubOauthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_OAUTH_GITHUB_CLIENT_ID}`;
-const kakaoOauthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_OAUTH_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_OAUTH_CLIENT_ID}&response_type=code`;
-
 const Login = (): JSX.Element => {
   const [isLogin, setIsLogin] = useState(false);
 
@@ -32,10 +29,10 @@ const Login = (): JSX.Element => {
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
       <ButtonContainer>
-        <a href={githubOauthUrl}>
+        <a href="http://localhost:8000/api/auth/github">
           <SocialLoginButton mark={<GoMarkGithub />} contents="Continue with Github" />
         </a>
-        <a href={kakaoOauthUrl}>
+        <a href="http://localhost:8000/api/auth/kakao">
           <SocialLoginButton mark={<SiKakaotalk />} contents="Continue with Kakao" />
         </a>
         <a href="http://localhost:8000/api/auth/google">
