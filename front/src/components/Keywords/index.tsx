@@ -1,25 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import Slider, { Settings } from 'react-slick';
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { getWorldcupList } from '../../utils/api/keywords';
 
-const tagList: Array<string> = [
-  '전체',
-  '아이돌',
-  '제일 좋아하는',
-  '영화',
-  '인기있는',
-  '연예인',
-  'BJ',
-  '게임',
-  '노래',
-  '맛없는',
-  '유행하는',
-  '핫한',
-  '음식',
-];
-function Keywords() {
+interface Props {
+  onClickTag: (keyword: string) => void;
+}
+function Keywords({ onClickTag }: Props) {
   const settings = {
     dots: false,
     slidesToShow: 1,
@@ -29,11 +18,26 @@ function Keywords() {
     draggable: false,
     speed: 300,
   };
+  const [tagList, setTagList] = useState<Array<string>>([]);
+  const [selectedTag, setSelectedTag] = useState('');
+  const getTagList = async () => {
+    const data = await getWorldcupList();
+    setTagList(data);
+  };
+  const onClickKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
+    const element = event.target as HTMLElement;
+    setSelectedTag(element.innerText);
+    onClickTag(element.innerText);
+  };
+
+  useEffect(() => {
+    getTagList();
+  }, []);
   return (
     <TagContainer {...settings}>
       {tagList.map((tag) => (
-        <div>
-          <h3>{tag}</h3>
+        <div key={tagList.indexOf(tag)} onClick={onClickKeyword} onKeyDown={onClickKeyword} aria-hidden="true">
+          <TagName selected={selectedTag === tag}>{tag}</TagName>
         </div>
       ))}
     </TagContainer>
@@ -58,7 +62,6 @@ const TagContainer = styled(Slider)`
     &:hover {
       background-color: ${({ theme }) => theme.color.pink};
       color: ${({ theme }) => theme.color.highlight};
-      transform: scale(1.1);
     }
   }
   .slick-prev:before {
@@ -75,5 +78,9 @@ const TagContainer = styled(Slider)`
     right: 3% 
     z-index: 10;
   }
+`;
+const TagName = styled.h3<{ selected: boolean }>`
+  color: ${(props) => (props.selected ? '#D28078' : 'black')};
+  font-weight: ${(props) => (props.selected ? 'bold' : '400')};
 `;
 export default Keywords;

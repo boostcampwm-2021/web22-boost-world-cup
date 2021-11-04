@@ -6,11 +6,11 @@ import { FaUserAlt } from 'react-icons/fa';
 import Modal from '../Modal';
 import SearchBar from '../SearchBar';
 
-export interface headerProps {
+interface headerProps {
   type: 'header';
   isLogin: boolean;
 }
-export interface searchHeaderProps {
+interface searchHeaderProps {
   type: 'searchHeader';
   isLogin: boolean;
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
