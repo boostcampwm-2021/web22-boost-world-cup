@@ -5,7 +5,7 @@ interface Props {
   onStore: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function StoreBtns({ onStore }: Props) {
+function StoreBtns({ onStore }: Props): JSX.Element {
   return (
     <BtnsWrapper>
       <Btn type="button">임시저장</Btn>
