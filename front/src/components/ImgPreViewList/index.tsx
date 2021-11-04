@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import ImgInputMini from '../ImgInputMini';
+import ImgInput from '../ImgInput';
 import ImgPreView from '../ImgPreView';
 import { ImgInfo } from '../../types/Datas';
 
@@ -22,7 +22,7 @@ function ImgPreViewList({ onChange, onDeleteImg, imgInfos }: Props): JSX.Element
   }, [imgInfos]);
   return (
     <Container>
-      <ImgInputMini onChange={onChange} />
+      <ImgInput onChange={onChange} type="addAdditionalImgs" />
       <ImgsWrapper ref={imgListRef}>{imgs}</ImgsWrapper>
     </Container>
   );

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ImgInfo } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
+import ImgInput from '../ImgInput';
 
 interface Props {
   imgInfo: ImgInfo;
@@ -29,12 +30,7 @@ function ImgTableRow({ imgInfo, num, onDelete, getOnImgNameChange, getOnImgChang
         />
       </RowItem>
       <RowItem style={{ width: '625px' }}>
-        <ImgInputWrapper>
-          Drop file here or click to upload.
-          <hr />
-          여기 변경할 사진 파일을 놓거나 클릭하여 업로드하세요.
-          <input type="file" accept="image/*" onChange={getOnImgChange(imgInfo.key)} />
-        </ImgInputWrapper>
+        <ImgInput onChange={getOnImgChange(imgInfo.key)} type="changeImg" />
       </RowItem>
       <RowItem style={{ width: '450px' }}>
         <DeleteBtn type="button" onClick={() => onDelete(imgInfo.key)}>
@@ -58,27 +54,6 @@ const RowItem = styled.div`
   justify-content: center;
   align-items: center;
   ${({ theme }) => theme.fontStyle.h2};
-`;
-
-const ImgInputWrapper = styled.div`
-  width: 440px;
-  height: 60px;
-  border: 1px solid ${({ theme }) => theme.color.black};
-  background-color: ${({ theme }) => theme.color.white};
-  border-radius: 15px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  ${({ theme }) => theme.fontStyle.body};
-  input {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    opacity: 0;
-  }
 `;
 
 const DeleteBtn = styled.button`

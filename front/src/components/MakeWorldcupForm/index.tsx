@@ -58,7 +58,7 @@ function MakeWorldcupForm({
         {imgInfos.length ? (
           <ImgPreViewList onChange={onAddImgs} imgInfos={imgInfos} onDeleteImg={onDeleteImg} />
         ) : (
-          <ImgInput onChange={onAddImgs} />
+          <ImgInput onChange={onAddImgs} type="addImgs" />
         )}
       </VerticalWrapper>
       <StoreBtns onStore={onStore} />
