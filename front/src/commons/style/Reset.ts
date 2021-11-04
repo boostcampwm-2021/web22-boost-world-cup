@@ -93,4 +93,7 @@ export default createGlobalStyle`
   select:focus {
     outline: none;
   }
+  li {
+    list-style-type: none;
+  }
 `;

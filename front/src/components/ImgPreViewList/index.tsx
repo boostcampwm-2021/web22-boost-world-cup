@@ -1,26 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import ImgInputMini from '../ImgInputMini';
+import ImgInput from '../ImgInput';
 import ImgPreView from '../ImgPreView';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  onImgDelete: (key: string) => void;
+  onDeleteImg: (key: string) => void;
   imgInfos: ImgInfo[];
 }
 
-function ImgPreViewList({ onChange, onImgDelete, imgInfos }: Props): JSX.Element {
+function ImgPreViewList({ onChange, onDeleteImg, imgInfos }: Props): JSX.Element {
   const imgListRef = useRef<HTMLUListElement | null>(null);
-  const imgs = imgInfos.map((info: ImgInfo) => <ImgPreView key={info.key} onDelete={onImgDelete} info={info} />);
-  useEffect(() => {
-    const imgList = imgListRef.current;
-    if (!imgList) return;
-    imgList.scrollLeft = imgList.scrollWidth - 1075;
-  }, [imgInfos]);
+  const imgs = imgInfos.map((info: ImgInfo) => (
+    <ImgPreView key={info.key} onDelete={onDeleteImg} info={info} width={143} height={160} deleteBtnExist />
+  ));
   return (
     <Container>
-      <ImgInputMini onChange={onChange} />
+      <ImgInput onChange={onChange} type="addAdditionalImgs" />
       <ImgsWrapper ref={imgListRef}>{imgs}</ImgsWrapper>
     </Container>
   );

@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
+import StoreBtns from '../StoreBtns';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
-  onFilesChange: React.ChangeEventHandler<HTMLInputElement>;
-  onImgDelete: (key: string) => void;
+  onAddImgs: React.ChangeEventHandler<HTMLInputElement>;
+  onDeleteImg: (key: string) => void;
   onStore: React.MouseEventHandler<HTMLButtonElement>;
   imgInfos: ImgInfo[];
 }
@@ -17,8 +18,8 @@ interface Props {
 function MakeWorldcupForm({
   onTitleChange,
   onDescChange,
-  onFilesChange,
-  onImgDelete,
+  onAddImgs,
+  onDeleteImg,
   onStore,
   imgInfos,
 }: Props): JSX.Element {
@@ -55,17 +56,12 @@ function MakeWorldcupForm({
       <VerticalWrapper>
         <Label>이상형 월드컵 이미지 업로드</Label>
         {imgInfos.length ? (
-          <ImgPreViewList onChange={onFilesChange} imgInfos={imgInfos} onImgDelete={onImgDelete} />
+          <ImgPreViewList onChange={onAddImgs} imgInfos={imgInfos} onDeleteImg={onDeleteImg} />
         ) : (
-          <ImgInput onChange={onFilesChange} />
+          <ImgInput onChange={onAddImgs} type="addImgs" />
         )}
       </VerticalWrapper>
-      <BtnsWrapper>
-        <Btn type="button">임시저장</Btn>
-        <Btn type="button" onClick={onStore}>
-          저장하기
-        </Btn>
-      </BtnsWrapper>
+      <StoreBtns onStore={onStore} />
     </Container>
   );
 }
@@ -103,21 +99,6 @@ const VerticalWrapper = styled.div`
   label {
     margin-bottom: 30px;
   }
-`;
-
-const Btn = styled.button`
-  background-color: ${({ theme }) => theme.color.primary};
-  ${({ theme }) => theme.fontStyle.h3};
-  width: 124px;
-  height: 57px;
-  border-radius: 10px;
-  margin-left: 30px;
-`;
-
-const BtnsWrapper = styled.div`
-  display: flex;
-  margin-right: 296px;
-  margin-top: 11px;
 `;
 
 const Label = styled.label`
