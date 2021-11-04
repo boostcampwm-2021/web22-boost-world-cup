@@ -1,4 +1,5 @@
-export const ROUTE_MAIN = '/main';
-export const ROUTE_LOGIN = '/login';
-export const ROUTE_MAKE = '/make';
-export const ROUTE_SIGNUP = '/signup';
+export const ROOT = '/';
+export const MAIN = '/main';
+export const LOGIN = '/login';
+export const MAKE = '/make';
+export const SIGNUP = '/signup';

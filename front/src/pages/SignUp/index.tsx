@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-
 import logo from '../../images/logo.png';
 import AgeSelector from './AgeSelector';
 import GenderSelector from './GenderSelector';
@@ -37,7 +36,7 @@ const SignUp = ({ location }: Props): JSX.Element => {
   }, []);
 
   return authenticated ? (
-    <Redirect to="/" />
+    <Redirect to="/main" />
   ) : (
     <Container>
       <img src={logo} alt="logo" width="220px" height="220px" />

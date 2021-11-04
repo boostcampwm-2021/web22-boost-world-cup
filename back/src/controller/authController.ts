@@ -4,12 +4,17 @@ import { NextFunction, Request, Response } from 'express';
 const authController = {
   githubCallback: async (request: Request, response: Response, next: NextFunction) => {
     request.user.nickname
-      ? response.redirect(`http://localhost:3000/`)
+      ? response.redirect(`http://localhost:3000/main`)
       : response.redirect(`http://localhost:3000/signup?client_id=${request.user.providerId}`);
   },
   kakaoCallback: async (request: Request, response: Response, next: NextFunction) => {
     request.user.nickname
-      ? response.redirect(`http://localhost:3000/`)
+      ? response.redirect(`http://localhost:3000/main`)
+      : response.redirect(`http://localhost:3000/signup?client_id=${request.user.providerId}`);
+  },
+  googleCallback: async (request: Request, response: Response, next: NextFunction) => {
+    request.user.nickname
+      ? response.redirect(`http://localhost:3000/main`)
       : response.redirect(`http://localhost:3000/signup?client_id=${request.user.providerId}`);
   },
   info: async (request: Request, response: Response, next: NextFunction) => {
