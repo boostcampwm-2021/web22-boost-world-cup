@@ -3,14 +3,18 @@ import styled from 'styled-components';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 
 interface Props {
-  thumbnail: string;
+  thumbnail1: string;
+  thumbnail2: string;
   title: string;
   desc: string;
 }
-function WorldCupItem({ thumbnail, title, desc }: Props): JSX.Element {
+function WorldCupItem({ thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   return (
     <Item>
-      <Thumbnail src={thumbnail} alt="thumbnail" />
+      <Thumbnail>
+        <img src={thumbnail1} alt={thumbnail1} />
+        <img src={thumbnail2} alt={thumbnail2} />
+      </Thumbnail>
       <Title>{title}</Title>
       <Desc>{desc}</Desc>
       <Buttons>
@@ -40,9 +44,10 @@ const Item = styled.section`
   padding: 0px 20px;
   background-color: ${({ theme }) => theme.color.white};
 `;
-const Thumbnail = styled.img`
+const Thumbnail = styled.div`
   width: 280px;
   height: 180px;
+  display: flex;
 `;
 const Title = styled.p`
   font: ${({ theme }) => theme.fontStyle.h3Bold};
