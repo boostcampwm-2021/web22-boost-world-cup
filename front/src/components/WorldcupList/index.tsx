@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import CardItem from './WorldCupItem';
 import Loader from './Loader';
 import useInfiniteScroll from '../../utils/hooks/useInfinityScroll';
-import { get } from '../../utils/api/worldcups';
+import { getWorldcupList } from '../../utils/api/worldcups';
 
 interface WorldcupType {
   createdAt: string;
@@ -27,9 +27,9 @@ function WorldcupList(): JSX.Element {
   };
   const fetchData = async () => {
     setLoading(true);
-    const newItems = await get({ offset, limit: 8 });
+    const newItems = await getWorldcupList({ offset, limit: 8 });
     console.log(newItems);
-    // setItems([...items, ...newItems]);
+    setItems([...items, ...newItems]);
     setOffset(offset + 8);
     setLoading(false);
   };
