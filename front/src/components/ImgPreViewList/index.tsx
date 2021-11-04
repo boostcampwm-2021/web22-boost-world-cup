@@ -12,7 +12,9 @@ interface Props {
 
 function ImgPreViewList({ onChange, onImgDelete, imgInfos }: Props): JSX.Element {
   const imgListRef = useRef<HTMLUListElement | null>(null);
-  const imgs = imgInfos.map((info: ImgInfo) => <ImgPreView key={info.key} onDelete={onImgDelete} info={info} />);
+  const imgs = imgInfos.map((info: ImgInfo) => (
+    <ImgPreView key={info.key} onDelete={onImgDelete} info={info} width={143} height={160} />
+  ));
   useEffect(() => {
     const imgList = imgListRef.current;
     if (!imgList) return;

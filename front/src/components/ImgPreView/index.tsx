@@ -7,9 +7,11 @@ import { ImgInfo } from '../../types/Datas';
 interface Props {
   onDelete: (key: string) => void;
   info: ImgInfo;
+  width: 143 | 120;
+  height: 160 | 120;
 }
 
-function ImgPreView({ onDelete, info }: Props): JSX.Element {
+function ImgPreView({ onDelete, info, width, height }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [imgURL, setImgURL] = useState('');
 
@@ -20,14 +22,14 @@ function ImgPreView({ onDelete, info }: Props): JSX.Element {
         clearInterval(intervalId);
         return;
       }
-      const newImgURL = `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/w143h160/${key}?${Date.now()}`;
+      const newImgURL = `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/w${width}h${height}/${key}?${Date.now()}`;
       setImgURL(newImgURL);
     }, 1000);
     return () => clearInterval(intervalId);
   }, [isLoading]);
 
   return (
-    <Container isLoading={isLoading}>
+    <Container isLoading={isLoading} style={{ width, height }}>
       {isLoading ? (
         <Loading type="spin" color="black" />
       ) : (
@@ -42,9 +44,7 @@ function ImgPreView({ onDelete, info }: Props): JSX.Element {
 
 const Container = styled.li<{ isLoading: boolean }>`
   position: relative;
-  width: 143px;
-  height: 160px;
-  border-radius: 20px;
+  border-radius: 13px;
   border: ${({ isLoading }) => (isLoading ? `1px solid black` : `none`)};
   div {
     position: absolute;
@@ -64,7 +64,7 @@ const Btn = styled.button`
 `;
 
 const Img = styled.img<{ isLoading: boolean }>`
-  border-radius: 20px;
+  border-radius: 13px;
   display: ${({ isLoading }) => (isLoading ? `none` : `inline`)};
 `;
 
