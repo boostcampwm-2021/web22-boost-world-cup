@@ -14,7 +14,9 @@ interface Props {
 
 function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
-  const [imgURL, setImgURL] = useState('');
+  const [imgURL, setImgURL] = useState(
+    `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/w${width}h${height}/${info.key}?${Date.now()}`,
+  );
 
   useEffect(() => {
     const { key } = info;
@@ -25,7 +27,7 @@ function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): J
       }
       const newImgURL = `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/w${width}h${height}/${key}?${Date.now()}`;
       setImgURL(newImgURL);
-    }, 1000);
+    }, 500);
     return () => clearInterval(intervalId);
   }, [isLoading]);
 

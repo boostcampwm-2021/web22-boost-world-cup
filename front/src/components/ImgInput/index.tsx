@@ -82,7 +82,7 @@ const AddAdditionalImgsContainer = styled.div`
 
 const ChangeImgContainer = styled.div`
   width: 440px;
-  height: 60px;
+  height: 100px;
   border: 1px solid ${({ theme }) => theme.color.black};
   background-color: ${({ theme }) => theme.color.white};
   border-radius: 15px;
