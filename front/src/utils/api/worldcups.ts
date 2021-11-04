@@ -1,15 +1,9 @@
-import axios, { AxiosResponseHeaders } from 'axios';
+import axios from 'axios';
 
 interface pagingQueryType {
   offset: number;
   limit: number;
 }
-const instance = axios.create({
-  baseURL: 'http://localhost:8000/api/worldcups/',
-  headers: {
-    'Content-type': 'application/json',
-  },
-});
 export const getWorldcupList = async (query: pagingQueryType) => {
   const response = await axios.get('/api/worldcups', {
     params: {

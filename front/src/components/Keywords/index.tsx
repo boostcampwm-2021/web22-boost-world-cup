@@ -1,24 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Slider, { Settings } from 'react-slick';
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { getWorldcupList } from '../../utils/api/keywords';
 
-const tagList: Array<string> = [
-  '전체',
-  '아이돌',
-  '제일 좋아하는',
-  '영화',
-  '인기있는',
-  '연예인',
-  'BJ',
-  '게임',
-  '노래',
-  '맛없는',
-  '유행하는',
-  '핫한',
-  '음식',
-];
 function Keywords() {
   const settings = {
     dots: false,
@@ -29,10 +15,19 @@ function Keywords() {
     draggable: false,
     speed: 300,
   };
+  const [tagList, setTagList] = useState<Array<string>>([]);
+  const getTagList = async () => {
+    const data = await getWorldcupList();
+    setTagList(data);
+  };
+
+  useEffect(() => {
+    getTagList();
+  }, []);
   return (
     <TagContainer {...settings}>
       {tagList.map((tag) => (
-        <div>
+        <div key={tagList.indexOf(tag)}>
           <h3>{tag}</h3>
         </div>
       ))}
