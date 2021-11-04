@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { getWorldcupList } from '../../utils/api/keywords';
 
-function Keywords() {
+function Keywords(): JSX.Element {
   const settings = {
     dots: false,
     slidesToShow: 1,
