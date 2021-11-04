@@ -26,7 +26,7 @@ const Login = (): JSX.Element => {
   }, []);
 
   return isLogin ? (
-    <Redirect to="/" />
+    <Redirect to="/main" />
   ) : (
     <Container>
       <img src={logo} alt="logo" width="220px" height="220px" />

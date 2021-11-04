@@ -49,7 +49,7 @@ const SignUp = ({ location }: Props): JSX.Element => {
   }, []);
 
   return authenticated || isLogin ? (
-    <Redirect to="/" />
+    <Redirect to="/main" />
   ) : (
     <Container>
       <img src={logo} alt="logo" width="220px" height="220px" />
