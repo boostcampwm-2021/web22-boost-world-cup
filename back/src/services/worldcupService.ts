@@ -3,7 +3,6 @@ import { getRepository } from 'typeorm';
 
 export const findAll = async () => {
   const worldcupRepository = getRepository(Worldcup);
-
   const worldcups = await worldcupRepository.find({
 		select: ["id", "title", "thumbnail1", "thumbnail2", "description"],
 		where: { isTemp : false},
@@ -13,7 +12,25 @@ export const findAll = async () => {
 		message : null,
 		data :{
 			worldcup : worldcups
-		}
+		},
+	}
+};
+
+export const findPart = async (offset, limit) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcups = await worldcupRepository.find({
+    select: ["id", "title", "thumbnail1", "thumbnail2", "description"],
+		where: { isTemp : false},
+    skip: Number(offset),
+    take: Number(limit),
+  });
+
+  return {
+		result : "success",
+		message : null,
+		data :{
+			worldcup : worldcups
+		},
 	}
 };
 
@@ -32,14 +49,6 @@ export const removeById = async (id) => {
   const worldcupToRemove = await findById(id);
   await worldcupRepository.remove(worldcupToRemove);
   return await worldcupRepository.find();
-};
-
-export const findPart = async (offset: number, limit: number) => {
-  const worldcupRepository = getRepository(Worldcup);
-  return await worldcupRepository.find({
-    skip: offset,
-    take: limit,
-  });
 };
 
 export const findByKeyword = async (keyword: string) => {
