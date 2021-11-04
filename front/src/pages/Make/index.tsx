@@ -23,10 +23,16 @@ function Make(): JSX.Element {
     const newFiles = [...files].filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name));
     const contentTypes = newFiles.map((file) => file.type);
     const { data } = await axios.post('http://localhost:8000/api/images/presigned-url', { contentTypes });
-    const newImgInfos = data.map(({ key, preSignedData }: FetchPreSigned, idx: number) => {
+    const newImgInfos: ImgInfo[] = data.map(({ key, preSignedData }: FetchPreSigned, idx: number): ImgInfo => {
       const { fields, url } = preSignedData;
       const file = newFiles[idx];
-      return { preSignedURL: url, name: file.name, file, key, fields };
+      const fileData = new FormData();
+      Object.keys(fields).forEach((key) => {
+        fileData.append(key, fields[key]);
+      });
+      fileData.append('file', file);
+      axios.post(url, fileData);
+      return { name: file.name, key };
     });
     worldcupFormDispatcher({ type: 'CHANGE_IMG_INFOS', payload: [...imgInfos, ...newImgInfos] });
   };

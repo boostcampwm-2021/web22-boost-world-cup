@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { MdCancel } from 'react-icons/md';
 import styled from 'styled-components';
 import Loading from 'react-loading';
-import axios from 'axios';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {
@@ -13,19 +12,6 @@ interface Props {
 function ImgPreView({ onDelete, info }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [imgURL, setImgURL] = useState('');
-
-  useEffect(() => {
-    const uploadImg = async () => {
-      const { preSignedURL, fields, file } = info;
-      const fileData = new FormData();
-      Object.keys(fields).forEach((key) => {
-        fileData.append(key, fields[key]);
-      });
-      fileData.append('file', file);
-      await axios.post(preSignedURL, fileData);
-    };
-    uploadImg();
-  }, []);
 
   useEffect(() => {
     const { key } = info;

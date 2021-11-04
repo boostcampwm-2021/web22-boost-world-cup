@@ -17,9 +17,6 @@ export interface PreSignedData {
 export interface ImgInfo {
   key: string;
   name: string;
-  preSignedURL: string;
-  fields: PreSignedDataFields;
-  file: File;
 }
 
 export interface FetchPreSigned {
