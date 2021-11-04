@@ -1,9 +1,11 @@
 import githubPassport from './githubPassport';
-import KakaoPassportInit from './kakaoPassport';
+import kakaoPassportInit from './kakaoPassport';
+import googlePassportInit from './googlePassport';
 
 const passportInit = () => {
   githubPassport();
-  KakaoPassportInit();
+  kakaoPassportInit();
+  googlePassportInit();
 };
 
 export default passportInit;
