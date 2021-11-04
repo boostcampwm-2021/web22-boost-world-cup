@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { getUser } from '../../utils/api/auth';
 import logo from '../../images/logo.png';
 import AgeSelector from './AgeSelector';
 import GenderSelector from './GenderSelector';
@@ -12,22 +11,10 @@ interface Props {
 }
 
 const SignUp = ({ location }: Props): JSX.Element => {
-  const [isLogin, setIsLogin] = useState(false);
   const [nickname, setNickname] = useState('');
   const [gender, setGender] = useState(0);
   const [age, setAge] = useState(0);
   const [authenticated, setAuthenticated] = useState(false);
-
-  const getUserInfo = async () => {
-    const user = await getUser();
-    if (Object.keys(user).length !== 0) {
-      setIsLogin(true);
-    }
-  };
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
 
   const ageSelector = useCallback((newAge: number) => {
     setAge(newAge);
@@ -48,7 +35,7 @@ const SignUp = ({ location }: Props): JSX.Element => {
     setNickname(value);
   }, []);
 
-  return authenticated || isLogin ? (
+  return authenticated ? (
     <Redirect to="/main" />
   ) : (
     <Container>
