@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
@@ -29,7 +30,9 @@ function Initialize(): JSX.Element {
         </RoundContainer>
         <ButtonContainer>
           <StartButton>시작하기</StartButton>
-          <MainButton>메인으로</MainButton>
+          <MainButton>
+            <Link to="/main">메인으로</Link>
+          </MainButton>
         </ButtonContainer>
       </Container>
       <BackWindow />
