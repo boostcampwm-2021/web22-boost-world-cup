@@ -20,18 +20,37 @@ function RoundSelector({ round, roundSelector }: Props): JSX.Element {
     return round === 0 ? '라운드' : rounds[round - 1];
   };
 
+  const clickBackWindow = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    setIsOpen((v) => !v);
+    event.stopPropagation();
+  }, []);
+
   return (
-    <RoundInput onClick={toggleHandler}>
-      <span>{selectedRoundText()}</span>
-      <img src={selectImg} alt="select" width="20px" height="20px" />
-      <RoundList isOpen={isOpen}>
-        {rounds.map((age, idx) => (
-          <Item onClick={() => roundSelector(idx + 1)}>{age}</Item>
-        ))}
-      </RoundList>
-    </RoundInput>
+    <>
+      <RoundInput onClick={toggleHandler}>
+        <span>{selectedRoundText()}</span>
+        <img src={selectImg} alt="select" width="20px" height="20px" />
+        <RoundList isOpen={isOpen}>
+          {rounds.map((age, idx) => (
+            <Item onClick={() => roundSelector(idx + 1)}>{age}</Item>
+          ))}
+        </RoundList>
+      </RoundInput>
+      <BackWindow onClick={clickBackWindow} isOpen={isOpen} />
+    </>
   );
 }
+
+const BackWindow = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+`;
 
 const RoundInput = styled.div`
   display: flex;
