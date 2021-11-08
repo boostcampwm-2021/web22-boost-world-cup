@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from './RoundSelector';
 
 function Initialize(): JSX.Element {
+  const [round, setRound] = useState(0);
+
+  const roundSelector = useCallback((newAge: number) => {
+    setRound(newAge);
+  }, []);
+
   return (
     <>
       <Header type="header" isLogin />
@@ -13,7 +19,7 @@ function Initialize(): JSX.Element {
         <Title>여자 배우 이상형 월드컵</Title>
         <Desc>정면 위주의 레전드 사진 (객관적인 얼굴 판단 가능)</Desc>
         <Temp1>총 라운드를 선택하세요.</Temp1>
-        <RoundSelector />
+        <RoundSelector round={round} roundSelector={roundSelector} />
         <Temp1>총 221명의 후보 중 무작위 32명이 대결합니다.</Temp1>
       </Container>
     </>
