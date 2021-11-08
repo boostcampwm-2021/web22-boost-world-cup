@@ -18,6 +18,7 @@ function App(): JSX.Element {
           <Route path={ROUTE.SIGNUP} component={PAGE.SignUp} />
           <Route path={ROUTE.MAKE} component={PAGE.Make} />
           <Route path={ROUTE.INITIALIZE} component={PAGE.Initialize} />
+          <Route path={ROUTE.WORLDCUP} component={PAGE.Worldcup} />
         </Switch>
       </Router>
     </ThemeProvider>
