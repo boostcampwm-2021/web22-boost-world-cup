@@ -68,7 +68,7 @@ const RoundInput = styled.div`
 const RoundList = styled.div<{ isOpen: boolean }>`
   position: absolute;
   width: 80%;
-  top: 47%;
+  top: 52%;
   left: 10%;
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
   margin: 10px 0;
