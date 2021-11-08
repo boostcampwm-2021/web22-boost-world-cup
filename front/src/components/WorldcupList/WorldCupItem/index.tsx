@@ -10,7 +10,7 @@ interface Props {
   title: string;
   desc: string;
 }
-const WorldCupItem = ({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element => {
+function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   return (
     <Item>
       <Thumbnail>
@@ -37,7 +37,7 @@ const WorldCupItem = ({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
       </Buttons>
     </Item>
   );
-};
+}
 
 const Item = styled.section`
   display: flex;
