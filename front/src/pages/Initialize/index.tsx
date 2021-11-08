@@ -22,9 +22,21 @@ function Initialize(): JSX.Element {
         <RoundSelector round={round} roundSelector={roundSelector} />
         <Temp1>총 221명의 후보 중 무작위 32명이 대결합니다.</Temp1>
       </Container>
+      <BackWindow />
     </>
   );
 }
+
+const BackWindow = styled.div`
+  position: fixed;
+  background-color: gray;
+  opacity: 0.3;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  top: 0;
+  left: 0;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -37,6 +49,7 @@ const Container = styled.div`
   left: 50%;
   transform: translate(-50%, 5%);
   background-color: ${({ theme }) => theme.color.primary};
+  z-index: 3;
 `;
 
 const Title = styled.div`
