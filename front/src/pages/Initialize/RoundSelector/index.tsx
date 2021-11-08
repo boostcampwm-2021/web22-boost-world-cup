@@ -54,7 +54,7 @@ const BackWindow = styled.div<{ isOpen: boolean }>`
 
 const RoundInput = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
   height: 49px;
   background-color: ${({ theme }) => theme.color.white};
   ${({ theme }) => theme.fontStyle.bodyBold}
