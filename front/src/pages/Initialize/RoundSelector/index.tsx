@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import selectImg from '../../../images/select.png';
 
@@ -7,12 +7,16 @@ function RoundSelector(): JSX.Element {
 
   const rounds = ['4강', '8강', '16강', '32강', '64강', '128강'];
 
+  const toggleHandler = useCallback(() => {
+    setIsOpen((v) => !v);
+  }, []);
+
   return (
-    <RoundInput>
+    <RoundInput onClick={toggleHandler}>
       <span>라운드</span>
       <img src={selectImg} alt="select" width="20px" height="20px" />
       <RoundList isOpen={isOpen}>
-        {rounds.map((age, idx) => (
+        {rounds.map((age) => (
           <Item>{age}</Item>
         ))}
       </RoundList>
