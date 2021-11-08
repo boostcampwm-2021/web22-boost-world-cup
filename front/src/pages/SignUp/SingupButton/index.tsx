@@ -12,7 +12,7 @@ interface Props {
   changeAuthenticated: (authenticated: boolean) => void;
 }
 
-const SignupButton = ({ location, nickname, gender, age, changeAuthenticated }: Props): JSX.Element => {
+function SignupButton({ location, nickname, gender, age, changeAuthenticated }: Props): JSX.Element {
   const query = qs.parse(location.search, { ignoreQueryPrefix: true });
   const { client_id: clientId } = query;
 
@@ -34,7 +34,7 @@ const SignupButton = ({ location, nickname, gender, age, changeAuthenticated }: 
       <Container onClick={onSubmit}>회원가입</Container>
     </>
   );
-};
+}
 
 const Container = styled.button`
   background-color: ${({ theme }) => theme.color.pink};
