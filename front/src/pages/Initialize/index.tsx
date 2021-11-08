@@ -1,12 +1,17 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from '../../components/RoundSelector';
 
-function Initialize(): JSX.Element {
+interface Props {
+  location: Location;
+}
+
+function Initialize({ location }: Props): JSX.Element {
   const [round, setRound] = useState(0);
+  const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
 
   const roundSelector = useCallback((newAge: number) => {
     setRound(newAge);
@@ -29,7 +34,9 @@ function Initialize(): JSX.Element {
           </RoundSubContainer>
         </RoundContainer>
         <ButtonContainer>
-          <StartButton>시작하기</StartButton>
+          <StartButton>
+            <Link to={`/worldcup/${worldcupId}`}>시작하기</Link>
+          </StartButton>
           <MainButton>
             <Link to="/main">메인으로</Link>
           </MainButton>
