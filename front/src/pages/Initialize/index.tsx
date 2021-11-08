@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
-import RoundSelector from './RoundSelector';
+import RoundSelector from '../../components/RoundSelector';
 
 function Initialize(): JSX.Element {
   const [round, setRound] = useState(0);

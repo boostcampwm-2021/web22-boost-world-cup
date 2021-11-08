@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import selectImg from '../../../images/select.png';
+import selectImg from '../../images/select.png';
 
 interface Props {
   round: number;
@@ -68,7 +68,7 @@ const RoundInput = styled.div`
 const RoundList = styled.div<{ isOpen: boolean }>`
   position: absolute;
   width: 80%;
-  top: 52%;
+  top: 68.5%;
   left: 10%;
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
   margin: 10px 0;
