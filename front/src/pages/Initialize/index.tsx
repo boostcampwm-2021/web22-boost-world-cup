@@ -15,29 +15,63 @@ function Initialize(): JSX.Element {
     <>
       <Header type="header" isLogin />
       <Container>
-        <ContainerInfo>
+        <InfoContainer>
           <img src={logo} alt="logo" width="220px" height="200px" />
           <Title>여자 배우 이상형 월드컵여자 배우</Title>
           <Desc>정면 위주의 레전드 사진 (객관적인 얼굴 판단 가능)</Desc>
-        </ContainerInfo>
-        <ContainerRound>
-          <SubContainerRound>
+        </InfoContainer>
+        <RoundContainer>
+          <RoundSubContainer>
             <span>총 라운드를 선택하세요.</span>
             <RoundSelector round={round} roundSelector={roundSelector} />
             <span>총 221명의 후보 중 무작위 32명이 대결합니다.</span>
-          </SubContainerRound>
-        </ContainerRound>
+          </RoundSubContainer>
+        </RoundContainer>
+        <ButtonContainer>
+          <StartButton>시작하기</StartButton>
+          <MainButton>메인으로</MainButton>
+        </ButtonContainer>
       </Container>
       <BackWindow />
     </>
   );
 }
 
+const MainButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid;
+  color: ${({ theme }) => theme.color.black};
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 1000px;
+  justify-content: space-evenly;
+  padding-top: 3%;
+  div {
+    width: 40%;
+    height: 60px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+`;
+
+const StartButton = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.color.white};
+  background-color: ${({ theme }) => theme.color.pink};
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 1000px;
-  height: 811px;
+  height: 610px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
   position: relative;
   left: 50%;
@@ -46,7 +80,7 @@ const Container = styled.div`
   z-index: 3;
 `;
 
-const ContainerInfo = styled.div`
+const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,16 +88,15 @@ const ContainerInfo = styled.div`
   padding-right: 3%;
 `;
 
-const ContainerRound = styled.div`
+const RoundContainer = styled.div`
   background-color: ${({ theme }) => theme.color.primary};
-  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 1%;
 `;
 
-const SubContainerRound = styled.div`
+const RoundSubContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
