@@ -15,7 +15,14 @@ const worldcupController = {
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
-    return await worldcupService.findById(request.params.id);
+    const worldcup = await worldcupService.findById(request.params.id);
+    response.json({
+      result: 'success',
+      message: null,
+      data: {
+        worldcup,
+      },
+    });
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {
