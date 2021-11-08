@@ -8,13 +8,13 @@ interface searchQuerytype {
   keyword: string;
 }
 export const getWorldcupList = async (query: pagingQueryType) => {
+  console.log(`🐥 offset: ${query.offset}`);
   const response = await axios.get('/api/worldcups', {
     params: {
       offset: query.offset,
       limit: query.limit,
     },
   });
-  console.log(response);
   return response.data.data;
 };
 export const getWorldcupListByKeyword = async (query: searchQuerytype) => {

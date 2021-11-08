@@ -15,7 +15,7 @@ const useInfiniteScroll = (
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
-  }, [target, threshold, onIntersect, condition]);
+  }, [target, onIntersect]);
 };
 
 export default useInfiniteScroll;

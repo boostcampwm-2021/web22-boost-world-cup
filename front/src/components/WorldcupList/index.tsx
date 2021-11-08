@@ -28,10 +28,11 @@ function WorldcupList({ clickTag, offset, setOffset }: Props): JSX.Element {
   };
   const fetchData = async () => {
     setLoading(true);
-    const newItems =
-      clickTag === '' ? await getWorldcupList({ offset, limit: 8 }) : await getWorldcupList({ offset, limit: 8 });
-    setItems(offset === 0 ? [...newItems] : [...items, ...newItems]);
+    const newItems = await getWorldcupList({ offset, limit: 8 });
+    console.log(offset);
+    setItems([...items, ...newItems]);
     setOffset(offset + 8);
+    console.log(offset);
     setLoading(false);
   };
 
@@ -42,11 +43,20 @@ function WorldcupList({ clickTag, offset, setOffset }: Props): JSX.Element {
       observer.observe(entry.target);
     }
   };
-
+  useEffect(() => {
+    let observer: IntersectionObserver;
+    if (target && isClickMore) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold,
+      });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target, isClickMore]);
   useEffect(() => {
     fetchData();
   }, [clickTag]);
-  useInfiniteScroll(target, onIntersect, threshold, isClickMore);
+
   return (
     <>
       <Container>
