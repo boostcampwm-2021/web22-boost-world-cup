@@ -36,7 +36,7 @@ export const findFromPage = async (offset, limit) => {
 
 export const findById = async (id) => {
   const worldcupRepository = getRepository(Worldcup);
-  return await worldcupRepository.findOne(id);
+  return await worldcupRepository.findOne(id, { relations: ['candidates'] });
 };
 
 export const save = async (worldcup) => {

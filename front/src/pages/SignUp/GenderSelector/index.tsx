@@ -6,7 +6,7 @@ interface Props {
   genderSelector: (newGender: number) => void;
 }
 
-const GenderSelector = ({ gender, genderSelector }: Props): JSX.Element => {
+function GenderSelector({ gender, genderSelector }: Props): JSX.Element {
   const genderSelectHandler: React.MouseEventHandler = useCallback((event: React.MouseEvent<HTMLElement>) => {
     const {
       dataset: { value },
@@ -28,7 +28,7 @@ const GenderSelector = ({ gender, genderSelector }: Props): JSX.Element => {
       </GenderContainer>
     </>
   );
-};
+}
 
 const GenderContainer = styled.div`
   display: flex;

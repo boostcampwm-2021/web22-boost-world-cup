@@ -4,7 +4,6 @@ import userRouter from './userRouter';
 import worldcupRouter from './worldcupRouter';
 import tagRouter from './tagRouter';
 
-
 const router = Router();
 
 router.use('/auth', authRouter);
