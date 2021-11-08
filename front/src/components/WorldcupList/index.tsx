@@ -52,6 +52,7 @@ function WorldcupList({ clickTag, offset, setOffset }: Props): JSX.Element {
       <Container>
         {items.map((item) => (
           <CardItem
+            id={item.id}
             thumbnail1={item.thumbnail1}
             thumbnail2={item.thumbnail2}
             title={item.title}

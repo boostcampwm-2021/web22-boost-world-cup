@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 interface Props {
+  id: number;
   thumbnail1: string;
   thumbnail2: string;
   title: string;
   desc: string;
 }
-function WorldCupItem({ thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
+const WorldCupItem = ({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element => {
   return (
     <Item>
       <Thumbnail>
@@ -18,10 +20,12 @@ function WorldCupItem({ thumbnail1, thumbnail2, title, desc }: Props): JSX.Eleme
       <Title>{title}</Title>
       <Desc>{desc}</Desc>
       <Buttons>
-        <Start>
-          <FaPlay />
-          <span>시작하기</span>
-        </Start>
+        <Link to={`/initialize/${id}`}>
+          <Start>
+            <FaPlay />
+            <span>시작하기</span>
+          </Start>
+        </Link>
         <Ranking>
           <FaList />
           <span>랭킹보기</span>
@@ -33,7 +37,7 @@ function WorldCupItem({ thumbnail1, thumbnail2, title, desc }: Props): JSX.Eleme
       </Buttons>
     </Item>
   );
-}
+};
 
 const Item = styled.section`
   display: flex;
