@@ -18,7 +18,6 @@ const expressLoader = (app) => {
   passportInit();
 
   app.use('/api', indexRouter);
-  app.use('/tmp', indexRouter);
 };
 
 export default expressLoader;

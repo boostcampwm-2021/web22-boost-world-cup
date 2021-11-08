@@ -4,14 +4,16 @@ import { NextFunction, Request, Response } from 'express';
 const worldcupController = {
   all: async (request: Request, response: Response, next: NextFunction) => {
     const { offset, limit, search } = request.query;
-    let worldcups;
+    let data = [];
     if (offset && limit) {
-      worldcups = await worldcupService.findFromPage(offset, limit);
+      const worldcups = await worldcupService.findFromPage(offset, limit);
+      data = worldcups.data.worldcup;
     }
-    if (search) {
-      worldcups = await worldcupService.findByKeyword(String(search));
-    }
-    response.json(worldcups);
+    response.json({
+      result: 'success',
+      message: null,
+      data,
+    });
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
