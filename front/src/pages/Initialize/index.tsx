@@ -1,17 +1,46 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from '../../components/RoundSelector';
+import { getWorldcupById } from '../../utils/api/worldcups';
 
 interface Props {
   location: Location;
 }
 
 function Initialize({ location }: Props): JSX.Element {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [round, setRound] = useState(0);
+  const [candidatesSize, setCandidatesSize] = useState(1);
+  const [possibleRound, setPossibleRound] = useState([] as string[]);
   const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
+
+  const fetchWorldAndSetState = useCallback(async () => {
+    const worldcup = await getWorldcupById(parseInt(worldcupId, 10));
+    const { candidates, title, description } = worldcup;
+
+    setTitle(title);
+    setDescription(description);
+    setCandidatesSize(candidates.length);
+  }, [worldcupId]);
+
+  const initializePossibleRound = useCallback(() => {
+    const tempRoundList = [] as string[];
+    const tempNumber = Math.floor(Math.log2(candidatesSize));
+    // eslint-disable-next-line no-plusplus
+    for (let i = 2; i <= tempNumber; i++) {
+      tempRoundList.push((2 ** i).toString());
+    }
+    setPossibleRound([...possibleRound, ...tempRoundList]);
+  }, [candidatesSize]);
+
+  useEffect(() => {
+    fetchWorldAndSetState();
+    initializePossibleRound();
+  }, [fetchWorldAndSetState, initializePossibleRound]);
 
   const roundSelector = useCallback((newAge: number) => {
     setRound(newAge);
@@ -23,14 +52,16 @@ function Initialize({ location }: Props): JSX.Element {
       <Container>
         <InfoContainer>
           <img src={logo} alt="logo" width="220px" height="200px" />
-          <Title>여자 배우 이상형 월드컵여자 배우</Title>
-          <Desc>정면 위주의 레전드 사진 (객관적인 얼굴 판단 가능)</Desc>
+          <Title>{title}</Title>
+          <Desc>{description}</Desc>
         </InfoContainer>
         <RoundContainer>
           <RoundSubContainer>
             <span>총 라운드를 선택하세요.</span>
-            <RoundSelector round={round} roundSelector={roundSelector} />
-            <span>총 221명의 후보 중 무작위 32명이 대결합니다.</span>
+            <RoundSelector round={round} roundSelector={roundSelector} possibleRound={possibleRound} />
+            <span>
+              총 {candidatesSize}명의 후보 중 무작위 {possibleRound[round]}명이 대결합니다.
+            </span>
           </RoundSubContainer>
         </RoundContainer>
         <ButtonContainer>

@@ -4,21 +4,16 @@ import selectImg from '../../images/select.png';
 
 interface Props {
   round: number;
+  possibleRound: string[];
   roundSelector: (newRound: number) => void;
 }
 
-function RoundSelector({ round, roundSelector }: Props): JSX.Element {
+function RoundSelector({ round, possibleRound, roundSelector }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
-
-  const rounds = ['4강', '8강', '16강', '32강', '64강', '128강'];
 
   const toggleHandler = useCallback(() => {
     setIsOpen((v) => !v);
   }, []);
-
-  const selectedRoundText = () => {
-    return round === 0 ? '라운드' : rounds[round - 1];
-  };
 
   const clickBackWindow = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setIsOpen((v) => !v);
@@ -28,11 +23,11 @@ function RoundSelector({ round, roundSelector }: Props): JSX.Element {
   return (
     <>
       <RoundInput onClick={toggleHandler}>
-        <span>{selectedRoundText()}</span>
+        <span>{possibleRound[round]}강</span>
         <img src={selectImg} alt="select" width="20px" height="20px" />
         <RoundList isOpen={isOpen}>
-          {rounds.map((age, idx) => (
-            <Item onClick={() => roundSelector(idx + 1)}>{age}</Item>
+          {possibleRound.map((round, idx) => (
+            <Item onClick={() => roundSelector(idx)}>{round}강</Item>
           ))}
         </RoundList>
       </RoundInput>
