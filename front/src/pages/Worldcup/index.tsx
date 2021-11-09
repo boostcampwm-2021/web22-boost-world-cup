@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Header } from '../../components';
+import versusImg from '../../images/versus.png';
 
 function Worldcup(): JSX.Element {
   const urlTemp1 = `https://scontent-gmp1-1.xx.fbcdn.net/v/t1.6435-9/146920428_262114008606476_1455088809082829943_n.jpg?_nc_cat=1&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=tsSadXCKx8YAX8w0xdy&_nc_ht=scontent-gmp1-1.xx&oh=eaf36c29001dc09ca3d5c07201a91611&oe=61AF4184`;
@@ -9,8 +10,10 @@ function Worldcup(): JSX.Element {
     <Wrapper>
       <Header type="header" isLogin />
       <Container>
-        <Title>아름다운 연예인 32강 1/32</Title>
+        <Title>아름다운 연예인 이상형 월드컵 1/32</Title>
+        <Round>32강</Round>
         <ImageContainer>
+          <img src={versusImg} alt="versus" />
           <Image imageUrl={urlTemp1} />
           <Image imageUrl={urlTemp2} />
         </ImageContainer>
@@ -18,6 +21,18 @@ function Worldcup(): JSX.Element {
     </Wrapper>
   );
 }
+
+const Round = styled.div`
+  width: 150px;
+  height: 70px;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  ${({ theme }) => theme.fontStyle.h2Bold};
+  background-color: ${({ theme }) => theme.color.primary};
+`;
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -34,7 +49,6 @@ const Container = styled.div`
 const Title = styled.div`
   ${({ theme }) => theme.fontStyle.h1Bold}
   align-self:center;
-
   text-align: center;
   width: 90%;
 `;
@@ -44,6 +58,13 @@ const ImageContainer = styled.div`
   flex-direction: row;
   width: 100%;
   height: 75vh;
+  img {
+    width: 20%;
+    position: absolute;
+    transform: translate(-50%, 0);
+    left: 50%;
+    align-self: center;
+  }
 `;
 
 const Image = styled.div<{ imageUrl: string }>`
