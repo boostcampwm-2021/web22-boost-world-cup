@@ -14,8 +14,9 @@ interface WorldcupType {
 interface Props {
   offset: number;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
+  selectedTag: string;
 }
-function WorldcupList({ offset, setOffset }: Props): JSX.Element {
+function WorldcupList({ offset, setOffset, selectedTag }: Props): JSX.Element {
   const [isClickMore, setIsClickMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<WorldcupType[]>([]);
@@ -29,12 +30,12 @@ function WorldcupList({ offset, setOffset }: Props): JSX.Element {
   const fetchData = async () => {
     const newItems = await getWorldcupList({ offset, limit: 8 });
     if (newItems.length === 0 && observer.current) {
-      console.log('THE END');
       observer.current.disconnect();
       setLoading(false);
       return;
     }
-    setItems([...items, ...newItems]);
+    if (offset === 0) setItems([...newItems]);
+    else setItems([...items, ...newItems]);
   };
   useEffect(() => {
     if (!isMounted.current) {
@@ -60,10 +61,11 @@ function WorldcupList({ offset, setOffset }: Props): JSX.Element {
   }, [offset, isClickMore]);
 
   useEffect(() => {
-    fetchData();
-    observer.current = new IntersectionObserver(onIntersect, { threshold });
-  }, []);
-
+    if (offset === 0) {
+      fetchData();
+      observer.current = new IntersectionObserver(onIntersect, { threshold });
+    }
+  }, [offset]);
   return (
     <>
       <Container>
