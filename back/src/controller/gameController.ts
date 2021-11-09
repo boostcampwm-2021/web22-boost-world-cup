@@ -1,11 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import * as candidateService from '../services/candidateService';
 
-const cookieConfig = {
-  httpOnly: true,
-  maxAge: 1000 * 60 * 60,
-  signed: true,
-};
+import cookieConfig from '../config/cookie';
 
 const gameController = {
   start: async (request: Request, response: Response, next: NextFunction) => {
