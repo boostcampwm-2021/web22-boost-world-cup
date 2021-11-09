@@ -30,7 +30,7 @@ function Worldcup(): JSX.Element {
     getCandidates();
   }, [getCandidates]);
 
-  const temp = (event: React.MouseEvent<HTMLElement>) => {
+  const imageClickHandler = (event: React.MouseEvent<HTMLElement>) => {
     const {
       dataset: { value },
     } = event.target as HTMLElement;
@@ -49,8 +49,8 @@ function Worldcup(): JSX.Element {
         <Round>{round}강</Round>
         <ImageContainer select={select}>
           <img src={versusImg} alt="versus" />
-          <LeftImage imageUrl={leftImage} select={select} onClick={temp} data-value="1" />
-          <RightImage imageUrl={rightImage} select={select} onClick={temp} data-value="2" />
+          <LeftImage imageUrl={leftImage} select={select} onClick={imageClickHandler} data-value="1" />
+          <RightImage imageUrl={rightImage} select={select} onClick={imageClickHandler} data-value="2" />
         </ImageContainer>
         <NameContainer>
           <LeftName select={select}>{leftName}</LeftName>
