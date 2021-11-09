@@ -17,10 +17,35 @@ function Worldcup(): JSX.Element {
           <Image imageUrl={urlTemp1} />
           <Image imageUrl={urlTemp2} />
         </ImageContainer>
+        <NameContainer>
+          <Name>한지민</Name>
+          <Name>한효주</Name>
+        </NameContainer>
       </Container>
     </Wrapper>
   );
 }
+
+const NameContainer = styled.div`
+  width: 100%;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  ${({ theme }) => theme.fontStyle.h2Bold};
+`;
+
+const Name = styled.div`
+  width: 150px;
+  height: 70px;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  ${({ theme }) => theme.fontStyle.h2Bold};
+  background-color: ${({ theme }) => theme.color.primary};
+`;
 
 const Round = styled.div`
   width: 150px;
@@ -57,7 +82,7 @@ const ImageContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 75vh;
+  height: 65vh;
   img {
     width: 20%;
     position: absolute;
