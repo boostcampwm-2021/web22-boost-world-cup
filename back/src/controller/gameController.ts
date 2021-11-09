@@ -34,7 +34,7 @@ const gameController = {
     response.json({ title, round, currentRound, candidate1: candidateList[0], candidate2: candidateList[1] });
   },
 
-  updateCookie: async (request: Request, response: Response, next: NextFunction) => {
+  result: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { winId, loseId },
       cookies: { gameInfo },
@@ -44,12 +44,10 @@ const gameController = {
     const remainCandidateList = gameInfo.candidateList.filter(
       (candidate) => candidate.id !== winId && candidate.id !== loseId,
     );
-    const showCandidateList = gameInfo.candidateList.filter(
-      (candidate) => candidate.id === winId || candidate.id === loseId,
-    );
+    const winCandidate = gameInfo.candidateList.find((candidate) => candidate.id === winId);
 
     newGameInfo.candidateList = [...remainCandidateList];
-    newGameInfo.selectedCandidate = [...gameInfo.selectedCandidate, ...showCandidateList];
+    newGameInfo.selectedCandidate = [...gameInfo.selectedCandidate, winCandidate];
 
     if (newGameInfo.currentRound === newGameInfo.round) {
       newGameInfo.round = newGameInfo.round / 2;
@@ -60,7 +58,9 @@ const gameController = {
       newGameInfo.currentRound = gameInfo.currentRound + 1;
     }
     response.cookie('gameInfo', newGameInfo, cookieConfig);
-    next();
+    newGameInfo.candidateList.sort(() => Math.random() - 0.5);
+    const { title, round, currentRound, candidateList } = newGameInfo;
+    response.json({ title, round, currentRound, candidate1: candidateList[0], candidate2: candidateList[1] });
   },
 };
 
