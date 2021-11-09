@@ -18,7 +18,7 @@ export const getWorldcupList = async (query: pagingQueryType) => {
   });
   return response.data.data.worldcup;
 };
-export const getWorldcupListByKeyword = async (query: searchQuerytype) => {
+export const getWorldcupListBySearch = async (query: searchQuerytype) => {
   const response = await axios.get('/api/worldcups', {
     params: {
       offset: query.offset,
