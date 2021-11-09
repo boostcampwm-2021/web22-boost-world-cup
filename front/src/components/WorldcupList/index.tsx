@@ -34,7 +34,6 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
     if (searchWord) newItems = await getWorldcupListBySearch({ offset, limit, search: searchWord });
     else if (selectedTag) newItems = await getWorldcupListByKeyword({ offset, limit, keyword: selectedTag });
     else newItems = await getWorldcupList({ offset, limit });
-    console.log(`newItems: ${newItems} / offset: ${offset}`);
     if (newItems.length === 0 && observer.current) {
       observer.current.disconnect();
       setLoading(false);

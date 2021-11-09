@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -8,7 +8,7 @@ import { getWorldcupList } from '../../utils/api/keywords';
 interface Props {
   onClickTag: (keyword: string) => void;
 }
-function Keywords({ onClickTag }: Props) {
+function Keywords({ onClickTag }: Props): JSX.Element {
   const settings = {
     dots: false,
     slidesToShow: 1,
