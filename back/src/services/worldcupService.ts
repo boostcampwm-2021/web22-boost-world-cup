@@ -51,6 +51,21 @@ export const removeById = async (id) => {
   return await worldcupRepository.find();
 };
 
-export const findByKeyword = async (keyword: string) => {
+export const findByKeyword = async (keyword) => {
   const worldcupRepository = getRepository(Worldcup);
+  const worldcups = await worldcupRepository.find({
+    relations: ['keywords'],
+    where: {
+      keywords: {
+        name: keyword,
+      },
+    },
+  });
+  return {
+    result: 'success',
+    message: null,
+    data: {
+      worldcup: worldcups,
+    },
+  };
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import WorldCupItem from './WorldCupItem';
 import Loader from './Loader';
-import { getWorldcupList } from '../../utils/api/worldcups';
+import { getWorldcupList, getWorldcupListByKeyword } from '../../utils/api/worldcups';
 
 interface WorldcupType {
   id: number;

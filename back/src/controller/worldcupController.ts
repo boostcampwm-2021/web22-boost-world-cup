@@ -9,11 +9,11 @@ const worldcupController = {
       const worldcups = await worldcupService.findFromPage(offset, limit);
       data = worldcups.data.worldcup;
     }
-    response.json({
-      result: 'success',
-      message: null,
-      data,
-    });
+    if (search) {
+      const worldcups = await worldcupService.findByKeyword(search);
+      data = worldcups.data.worldcup;
+    }
+    response.json(data);
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
