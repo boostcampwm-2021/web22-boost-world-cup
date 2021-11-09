@@ -29,6 +29,7 @@ function WorldcupList({ offset, setOffset }: Props): JSX.Element {
   const fetchData = async () => {
     const newItems = await getWorldcupList({ offset, limit: 8 });
     if (newItems.length === 0 && observer.current) {
+      console.log('THE END');
       observer.current.disconnect();
       setLoading(false);
       return;

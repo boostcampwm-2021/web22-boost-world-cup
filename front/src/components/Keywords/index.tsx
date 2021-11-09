@@ -53,15 +53,14 @@ const TagContainer = styled(Slider)`
   width: 80vw;
   .slick-slide {
     margin: 0 14px;
-    background-color: ${({ theme }) => theme.color.primary};
+    background-color: ${({ theme }) => theme.color.pink};
     white-space: noWrap;
     padding: 12px;
     border-radius: 12px;
     cursor: pointer;
     transition: all 300ms ease-in;
     &:hover {
-      background-color: ${({ theme }) => theme.color.pink};
-      color: ${({ theme }) => theme.color.highlight};
+      background-color: ${({ theme }) => theme.color.primary};
     }
   }
   .slick-prev:before {
@@ -80,7 +79,10 @@ const TagContainer = styled(Slider)`
   }
 `;
 const TagName = styled.h3<{ selected: boolean }>`
-  color: ${(props) => (props.selected ? '#D28078' : 'black')};
+  color: ${(props) => (props.selected ? '#27131B' : 'white')};
   font-weight: ${(props) => (props.selected ? 'bold' : '400')};
+  &:hover {
+    color: ${({ theme }) => theme.color.highlight};
+  }
 `;
 export default Keywords;

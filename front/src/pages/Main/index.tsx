@@ -7,12 +7,12 @@ import Keywords from '../../components/Keywords';
 function Main(): JSX.Element {
   const [isLogin, setIsLogin] = useState(true);
   const [searchWord, setSearchWord] = useState('');
-  const [clickTag, setClickTag] = useState('');
+  const [selectedTag, setSelectedTag] = useState('');
   const [offset, setOffset] = useState(0);
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setOffset(0);
-    setClickTag(searchWord);
+    setSelectedTag(searchWord);
     setSearchWord('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +20,7 @@ function Main(): JSX.Element {
   };
   const onClickTag = (keyword: string) => {
     setOffset(0);
-    setClickTag(keyword);
+    setSelectedTag(keyword);
   };
 
   return (
