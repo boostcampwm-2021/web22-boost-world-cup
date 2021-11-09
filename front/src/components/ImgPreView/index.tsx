@@ -15,7 +15,7 @@ interface Props {
 function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [imgURL, setImgURL] = useState(
-    `https://df8vdt3wdc4mv.cloudfront.net/w${width}h${height}/${info.key}#${Date.now()}`,
+    `https://kr.object.ncloudstorage.com/image-w${width}h${height}/${info.key}.webp#${Date.now()}`,
   );
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): J
         clearInterval(intervalId);
         return;
       }
-      const newImgURL = `https://df8vdt3wdc4mv.cloudfront.net/w${width}h${height}/${key}#${Date.now()}`;
+      const newImgURL = `https://kr.object.ncloudstorage.com/image-w${width}h${height}/${key}.webp#${Date.now()}`;
       setImgURL(newImgURL);
     }, 1000);
     return () => clearInterval(intervalId);
