@@ -31,10 +31,10 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
   };
   const fetchData = async () => {
     let newItems;
-    if (searchWord) {
-      newItems = await getWorldcupListBySearch({ offset, limit, search: searchWord });
-    } else if (selectedTag) newItems = await getWorldcupListByKeyword({ offset, limit, keyword: selectedTag });
+    if (searchWord) newItems = await getWorldcupListBySearch({ offset, limit, search: searchWord });
+    else if (selectedTag) newItems = await getWorldcupListByKeyword({ offset, limit, keyword: selectedTag });
     else newItems = await getWorldcupList({ offset, limit });
+    console.log(`newItems: ${newItems} / offset: ${offset}`);
     if (newItems.length === 0 && observer.current) {
       observer.current.disconnect();
       setLoading(false);
@@ -50,7 +50,7 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
       setOffset(offset + 8);
     }
     setLoading(false);
-  }, [items.length, searchWord]);
+  }, [items.length, searchWord, selectedTag]);
 
   const onIntersect = ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     if (entry.isIntersecting && !loading) {

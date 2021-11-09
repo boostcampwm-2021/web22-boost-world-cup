@@ -48,8 +48,8 @@ export const findByKeyword = async (offset, limit, keyword) => {
     ])
     .innerJoin('worldcup.keywords', 'keywords')
     .where('keywords.name= :name', { name: keyword })
-    .skip(Number(offset))
-    .take(Number(limit))
+    .offset(Number(offset))
+    .limit(Number(limit))
     .execute();
 };
 
