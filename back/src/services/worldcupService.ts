@@ -39,7 +39,13 @@ export const findBySearchWord = async (offset, limit, searchWord) => {
 export const findByKeyword = async (offset, limit, keyword) => {
   return await getRepository(Worldcup)
     .createQueryBuilder('worldcup')
-    .select(['worldcup.id', 'worldcup.title', 'worldcup.thumbnail1', 'worldcup.thumbnail2', 'worldcup.description'])
+    .select([
+      'worldcup.id AS id',
+      'worldcup.title AS title',
+      'worldcup.thumbnail1 AS thumbnail1',
+      'worldcup.thumbnail2 AS thumbnail2',
+      'worldcup.description AS description',
+    ])
     .innerJoin('worldcup.keywords', 'keywords')
     .where('keywords.name= :name', { name: keyword })
     .skip(Number(offset))

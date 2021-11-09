@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import WorldCupItem from './WorldCupItem';
 import Loader from './Loader';
-import { getWorldcupList, getWorldcupListBySearch } from '../../utils/api/worldcups';
+import { getWorldcupList, getWorldcupListBySearch, getWorldcupListByKeyword } from '../../utils/api/worldcups';
 
 interface WorldcupType {
   id: number;
@@ -33,7 +33,8 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
     let newItems;
     if (searchWord) {
       newItems = await getWorldcupListBySearch({ offset, limit, search: searchWord });
-    } else newItems = await getWorldcupList({ offset, limit });
+    } else if (selectedTag) newItems = await getWorldcupListByKeyword({ offset, limit, keyword: selectedTag });
+    else newItems = await getWorldcupList({ offset, limit });
     if (newItems.length === 0 && observer.current) {
       observer.current.disconnect();
       setLoading(false);
