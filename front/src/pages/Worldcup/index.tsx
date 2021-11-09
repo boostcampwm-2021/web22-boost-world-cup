@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
+import { setTimeout } from 'timers';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
-import { getGameInfo } from '../../utils/api/game';
+import { getGameInfo, sendGameResult } from '../../utils/api/game';
 import { candidateData } from '../../types/Datas';
 
 function Worldcup(): JSX.Element {
   const [pick, setPick] = useState(0);
-
   const [round, setRound] = useState(16);
   const [curRound, setCurRound] = useState(1);
   const [leftCandidate, setLeftCandidate] = useState<candidateData>();
@@ -35,6 +35,25 @@ function Worldcup(): JSX.Element {
     if (value) {
       setPick(parseInt(value, 10));
     }
+    setTimeout(async () => {
+      let winId;
+      let loseId;
+      if (value === '1') {
+        winId = leftCandidate?.id;
+        loseId = rightCandidate?.id;
+      } else {
+        winId = rightCandidate?.id;
+        loseId = leftCandidate?.id;
+      }
+      const response = await sendGameResult(winId, loseId);
+    }, 2000);
+  };
+
+  const makeRoundText = () => {
+    if (round === 1) {
+      return '결승';
+    }
+    return `${round * 2}강`;
   };
 
   return (
@@ -44,7 +63,7 @@ function Worldcup(): JSX.Element {
         <Title>
           {title} {curRound}/{round}
         </Title>
-        <Round>{round}강</Round>
+        <Round>{makeRoundText()}</Round>
         <ImageContainer select={pick}>
           <img src={versusImg} alt="versus" />
           <LeftImage
