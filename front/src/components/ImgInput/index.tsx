@@ -59,6 +59,10 @@ const AddImgsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: #f5f5f5;
+  }
   ${({ theme }) => theme.fontStyle.h3};
 `;
 
@@ -73,6 +77,10 @@ const AddAdditionalImgsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: #f5f5f5;
+  }
   ${({ theme }) => theme.fontStyle.caption};
   div {
     text-align: center;
