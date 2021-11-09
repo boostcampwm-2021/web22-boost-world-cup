@@ -51,7 +51,6 @@ function Worldcup(): JSX.Element {
         loseId = leftCandidate?.id;
       }
       const gameInfo = await sendGameResult(winId, loseId);
-      console.log(gameInfo);
       setGameInfo(gameInfo);
     }, 1500);
   };
