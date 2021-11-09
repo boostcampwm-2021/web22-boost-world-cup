@@ -10,7 +10,7 @@ import passportInit from './passport';
 const expressLoader = (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser(process.env.COOKIE_SECRET));
+  app.use(cookieParser());
   app.use(session(sessionConfig));
   app.use(passport.initialize());
   app.use(passport.session());
