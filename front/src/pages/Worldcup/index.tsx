@@ -1,17 +1,17 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
 import { getGameInfo } from '../../utils/api/game';
+import { candidateData } from '../../types/Datas';
 
 function Worldcup(): JSX.Element {
-  const [select, setSelect] = useState(0);
+  const [pick, setPick] = useState(0);
+
   const [round, setRound] = useState(16);
   const [curRound, setCurRound] = useState(1);
-  const [leftImage, setLeftImage] = useState('');
-  const [rightImage, setRightImage] = useState('');
-  const [leftName, setLeftName] = useState('');
-  const [rightName, setRightName] = useState('');
+  const [leftCandidate, setLeftCandidate] = useState<candidateData>();
+  const [rightCandidate, setRightCandidate] = useState<candidateData>();
   const [title, setTitle] = useState('');
 
   const getCandidates = useCallback(async () => {
@@ -19,10 +19,8 @@ function Worldcup(): JSX.Element {
     const { round, currentRound, candidate1, candidate2, title } = gameInfo;
     setRound(round);
     setCurRound(currentRound);
-    setLeftImage(candidate1.url);
-    setRightImage(candidate2.url);
-    setLeftName(candidate1.name);
-    setRightName(candidate2.name);
+    setLeftCandidate(candidate1);
+    setRightCandidate(candidate2);
     setTitle(title);
   }, []);
 
@@ -35,7 +33,7 @@ function Worldcup(): JSX.Element {
       dataset: { value },
     } = event.target as HTMLElement;
     if (value) {
-      setSelect(parseInt(value, 10));
+      setPick(parseInt(value, 10));
     }
   };
 
@@ -47,14 +45,24 @@ function Worldcup(): JSX.Element {
           {title} {curRound}/{round}
         </Title>
         <Round>{round}강</Round>
-        <ImageContainer select={select}>
+        <ImageContainer select={pick}>
           <img src={versusImg} alt="versus" />
-          <LeftImage imageUrl={leftImage} select={select} onClick={imageClickHandler} data-value="1" />
-          <RightImage imageUrl={rightImage} select={select} onClick={imageClickHandler} data-value="2" />
+          <LeftImage
+            imageUrl={leftCandidate ? leftCandidate.url : ''}
+            select={pick}
+            onClick={imageClickHandler}
+            data-value="1"
+          />
+          <RightImage
+            imageUrl={rightCandidate ? rightCandidate.url : ''}
+            select={pick}
+            onClick={imageClickHandler}
+            data-value="2"
+          />
         </ImageContainer>
         <NameContainer>
-          <LeftName select={select}>{leftName}</LeftName>
-          <RightName select={select}>{rightName}</RightName>
+          <LeftName select={pick}>{leftCandidate ? leftCandidate.name : ''}</LeftName>
+          <RightName select={pick}>{rightCandidate ? rightCandidate.name : ''}</RightName>
         </NameContainer>
       </Container>
     </Wrapper>

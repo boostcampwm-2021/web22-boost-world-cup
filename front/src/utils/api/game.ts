@@ -1,12 +1,8 @@
 import axios from 'axios';
+import { candidateData } from '../../types/Datas';
 
 interface responseData {
   result: string;
-}
-interface candidateData {
-  id: number;
-  name: string;
-  url: string;
 }
 
 interface gameInfoData {

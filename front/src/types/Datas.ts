@@ -23,3 +23,9 @@ export interface FetchPreSigned {
   key: string;
   preSignedData: PreSignedData;
 }
+
+export interface candidateData {
+  id: number;
+  name: string;
+  url: string;
+}
