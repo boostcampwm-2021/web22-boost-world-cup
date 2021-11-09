@@ -1,35 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
+import { getGameInfo } from '../../utils/api/game';
 
 function Worldcup(): JSX.Element {
-  const urlTemp1 = `https://scontent-gmp1-1.xx.fbcdn.net/v/t1.6435-9/146920428_262114008606476_1455088809082829943_n.jpg?_nc_cat=1&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=tsSadXCKx8YAX8w0xdy&_nc_ht=scontent-gmp1-1.xx&oh=eaf36c29001dc09ca3d5c07201a91611&oe=61AF4184`;
-  const urlTemp2 = 'https://file2.nocutnews.co.kr/newsroom/image/2018/07/31/20180731101720215498_0_750_937.jpg';
-
   const [select, setSelect] = useState(0);
+  const [round, setRound] = useState(16);
+  const [curRound, setCurRound] = useState(1);
+  const [leftImage, setLeftImage] = useState('');
+  const [rightImage, setRightImage] = useState('');
+  const [leftName, setLeftName] = useState('');
+  const [rightName, setRightName] = useState('');
+  const [title, setTitle] = useState('');
+
+  const getCandidates = useCallback(async () => {
+    const gameInfo = await getGameInfo();
+    const { round, currentRound, candidate1, candidate2, title } = gameInfo;
+    setRound(round);
+    setCurRound(currentRound);
+    setLeftImage(candidate1.url);
+    setRightImage(candidate2.url);
+    setLeftName(candidate1.name);
+    setRightName(candidate2.name);
+    setTitle(title);
+  }, []);
+
+  useEffect(() => {
+    getCandidates();
+  }, [getCandidates]);
 
   const temp = (event: React.MouseEvent<HTMLElement>) => {
-    setSelect(1);
-  };
-  const temp2 = (event: React.MouseEvent<HTMLElement>) => {
-    setSelect(2);
+    const {
+      dataset: { value },
+    } = event.target as HTMLElement;
+    if (value) {
+      setSelect(parseInt(value, 10));
+    }
   };
 
   return (
     <Wrapper>
       <Header type="header" isLogin />
       <Container>
-        <Title>아름다운 연예인 이상형 월드컵 1/32</Title>
-        <Round>32강</Round>
+        <Title>
+          {title} {curRound}/{round}
+        </Title>
+        <Round>{round}강</Round>
         <ImageContainer select={select}>
           <img src={versusImg} alt="versus" />
-          <LeftImage imageUrl={urlTemp1} select={select} onClick={temp} />
-          <RightImage imageUrl={urlTemp2} select={select} onClick={temp2} />
+          <LeftImage imageUrl={leftImage} select={select} onClick={temp} data-value="1" />
+          <RightImage imageUrl={rightImage} select={select} onClick={temp} data-value="2" />
         </ImageContainer>
         <NameContainer>
-          <LeftName select={select}>한지민</LeftName>
-          <RightName select={select}>한효주</RightName>
+          <LeftName select={select}>{leftName}</LeftName>
+          <RightName select={select}>{rightName}</RightName>
         </NameContainer>
       </Container>
     </Wrapper>
