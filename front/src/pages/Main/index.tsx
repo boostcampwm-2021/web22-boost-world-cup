@@ -6,17 +6,18 @@ import Keywords from '../../components/Keywords';
 
 function Main(): JSX.Element {
   const [isLogin, setIsLogin] = useState(true);
+  const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   const [offset, setOffset] = useState(0);
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
+    setSearchWord(inputWord);
     setOffset(0);
-    setSelectedTag(searchWord);
-    setSearchWord('');
+    setInputWord('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchWord(event.target.value);
+    setInputWord(event.target.value);
   };
   const onClickTag = (keyword: string) => {
     setOffset(0);
@@ -31,10 +32,10 @@ function Main(): JSX.Element {
         setIsLogin={setIsLogin}
         onSubmit={onSubmit}
         onSearchWordChange={onSearchWordChange}
-        searchWord={searchWord}
+        searchWord={inputWord}
       />
       <Keywords onClickTag={onClickTag} />
-      <WorldCupList offset={offset} setOffset={setOffset} selectedTag={selectedTag} />
+      <WorldCupList offset={offset} setOffset={setOffset} selectedTag={selectedTag} searchWord={searchWord} />
     </Wrapper>
   );
 }

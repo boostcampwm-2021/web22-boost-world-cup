@@ -16,7 +16,7 @@ export const getWorldcupList = async (query: pagingQueryType) => {
       limit: query.limit,
     },
   });
-  return response.data;
+  return response.data.data.worldcup;
 };
 export const getWorldcupListByKeyword = async (query: searchQuerytype) => {
   const response = await axios.get('/api/worldcups', {
@@ -26,5 +26,5 @@ export const getWorldcupListByKeyword = async (query: searchQuerytype) => {
       search: query.search,
     },
   });
-  return response.data;
+  return response.data.data.worldcup;
 };

@@ -15,8 +15,9 @@ interface Props {
   offset: number;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
   selectedTag: string;
+  searchWord: string;
 }
-function WorldcupList({ offset, setOffset, selectedTag }: Props): JSX.Element {
+function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JSX.Element {
   const [isClickMore, setIsClickMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<WorldcupType[]>([]);
@@ -24,11 +25,15 @@ function WorldcupList({ offset, setOffset, selectedTag }: Props): JSX.Element {
   const isMounted = useRef(false);
   const observer = useRef<IntersectionObserver | null>(null);
   const threshold = 0.4;
+  const limit = 8;
   const onClickMoreButton = () => {
     setIsClickMore(!isClickMore);
   };
   const fetchData = async () => {
-    const newItems = await getWorldcupList({ offset, limit: 8 });
+    let newItems;
+    if (searchWord) {
+      newItems = await getWorldcupListByKeyword({ offset, limit, search: searchWord });
+    } else newItems = await getWorldcupList({ offset, limit });
     if (newItems.length === 0 && observer.current) {
       observer.current.disconnect();
       setLoading(false);
@@ -44,7 +49,7 @@ function WorldcupList({ offset, setOffset, selectedTag }: Props): JSX.Element {
       setOffset(offset + 8);
     }
     setLoading(false);
-  }, [items.length]);
+  }, [items.length, searchWord]);
 
   const onIntersect = ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     if (entry.isIntersecting && !loading) {
@@ -59,7 +64,6 @@ function WorldcupList({ offset, setOffset, selectedTag }: Props): JSX.Element {
       observer.current.observe(target.current);
     }
   }, [offset, isClickMore]);
-
   useEffect(() => {
     if (offset === 0) {
       fetchData();
