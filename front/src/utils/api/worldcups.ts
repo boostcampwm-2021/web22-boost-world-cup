@@ -7,7 +7,7 @@ interface pagingQueryType {
 interface searchQuerytype {
   offset: number;
   limit: number;
-  keyword: string;
+  search: string;
 }
 export const getWorldcupList = async (query: pagingQueryType) => {
   const response = await axios.get('/api/worldcups', {
@@ -23,7 +23,7 @@ export const getWorldcupListByKeyword = async (query: searchQuerytype) => {
     params: {
       offset: query.offset,
       limit: query.limit,
-      keyword: query.keyword,
+      search: query.search,
     },
   });
   return response.data;

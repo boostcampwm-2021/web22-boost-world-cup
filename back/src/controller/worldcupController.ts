@@ -4,20 +4,30 @@ import { NextFunction, Request, Response } from 'express';
 const worldcupController = {
   all: async (request: Request, response: Response, next: NextFunction) => {
     const { offset, limit, search } = request.query;
-    let data = [];
-    if (offset && limit) {
-      const worldcups = await worldcupService.findFromPage(offset, limit);
-      data = worldcups.data.worldcup;
+    let worldcups;
+    if (!search) {
+      worldcups = await worldcupService.findFromPage(offset, limit);
+    } else {
+      worldcups = await worldcupService.findByKeyword(offset, limit, search);
     }
-    if (search) {
-      const worldcups = await worldcupService.findByKeyword(search);
-      data = worldcups.data.worldcup;
-    }
-    response.json(data);
+    response.json({
+      result: 'success',
+      message: null,
+      data: {
+        worldcup: worldcups,
+      },
+    });
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
-    return await worldcupService.findById(request.params.id);
+    const worldcup = await worldcupService.findById(request.params.id);
+    response.json({
+      result: 'success',
+      message: null,
+      data: {
+        worldcup,
+      },
+    });
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {

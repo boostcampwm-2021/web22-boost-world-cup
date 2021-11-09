@@ -1,5 +1,5 @@
 import { Worldcup } from '../entity/Worldcup';
-import { getRepository } from 'typeorm';
+import { getRepository, Like } from 'typeorm';
 
 export const findAll = async () => {
   const worldcupRepository = getRepository(Worldcup);
@@ -18,25 +18,27 @@ export const findAll = async () => {
 
 export const findFromPage = async (offset, limit) => {
   const worldcupRepository = getRepository(Worldcup);
-  const worldcups = await worldcupRepository.find({
+  return await worldcupRepository.find({
     select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
     where: { isTemp: false },
     skip: Number(offset),
     take: Number(limit),
   });
+};
 
-  return {
-    result: 'success',
-    message: null,
-    data: {
-      worldcup: worldcups,
-    },
-  };
+export const findByKeyword = async (offset, limit, keyword) => {
+  const worldcupRepository = getRepository(Worldcup);
+  return await worldcupRepository.find({
+    select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
+    where: { isTemp: false, title: Like(`%${keyword}%`) },
+    skip: Number(offset),
+    take: Number(limit),
+  });
 };
 
 export const findById = async (id) => {
   const worldcupRepository = getRepository(Worldcup);
-  return await worldcupRepository.findOne(id);
+  return await worldcupRepository.findOne(id, { relations: ['candidates'] });
 };
 
 export const save = async (worldcup) => {
@@ -49,23 +51,4 @@ export const removeById = async (id) => {
   const worldcupToRemove = await findById(id);
   await worldcupRepository.remove(worldcupToRemove);
   return await worldcupRepository.find();
-};
-
-export const findByKeyword = async (keyword) => {
-  const worldcupRepository = getRepository(Worldcup);
-  const worldcups = await worldcupRepository.find({
-    relations: ['keywords'],
-    where: {
-      keywords: {
-        name: keyword,
-      },
-    },
-  });
-  return {
-    result: 'success',
-    message: null,
-    data: {
-      worldcup: worldcups,
-    },
-  };
 };
