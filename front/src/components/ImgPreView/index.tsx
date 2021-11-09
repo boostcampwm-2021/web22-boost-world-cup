@@ -39,7 +39,7 @@ function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): J
           <MdCancel size={40} color="red" />
         </Btn>
       )}
-      <Img src={imgURL} onLoad={() => setIsLoading(false)} alt="" isLoading={isLoading} />
+      <Img src={imgURL} onLoad={() => setIsLoading(false)} alt="" isLoading={isLoading} width={width} height={height} />
     </Container>
   );
 }
