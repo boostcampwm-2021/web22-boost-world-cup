@@ -4,7 +4,7 @@ import { setTimeout } from 'timers';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
 import { getGameInfo, sendGameResult } from '../../utils/api/game';
-import { candidateData } from '../../types/Datas';
+import { candidateData, gameInfoData } from '../../types/Datas';
 
 function Worldcup(): JSX.Element {
   const [pick, setPick] = useState(0);
@@ -14,14 +14,19 @@ function Worldcup(): JSX.Element {
   const [rightCandidate, setRightCandidate] = useState<candidateData>();
   const [title, setTitle] = useState('');
 
-  const getCandidates = useCallback(async () => {
-    const gameInfo = await getGameInfo();
+  const setGameInfo = useCallback((gameInfo: gameInfoData) => {
     const { round, currentRound, candidate1, candidate2, title } = gameInfo;
     setRound(round);
     setCurRound(currentRound);
     setLeftCandidate(candidate1);
     setRightCandidate(candidate2);
     setTitle(title);
+    setPick(0);
+  }, []);
+
+  const getCandidates = useCallback(async () => {
+    const gameInfo = await getGameInfo();
+    setGameInfo(gameInfo);
   }, []);
 
   useEffect(() => {
@@ -45,8 +50,10 @@ function Worldcup(): JSX.Element {
         winId = rightCandidate?.id;
         loseId = leftCandidate?.id;
       }
-      const response = await sendGameResult(winId, loseId);
-    }, 2000);
+      const gameInfo = await sendGameResult(winId, loseId);
+      console.log(gameInfo);
+      setGameInfo(gameInfo);
+    }, 1500);
   };
 
   const makeRoundText = () => {

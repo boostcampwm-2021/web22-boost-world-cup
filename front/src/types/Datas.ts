@@ -29,3 +29,11 @@ export interface candidateData {
   name: string;
   url: string;
 }
+
+export interface gameInfoData {
+  title: string;
+  round: number;
+  currentRound: number;
+  candidate1: candidateData;
+  candidate2: candidateData;
+}
