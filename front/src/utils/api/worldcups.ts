@@ -4,10 +4,15 @@ interface pagingQueryType {
   offset: number;
   limit: number;
 }
-interface searchQuerytype {
+interface searchQueryType {
   offset: number;
   limit: number;
   search: string;
+}
+interface keywordQueryType {
+  offset: number;
+  limit: number;
+  keyword: string;
 }
 export const getWorldcupList = async (query: pagingQueryType) => {
   const response = await axios.get('/api/worldcups', {
@@ -18,12 +23,22 @@ export const getWorldcupList = async (query: pagingQueryType) => {
   });
   return response.data.data.worldcup;
 };
-export const getWorldcupListBySearch = async (query: searchQuerytype) => {
+export const getWorldcupListBySearch = async (query: searchQueryType) => {
   const response = await axios.get('/api/worldcups', {
     params: {
       offset: query.offset,
       limit: query.limit,
       search: query.search,
+    },
+  });
+  return response.data.data.worldcup;
+};
+export const getWorldcupListByKeyword = async (query: keywordQueryType) => {
+  const response = await axios.get('/api/worldcups', {
+    params: {
+      offset: query.offset,
+      limit: query.limit,
+      keyword: query.keyword,
     },
   });
   return response.data.data.worldcup;

@@ -26,14 +26,25 @@ export const findFromPage = async (offset, limit) => {
   });
 };
 
-export const findByKeyword = async (offset, limit, keyword) => {
+export const findBySearchWord = async (offset, limit, searchWord) => {
   const worldcupRepository = getRepository(Worldcup);
   return await worldcupRepository.find({
     select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
-    where: { isTemp: false, title: Like(`%${keyword}%`) },
+    where: { isTemp: false, title: Like(`%${searchWord}%`) },
     skip: Number(offset),
     take: Number(limit),
   });
+};
+
+export const findByKeyword = async (offset, limit, keyword) => {
+  return await getRepository(Worldcup)
+    .createQueryBuilder('worldcup')
+    .select(['worldcup.id', 'worldcup.title', 'worldcup.thumbnail1', 'worldcup.thumbnail2', 'worldcup.description'])
+    .innerJoin('worldcup.keywords', 'keywords')
+    .where('keywords.name= :name', { name: keyword })
+    .skip(Number(offset))
+    .take(Number(limit))
+    .execute();
 };
 
 export const findById = async (id) => {
