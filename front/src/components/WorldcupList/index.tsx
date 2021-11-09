@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import CardItem from './WorldCupItem';
 import Loader from './Loader';
-import useInfiniteScroll from '../../utils/hooks/useInfinityScroll';
 import { getWorldcupList } from '../../utils/api/worldcups';
 
 interface WorldcupType {
@@ -16,7 +15,6 @@ interface Props {
   offset: number;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
 }
-
 function WorldcupList({ offset, setOffset }: Props): JSX.Element {
   const [isClickMore, setIsClickMore] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,6 +22,7 @@ function WorldcupList({ offset, setOffset }: Props): JSX.Element {
   const target = useRef<HTMLDivElement | null>(null);
   const isMounted = useRef(false);
   const observer = useRef<IntersectionObserver | null>(null);
+  const threshold = 0.4;
   const onClickMoreButton = () => {
     setIsClickMore(!isClickMore);
   };
@@ -36,24 +35,6 @@ function WorldcupList({ offset, setOffset }: Props): JSX.Element {
     }
     setItems([...items, ...newItems]);
   };
-  const onIntersect = ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
-    if (entry.isIntersecting && !loading) {
-      setLoading(true);
-      fetchData();
-      observer.unobserve(entry.target);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-    observer.current = new IntersectionObserver(onIntersect, { threshold: 0.4 });
-  }, []);
-  useEffect(() => {
-    if (isClickMore && target.current && observer.current) {
-      observer.current = new IntersectionObserver(onIntersect, { threshold: 0.4 });
-      observer.current.observe(target.current);
-    }
-  }, [offset, isClickMore]);
-
   useEffect(() => {
     if (!isMounted.current) {
       isMounted.current = true;
@@ -62,6 +43,26 @@ function WorldcupList({ offset, setOffset }: Props): JSX.Element {
     }
     setLoading(false);
   }, [items.length]);
+
+  const onIntersect = ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+    if (entry.isIntersecting && !loading) {
+      setLoading(true);
+      fetchData();
+      observer.unobserve(entry.target);
+    }
+  };
+  useEffect(() => {
+    if (isClickMore && target.current && observer.current) {
+      observer.current = new IntersectionObserver(onIntersect, { threshold });
+      observer.current.observe(target.current);
+    }
+  }, [offset, isClickMore]);
+
+  useEffect(() => {
+    fetchData();
+    observer.current = new IntersectionObserver(onIntersect, { threshold });
+  }, []);
+
   return (
     <>
       <Container>
