@@ -16,7 +16,7 @@ function ImgInput({ onChange, type }: Props): JSX.Element {
           <hr />
           여기 파일을 놓거나 클릭하여 업로드하세요.
         </div>
-        <Input type="file" multiple onChange={onChange} accept="image/*" />
+        <Input value="" type="file" multiple onChange={onChange} accept="image/*" />
       </AddImgsContainer>
     );
 
@@ -31,7 +31,7 @@ function ImgInput({ onChange, type }: Props): JSX.Element {
           <hr />
           click to upload.
         </div>
-        <Input type="file" multiple onChange={onChange} accept="image/*" />
+        <Input value="" type="file" multiple onChange={onChange} accept="image/*" />
       </AddAdditionalImgsContainer>
     );
 
@@ -41,7 +41,7 @@ function ImgInput({ onChange, type }: Props): JSX.Element {
         Drop file here or click to upload.
         <hr />
         여기 변경할 사진 파일을 놓거나 클릭하여 업로드하세요.
-        <Input type="file" accept="image/*" onChange={onChange} />
+        <Input value="" type="file" accept="image/*" onChange={onChange} />
       </ChangeImgContainer>
     );
 
