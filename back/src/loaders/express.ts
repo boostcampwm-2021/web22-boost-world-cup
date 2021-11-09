@@ -9,7 +9,7 @@ import passportInit from './passport';
 const expressLoader = (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser());
+  app.use(cookieParser('Secret'));
   app.use(session(sessionConfig));
   app.use(passport.initialize());
   app.use(passport.session());

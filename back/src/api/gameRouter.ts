@@ -3,6 +3,6 @@ import controller from '../controller/gameController';
 
 const router = Router();
 
-router.get('/worldcup/:id', controller.temp);
+router.post('/start', controller.start);
 
 export default router;
