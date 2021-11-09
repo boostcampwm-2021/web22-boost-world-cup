@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import CardItem from './WorldCupItem';
 import Loader from './Loader';
@@ -15,48 +15,53 @@ interface WorldcupType {
 interface Props {
   offset: number;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
-  clickTag: string;
 }
-function WorldcupList({ clickTag, offset, setOffset }: Props): JSX.Element {
-  const [items, setItems] = useState<WorldcupType[]>([]);
-  const [target, setTarget] = useState<HTMLDivElement | null>(null);
-  const [loading, setLoading] = useState(false);
+
+function WorldcupList({ offset, setOffset }: Props): JSX.Element {
   const [isClickMore, setIsClickMore] = useState(false);
-  const threshold = 0.4;
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState<WorldcupType[]>([]);
+  const target = useRef<HTMLDivElement | null>(null);
+  const isMounted = useRef(false);
+  const observer = useRef<IntersectionObserver | null>(null);
   const onClickMoreButton = () => {
-    setIsClickMore(true);
+    setIsClickMore(!isClickMore);
   };
   const fetchData = async () => {
-    setLoading(true);
     const newItems = await getWorldcupList({ offset, limit: 8 });
-    console.log(offset);
+    if (newItems.length === 0 && observer.current) {
+      observer.current.disconnect();
+      setLoading(false);
+      return;
+    }
     setItems([...items, ...newItems]);
-    setOffset(offset + 8);
-    console.log(offset);
-    setLoading(false);
   };
-
-  const onIntersect = async ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+  const onIntersect = ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     if (entry.isIntersecting && !loading) {
+      setLoading(true);
+      fetchData();
       observer.unobserve(entry.target);
-      await fetchData();
-      observer.observe(entry.target);
     }
   };
-  useEffect(() => {
-    let observer: IntersectionObserver;
-    if (target && isClickMore) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold,
-      });
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
-  }, [target, isClickMore]);
   useEffect(() => {
     fetchData();
-  }, [clickTag]);
+    observer.current = new IntersectionObserver(onIntersect, { threshold: 0.4 });
+  }, []);
+  useEffect(() => {
+    if (isClickMore && target.current && observer.current) {
+      observer.current = new IntersectionObserver(onIntersect, { threshold: 0.4 });
+      observer.current.observe(target.current);
+    }
+  }, [offset, isClickMore]);
 
+  useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true;
+    } else {
+      setOffset(offset + 8);
+    }
+    setLoading(false);
+  }, [items.length]);
   return (
     <>
       <Container>
@@ -76,7 +81,7 @@ function WorldcupList({ clickTag, offset, setOffset }: Props): JSX.Element {
       ) : (
         ''
       )}
-      <div ref={setTarget}>{loading && <Loader />}</div>
+      <div ref={target}>{loading && <Loader />}</div>
     </>
   );
 }

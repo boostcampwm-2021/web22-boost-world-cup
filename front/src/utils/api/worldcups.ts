@@ -8,7 +8,6 @@ interface searchQuerytype {
   keyword: string;
 }
 export const getWorldcupList = async (query: pagingQueryType) => {
-  console.log(`🐥 offset: ${query.offset}`);
   const response = await axios.get('/api/worldcups', {
     params: {
       offset: query.offset,

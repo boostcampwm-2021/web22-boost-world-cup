@@ -34,7 +34,7 @@ function Main(): JSX.Element {
         searchWord={searchWord}
       />
       <Keywords onClickTag={onClickTag} />
-      <WorldCupList offset={offset} setOffset={setOffset} clickTag={clickTag} />
+      <WorldCupList offset={offset} setOffset={setOffset} />
     </Wrapper>
   );
 }
