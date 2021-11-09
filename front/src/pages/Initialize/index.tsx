@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
@@ -13,6 +14,7 @@ interface Props {
 function Initialize({ location }: Props): JSX.Element {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [ready, setReady] = useState(false);
   const [round, setRound] = useState(0);
   const [candidatesSize, setCandidatesSize] = useState(1);
   const [possibleRound, setPossibleRound] = useState([] as string[]);
@@ -46,7 +48,21 @@ function Initialize({ location }: Props): JSX.Element {
     setRound(newAge);
   }, []);
 
-  return (
+  const startBtnClickHandler = async (event: React.MouseEvent<HTMLElement>) => {
+    const response = await axios.post('/api/game/start', {
+      worldcupId,
+      round,
+    });
+    const {
+      data: { result },
+    } = response;
+    if (result === 'success') {
+      setReady(true);
+    }
+  };
+  return ready ? (
+    <Redirect to="/worldcup" />
+  ) : (
     <>
       <Header type="header" isLogin />
       <Container>
@@ -65,9 +81,7 @@ function Initialize({ location }: Props): JSX.Element {
           </RoundSubContainer>
         </RoundContainer>
         <ButtonContainer>
-          <StartButton>
-            <Link to={`/worldcup/${worldcupId}`}>시작하기</Link>
-          </StartButton>
+          <StartButton onClick={startBtnClickHandler}>시작하기</StartButton>
           <MainButton>
             <Link to="/main">메인으로</Link>
           </MainButton>
