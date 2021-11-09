@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import axios from 'axios';
 import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from '../../components/RoundSelector';
 import { getWorldcupById } from '../../utils/api/worldcups';
+import { initializeGame } from '../../utils/api/game';
 
 interface Props {
   location: Location;
@@ -23,7 +23,6 @@ function Initialize({ location }: Props): JSX.Element {
   const fetchWorldAndSetState = useCallback(async () => {
     const worldcup = await getWorldcupById(parseInt(worldcupId, 10));
     const { candidates, title, description } = worldcup;
-
     setTitle(title);
     setDescription(description);
     setCandidatesSize(candidates.length);
@@ -48,15 +47,9 @@ function Initialize({ location }: Props): JSX.Element {
     setRound(newAge);
   }, []);
 
-  const startBtnClickHandler = async (event: React.MouseEvent<HTMLElement>) => {
-    const response = await axios.post('/api/game/start', {
-      worldcupId,
-      round,
-    });
-    const {
-      data: { result },
-    } = response;
-    if (result === 'success') {
+  const startBtnClickHandler = async () => {
+    const response = await initializeGame(worldcupId, round);
+    if (response.result === 'success') {
       setReady(true);
     }
   };
