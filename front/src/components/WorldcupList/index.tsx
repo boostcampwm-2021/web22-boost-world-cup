@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import CardItem from './WorldCupItem';
+import WorldCupItem from './WorldCupItem';
 import Loader from './Loader';
 import { getWorldcupList } from '../../utils/api/worldcups';
 
@@ -67,7 +67,7 @@ function WorldcupList({ offset, setOffset }: Props): JSX.Element {
     <>
       <Container>
         {items.map((item) => (
-          <CardItem
+          <WorldCupItem
             thumbnail1={item.thumbnail1}
             thumbnail2={item.thumbnail2}
             title={item.title}
