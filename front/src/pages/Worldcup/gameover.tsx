@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FaHome, FaList } from 'react-icons/fa';
 import { Header } from '../../components';
 import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
@@ -17,10 +18,43 @@ function Gameover({ winCandidate, title }: Props): JSX.Element {
         <img src={trophyImg} alt="trophy" />
         <Title>{title} 우승!</Title>
         <Winner imageUrl={winCandidate ? winCandidate.url : ''} />
+        <ButtonContainer>
+          <Button>
+            <FaList />
+            <span>랭킹보기</span>
+          </Button>
+          <Button>
+            <FaHome />
+            <span>메인으로</span>
+          </Button>
+        </ButtonContainer>
       </Container>
     </Wrapper>
   );
 }
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 400px;
+  align-self: center;
+  cursor: pointer;
+  z-index: 1;
+`;
+
+const Button = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.primary};
+  font-size: 20px;
+  align-items: center;
+  justify-content: space-evenly;
+  ${({ theme }) => theme.fontStyle.bodyBold};
+`;
 
 const Winner = styled.div<{ imageUrl: string }>`
   width: 1000px;
