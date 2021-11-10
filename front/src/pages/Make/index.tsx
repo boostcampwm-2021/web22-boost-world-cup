@@ -48,6 +48,11 @@ function Make(): JSX.Element {
       type: 'CHANGE_IMG_INFOS',
       payload: [...imgInfos.slice(0, targetIdx), ...imgInfos.slice(targetIdx + 1)],
     });
+
+    const targetIdxInPriViews = preViews.findIndex((info: ImgInfo) => info.key === imgKey);
+    if (targetIdxInPriViews !== -1) {
+      setPreViews([...preViews.slice(0, targetIdxInPriViews), ...preViews.slice(targetIdxInPriViews + 1)]);
+    }
     axios.delete(`/api/candidates/${imgKey}`);
   };
 
