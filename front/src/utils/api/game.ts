@@ -1,20 +1,13 @@
 import axios from 'axios';
-import { gameInfoData } from '../../types/Datas';
+import { gameInfoData, candidateData } from '../../types/Datas';
 
-interface responseData {
-  result: string;
-}
-
-export const initializeGame = async (worldcupId: string, round: number): Promise<responseData> => {
-  const response = await axios.post('/api/game/start', {
-    worldcupId,
-    round,
+export const getCandidatesList = async (worldcupId: string, round: number): Promise<candidateData> => {
+  const response = await axios.get('/api/game/candidates', {
+    params: {
+      worldcupId,
+      round,
+    },
   });
-  return response.data;
-};
-
-export const getGameInfo = async (): Promise<gameInfoData> => {
-  const response = await axios.get(`/api/game/candidates`);
   return response.data;
 };
 

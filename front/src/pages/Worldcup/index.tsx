@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { setTimeout } from 'timers';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
-import { getGameInfo, sendGameResult } from '../../utils/api/game';
+import { sendGameResult } from '../../utils/api/game';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from './gameover';
 
@@ -29,13 +29,7 @@ function Worldcup(): JSX.Element {
   }, []);
 
   const getCandidates = useCallback(async () => {
-    const gameInfo = await getGameInfo();
-    const { isCompleted } = gameInfo;
-    if (isCompleted) {
-      gameover(gameInfo);
-    } else {
-      setGameInfo(gameInfo);
-    }
+    console.log('Here');
   }, []);
 
   useEffect(() => {
