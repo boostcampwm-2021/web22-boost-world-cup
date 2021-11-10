@@ -5,13 +5,22 @@ import s3 from '../config/s3';
 const candidateController = {
   remove: async (request: Request, response: Response, next: NextFunction) => {
     const { key } = request.params;
-    const buckets = ['wiziboost-image-raw', 'image-w143h160', 'image-w120h120'];
+    await s3
+      .deleteObject({
+        Bucket: process.env.NCP_BUCKET_NAME,
+        Key: key,
+      })
+      .promise();
+    const sizes = [
+      { width: 143, height: 160 },
+      { width: 120, height: 120 },
+    ];
     await Promise.all(
-      buckets.map((bucket) =>
+      sizes.map(({ width, height }) =>
         s3
           .deleteObject({
-            Bucket: bucket,
-            Key: key,
+            Bucket: `image-w${width}h${height}`,
+            Key: `${key}.webp`,
           })
           .promise(),
       ),

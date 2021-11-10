@@ -8,15 +8,14 @@ const bucketController = {
     const { contentTypes } = request.body;
     const presignedData = await Promise.all(
       contentTypes.map(async (type: string) => {
-        const rawKey = uuid();
-        const imgKey = `${rawKey}.${extension(type)}`;
+        const key = `${uuid()}.${extension(type)}`;
         const presignedURL = await s3.getSignedUrlPromise('putObject', {
           Bucket: process.env.NCP_BUCKET_NAME,
-          Key: imgKey,
+          Key: key,
           Expires: 60,
           ContentType: type,
         });
-        return { presignedURL, key: rawKey };
+        return { presignedURL, key };
       }),
     );
     response.json(presignedData);
