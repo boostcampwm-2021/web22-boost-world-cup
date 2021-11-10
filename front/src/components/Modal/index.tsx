@@ -24,9 +24,11 @@ function Modal({ open, setModal }: Props): JSX.Element {
             <Link to="/make">월드컵 만들기</Link>
           </li>
           <li>
-            <button type="button" onClick={setLogout}>
-              로그아웃
-            </button>
+            <Link to="/main">
+              <button type="button" onClick={setLogout}>
+                로그아웃
+              </button>
+            </Link>
           </li>
         </MenuBox>
       ) : (

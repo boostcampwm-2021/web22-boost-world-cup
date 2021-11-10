@@ -49,7 +49,7 @@ function Header(props: Props): JSX.Element {
               <Link to="/login">로그인</Link>
             </Login>
           )}
-          {modal && prop.type === 'searchHeader' && <Modal open={modal} setModal={setModal} />}
+          {modal && <Modal open={modal} setModal={setModal} />}
         </RightHeader>
       </MainHeader>
     </>

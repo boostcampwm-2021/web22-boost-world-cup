@@ -28,3 +28,8 @@ export const signup = async (clientId: any, nickname: string, gender: number, ag
   });
   return response.data;
 };
+
+export const logout = async () => {
+  const response = await axios.post('/api/auth/logout');
+  return response.data;
+};
