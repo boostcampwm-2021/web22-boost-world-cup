@@ -1,12 +1,13 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import CryptoJS from 'crypto-js';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from '../../components/RoundSelector';
 import { getWorldcupById } from '../../utils/api/worldcups';
 import { getCandidatesList } from '../../utils/api/game';
+import { candidateData, gameInfoData } from '../../types/Datas';
+import { objectEncryption } from '../../utils/crypto';
 
 interface Props {
   location: Location;
@@ -48,10 +49,8 @@ function Initialize({ location }: Props): JSX.Element {
     setRound(newAge);
   }, []);
 
-  const startBtnClickHandler = async () => {
-    const gameRound = 2 ** (round + 2);
-    const candidatesList = await getCandidatesList(worldcupId, gameRound);
-    const gameInfo = {
+  const makeGameInfo = (gameRound: number, candidatesList: candidateData[]): gameInfoData => {
+    return {
       isCompleted: false,
       worldcupId,
       title,
@@ -59,11 +58,22 @@ function Initialize({ location }: Props): JSX.Element {
       currentRound: 1,
       candidatesList,
       selectedCandidate: [],
-      winCandidate: {},
+      winCandidate: { id: 0, name: '', url: '' },
     };
-    const cipherText = CryptoJS.AES.encrypt(JSON.stringify(gameInfo), 'wiziboost1206').toString();
+  };
 
-    sessionStorage.setItem('_wiziboost', cipherText);
+  const startBtnClickHandler = async () => {
+    const gameRound = 2 ** (round + 2);
+    const candidatesList = await getCandidatesList(worldcupId, gameRound);
+    const gameInfo = makeGameInfo(gameRound, candidatesList);
+
+    const secretKey = process.env.REACT_APP_SECRET_KEY;
+    if (secretKey) {
+      sessionStorage.clear();
+      const cipherText = objectEncryption(gameInfo);
+      sessionStorage.setItem('_wiziboost', cipherText);
+      setReady(true);
+    }
   };
   return ready ? (
     <Redirect to="/worldcup" />

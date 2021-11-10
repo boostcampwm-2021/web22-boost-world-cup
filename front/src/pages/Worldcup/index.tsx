@@ -6,6 +6,7 @@ import versusImg from '../../images/versus.png';
 import { sendGameResult } from '../../utils/api/game';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from './gameover';
+import { objectDecryption } from '../../utils/crypto';
 
 function Worldcup(): JSX.Element {
   const [pick, setPick] = useState(0);
@@ -18,23 +19,34 @@ function Worldcup(): JSX.Element {
   const [rightCandidate, setRightCandidate] = useState<candidateData>();
   const [winCandidate, setWinCandidate] = useState<candidateData>();
 
-  const setGameInfo = useCallback((gameInfo: gameInfoData) => {
-    const { round, currentRound, candidate1, candidate2, title } = gameInfo;
-    setRound(round);
-    setCurRound(currentRound);
-    setTitle(title);
-    setLeftCandidate(candidate1);
-    setRightCandidate(candidate2);
-    setPick(0);
+  const setGameInfo = useCallback(async (gameInfo: gameInfoData | undefined) => {
+    if (gameInfo) {
+      const { isCompleted } = gameInfo;
+      if (isCompleted) {
+        return;
+      }
+      const { title, round, currentRound, candidatesList } = gameInfo;
+      setTitle(title);
+      setRound(round);
+      setCurRound(currentRound);
+      candidatesList.sort(() => Math.random() - 0.5);
+      setLeftCandidate(candidatesList[0]);
+      setRightCandidate(candidatesList[1]);
+    }
   }, []);
 
-  const getCandidates = useCallback(async () => {
-    console.log('Here');
+  // eslint-disable-next-line consistent-return
+  const getGameInfo = useCallback((): gameInfoData | undefined => {
+    const decryptedData = sessionStorage.getItem('_wiziboost');
+    if (decryptedData) {
+      return objectDecryption(decryptedData);
+    }
   }, []);
 
   useEffect(() => {
-    getCandidates();
-  }, [getCandidates]);
+    const gameInfo = getGameInfo();
+    setGameInfo(gameInfo);
+  }, []);
 
   const gameover = useCallback((gameInfo: gameInfoData) => {
     const { winCandidate, title, worldcupId } = gameInfo;
@@ -51,21 +63,6 @@ function Worldcup(): JSX.Element {
     if (value) {
       setPick(parseInt(value, 10));
     }
-    setTimeout(async () => {
-      let winId;
-      let loseId;
-      if (value === '1') {
-        winId = leftCandidate?.id;
-        loseId = rightCandidate?.id;
-      } else {
-        winId = rightCandidate?.id;
-        loseId = leftCandidate?.id;
-      }
-      const gameInfo = await sendGameResult(winId, loseId);
-      const { isCompleted } = gameInfo;
-      // eslint-disable-next-line no-unused-expressions
-      isCompleted ? gameover(gameInfo) : setGameInfo(gameInfo);
-    }, 1500);
   };
 
   const makeRoundText = () => {

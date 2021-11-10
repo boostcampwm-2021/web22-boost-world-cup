@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { gameInfoData, candidateData } from '../../types/Datas';
 
-export const getCandidatesList = async (worldcupId: string, round: number): Promise<candidateData> => {
+export const getCandidatesList = async (worldcupId: string, round: number): Promise<candidateData[]> => {
   const response = await axios.get('/api/game/candidates', {
     params: {
       worldcupId,

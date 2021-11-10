@@ -36,7 +36,7 @@ export interface gameInfoData {
   title: string;
   round: number;
   currentRound: number;
-  candidate1: candidateData;
-  candidate2: candidateData;
+  candidatesList: candidateData[];
+  selectedCandidate: candidateData[];
   winCandidate: candidateData;
 }
