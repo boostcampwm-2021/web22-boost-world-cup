@@ -11,7 +11,6 @@ const worldcupController = {
       worldcups = await worldcupService.findBySearchWord(offset, limit, search);
     } else {
       worldcups = await worldcupService.findByKeyword(offset, limit, keyword);
-
     }
     response.json({
       result: 'success',
@@ -24,14 +23,7 @@ const worldcupController = {
 
   one: async (request: Request, response: Response, next: NextFunction) => {
     const worldcup = await worldcupService.findById(request.params.id);
-    response.json({
-      result: 'success',
-      message: null,
-      data: {
-        worldcup,
-      },
-    });
-
+    response.json(worldcup);
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {
