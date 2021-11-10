@@ -5,53 +5,12 @@ import * as worldcupService from '../services/worldcupService';
 import cookieConfig from '../config/cookie';
 
 const gameController = {
-  start: async (request: Request, response: Response, next: NextFunction) => {
-    const { worldcupId, round } = request.body;
-    const gameRound = 2 ** (round + 2);
-    const candidateList = await candidateService.getRandomCandidateList(worldcupId, gameRound);
-    const title = await worldcupService.getWorldcupTitle(worldcupId);
-    if (request.cookies.gameInfo) {
-      response.clearCookie('gameInfo');
-    }
-    const gameInfo = {
-      isCompleted: false,
-      worldcupId,
-      title,
-      round: gameRound / 2,
-      currentRound: 1,
-      candidateList,
-      selectedCandidate: [],
-      winCandidate: {},
-    };
-    response.cookie('gameInfo', gameInfo, cookieConfig);
-    response.json({ result: 'success' });
-  },
-
-  getCandidate: async (request: Request, response: Response, next: NextFunction) => {
+  getCandidates: async (request: Request, response: Response, next: NextFunction) => {
     const {
-      cookies: {
-        gameInfo: { isCompleted, worldcupId, title, round, currentRound, candidateList, winCandidate },
-      },
+      query: { worldcupId, round },
     } = request;
-
-    if (isCompleted) {
-      response.json({
-        isCompleted,
-        worldcupId,
-        title,
-        winCandidate,
-      });
-      return;
-    }
-    candidateList.sort(() => Math.random() - 0.5);
-    response.json({
-      isCompleted,
-      title,
-      round,
-      currentRound,
-      candidate1: candidateList[0],
-      candidate2: candidateList[1],
-    });
+    const candidateList = await candidateService.getRandomCandidateList(Number(worldcupId), Number(round));
+    response.json(candidateList);
   },
 
   result: async (request: Request, response: Response, next: NextFunction) => {
