@@ -5,14 +5,15 @@ import { candidateData, gameInfoData } from '../../types/Datas';
 
 interface Props {
   winCandidate: candidateData | undefined;
+  title: string;
 }
 
-function Gameover({ winCandidate }: Props): JSX.Element {
+function Gameover({ winCandidate, title }: Props): JSX.Element {
   return (
     <Wrapper>
       <Header type="header" isLogin />
       <Container>
-        <Title>아름다운 연예인 월드컵 우승!</Title>
+        <Title>{title} 우승!</Title>
       </Container>
     </Wrapper>
   );

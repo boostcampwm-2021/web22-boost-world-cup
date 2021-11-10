@@ -29,7 +29,12 @@ function Worldcup(): JSX.Element {
 
   const getCandidates = useCallback(async () => {
     const gameInfo = await getGameInfo();
-    setGameInfo(gameInfo);
+    const { isCompleted } = gameInfo;
+    if (isCompleted) {
+      gameover(gameInfo);
+    } else {
+      setGameInfo(gameInfo);
+    }
   }, []);
 
   useEffect(() => {
@@ -37,8 +42,9 @@ function Worldcup(): JSX.Element {
   }, [getCandidates]);
 
   const gameover = useCallback((gameInfo: gameInfoData) => {
-    const { winCandidate } = gameInfo;
+    const { winCandidate, title } = gameInfo;
     setCompleted(true);
+    setTitle(title);
     setWinCandidate(winCandidate);
   }, []);
 
@@ -103,7 +109,7 @@ function Worldcup(): JSX.Element {
       </Container>
     </Wrapper>
   ) : (
-    <Gameover winCandidate={winCandidate} />
+    <Gameover winCandidate={winCandidate} title={title} />
   );
 }
 
