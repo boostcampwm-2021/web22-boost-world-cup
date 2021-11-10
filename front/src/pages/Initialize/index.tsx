@@ -57,7 +57,7 @@ function Initialize({ location }: Props): JSX.Element {
     <Redirect to="/worldcup" />
   ) : (
     <>
-      {/* <Header type="header" isLogin /> */}
+      <Header type="header" />
       <Container>
         <InfoContainer>
           <img src={logo} alt="logo" width="220px" height="200px" />

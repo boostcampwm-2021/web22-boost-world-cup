@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { setTimeout } from 'timers';
 import { Header } from '../../components';
@@ -64,7 +64,7 @@ function Worldcup(): JSX.Element {
 
   return (
     <Wrapper>
-      {/* <Header type="header" isLogin /> */}
+      <Header type="header" />
       <Container>
         <Title>
           {title} {curRound}/{round}

@@ -10,12 +10,9 @@ import SearchBar from '../SearchBar';
 
 interface headerProps {
   type: 'header';
-  // isLogin: boolean;
 }
 interface searchHeaderProps {
   type: 'searchHeader';
-  // isLogin: boolean;
-  // setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: React.MouseEventHandler<HTMLButtonElement>;
   onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
   searchWord: string;
@@ -32,7 +29,9 @@ function Header(props: Props): JSX.Element {
     <>
       {modal && <Overlay onClick={() => setModal(false)} />}
       <MainHeader>
-        <Logo>world cup</Logo>
+        <Link to="/main">
+          <Logo>world cup</Logo>
+        </Link>
         <RightHeader>
           {prop.type === 'searchHeader' ? (
             <SearchBar
