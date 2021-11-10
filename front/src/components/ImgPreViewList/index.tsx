@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import ImgInput from '../ImgInput';
 import ImgPreView from '../ImgPreView';

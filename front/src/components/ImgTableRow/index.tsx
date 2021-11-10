@@ -46,6 +46,10 @@ const Container = styled.div`
   height: 150px;
   display: flex;
   border-bottom: 1px solid ${({ theme }) => theme.color.black};
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: #f5f5f5;
+  }
 `;
 
 const RowItem = styled.div`
@@ -63,6 +67,11 @@ const DeleteBtn = styled.button`
   border: 1px solid #ff0000;
   color: #ff0000;
   ${({ theme }) => theme.fontStyle.h3};
+  transition: background-color 0.3s, color 0.3s;
+  &:hover {
+    background-color: #ff0000;
+    color: ${({ theme }) => theme.color.white};
+  }
 `;
 
 export default ImgTableRow;

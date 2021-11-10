@@ -30,8 +30,12 @@ const Input = styled.input`
   background-color: ${({ theme }) => theme.color.white};
   border: 1px solid ${({ theme }) => theme.color.black};
   ${({ theme }) => theme.fontStyle.h3};
+  transition: border-color 0.3s;
   &::placeholder {
     color: ${({ theme }) => theme.color.gray[1]};
+  }
+  &:focus {
+    border-color: ${({ theme }) => theme.color.pink};
   }
 `;
 
