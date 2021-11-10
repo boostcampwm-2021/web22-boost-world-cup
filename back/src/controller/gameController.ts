@@ -15,6 +15,7 @@ const gameController = {
     }
     const gameInfo = {
       isCompleted: false,
+      worldcupId,
       title,
       round: gameRound / 2,
       currentRound: 1,
@@ -29,13 +30,14 @@ const gameController = {
   getCandidate: async (request: Request, response: Response, next: NextFunction) => {
     const {
       cookies: {
-        gameInfo: { isCompleted, title, round, currentRound, candidateList, winCandidate },
+        gameInfo: { isCompleted, worldcupId, title, round, currentRound, candidateList, winCandidate },
       },
     } = request;
 
     if (isCompleted) {
       response.json({
         isCompleted,
+        worldcupId,
         title,
         winCandidate,
       });
@@ -73,6 +75,7 @@ const gameController = {
       response.cookie('gameInfo', newGameInfo, cookieConfig);
       response.json({
         isCompleted: true,
+        worldcupId: gameInfo.worldcupId,
         winCandidate,
         title: gameInfo.title,
       });
