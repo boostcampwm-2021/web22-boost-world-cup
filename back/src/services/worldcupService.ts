@@ -25,15 +25,31 @@ export const findFromPage = async (offset, limit) => {
     take: Number(limit),
   });
 };
-
-export const findByKeyword = async (offset, limit, keyword) => {
+export const findBySearchWord = async (offset, limit, searchWord) => {
   const worldcupRepository = getRepository(Worldcup);
   return await worldcupRepository.find({
     select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
-    where: { isTemp: false, title: Like(`%${keyword}%`) },
+    where: { isTemp: false, title: Like(`%${searchWord}%`) },
     skip: Number(offset),
     take: Number(limit),
   });
+};
+
+export const findByKeyword = async (offset, limit, keyword) => {
+  return await getRepository(Worldcup)
+    .createQueryBuilder('worldcup')
+    .select([
+      'worldcup.id AS id',
+      'worldcup.title AS title',
+      'worldcup.thumbnail1 AS thumbnail1',
+      'worldcup.thumbnail2 AS thumbnail2',
+      'worldcup.description AS description',
+    ])
+    .innerJoin('worldcup.keywords', 'keywords')
+    .where('keywords.name= :name', { name: keyword })
+    .offset(Number(offset))
+    .limit(Number(limit))
+    .execute();
 };
 
 export const findById = async (id) => {
@@ -51,11 +67,6 @@ export const removeById = async (id) => {
   const worldcupToRemove = await findById(id);
   await worldcupRepository.remove(worldcupToRemove);
   return await worldcupRepository.find();
-};
-
-
-export const findByKeyword = async (keyword: string) => {
-  const worldcupRepository = getRepository(Worldcup);
 };
 
 export const getWorldcupTitle = async (id: number) => {

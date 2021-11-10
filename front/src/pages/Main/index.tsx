@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import WorldCupList from '../../components/WorldcupList';
 import Header from '../../components/Header';
@@ -6,21 +6,22 @@ import Keywords from '../../components/Keywords';
 
 function Main(): JSX.Element {
   const [isLogin, setIsLogin] = useState(true);
+  const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
-  const [clickTag, setClickTag] = useState('');
+  const [selectedTag, setSelectedTag] = useState('');
   const [offset, setOffset] = useState(0);
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
+    setSearchWord(inputWord);
     setOffset(0);
-    setClickTag(searchWord);
-    setSearchWord('');
+    setInputWord('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchWord(event.target.value);
+    setInputWord(event.target.value);
   };
   const onClickTag = (keyword: string) => {
     setOffset(0);
-    setClickTag(keyword);
+    setSelectedTag(keyword);
   };
 
   return (
@@ -31,10 +32,10 @@ function Main(): JSX.Element {
         setIsLogin={setIsLogin}
         onSubmit={onSubmit}
         onSearchWordChange={onSearchWordChange}
-        searchWord={searchWord}
+        searchWord={inputWord}
       />
       <Keywords onClickTag={onClickTag} />
-      <WorldCupList offset={offset} setOffset={setOffset} clickTag={clickTag} />
+      <WorldCupList offset={offset} setOffset={setOffset} selectedTag={selectedTag} searchWord={searchWord} />
     </Wrapper>
   );
 }

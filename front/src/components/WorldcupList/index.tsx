@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import CardItem from './WorldCupItem';
+import WorldCupItem from './WorldCupItem';
 import Loader from './Loader';
-import useInfiniteScroll from '../../utils/hooks/useInfinityScroll';
-import { getWorldcupList } from '../../utils/api/worldcups';
+import { getWorldcupList, getWorldcupListBySearch, getWorldcupListByKeyword } from '../../utils/api/worldcups';
 
 interface WorldcupType {
   id: number;
@@ -15,43 +14,67 @@ interface WorldcupType {
 interface Props {
   offset: number;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
-  clickTag: string;
+  selectedTag: string;
+  searchWord: string;
 }
-function WorldcupList({ clickTag, offset, setOffset }: Props): JSX.Element {
-  const [items, setItems] = useState<WorldcupType[]>([]);
-  const [target, setTarget] = useState<HTMLDivElement | null>(null);
-  const [loading, setLoading] = useState(false);
+function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JSX.Element {
   const [isClickMore, setIsClickMore] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState<WorldcupType[]>([]);
+  const target = useRef<HTMLDivElement | null>(null);
+  const isMounted = useRef(false);
+  const observer = useRef<IntersectionObserver | null>(null);
   const threshold = 0.4;
+  const limit = 8;
   const onClickMoreButton = () => {
-    setIsClickMore(true);
+    setIsClickMore(!isClickMore);
   };
   const fetchData = async () => {
-    setLoading(true);
-    const newItems =
-      clickTag === '' ? await getWorldcupList({ offset, limit: 8 }) : await getWorldcupList({ offset, limit: 8 });
-    setItems(offset === 0 ? [...newItems] : [...items, ...newItems]);
-    setOffset(offset + 8);
-    setLoading(false);
+    let newItems;
+    if (searchWord) newItems = await getWorldcupListBySearch({ offset, limit, search: searchWord });
+    else if (selectedTag) newItems = await getWorldcupListByKeyword({ offset, limit, keyword: selectedTag });
+    else newItems = await getWorldcupList({ offset, limit });
+    if (newItems.length === 0 && observer.current) {
+      observer.current.disconnect();
+      setLoading(false);
+      return;
+    }
+    if (offset === 0) setItems([...newItems]);
+    else setItems([...items, ...newItems]);
   };
+  useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true;
+    } else {
+      setOffset(offset + 8);
+    }
+    setLoading(false);
+  }, [items.length, searchWord, selectedTag]);
 
-  const onIntersect = async ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+  const onIntersect = ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     if (entry.isIntersecting && !loading) {
+      setLoading(true);
+      fetchData();
       observer.unobserve(entry.target);
-      await fetchData();
-      observer.observe(entry.target);
     }
   };
-
   useEffect(() => {
-    fetchData();
-  }, [clickTag]);
-  useInfiniteScroll(target, onIntersect, threshold, isClickMore);
+    if (isClickMore && target.current && observer.current) {
+      observer.current = new IntersectionObserver(onIntersect, { threshold });
+      observer.current.observe(target.current);
+    }
+  }, [offset, isClickMore]);
+  useEffect(() => {
+    if (offset === 0) {
+      fetchData();
+      observer.current = new IntersectionObserver(onIntersect, { threshold });
+    }
+  }, [offset]);
   return (
     <>
       <Container>
         {items.map((item) => (
-          <CardItem
+          <WorldCupItem
             id={item.id}
             thumbnail1={item.thumbnail1}
             thumbnail2={item.thumbnail2}
@@ -67,7 +90,7 @@ function WorldcupList({ clickTag, offset, setOffset }: Props): JSX.Element {
       ) : (
         ''
       )}
-      <div ref={setTarget}>{loading && <Loader />}</div>
+      <div ref={target}>{loading && <Loader />}</div>
     </>
   );
 }
