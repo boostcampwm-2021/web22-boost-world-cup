@@ -30,6 +30,6 @@ export const signup = async (clientId: any, nickname: string, gender: number, ag
 };
 
 export const logout = async () => {
-  const response = await axios.post('/api/auth/logout');
+  const response = await axios.get('/api/auth/logout');
   return response.data;
 };

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { loginState } from '../../recoil/atom';
+import { logout } from '../../utils/api/auth';
 
 interface Props {
   open: boolean;
@@ -10,9 +11,11 @@ interface Props {
 }
 function Modal({ open, setModal }: Props): JSX.Element {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const setLogout = () => {
+  const setLogout = async () => {
     setModal(false);
-    setIsLoggedIn(false);
+    const response = await logout();
+    console.log(response.result);
+    if (response.result) setIsLoggedIn(false);
   };
   return (
     <>
