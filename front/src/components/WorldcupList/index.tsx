@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import WorldCupItem from './WorldCupItem';
 import Loader from './Loader';
+import CopyLinkModal from '../CopyLinkModal';
 import { getWorldcupList, getWorldcupListBySearch, getWorldcupListByKeyword } from '../../utils/api/worldcups';
 
 interface WorldcupType {
@@ -21,9 +22,11 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
   const [isClickMore, setIsClickMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<WorldcupType[]>([]);
+  const [isModalOn, setIsModalOn] = useState(false);
   const target = useRef<HTMLDivElement | null>(null);
   const isMounted = useRef(false);
   const observer = useRef<IntersectionObserver | null>(null);
+  const copyLinkInput = useRef<HTMLInputElement | null>(null);
   const threshold = 0.4;
   const limit = 8;
   const onClickMoreButton = () => {
@@ -58,6 +61,19 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
       observer.unobserve(entry.target);
     }
   };
+
+  const shareHandler = (id: number) => {
+    if (copyLinkInput.current !== null) {
+      setIsModalOn(true);
+      copyLinkInput.current.value = `${window.location.origin}/initialize/${id}`;
+      copyLinkInput.current?.select();
+      document.execCommand('copy');
+      setTimeout(() => {
+        setIsModalOn(false);
+      }, 1000);
+    }
+  };
+
   useEffect(() => {
     if (isClickMore && target.current && observer.current) {
       observer.current = new IntersectionObserver(onIntersect, { threshold });
@@ -73,6 +89,7 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
   return (
     <>
       <Container>
+        <CopyLinkInput value="0" ref={copyLinkInput} />
         {items.map((item) => (
           <WorldCupItem
             id={item.id}
@@ -80,6 +97,7 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
             thumbnail2={item.thumbnail2}
             title={item.title}
             desc={item.description}
+            shareHandler={shareHandler}
           />
         ))}
       </Container>
@@ -91,11 +109,13 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
         ''
       )}
       <div ref={target}>{loading && <Loader />}</div>
+      {isModalOn && <CopyLinkModal />}
     </>
   );
 }
 
 const Container = styled.div`
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px 10px;
@@ -120,6 +140,11 @@ const Title = styled.p`
     background-color: ${({ theme }) => theme.color.pink};
     color: ${({ theme }) => theme.color.black};
   }
+`;
+
+const CopyLinkInput = styled.input`
+  position: absolute;
+  left: -9999px;
 `;
 
 export default WorldcupList;

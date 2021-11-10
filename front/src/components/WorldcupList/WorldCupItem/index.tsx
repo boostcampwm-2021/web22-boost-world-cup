@@ -9,8 +9,10 @@ interface Props {
   thumbnail2: string;
   title: string;
   desc: string;
+  shareHandler: (id: number) => void;
 }
-function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
+
+function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc, shareHandler }: Props): JSX.Element {
   return (
     <Item>
       <Thumbnail>
@@ -30,7 +32,7 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
           <FaList />
           <span>랭킹보기</span>
         </Ranking>
-        <Share>
+        <Share onClick={() => shareHandler(id)}>
           <FaShare />
           <span>공유하기</span>
         </Share>
