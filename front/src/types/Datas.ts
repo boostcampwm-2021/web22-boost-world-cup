@@ -32,6 +32,7 @@ export interface candidateData {
 
 export interface gameInfoData {
   isCompleted: boolean;
+  worldcupId: string;
   title: string;
   round: number;
   currentRound: number;
