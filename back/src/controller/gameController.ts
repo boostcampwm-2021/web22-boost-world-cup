@@ -14,11 +14,13 @@ const gameController = {
       response.clearCookie('gameInfo');
     }
     const gameInfo = {
+      isCompleted: false,
       title,
       round: gameRound / 2,
       currentRound: 1,
       candidateList,
       selectedCandidate: [],
+      winCandidate: {},
     };
     response.cookie('gameInfo', gameInfo, cookieConfig);
     response.json({ result: 'success' });
@@ -27,11 +29,27 @@ const gameController = {
   getCandidate: async (request: Request, response: Response, next: NextFunction) => {
     const {
       cookies: {
-        gameInfo: { title, round, currentRound, candidateList },
+        gameInfo: { isCompleted, title, round, currentRound, candidateList, winCandidate },
       },
     } = request;
+
+    if (isCompleted) {
+      response.json({
+        isCompleted,
+        title,
+        winCandidate,
+      });
+      return;
+    }
     candidateList.sort(() => Math.random() - 0.5);
-    response.json({ title, round, currentRound, candidate1: candidateList[0], candidate2: candidateList[1] });
+    response.json({
+      isCompleted,
+      title,
+      round,
+      currentRound,
+      candidate1: candidateList[0],
+      candidate2: candidateList[1],
+    });
   },
 
   result: async (request: Request, response: Response, next: NextFunction) => {
@@ -43,39 +61,42 @@ const gameController = {
 
     const winCandidate = gameInfo.candidateList.find((candidate) => candidate.id === winId);
 
+    const remainCandidateList = gameInfo.candidateList.filter(
+      (candidate) => candidate.id !== winId && candidate.id !== loseId,
+    );
+    newGameInfo.candidateList = [...remainCandidateList];
+    newGameInfo.selectedCandidate = [...gameInfo.selectedCandidate, winCandidate];
+
     if (newGameInfo.round === 1) {
+      newGameInfo.isCompleted = true;
+      newGameInfo.winCandidate = winCandidate;
+      response.cookie('gameInfo', newGameInfo, cookieConfig);
       response.json({
         isCompleted: true,
         winCandidate,
         title: gameInfo.title,
       });
-    } else {
-      const remainCandidateList = gameInfo.candidateList.filter(
-        (candidate) => candidate.id !== winId && candidate.id !== loseId,
-      );
-      newGameInfo.candidateList = [...remainCandidateList];
-      newGameInfo.selectedCandidate = [...gameInfo.selectedCandidate, winCandidate];
-
-      if (newGameInfo.currentRound === newGameInfo.round) {
-        newGameInfo.round = newGameInfo.round / 2;
-        newGameInfo.currentRound = 1;
-        newGameInfo.candidateList = [...newGameInfo.selectedCandidate];
-        newGameInfo.selectedCandidate = [];
-      } else {
-        newGameInfo.currentRound = gameInfo.currentRound + 1;
-      }
-      response.cookie('gameInfo', newGameInfo, cookieConfig);
-      newGameInfo.candidateList.sort(() => Math.random() - 0.5);
-      const { title, round, currentRound, candidateList } = newGameInfo;
-      response.json({
-        isCompleted: false,
-        title,
-        round,
-        currentRound,
-        candidate1: candidateList[0],
-        candidate2: candidateList[1],
-      });
+      return;
     }
+    if (newGameInfo.currentRound === newGameInfo.round) {
+      newGameInfo.round = newGameInfo.round / 2;
+      newGameInfo.currentRound = 1;
+      newGameInfo.candidateList = [...newGameInfo.selectedCandidate];
+      newGameInfo.selectedCandidate = [];
+    } else {
+      newGameInfo.currentRound = gameInfo.currentRound + 1;
+    }
+    response.cookie('gameInfo', newGameInfo, cookieConfig);
+    newGameInfo.candidateList.sort(() => Math.random() - 0.5);
+    const { title, round, currentRound, candidateList } = newGameInfo;
+    response.json({
+      isCompleted: false,
+      title,
+      round,
+      currentRound,
+      candidate1: candidateList[0],
+      candidate2: candidateList[1],
+    });
   },
 };
 
