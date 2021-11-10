@@ -45,14 +45,14 @@
 |  게임 초기  | /initialize |
 | 월드컵 진행 |  /worldcup  |
 
-# 👁‍🗨 기술스택
+## 👁‍🗨 기술스택
 
-| division        | stack                                                                                                                                                                                                                                                          |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Web             | ![Babel](https://img.shields.io/badge/babel-v7.16.1-yellow?logo=babel) ![Webpack](https://img.shields.io/badge/webpack-v5.61.0-skyblue?logo=webpack)                                                                                                           |
-| Front-end       | ![react](https://img.shields.io/badge/React-v17.0.2-blue?logo=react) ![styled-components](https://img.shields.io/badge/StyledComponents-v5.3.3-pink?logo=styled-components) ![TypeScript](https://img.shields.io/badge/TypeScript-v4.1.2-blue?logo=TypeScript) |
-| Back-end        | ![NodeJS](https://img.shields.io/badge/node.js-v14.17.3-green?logo=node.js) ![Express](https://img.shields.io/badge/Express-v4.15.4-9cf?logo=express) ![TypeScript](https://img.shields.io/badge/TypeScript-v4.1.2-blue?logo=TypeScript)                       |
-| Database        | ![Mysql](https://img.shields.io/badge/Mysql-v8.0.27-blue?logo=mysql) ![typeorm](https://img.shields.io/badge/TypeORM-v0.2.38-white?logo=typeorm)                                                                                                               |
-| Production      | ![NginX](https://img.shields.io/badge/NginX-v1.20.0-green?logo=NginX) ![Naver Cloud Platform](https://img.shields.io/badge/NCP-compact_server-9cf&color=brightgreen) ![Git](https://img.shields.io/badge/GitHub_Actions-purple?logo=github)                    |
-| Code Management | ![Git](https://img.shields.io/badge/Git-v2.27.0-red?logo=Git) ![github](https://img.shields.io/badge/GitHub-gray?logo=github)                                                                                                                                  |
-| Formatting      | ![eslint](https://img.shields.io/badge/eslint-v7.32.0-purple?logo=eslint) ![prettier](https://img.shields.io/badge/prettier-v2.4.1-yellow?logo=prettier)                                                                                                       |
+|    division     |                                                                                                                    stack                                                                                                                    |
+| :-------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|       Web       |                                                      ![Babel](https://img.shields.io/badge/babel-yellow?logo=babel) ![Webpack](https://img.shields.io/badge/webpack-blue?logo=webpack)                                                      |
+|    Front-end    | ![react](https://img.shields.io/badge/React-blue?logo=react) ![styled-components](https://img.shields.io/badge/StyledComponents-pink?logo=styled-components) ![TypeScript](https://img.shields.io/badge/TypeScript-skyblue?logo=TypeScript) |
+|    Back-end     |             ![NodeJS](https://img.shields.io/badge/node.js-green?logo=node.js) ![Express](https://img.shields.io/badge/Express-632?logo=express) ![TypeScript](https://img.shields.io/badge/TypeScript-skyblue?logo=TypeScript)             |
+|    Database     |                                                     ![Mysql](https://img.shields.io/badge/Mysql-yellow?logo=mysql) ![typeorm](https://img.shields.io/badge/TypeORM-white?logo=typeorm)                                                      |
+|   Production    |     ![NginX](https://img.shields.io/badge/NginX-green?logo=NginX) ![Naver Cloud Platform](https://img.shields.io/badge/NCP-compact_server-9cf&color=brightgreen) ![Git](https://img.shields.io/badge/GitHub_Actions-purple?logo=github)     |
+| Code Management |                                                           ![Git](https://img.shields.io/badge/Git-white?logo=Git) ![github](https://img.shields.io/badge/GitHub-gray?logo=github)                                                           |
+|   Formatting    |                                                  ![eslint](https://img.shields.io/badge/eslint-purple?logo=eslint) ![prettier](https://img.shields.io/badge/prettier-yellow?logo=prettier)                                                  |
