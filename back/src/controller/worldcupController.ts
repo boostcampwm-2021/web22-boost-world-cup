@@ -5,13 +5,18 @@ const worldcupController = {
   all: async (request: Request, response: Response, next: NextFunction) => {
     const { offset, limit, search } = request.query;
     let worldcups;
-    if (offset && limit) {
+    if(!search){
       worldcups = await worldcupService.findFromPage(offset, limit);
+    }else{
+      worldcups = await worldcupService.findByKeyword(offset,limit, search);
     }
-    if (search) {
-      worldcups = await worldcupService.findByKeyword(String(search));
-    }
-    response.json(worldcups);
+    response.json({
+      result: 'success',
+      message: null,
+      data: {
+        worldcup: worldcups,
+      },
+    });
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {

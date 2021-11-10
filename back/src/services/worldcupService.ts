@@ -1,5 +1,5 @@
 import { Worldcup } from '../entity/Worldcup';
-import { getRepository } from 'typeorm';
+import { getRepository, Like } from 'typeorm';
 
 export const findAll = async () => {
   const worldcupRepository = getRepository(Worldcup);
@@ -18,20 +18,22 @@ export const findAll = async () => {
 
 export const findFromPage = async (offset, limit) => {
   const worldcupRepository = getRepository(Worldcup);
-  const worldcups = await worldcupRepository.find({
+  return await worldcupRepository.find({
     select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
     where: { isTemp: false },
     skip: Number(offset),
     take: Number(limit),
   });
+};
 
-  return {
-    result: 'success',
-    message: null,
-    data: {
-      worldcup: worldcups,
-    },
-  };
+export const findByKeyword = async (offset, limit, keyword) => {
+  const worldcupRepository = getRepository(Worldcup);
+  return await worldcupRepository.find({
+    select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
+    where: { isTemp: false, title: Like(`%${keyword}%`) },
+    skip: Number(offset),
+    take: Number(limit),
+  });
 };
 
 export const findById = async (id) => {
@@ -51,6 +53,7 @@ export const removeById = async (id) => {
   return await worldcupRepository.find();
 };
 
+
 export const findByKeyword = async (keyword: string) => {
   const worldcupRepository = getRepository(Worldcup);
 };
@@ -60,3 +63,4 @@ export const getWorldcupTitle = async (id: number) => {
   const worldcup = await worldcupRepository.findOne(id, { select: ['title'] });
   return worldcup.title;
 };
+
