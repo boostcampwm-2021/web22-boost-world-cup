@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { Link, useHistory } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { loginState } from '../../recoil/atom';
 import { logout } from '../../utils/api/auth';
@@ -10,12 +10,15 @@ interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 function Modal({ open, setModal }: Props): JSX.Element {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  const setIsLoggedIn = useSetRecoilState(loginState);
+  const history = useHistory();
   const setLogout = async () => {
     setModal(false);
     const response = await logout();
-    console.log(response.result);
-    if (response.result) setIsLoggedIn(false);
+    if (response.result) {
+      setIsLoggedIn(false);
+      history.push('/main');
+    }
   };
   return (
     <>
@@ -27,11 +30,9 @@ function Modal({ open, setModal }: Props): JSX.Element {
             <Link to="/make">월드컵 만들기</Link>
           </li>
           <li>
-            <Link to="/main">
-              <button type="button" onClick={setLogout}>
-                로그아웃
-              </button>
-            </Link>
+            <button type="button" onClick={setLogout}>
+              로그아웃
+            </button>
           </li>
         </MenuBox>
       ) : (

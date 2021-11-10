@@ -48,9 +48,7 @@ const authController = {
   },
   logout: async (request: Request, response: Response, next: NextFunction) => {
     try {
-      request.session.destroy((error) => {
-        console.log(error);
-      });
+      request.session.destroy(() => {});
       response.clearCookie('sid');
       response.json({
         result: 'success',

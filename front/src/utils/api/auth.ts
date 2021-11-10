@@ -29,7 +29,7 @@ export const signup = async (clientId: any, nickname: string, gender: number, ag
   return response.data;
 };
 
-export const logout = async () => {
+export const logout = async (): Promise<ServerResponse> => {
   const response = await axios.get('/api/auth/logout');
   return response.data;
 };
