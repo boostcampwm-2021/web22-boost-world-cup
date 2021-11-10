@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import ImgTableRow from '../ImgTableRow';
 import StoreBtns from '../StoreBtns';
+import Pagination from '../ImgTablePagination';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {
@@ -10,19 +11,56 @@ interface Props {
   getOnImgNameChange: (imgKey: string) => React.ChangeEventHandler<HTMLInputElement>;
   getOnImgChange: (preImgKey: string) => React.ChangeEventHandler<HTMLInputElement>;
   onStore: React.MouseEventHandler<HTMLButtonElement>;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function ImgTable({ imgInfos, onDeleteImg, getOnImgNameChange, getOnImgChange, onStore }: Props): JSX.Element {
-  const rows = imgInfos.map((info, idx) => (
-    <ImgTableRow
-      onDelete={onDeleteImg}
-      imgInfo={info}
-      key={info.key}
-      getOnImgNameChange={getOnImgNameChange}
-      getOnImgChange={getOnImgChange}
-      num={idx + 1}
-    />
-  ));
+function ImgTable({
+  imgInfos,
+  onDeleteImg,
+  getOnImgNameChange,
+  getOnImgChange,
+  onStore,
+  currentPage,
+  setCurrentPage,
+}: Props): JSX.Element {
+  const ELEMENT_CNT_PER_PAGE = 8;
+  const lastPage = Math.ceil(imgInfos.length / ELEMENT_CNT_PER_PAGE);
+
+  const onPageChange: React.MouseEventHandler<HTMLButtonElement> = ({ currentTarget }) => {
+    const nextPage = Number(currentTarget.innerText);
+    if (currentPage === nextPage) return;
+    setCurrentPage(nextPage);
+  };
+
+  const onPreBtnClick: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if (currentPage === 1) return;
+    setCurrentPage(currentPage - 1);
+  };
+
+  const onNextBtnClick: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if (currentPage === lastPage) return;
+    setCurrentPage(currentPage + 1);
+  };
+
+  const startIdx = ELEMENT_CNT_PER_PAGE * (currentPage - 1);
+  const rows = imgInfos
+    .slice(startIdx, startIdx + 8)
+    .map((info, idx) => (
+      <ImgTableRow
+        onDelete={onDeleteImg}
+        imgInfo={info}
+        key={info.key}
+        getOnImgNameChange={getOnImgNameChange}
+        getOnImgChange={getOnImgChange}
+        num={startIdx + idx + 1}
+      />
+    ));
+
+  useEffect(() => {
+    if (currentPage > lastPage && lastPage >= 1) setCurrentPage(lastPage);
+  }, [imgInfos.length]);
+
   return (
     <Container>
       <TitleRow>이미지 이름 수정/삭제</TitleRow>
@@ -34,7 +72,7 @@ function ImgTable({ imgInfos, onDeleteImg, getOnImgNameChange, getOnImgChange, o
         <TableHeaderItem style={{ width: '450px' }}>삭제</TableHeaderItem>
       </TableHeader>
       <RowsWrapper>
-        {rows.length ? (
+        {imgInfos.length ? (
           rows
         ) : (
           <Placeholder>
@@ -44,7 +82,16 @@ function ImgTable({ imgInfos, onDeleteImg, getOnImgNameChange, getOnImgChange, o
           </Placeholder>
         )}
       </RowsWrapper>
-      <StoreBtns onStore={onStore} />
+      <Footer>
+        <Pagination
+          pageCnt={lastPage}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+          onPreBtnClick={onPreBtnClick}
+          onNextBtnClick={onNextBtnClick}
+        />
+        <StoreBtns onStore={onStore} />
+      </Footer>
     </Container>
   );
 }
@@ -91,6 +138,13 @@ const Placeholder = styled.div`
   ${({ theme }) => theme.fontStyle.h2};
   text-align: center;
   margin-top: 200px;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 60px;
 `;
 
 export default ImgTable;

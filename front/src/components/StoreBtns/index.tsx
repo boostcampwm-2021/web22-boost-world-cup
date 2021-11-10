@@ -23,11 +23,14 @@ const Btn = styled.button`
   height: 57px;
   border-radius: 10px;
   margin-left: 30px;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: ${({ theme }) => theme.color.pink};
+  }
 `;
 
 const BtnsWrapper = styled.div`
   display: flex;
-  margin-right: 296px;
   margin-top: 11px;
 `;
 

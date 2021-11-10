@@ -27,6 +27,11 @@ const TabBtn = styled.button<{ activated: boolean }>`
   ${({ theme }) => theme.fontStyle.h3Bold};
   color: #959595;
   background-color: ${({ activated, theme }) => (activated ? theme.color.primary : theme.color.white)};
+  transition: background-color 0.3s, color 0.3s;
+  &:hover {
+    background-color: ${({ activated, theme }) => (activated ? theme.color.primary : theme.color.pink)};
+    color: ${({ activated, theme }) => (activated ? '#959595' : theme.color.black)};
+  }
 `;
 
 const BtnsWrapper = styled.div`
