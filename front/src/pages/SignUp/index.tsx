@@ -10,7 +10,7 @@ interface Props {
   location: Location;
 }
 
-const SignUp = ({ location }: Props): JSX.Element => {
+function SignUp({ location }: Props): JSX.Element {
   const [nickname, setNickname] = useState('');
   const [gender, setGender] = useState(0);
   const [age, setAge] = useState(0);
@@ -55,7 +55,7 @@ const SignUp = ({ location }: Props): JSX.Element => {
       </InputContainer>
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   display: flex;

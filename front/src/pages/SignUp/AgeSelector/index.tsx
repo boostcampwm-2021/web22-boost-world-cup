@@ -6,7 +6,7 @@ interface Props {
   ageSelector: (newAge: number) => void;
 }
 
-const AgeSelector = ({ age, ageSelector }: Props): JSX.Element => {
+function AgeSelector({ age, ageSelector }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const AgeSelector = ({ age, ageSelector }: Props): JSX.Element => {
       <BackWindow onClick={clickBackWindow} isOpen={isOpen} />
     </>
   );
-};
+}
 
 const Item = styled.div`
   padding-top: 5px;

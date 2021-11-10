@@ -2,13 +2,13 @@ import React from 'react';
 import ReactLoading from 'react-loading';
 import styled from 'styled-components';
 
-const Loader = () => {
+function Loader(): JSX.Element {
   return (
     <LoaderWrap>
       <ReactLoading type="spin" color="#D28078" />
     </LoaderWrap>
   );
-};
+}
 
 const LoaderWrap = styled.div`
   width: 100%;

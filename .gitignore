@@ -3,6 +3,7 @@
 /front/node_modules
 /front/.pnp
 /front/.pnp.js
+/front/package-lock.json
 
 # testing
 /coverage
@@ -34,4 +35,5 @@
 /back/build/
 /back/tmp/
 /back/temp/
+/back/package-lock.json
 .env
