@@ -1,16 +1,8 @@
 import axios from 'axios';
-import { candidateData } from '../../types/Datas';
+import { gameInfoData } from '../../types/Datas';
 
 interface responseData {
   result: string;
-}
-
-interface gameInfoData {
-  title: string;
-  round: number;
-  currentRound: number;
-  candidate1: candidateData;
-  candidate2: candidateData;
 }
 
 export const initializeGame = async (worldcupId: string, round: number): Promise<responseData> => {
