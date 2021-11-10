@@ -1,26 +1,29 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { setTimeout } from 'timers';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
 import { getGameInfo, sendGameResult } from '../../utils/api/game';
 import { candidateData, gameInfoData } from '../../types/Datas';
+import Gameover from './gameover';
 
 function Worldcup(): JSX.Element {
   const [pick, setPick] = useState(0);
+  const [title, setTitle] = useState('');
   const [round, setRound] = useState(16);
   const [curRound, setCurRound] = useState(1);
+  const [completed, setCompleted] = useState(false);
   const [leftCandidate, setLeftCandidate] = useState<candidateData>();
   const [rightCandidate, setRightCandidate] = useState<candidateData>();
-  const [title, setTitle] = useState('');
+  const [winCandidate, setWinCandidate] = useState<candidateData>();
 
   const setGameInfo = useCallback((gameInfo: gameInfoData) => {
     const { round, currentRound, candidate1, candidate2, title } = gameInfo;
     setRound(round);
     setCurRound(currentRound);
+    setTitle(title);
     setLeftCandidate(candidate1);
     setRightCandidate(candidate2);
-    setTitle(title);
     setPick(0);
   }, []);
 
@@ -32,6 +35,12 @@ function Worldcup(): JSX.Element {
   useEffect(() => {
     getCandidates();
   }, [getCandidates]);
+
+  const gameover = useCallback((gameInfo: gameInfoData) => {
+    const { winCandidate } = gameInfo;
+    setCompleted(true);
+    setWinCandidate(winCandidate);
+  }, []);
 
   const imageClickHandler = (event: React.MouseEvent<HTMLElement>) => {
     const {
@@ -51,7 +60,9 @@ function Worldcup(): JSX.Element {
         loseId = leftCandidate?.id;
       }
       const gameInfo = await sendGameResult(winId, loseId);
-      setGameInfo(gameInfo);
+      const { isCompleted } = gameInfo;
+      // eslint-disable-next-line no-unused-expressions
+      isCompleted ? gameover(gameInfo) : setGameInfo(gameInfo);
     }, 1500);
   };
 
@@ -62,7 +73,7 @@ function Worldcup(): JSX.Element {
     return `${round * 2}강`;
   };
 
-  return (
+  return !completed ? (
     <Wrapper>
       <Header type="header" isLogin />
       <Container>
@@ -91,6 +102,8 @@ function Worldcup(): JSX.Element {
         </NameContainer>
       </Container>
     </Wrapper>
+  ) : (
+    <Gameover winCandidate={winCandidate} />
   );
 }
 
