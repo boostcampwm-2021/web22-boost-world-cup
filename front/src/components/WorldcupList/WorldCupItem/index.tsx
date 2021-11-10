@@ -42,8 +42,8 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
             <span>공유하기</span>
           </Share>
         </Link>
-        <ShareModal />
       </Buttons>
+      <ShareModal />
     </Item>
   );
 }
