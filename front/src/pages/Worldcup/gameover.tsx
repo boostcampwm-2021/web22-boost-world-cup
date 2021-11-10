@@ -20,10 +20,12 @@ function Gameover({ winCandidate, title }: Props): JSX.Element {
         <Title>{title} 우승!</Title>
         <Winner imageUrl={winCandidate ? winCandidate.url : ''} />
         <ButtonContainer>
-          <Button>
-            <FaList />
-            <span>랭킹보기</span>
-          </Button>
+          <Link to="/main">
+            <Button>
+              <FaList />
+              <span>랭킹보기</span>
+            </Button>
+          </Link>
           <Link to="/main">
             <Button>
               <FaHome />
@@ -60,10 +62,12 @@ const Button = styled.div`
 `;
 
 const Winner = styled.div<{ imageUrl: string }>`
-  width: 1000px;
-  height: 1000px;
+  width: 500px;
+  height: 500px;
+  margin-top: 50px;
+  margin-bottom: 100px;
   background: url(${({ imageUrl }) => imageUrl});
-  background-size: 900px 800px;
+  background-size: 500px 500px;
   background-repeat: no-repeat;
   background-position: center;
   align-self: center;
@@ -78,11 +82,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-top: 2%;
+  padding-top: 10px;
   img {
     position: absolute;
     align-self: center;
-    top: 200px;
+    top: 170px;
+    width: 650px;
   }
 `;
 
