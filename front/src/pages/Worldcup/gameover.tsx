@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Header } from '../../components';
-import { candidateData, gameInfoData } from '../../types/Datas';
+import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
 
 interface Props {
