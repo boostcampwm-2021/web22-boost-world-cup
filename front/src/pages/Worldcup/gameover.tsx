@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHome, FaList } from 'react-icons/fa';
 import { Header } from '../../components';
@@ -23,10 +24,12 @@ function Gameover({ winCandidate, title }: Props): JSX.Element {
             <FaList />
             <span>랭킹보기</span>
           </Button>
-          <Button>
-            <FaHome />
-            <span>메인으로</span>
-          </Button>
+          <Link to="/main">
+            <Button>
+              <FaHome />
+              <span>메인으로</span>
+            </Button>
+          </Link>
         </ButtonContainer>
       </Container>
     </Wrapper>
@@ -37,7 +40,7 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 400px;
+  width: 350px;
   align-self: center;
   cursor: pointer;
   z-index: 1;
