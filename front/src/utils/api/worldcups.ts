@@ -55,3 +55,9 @@ export const getWorldcupListByKeyword = async (query: keywordQueryType) => {
   });
   return response.data.data.worldcup;
 };
+
+export const getWorldcupById = async (id: number) => {
+  const response = await axios.get(`/api/worldcups/${id}`);
+  const { data: worldcup } = response;
+  return worldcup;
+};

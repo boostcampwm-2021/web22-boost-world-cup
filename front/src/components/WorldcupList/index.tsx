@@ -75,6 +75,7 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
       <Container>
         {items.map((item) => (
           <WorldCupItem
+            id={item.id}
             thumbnail1={item.thumbnail1}
             thumbnail2={item.thumbnail2}
             title={item.title}

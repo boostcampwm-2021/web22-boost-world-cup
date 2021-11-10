@@ -2,6 +2,7 @@ export default {
   color: {
     primary: '#F5DCD8',
     pink: '#D28078',
+    lightpink: '#fdf8f7',
     black: '#000000',
     white: '#FFFFFF',
     gray: ['#6A6E71', '#CECFD1'],

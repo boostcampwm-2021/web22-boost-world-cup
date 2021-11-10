@@ -25,7 +25,6 @@ export const findFromPage = async (offset, limit) => {
     take: Number(limit),
   });
 };
-
 export const findBySearchWord = async (offset, limit, searchWord) => {
   const worldcupRepository = getRepository(Worldcup);
   return await worldcupRepository.find({
@@ -69,3 +68,10 @@ export const removeById = async (id) => {
   await worldcupRepository.remove(worldcupToRemove);
   return await worldcupRepository.find();
 };
+
+export const getWorldcupTitle = async (id: number) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcup = await worldcupRepository.findOne(id, { select: ['title'] });
+  return worldcup.title;
+};
+

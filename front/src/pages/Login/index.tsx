@@ -8,7 +8,7 @@ import { getUser } from '../../utils/api/auth';
 import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 
-const Login = (): JSX.Element => {
+function Login(): JSX.Element {
   const [isLogin, setIsLogin] = useState(false);
 
   const getUserInfo = async () => {
@@ -41,7 +41,7 @@ const Login = (): JSX.Element => {
       </ButtonContainer>
     </Container>
   );
-};
+}
 
 const Container = styled.div`
   display: flex;
