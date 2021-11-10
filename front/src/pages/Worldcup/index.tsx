@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { setTimeout } from 'timers';
 import { Header } from '../../components';
@@ -12,6 +12,7 @@ function Worldcup(): JSX.Element {
   const [title, setTitle] = useState('');
   const [round, setRound] = useState(16);
   const [curRound, setCurRound] = useState(1);
+  const [worldcupId, setWorldcupId] = useState(1);
   const [completed, setCompleted] = useState(false);
   const [leftCandidate, setLeftCandidate] = useState<candidateData>();
   const [rightCandidate, setRightCandidate] = useState<candidateData>();
@@ -42,10 +43,11 @@ function Worldcup(): JSX.Element {
   }, [getCandidates]);
 
   const gameover = useCallback((gameInfo: gameInfoData) => {
-    const { winCandidate, title } = gameInfo;
+    const { winCandidate, title, worldcupId } = gameInfo;
     setCompleted(true);
     setTitle(title);
     setWinCandidate(winCandidate);
+    setWorldcupId(Number(worldcupId));
   }, []);
 
   const imageClickHandler = (event: React.MouseEvent<HTMLElement>) => {
@@ -109,7 +111,7 @@ function Worldcup(): JSX.Element {
       </Container>
     </Wrapper>
   ) : (
-    <Gameover winCandidate={winCandidate} title={title} />
+    <Gameover winCandidate={winCandidate} title={title} worldcupId={worldcupId} />
   );
 }
 

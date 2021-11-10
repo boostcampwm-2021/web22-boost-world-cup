@@ -9,9 +9,10 @@ import trophyImg from '../../images/winner.png';
 interface Props {
   winCandidate: candidateData | undefined;
   title: string;
+  worldcupId: number;
 }
 
-function Gameover({ winCandidate, title }: Props): JSX.Element {
+function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
   return (
     <Wrapper>
       <Header type="header" isLogin />
@@ -20,7 +21,7 @@ function Gameover({ winCandidate, title }: Props): JSX.Element {
         <Title>{title} 우승!</Title>
         <Winner imageUrl={winCandidate ? winCandidate.url : ''} />
         <ButtonContainer>
-          <Link to="/main">
+          <Link to={`/ranking/${worldcupId}`}>
             <Button>
               <FaList />
               <span>랭킹보기</span>
