@@ -16,7 +16,7 @@ function ImgInput({ onChange, type }: Props): JSX.Element {
           <hr />
           여기 파일을 놓거나 클릭하여 업로드하세요.
         </div>
-        <Input value="" type="file" multiple onChange={onChange} accept="image/*" />
+        <Input type="file" multiple onChange={onChange} accept="image/*" />
       </AddImgsContainer>
     );
 
@@ -31,7 +31,7 @@ function ImgInput({ onChange, type }: Props): JSX.Element {
           <hr />
           click to upload.
         </div>
-        <Input value="" type="file" multiple onChange={onChange} accept="image/*" />
+        <Input type="file" multiple onChange={onChange} accept="image/*" />
       </AddAdditionalImgsContainer>
     );
 
@@ -41,7 +41,7 @@ function ImgInput({ onChange, type }: Props): JSX.Element {
         Drop file here or click to upload.
         <hr />
         여기 변경할 사진 파일을 놓거나 클릭하여 업로드하세요.
-        <Input value="" type="file" accept="image/*" onChange={onChange} />
+        <Input type="file" accept="image/*" onChange={onChange} />
       </ChangeImgContainer>
     );
 
@@ -59,10 +59,6 @@ const AddImgsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.3s;
-  &:hover {
-    background-color: #f5f5f5;
-  }
   ${({ theme }) => theme.fontStyle.h3};
 `;
 
@@ -77,10 +73,6 @@ const AddAdditionalImgsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.3s;
-  &:hover {
-    background-color: #f5f5f5;
-  }
   ${({ theme }) => theme.fontStyle.caption};
   div {
     text-align: center;
