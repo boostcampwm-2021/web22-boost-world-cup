@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { loginState } from '../../../recoil/atom';
 
 interface Props {
   id: number;
@@ -11,6 +13,7 @@ interface Props {
   desc: string;
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
+  const isLoggedIn = useRecoilValue(loginState);
   return (
     <Item>
       <Thumbnail>
@@ -20,7 +23,7 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
       <Title>{title}</Title>
       <Desc>{desc}</Desc>
       <Buttons>
-        <Link to={`/initialize/${id}`}>
+        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
           <Start>
             <FaPlay />
             <span>시작하기</span>

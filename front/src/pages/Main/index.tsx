@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { loginState } from '../../recoil/atom';
 import { getUser } from '../../utils/api/auth';
@@ -8,7 +8,7 @@ import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
 
 function Main(): JSX.Element {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
