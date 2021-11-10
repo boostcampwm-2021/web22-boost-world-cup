@@ -20,14 +20,11 @@ const worldcupController = {
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
-    const worldcup = await worldcupService.findById(request.params.id);
-    response.json({
-      result: 'success',
-      message: null,
-      data: {
-        worldcup,
-      },
-    });
+    const {
+      params: { id: worldcupId },
+    } = request;
+    const worldcup = await worldcupService.findById(worldcupId);
+    response.json(worldcup);
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {

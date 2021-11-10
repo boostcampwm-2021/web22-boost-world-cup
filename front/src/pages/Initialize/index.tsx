@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from '../../components/RoundSelector';
 import { getWorldcupById } from '../../utils/api/worldcups';
+import { initializeGame } from '../../utils/api/game';
 
 interface Props {
   location: Location;
@@ -13,6 +14,7 @@ interface Props {
 function Initialize({ location }: Props): JSX.Element {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [ready, setReady] = useState(false);
   const [round, setRound] = useState(0);
   const [candidatesSize, setCandidatesSize] = useState(1);
   const [possibleRound, setPossibleRound] = useState([] as string[]);
@@ -21,7 +23,6 @@ function Initialize({ location }: Props): JSX.Element {
   const fetchWorldAndSetState = useCallback(async () => {
     const worldcup = await getWorldcupById(parseInt(worldcupId, 10));
     const { candidates, title, description } = worldcup;
-
     setTitle(title);
     setDescription(description);
     setCandidatesSize(candidates.length);
@@ -46,7 +47,15 @@ function Initialize({ location }: Props): JSX.Element {
     setRound(newAge);
   }, []);
 
-  return (
+  const startBtnClickHandler = async () => {
+    const response = await initializeGame(worldcupId, round);
+    if (response.result === 'success') {
+      setReady(true);
+    }
+  };
+  return ready ? (
+    <Redirect to="/worldcup" />
+  ) : (
     <>
       <Header type="header" isLogin />
       <Container>
@@ -65,9 +74,7 @@ function Initialize({ location }: Props): JSX.Element {
           </RoundSubContainer>
         </RoundContainer>
         <ButtonContainer>
-          <StartButton>
-            <Link to={`/worldcup/${worldcupId}`}>시작하기</Link>
-          </StartButton>
+          <StartButton onClick={startBtnClickHandler}>시작하기</StartButton>
           <MainButton>
             <Link to="/main">메인으로</Link>
           </MainButton>

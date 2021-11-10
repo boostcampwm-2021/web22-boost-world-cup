@@ -30,10 +30,6 @@ export const getWorldcupListByKeyword = async (query: searchQuerytype) => {
 
 export const getWorldcupById = async (id: number) => {
   const response = await axios.get(`/api/worldcups/${id}`);
-  const {
-    data: {
-      data: { worldcup },
-    },
-  } = response;
+  const { data: worldcup } = response;
   return worldcup;
 };

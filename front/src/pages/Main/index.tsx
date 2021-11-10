@@ -39,6 +39,6 @@ function Main(): JSX.Element {
   );
 }
 const Wrapper = styled.body`
-  background-color: #fdf8f7;
+  background-color: ${({ theme }) => theme.color.ligntpink};
 `;
 export default Main;
