@@ -15,7 +15,7 @@ interface Props {
 function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const [imgURL, setImgURL] = useState(
-    `https://kr.object.ncloudstorage.com/image-w${width}h${height}/${info.key}.webp#${Date.now()}`,
+    `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/w${width}h${height}/${info.key}?${Date.now()}`,
   );
 
   useEffect(() => {
@@ -25,9 +25,9 @@ function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): J
         clearInterval(intervalId);
         return;
       }
-      const newImgURL = `https://kr.object.ncloudstorage.com/image-w${width}h${height}/${key}.webp#${Date.now()}`;
+      const newImgURL = `https://uhwan-test.s3.ap-northeast-2.amazonaws.com/w${width}h${height}/${key}?${Date.now()}`;
       setImgURL(newImgURL);
-    }, 1000);
+    }, 500);
     return () => clearInterval(intervalId);
   }, [isLoading]);
 
@@ -39,7 +39,7 @@ function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): J
           <MdCancel size={40} color="red" />
         </Btn>
       )}
-      <Img src={imgURL} onLoad={() => setIsLoading(false)} alt="" isLoading={isLoading} width={width} height={height} />
+      <Img src={imgURL} onLoad={() => setIsLoading(false)} alt="" isLoading={isLoading} />
     </Container>
   );
 }
