@@ -31,9 +31,11 @@ export interface candidateData {
 }
 
 export interface gameInfoData {
+  isCompleted: boolean;
   title: string;
   round: number;
   currentRound: number;
   candidate1: candidateData;
   candidate2: candidateData;
+  winCandidate: candidateData;
 }
