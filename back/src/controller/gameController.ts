@@ -41,26 +41,41 @@ const gameController = {
     } = request;
     const newGameInfo = { ...gameInfo };
 
-    const remainCandidateList = gameInfo.candidateList.filter(
-      (candidate) => candidate.id !== winId && candidate.id !== loseId,
-    );
     const winCandidate = gameInfo.candidateList.find((candidate) => candidate.id === winId);
 
-    newGameInfo.candidateList = [...remainCandidateList];
-    newGameInfo.selectedCandidate = [...gameInfo.selectedCandidate, winCandidate];
-
-    if (newGameInfo.currentRound === newGameInfo.round) {
-      newGameInfo.round = newGameInfo.round / 2;
-      newGameInfo.currentRound = 1;
-      newGameInfo.candidateList = [...newGameInfo.selectedCandidate];
-      newGameInfo.selectedCandidate = [];
+    if (newGameInfo.round === 1) {
+      response.json({
+        isCompleted: true,
+        winCandidate,
+        title: gameInfo.title,
+      });
     } else {
-      newGameInfo.currentRound = gameInfo.currentRound + 1;
+      const remainCandidateList = gameInfo.candidateList.filter(
+        (candidate) => candidate.id !== winId && candidate.id !== loseId,
+      );
+      newGameInfo.candidateList = [...remainCandidateList];
+      newGameInfo.selectedCandidate = [...gameInfo.selectedCandidate, winCandidate];
+
+      if (newGameInfo.currentRound === newGameInfo.round) {
+        newGameInfo.round = newGameInfo.round / 2;
+        newGameInfo.currentRound = 1;
+        newGameInfo.candidateList = [...newGameInfo.selectedCandidate];
+        newGameInfo.selectedCandidate = [];
+      } else {
+        newGameInfo.currentRound = gameInfo.currentRound + 1;
+      }
+      response.cookie('gameInfo', newGameInfo, cookieConfig);
+      newGameInfo.candidateList.sort(() => Math.random() - 0.5);
+      const { title, round, currentRound, candidateList } = newGameInfo;
+      response.json({
+        isCompleted: false,
+        title,
+        round,
+        currentRound,
+        candidate1: candidateList[0],
+        candidate2: candidateList[1],
+      });
     }
-    response.cookie('gameInfo', newGameInfo, cookieConfig);
-    newGameInfo.candidateList.sort(() => Math.random() - 0.5);
-    const { title, round, currentRound, candidateList } = newGameInfo;
-    response.json({ title, round, currentRound, candidate1: candidateList[0], candidate2: candidateList[1] });
   },
 };
 
