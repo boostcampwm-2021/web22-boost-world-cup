@@ -48,7 +48,7 @@ function Make(): JSX.Element {
       type: 'CHANGE_IMG_INFOS',
       payload: [...imgInfos.slice(0, targetIdx), ...imgInfos.slice(targetIdx + 1)],
     });
-    axios.delete(`http://localhost:8000/api/images/${imgKey}`);
+    axios.delete(`/api/candidates/${imgKey}`);
   };
 
   const getOnImgChange = (preImgKey: string) => {
