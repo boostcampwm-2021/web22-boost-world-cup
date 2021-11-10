@@ -64,7 +64,7 @@ function Worldcup(): JSX.Element {
 
   return (
     <Wrapper>
-      <Header type="header" isLogin />
+      {/* <Header type="header" isLogin /> */}
       <Container>
         <Title>
           {title} {curRound}/{round}

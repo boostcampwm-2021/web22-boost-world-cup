@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
+import { loginState } from '../../recoil/atom';
 import Modal from '../Modal';
 import SearchBar from '../SearchBar';
 
 interface headerProps {
   type: 'header';
-  isLogin: boolean;
+  // isLogin: boolean;
 }
 interface searchHeaderProps {
   type: 'searchHeader';
-  isLogin: boolean;
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  // isLogin: boolean;
+  // setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: React.MouseEventHandler<HTMLButtonElement>;
   onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
   searchWord: string;
 }
 type Props = headerProps | searchHeaderProps;
 function Header(props: Props): JSX.Element {
+  const isLoggedIn = useRecoilValue(loginState);
   const [modal, setModal] = useState(false);
   const prop = { ...props };
   const toggleModal = () => {
@@ -40,16 +43,14 @@ function Header(props: Props): JSX.Element {
           ) : (
             ''
           )}
-          {prop.isLogin ? (
+          {isLoggedIn ? (
             <UserIcon onClick={toggleModal} />
           ) : (
             <Login>
               <Link to="/login">로그인</Link>
             </Login>
           )}
-          {modal && prop.type === 'searchHeader' && (
-            <Modal open={modal} setIsLogin={prop.setIsLogin} setModal={setModal} />
-          )}
+          {modal && prop.type === 'searchHeader' && <Modal open={modal} setModal={setModal} />}
         </RightHeader>
       </MainHeader>
     </>

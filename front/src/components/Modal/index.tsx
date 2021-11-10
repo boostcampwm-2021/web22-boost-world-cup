@@ -1,16 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
+import { loginState } from '../../recoil/atom';
 
 interface Props {
   open: boolean;
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function Modal({ open, setIsLogin, setModal }: Props): JSX.Element {
+function Modal({ open, setModal }: Props): JSX.Element {
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const setLogout = () => {
     setModal(false);
-    setIsLogin(false);
+    setIsLoggedIn(false);
   };
   return (
     <>
