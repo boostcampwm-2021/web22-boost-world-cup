@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { setTimeout } from 'timers';
 import { Header } from '../../components';
@@ -6,7 +6,7 @@ import versusImg from '../../images/versus.png';
 import { sendGameResult } from '../../utils/api/game';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from './gameover';
-import { objectDecryption } from '../../utils/crypto';
+import { objectDecryption, objectEncryption } from '../../utils/crypto';
 
 function Worldcup(): JSX.Element {
   const [pick, setPick] = useState(0);
@@ -19,13 +19,18 @@ function Worldcup(): JSX.Element {
   const [rightCandidate, setRightCandidate] = useState<candidateData>();
   const [winCandidate, setWinCandidate] = useState<candidateData>();
 
-  const setGameInfo = useCallback(async (gameInfo: gameInfoData | undefined) => {
+  // eslint-disable-next-line consistent-return
+  const gameInfo = useMemo(() => {
+    const decryptedData = sessionStorage.getItem('_wiziboost');
+    if (decryptedData) {
+      return objectDecryption(decryptedData);
+    }
+  }, []);
+
+  const setGameState = useCallback((gameInfo) => {
     if (gameInfo) {
-      const { isCompleted } = gameInfo;
-      if (isCompleted) {
-        return;
-      }
       const { title, round, currentRound, candidatesList } = gameInfo;
+      setPick(0);
       setTitle(title);
       setRound(round);
       setCurRound(currentRound);
@@ -35,18 +40,19 @@ function Worldcup(): JSX.Element {
     }
   }, []);
 
-  // eslint-disable-next-line consistent-return
-  const getGameInfo = useCallback((): gameInfoData | undefined => {
-    const decryptedData = sessionStorage.getItem('_wiziboost');
-    if (decryptedData) {
-      return objectDecryption(decryptedData);
+  const setGameInfo = useCallback(() => {
+    if (gameInfo) {
+      const { isCompleted } = gameInfo;
+      if (isCompleted) {
+        return;
+      }
+      setGameState(gameInfo);
     }
-  }, []);
+  }, [gameInfo]);
 
   useEffect(() => {
-    const gameInfo = getGameInfo();
-    setGameInfo(gameInfo);
-  }, []);
+    setGameInfo();
+  }, [setGameInfo]);
 
   const gameover = useCallback((gameInfo: gameInfoData) => {
     const { winCandidate, title, worldcupId } = gameInfo;
@@ -61,8 +67,41 @@ function Worldcup(): JSX.Element {
       dataset: { value },
     } = event.target as HTMLElement;
     if (value) {
-      setPick(parseInt(value, 10));
+      setPick(Number(value));
     }
+    setTimeout(() => {
+      let winId: number | undefined;
+      let loseId: number | undefined;
+      if (value === '1') {
+        winId = leftCandidate?.id;
+        loseId = rightCandidate?.id;
+      } else {
+        winId = rightCandidate?.id;
+        loseId = leftCandidate?.id;
+      }
+      if (gameInfo) {
+        const newGameInfo = { ...gameInfo };
+        const winCandidate = gameInfo.candidatesList.find((candidate) => candidate.id === winId);
+        const remainCandidateList = gameInfo.candidatesList.filter(
+          (candidate) => candidate.id !== winId && candidate.id !== loseId,
+        );
+        newGameInfo.candidatesList = [...remainCandidateList];
+        if (gameInfo.selectedCandidate && winCandidate) {
+          newGameInfo.selectedCandidate = [...gameInfo.selectedCandidate, winCandidate];
+        }
+        if (newGameInfo.currentRound === newGameInfo.round) {
+          newGameInfo.round /= 2;
+          newGameInfo.currentRound = 1;
+          newGameInfo.candidatesList = [...newGameInfo.selectedCandidate];
+          newGameInfo.selectedCandidate = [];
+        } else {
+          newGameInfo.currentRound = gameInfo.currentRound + 1;
+        }
+        const cipherText = objectEncryption(newGameInfo);
+        sessionStorage.setItem('_wiziboost', cipherText);
+        setGameState(newGameInfo);
+      }
+    }, 1500);
   };
 
   const makeRoundText = () => {
