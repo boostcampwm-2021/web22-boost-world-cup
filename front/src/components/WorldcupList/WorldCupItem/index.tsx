@@ -29,14 +29,18 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
             <span>시작하기</span>
           </Start>
         </Link>
-        <Ranking>
-          <FaList />
-          <span>랭킹보기</span>
-        </Ranking>
-        <Share>
-          <FaShare />
-          <span>공유하기</span>
-        </Share>
+        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
+          <Ranking>
+            <FaList />
+            <span>랭킹보기</span>
+          </Ranking>
+        </Link>
+        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
+          <Share>
+            <FaShare />
+            <span>공유하기</span>
+          </Share>
+        </Link>
       </Buttons>
     </Item>
   );
