@@ -5,7 +5,9 @@ import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from '../../components/RoundSelector';
 import { getWorldcupById } from '../../utils/api/worldcups';
-import { initializeGame } from '../../utils/api/game';
+import { getCandidatesList } from '../../utils/api/game';
+import { candidateData, gameInfoData } from '../../types/Datas';
+import { objectEncryption } from '../../utils/crypto';
 
 interface Props {
   location: Location;
@@ -47,9 +49,29 @@ function Initialize({ location }: Props): JSX.Element {
     setRound(newAge);
   }, []);
 
+  const makeGameInfo = (gameRound: number, candidatesList: candidateData[]): gameInfoData => {
+    return {
+      isCompleted: false,
+      worldcupId,
+      title,
+      round: gameRound / 2,
+      currentRound: 1,
+      candidatesList,
+      selectedCandidate: [],
+      winCandidate: { id: 0, name: '', url: '' },
+    };
+  };
+
   const startBtnClickHandler = async () => {
-    const response = await initializeGame(worldcupId, round);
-    if (response.result === 'success') {
+    const gameRound = 2 ** (round + 2);
+    const candidatesList = await getCandidatesList(worldcupId, gameRound);
+    const gameInfo = makeGameInfo(gameRound, candidatesList);
+
+    const secretKey = process.env.REACT_APP_SECRET_KEY;
+    if (secretKey) {
+      sessionStorage.clear();
+      const cipherText = objectEncryption(gameInfo);
+      sessionStorage.setItem('_wiziboost', cipherText);
       setReady(true);
     }
   };
