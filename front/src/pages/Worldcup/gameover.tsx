@@ -15,7 +15,7 @@ interface Props {
 function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
   return (
     <Wrapper>
-      <Header type="header" isLogin />
+      <Header type="header" />
       <Container>
         <img src={trophyImg} alt="trophy" />
         <Title>{title} 우승!</Title>
