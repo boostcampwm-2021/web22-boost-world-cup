@@ -10,7 +10,7 @@ function Make(): JSX.Element {
   const [currentPage, setCurrentPage] = useState(1);
   const [preViews, setPreViews] = useState<ImgInfo[]>([]);
   const [worldcupFormState, worldcupFormDispatcher] = useReducer(worldcupFormReducer, initialWorldcupFormState);
-  const { title, desc, imgInfos } = worldcupFormState;
+  const { title, desc, keywords, imgInfos } = worldcupFormState;
 
   const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     worldcupFormDispatcher({ type: 'title', payload: target.value });
@@ -89,10 +89,11 @@ function Make(): JSX.Element {
 
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/api/worldcups', {
+    axios.post('/api/worldcups', {
       title,
       desc,
-      imgInfos: imgInfos.map((imgInfo) => ({ key: imgInfo.key, name: imgInfo.name })),
+      keywords,
+      imgInfos,
     });
   };
 
