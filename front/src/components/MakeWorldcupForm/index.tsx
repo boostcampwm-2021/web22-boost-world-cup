@@ -9,6 +9,7 @@ import { ImgInfo } from '../../types/Datas';
 interface Props {
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
+  onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
   onAddImgs: React.ChangeEventHandler<HTMLInputElement>;
   onDeleteImg: (key: string) => void;
   onStore: React.MouseEventHandler<HTMLButtonElement>;
@@ -18,6 +19,7 @@ interface Props {
 function MakeWorldcupForm({
   onTitleChange,
   onDescChange,
+  onKeywordsChange,
   onAddImgs,
   onDeleteImg,
   onStore,
@@ -49,7 +51,7 @@ function MakeWorldcupForm({
           <Label>키워드</Label>
           <TextInput
             name="keyword"
-            onChange={onDescChange}
+            onChange={onKeywordsChange}
             width="1236px"
             placeholder="월드컵을 잘 나타내는 키워드를 입력하세요. ex) #배우"
           />
