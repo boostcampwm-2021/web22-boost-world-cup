@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { loginState } from '../../../recoil/atom';
+import ShareModal from '../../ShareModal';
 
 interface Props {
   id: number;
@@ -11,6 +14,7 @@ interface Props {
   desc: string;
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
+  const isLoggedIn = useRecoilValue(loginState);
   return (
     <Item>
       <Thumbnail>
@@ -20,21 +24,26 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
       <Title>{title}</Title>
       <Desc>{desc}</Desc>
       <Buttons>
-        <Link to={`/initialize/${id}`}>
+        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
           <Start>
             <FaPlay />
             <span>시작하기</span>
           </Start>
         </Link>
-        <Ranking>
-          <FaList />
-          <span>랭킹보기</span>
-        </Ranking>
-        <Share>
-          <FaShare />
-          <span>공유하기</span>
-        </Share>
+        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
+          <Ranking>
+            <FaList />
+            <span>랭킹보기</span>
+          </Ranking>
+        </Link>
+        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
+          <Share>
+            <FaShare />
+            <span>공유하기</span>
+          </Share>
+        </Link>
       </Buttons>
+      <ShareModal />
     </Item>
   );
 }

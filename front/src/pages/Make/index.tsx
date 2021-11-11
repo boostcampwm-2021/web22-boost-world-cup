@@ -113,7 +113,7 @@ function Make(): JSX.Element {
 
   return (
     <>
-      <Header type="header" isLogin />
+      <Header type="header" />
       <Content>
         <MakePageTabBar currentTab={currentTab} getOnTabChange={getOnTabChange} />
         {currentTab === 1 && (

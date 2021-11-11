@@ -16,6 +16,7 @@
     "typescript": "3.3.3333"
   },
   "dependencies": {
+    "@types/express-session": "^1.17.4",
     "@types/passport": "^1.0.7",
     "aws-sdk": "^2.1025.0",
     "cookie-parser": "^1.4.5",

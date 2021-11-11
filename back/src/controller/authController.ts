@@ -46,6 +46,18 @@ const authController = {
       next(err);
     }
   },
+  logout: async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      request.session.destroy(() => {});
+      response.clearCookie('sid');
+      response.json({
+        result: 'success',
+        message: null,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default authController;

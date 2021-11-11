@@ -113,7 +113,7 @@ function Worldcup(): JSX.Element {
 
   return !completed ? (
     <Wrapper>
-      <Header type="header" isLogin />
+      <Header type="header" />
       <Container>
         <Title>
           {title} {curRound}/{round}

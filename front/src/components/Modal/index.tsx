@@ -1,16 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
+import { loginState } from '../../recoil/atom';
+import { logout } from '../../utils/api/auth';
 
 interface Props {
   open: boolean;
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function Modal({ open, setIsLogin, setModal }: Props): JSX.Element {
-  const setLogout = () => {
+function Modal({ open, setModal }: Props): JSX.Element {
+  const setIsLoggedIn = useSetRecoilState(loginState);
+  const history = useHistory();
+  const setLogout = async () => {
     setModal(false);
-    setIsLogin(false);
+    const response = await logout();
+    if (response.result) {
+      setIsLoggedIn(false);
+      history.push('/main');
+    }
   };
   return (
     <>
