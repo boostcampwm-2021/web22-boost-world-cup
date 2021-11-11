@@ -111,7 +111,8 @@ const MoreButton = styled.div`
   height: 5em;
   line-height: 3em;
   text-align: center;
-  margin: 1em;
+  margin: 2em;
+  padding-top: 1em;
 `;
 const Title = styled.p`
   margin: auto;
