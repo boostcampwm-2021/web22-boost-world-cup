@@ -10,6 +10,7 @@ import { getUser } from '../../utils/api/auth';
 
 function Worldcup(): JSX.Element {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(true);
   const [pick, setPick] = useState(0);
   const [gameInfo, setGameInfo] = useState<gameInfoData>();
   const [leftCandidate, setLeftCandidate] = useState<candidateData>();
@@ -29,6 +30,8 @@ function Worldcup(): JSX.Element {
       setGameInfo(decryptedData);
       setCandidates(decryptedData.candidatesList);
       setPick(0);
+    } else {
+      setIsInitialized(false);
     }
   }, []);
 
@@ -120,9 +123,14 @@ function Worldcup(): JSX.Element {
   };
 
   // eslint-disable-next-line no-nested-ternary
-  return !isLoggedIn ? (
-    <Redirect to="/login" />
-  ) : !gameInfo?.isCompleted ? (
+  if (!isLoggedIn) {
+    return <Redirect to="/login" />;
+  }
+  if (!isInitialized) {
+    return <Redirect to="/main" />;
+  }
+
+  return !gameInfo?.isCompleted ? (
     <Wrapper>
       <Header type="header" />
       <Container>
