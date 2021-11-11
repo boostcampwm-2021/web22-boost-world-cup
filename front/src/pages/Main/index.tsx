@@ -53,6 +53,7 @@ function Main(): JSX.Element {
   );
 }
 const Wrapper = styled.div`
-  background-color: ${({ theme }) => theme.color.lightpink};
+  background: rgb(245, 220, 216);
+  background: linear-gradient(0deg, rgba(245, 220, 216, 1) 0%, rgba(253, 248, 247, 1) 43%);
 `;
 export default Main;
