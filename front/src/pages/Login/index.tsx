@@ -9,12 +9,12 @@ import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 
 function Login(): JSX.Element {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const getUserInfo = async () => {
     const user = await getUser();
     if (Object.keys(user).length !== 0) {
-      setIsLogin(true);
+      setIsLoggedIn(true);
     }
   };
 
@@ -22,7 +22,7 @@ function Login(): JSX.Element {
     getUserInfo();
   }, []);
 
-  return isLogin ? (
+  return isLoggedIn ? (
     <Redirect to="/main" />
   ) : (
     <Container>
