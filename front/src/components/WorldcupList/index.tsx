@@ -90,7 +90,9 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
       ) : (
         ''
       )}
-      <div ref={target}>{loading && <Loader />}</div>
+      <div ref={target} style={{ width: '10px', height: '10px' }}>
+        {loading && <Loader />}
+      </div>
     </>
   );
 }
@@ -100,8 +102,8 @@ const Container = styled.div`
   display: grid;
   width: calc(100vw-1em);
   grid-template-columns: repeat(4, 1fr);
-  @media (max-width: 900px) {
-    grid-template-columns: repeat(1, 95vw);
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 2fr);
   }
 `;
 const MoreButton = styled.div`
