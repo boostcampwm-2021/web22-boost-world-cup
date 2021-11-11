@@ -8,7 +8,7 @@ export class Candidate {
   id: number;
 
   @Column()
-  key: string;
+  url: string;
 
   @Column({ name: 'show_cnt', default: '0' })
   showCnt: number;
