@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { Redirect } from 'react-router';
 import styled, { keyframes, css } from 'styled-components';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from './gameover';
 import { objectDecryption, objectEncryption } from '../../utils/crypto';
+import { getUser } from '../../utils/api/auth';
 
 function Worldcup(): JSX.Element {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [pick, setPick] = useState(0);
   const [gameInfo, setGameInfo] = useState<gameInfoData>();
   const [leftCandidate, setLeftCandidate] = useState<candidateData>();
@@ -27,6 +30,17 @@ function Worldcup(): JSX.Element {
       setCandidates(decryptedData.candidatesList);
       setPick(0);
     }
+  }, []);
+
+  const getUserInfo = async () => {
+    const user = await getUser();
+    if (Object.keys(user).length === 0) {
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
   }, []);
 
   useEffect(() => {
@@ -105,7 +119,10 @@ function Worldcup(): JSX.Element {
     }
   };
 
-  return !gameInfo?.isCompleted ? (
+  // eslint-disable-next-line no-nested-ternary
+  return !isLoggedIn ? (
+    <Redirect to="/login" />
+  ) : !gameInfo?.isCompleted ? (
     <Wrapper>
       <Header type="header" />
       <Container>
