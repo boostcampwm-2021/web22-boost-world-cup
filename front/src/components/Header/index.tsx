@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
 import { loginState } from '../../recoil/atom';
-import Modal from '../Modal';
+import HeaderModal from '../HeaderModal';
 import SearchBar from '../SearchBar';
 
 interface headerProps {
@@ -49,7 +49,7 @@ function Header(props: Props): JSX.Element {
               <Link to="/login">로그인</Link>
             </Login>
           )}
-          {modal && <Modal open={modal} setModal={setModal} />}
+          {modal && <HeaderModal open={modal} setModal={setModal} />}
         </RightHeader>
       </MainHeader>
     </>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
@@ -15,6 +15,7 @@ interface Props {
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
+  const [isOpenModal, setIsOpenMpdal] = useState(false);
   return (
     <Item>
       <Thumbnail>
@@ -36,14 +37,12 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
             <span>랭킹보기</span>
           </Ranking>
         </Link>
-        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
-          <Share>
-            <FaShare />
-            <span>공유하기</span>
-          </Share>
-        </Link>
+        <Share>
+          <FaShare />
+          <span>공유하기</span>
+        </Share>
       </Buttons>
-      <ShareModal />
+      {isOpenModal ? <ShareModal /> : ''}
     </Item>
   );
 }
