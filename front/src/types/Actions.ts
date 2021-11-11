@@ -1,6 +1,4 @@
-import { ImgInfo } from './Datas';
-
-export interface WorldcupFormAction {
-  type: string;
-  payload: string | ImgInfo[];
+export interface FormAction<T> {
+  type: keyof T;
+  payload: T[keyof T];
 }

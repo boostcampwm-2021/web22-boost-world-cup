@@ -10,13 +10,16 @@ function Make(): JSX.Element {
   const [currentPage, setCurrentPage] = useState(1);
   const [preViews, setPreViews] = useState<ImgInfo[]>([]);
   const [worldcupFormState, worldcupFormDispatcher] = useReducer(worldcupFormReducer, initialWorldcupFormState);
-  const { title, desc, imgInfos } = worldcupFormState;
+  const { title, desc, keywords, imgInfos } = worldcupFormState;
 
   const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
+    worldcupFormDispatcher({ type: 'title', payload: target.value });
   };
   const onDescChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
+    worldcupFormDispatcher({ type: 'desc', payload: target.value });
+  };
+  const onKeywordsChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    worldcupFormDispatcher({ type: 'keywords', payload: [target.value] });
   };
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
@@ -38,14 +41,14 @@ function Make(): JSX.Element {
       fileReader.readAsArrayBuffer(file);
       return { name: file.name, key };
     });
-    worldcupFormDispatcher({ type: 'CHANGE_IMG_INFOS', payload: [...imgInfos, ...newImgInfos] });
-    setPreViews((prevPreViews) => [...prevPreViews, ...newImgInfos]);
+    worldcupFormDispatcher({ type: 'imgInfos', payload: [...imgInfos, ...newImgInfos] });
+    setPreViews([...preViews, ...newImgInfos]);
   };
 
   const onDeleteImg = (imgKey: string) => {
     const targetIdx = imgInfos.findIndex((info: ImgInfo) => info.key === imgKey);
     worldcupFormDispatcher({
-      type: 'CHANGE_IMG_INFOS',
+      type: 'imgInfos',
       payload: [...imgInfos.slice(0, targetIdx), ...imgInfos.slice(targetIdx + 1)],
     });
 
@@ -71,7 +74,7 @@ function Make(): JSX.Element {
       fileReader.readAsArrayBuffer(file);
       const targetIdx = imgInfos.findIndex((info: ImgInfo) => info.key === preImgKey);
       worldcupFormDispatcher({
-        type: 'CHANGE_IMG_INFOS',
+        type: 'imgInfos',
         payload: [...imgInfos.slice(0, targetIdx), { key, name: file.name }, ...imgInfos.slice(targetIdx + 1)],
       });
     };
@@ -86,10 +89,11 @@ function Make(): JSX.Element {
 
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/api/worldcups', {
+    axios.post('/api/worldcups', {
       title,
       desc,
-      imgInfos: imgInfos.map((imgInfo) => ({ key: imgInfo.key, name: imgInfo.name })),
+      keywords,
+      imgInfos,
     });
   };
 
@@ -97,7 +101,7 @@ function Make(): JSX.Element {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
       const targetIdx = imgInfos.findIndex((info) => info.key === imgKey);
       worldcupFormDispatcher({
-        type: 'CHANGE_IMG_INFOS',
+        type: 'imgInfos',
         payload: [
           ...imgInfos.slice(0, targetIdx),
           { ...imgInfos[targetIdx], name: e.target.value },
@@ -120,6 +124,7 @@ function Make(): JSX.Element {
           <MakeWorldcupForm
             onTitleChange={onTitleChange}
             onDescChange={onDescChange}
+            onKeywordsChange={onKeywordsChange}
             onAddImgs={onAddImgs}
             onDeleteImg={onDeleteImg}
             onStore={onStore}
