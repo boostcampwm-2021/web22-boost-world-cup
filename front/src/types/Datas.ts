@@ -15,9 +15,12 @@ export interface candidateData {
 }
 
 export interface gameInfoData {
+  isCompleted: boolean;
+  worldcupId: string;
   title: string;
   round: number;
   currentRound: number;
-  candidate1: candidateData;
-  candidate2: candidateData;
+  candidatesList: candidateData[];
+  selectedCandidate: candidateData[];
+  winCandidate: candidateData;
 }

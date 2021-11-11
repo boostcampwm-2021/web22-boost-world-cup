@@ -2,7 +2,6 @@ import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
-import 'dotenv/config';
 import sessionConfig from '../config/session';
 import indexRouter from '../api';
 import passportInit from './passport';
