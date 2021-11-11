@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
 import { loginState } from '../../recoil/atom';
 import { getUser } from '../../utils/api/auth';
 import WorldCupList from '../../components/WorldcupList';
@@ -45,14 +44,11 @@ function Main(): JSX.Element {
     getUserInfo();
   }, []);
   return (
-    <Wrapper>
+    <>
       <Header type="searchHeader" onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
-      <Keywords onClickTag={onClickTag} />
-      <WorldCupList offset={offset} setOffset={setOffset} selectedTag={selectedTag} searchWord={searchWord} />
-    </Wrapper>
+      {/* <Keywords onClickTag={onClickTag} /> */}
+      {/* <WorldCupList offset={offset} setOffset={setOffset} selectedTag={selectedTag} searchWord={searchWord} /> */}
+    </>
   );
 }
-const Wrapper = styled.body`
-  background-color: ${({ theme }) => theme.color.ligntpink};
-`;
 export default Main;

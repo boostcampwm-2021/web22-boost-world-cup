@@ -42,13 +42,15 @@ function Header(props: Props): JSX.Element {
           ) : (
             ''
           )}
-          {isLoggedIn ? (
-            <UserIcon onClick={toggleModal} />
-          ) : (
-            <Login>
-              <Link to="/login">로그인</Link>
-            </Login>
-          )}
+          <LoginWrapper>
+            {isLoggedIn ? (
+              <UserIcon onClick={toggleModal} />
+            ) : (
+              <Login>
+                <Link to="/login">로그인</Link>
+              </Login>
+            )}
+          </LoginWrapper>
           {modal && <HeaderModal open={modal} setModal={setModal} />}
         </RightHeader>
       </MainHeader>
@@ -60,33 +62,37 @@ const MainHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 140px;
-  padding: 20px 100px;
+  height: 13%;
+  padding: 2rem 5rem;
   background-color: ${({ theme }) => theme.color.primary};
 `;
 const Logo = styled.span`
-  font-size: 70px;
+  font-size: 5rem;
   font-family: Rancho;
   color: #b89068;
   cursor: pointer;
 `;
 const RightHeader = styled.span`
   width: 50%;
+  height: 5em;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 `;
+const LoginWrapper = styled.div`
+  width: 10em;
+  text-align: center;
+  line-height: 1;
+`;
 const Login = styled.span`
   font:  ${({ theme }) => theme.fontStyle.h2Bold}
   cursor: pointer;
-  margin-left: 40px;
 `;
 const UserIcon = styled(FaUserAlt)`
-  width: 58px;
-  height: 58px;
+  width: 3em;
+  height:3em;
   color: ${({ theme }) => theme.color.gray[0]}
   cursor: pointer;
-  margin-left: 50px;
 `;
 const Overlay = styled.div`
   position: fixed;
