@@ -63,6 +63,7 @@ export default createGlobalStyle`
   }
   body {
     line-height: 1;
+    margin:0;
   }
   ol,
   ul {

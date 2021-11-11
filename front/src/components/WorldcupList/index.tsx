@@ -90,35 +90,42 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
       ) : (
         ''
       )}
-      <div ref={target}>{loading && <Loader />}</div>
+      <div ref={target} style={{ width: '10px', height: '10px' }}>
+        {loading && <Loader />}
+      </div>
     </>
   );
 }
 
 const Container = styled.div`
+  margin: 1em;
   display: grid;
+  width: calc(100vw-1em);
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px 10px;
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 2fr);
+  }
 `;
 const MoreButton = styled.div`
   width: 100%;
-  height: 40px;
-  line-height: 40px;
+  height: 5em;
+  line-height: 3em;
   text-align: center;
-  margin: 20px;
+  margin: 2em;
+  padding-top: 1em;
 `;
 const Title = styled.p`
   margin: auto;
-  background-color: ${({ theme }) => theme.color.primary};
+  background-color: ${({ theme }) => theme.color.lightpink};
   color: ${({ theme }) => theme.color.gray[0]};
-  width: 70%;
-  height: 40px;
+  width: 30em;
+  height: 3em;
   border-radius: 12px;
   cursor: pointer;
   transition: all 300ms ease-in;
   &:hover {
     background-color: ${({ theme }) => theme.color.pink};
-    color: ${({ theme }) => theme.color.black};
+    color: ${({ theme }) => theme.color.gray[2]};
   }
 `;
 

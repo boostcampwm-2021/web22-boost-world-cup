@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { useSetRecoilState } from 'recoil';
 import { loginState } from '../../recoil/atom';
 import { getUser } from '../../utils/api/auth';
-import WorldCupList from '../../components/WorldcupList';
 import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
+import WorldCupList from '../../components/WorldcupList';
 
 function Main(): JSX.Element {
   const setIsLoggedIn = useSetRecoilState(loginState);
@@ -52,7 +52,8 @@ function Main(): JSX.Element {
     </Wrapper>
   );
 }
-const Wrapper = styled.body`
-  background-color: ${({ theme }) => theme.color.ligntpink};
+const Wrapper = styled.div`
+  background: rgb(245, 220, 216);
+  background: linear-gradient(0deg, rgba(245, 220, 216, 1) 0%, rgba(253, 248, 247, 1) 43%);
 `;
 export default Main;

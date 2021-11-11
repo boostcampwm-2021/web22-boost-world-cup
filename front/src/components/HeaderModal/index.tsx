@@ -9,7 +9,7 @@ interface Props {
   open: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function Modal({ open, setModal }: Props): JSX.Element {
+function HeaderModal({ open, setModal }: Props): JSX.Element {
   const setIsLoggedIn = useSetRecoilState(loginState);
   const history = useHistory();
   const setLogout = async () => {
@@ -101,4 +101,4 @@ const MenuBox = styled.ul`
   }
 `;
 
-export default Modal;
+export default HeaderModal;

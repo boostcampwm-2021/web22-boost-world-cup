@@ -43,24 +43,26 @@ function Keywords({ onClickTag }: Props): JSX.Element {
     </TagContainer>
   );
 }
-
 const TagContainer = styled(Slider)`
   display: flex;
   justify-content: center;
   align-items: center;
   margin: auto;
   margin-top: 20px;
-  width: 80vw;
+  width: 80em;
+  @media(max-width: 1200px){
+    width: 90vw;
+  }
   .slick-slide {
-    margin: 0 14px;
+    margin: 0 1em;
     background-color: ${({ theme }) => theme.color.pink};
     white-space: noWrap;
-    padding: 12px;
+    padding: 1em;
     border-radius: 12px;
     cursor: pointer;
     transition: all 300ms ease-in;
     &:hover {
-      background-color: ${({ theme }) => theme.color.primary};
+      background-color: ${({ theme }) => theme.color.pink};
     }
   }
   .slick-prev:before {
@@ -79,10 +81,10 @@ const TagContainer = styled(Slider)`
   }
 `;
 const TagName = styled.h3<{ selected: boolean }>`
-  color: ${(props) => (props.selected ? '#27131B' : 'white')};
+  color: ${(props) => (props.selected ? '#524847' : 'white')};
   font-weight: ${(props) => (props.selected ? 'bold' : '400')};
   &:hover {
-    color: ${({ theme }) => theme.color.highlight};
+    color: ${({ theme }) => theme.color.gray[2]};
   }
 `;
 export default Keywords;

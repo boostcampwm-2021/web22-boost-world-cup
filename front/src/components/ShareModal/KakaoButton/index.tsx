@@ -19,9 +19,19 @@ const KakaoButton = (): JSX.Element => {
   };
   return (
     <button type="button" onClick={handleButton}>
-      <img src={kakaoLogo} alt="kakao-logo" />
+      <KaKaoLogo />
     </button>
   );
 };
-
+const KaKaoLogo = styled.img.attrs({
+  src: `${kakaoLogo}`,
+  alt: 'kakao-log',
+})`
+  width: 48px;
+  height: 48px;
+  transition: all 300ms ease-in;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 export default KakaoButton;
