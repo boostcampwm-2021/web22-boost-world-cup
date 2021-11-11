@@ -33,6 +33,11 @@ function Worldcup(): JSX.Element {
     getGameInfoAndSetGameInfo();
   }, [getGameInfoAndSetGameInfo]);
 
+  const setSessionStorage = useCallback((gameInfo: gameInfoData): void => {
+    const cipherText = objectEncryption(gameInfo);
+    sessionStorage.setItem('_wiziboost', cipherText);
+  }, []);
+
   const imageClickHandler = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
       const {
@@ -69,6 +74,7 @@ function Worldcup(): JSX.Element {
               newGameInfo.winCandidate = winCandidate;
             }
             setGameInfo(newGameInfo);
+            setSessionStorage(newGameInfo);
             return;
           }
           if (newGameInfo.currentRound === newGameInfo.round) {
@@ -79,11 +85,10 @@ function Worldcup(): JSX.Element {
           } else {
             newGameInfo.currentRound = gameInfo.currentRound + 1;
           }
-          const cipherText = objectEncryption(newGameInfo);
-          sessionStorage.setItem('_wiziboost', cipherText);
           setGameInfo(newGameInfo);
           setCandidates(newGameInfo.candidatesList);
           setPick(0);
+          setSessionStorage(newGameInfo);
         }
       }, 1500);
     },
