@@ -15,5 +15,7 @@ const ModalBox = styled.div`
   margin: auto;
   padding; 0px;
   display: flex;
+  width: 150px;
+  justify-content: space-between;
 `;
 export default ShareModal;
