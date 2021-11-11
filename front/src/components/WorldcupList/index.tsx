@@ -96,29 +96,33 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
 }
 
 const Container = styled.div`
+  margin: 1em;
   display: grid;
+  width: calc(100vw-1em);
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px 10px;
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(1, 95vw);
+  }
 `;
 const MoreButton = styled.div`
   width: 100%;
-  height: 40px;
-  line-height: 40px;
+  height: 5em;
+  line-height: 3em;
   text-align: center;
-  margin: 20px;
+  margin: 1em;
 `;
 const Title = styled.p`
   margin: auto;
-  background-color: ${({ theme }) => theme.color.primary};
+  background-color: ${({ theme }) => theme.color.lightpink};
   color: ${({ theme }) => theme.color.gray[0]};
-  width: 70%;
-  height: 40px;
+  width: 30em;
+  height: 3em;
   border-radius: 12px;
   cursor: pointer;
   transition: all 300ms ease-in;
   &:hover {
     background-color: ${({ theme }) => theme.color.pink};
-    color: ${({ theme }) => theme.color.black};
+    color: ${({ theme }) => theme.color.gray[2]};
   }
 `;
 
