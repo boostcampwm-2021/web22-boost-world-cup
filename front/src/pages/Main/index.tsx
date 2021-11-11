@@ -46,7 +46,7 @@ function Main(): JSX.Element {
   return (
     <>
       <Header type="searchHeader" onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
-      {/* <Keywords onClickTag={onClickTag} /> */}
+      <Keywords onClickTag={onClickTag} />
       {/* <WorldCupList offset={offset} setOffset={setOffset} selectedTag={selectedTag} searchWord={searchWord} /> */}
     </>
   );

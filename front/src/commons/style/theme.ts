@@ -5,7 +5,7 @@ export default {
     lightpink: '#fdf8f7',
     black: '#000000',
     white: '#FFFFFF',
-    gray: ['#6A6E71', '#CECFD1'],
+    gray: ['#6A6E71', '#CECFD1', '#524847'],
     highlight: '#27131B',
   },
   fontStyle: {
