@@ -1,4 +1,6 @@
 import { Worldcup } from '../entity/Worldcup';
+import { findOrCreate as findOrCreateTag } from './tagService';
+import { save as saveCandidates } from './candidateService';
 import { getRepository, Like } from 'typeorm';
 
 export const findAll = async () => {
@@ -59,7 +61,20 @@ export const findById = async (id) => {
 
 export const save = async (worldcup) => {
   const worldcupRepository = getRepository(Worldcup);
-  return await worldcupRepository.save(worldcup);
+  const { title, desc: description, keywords: keywordNames, imgInfos } = worldcup;
+  const keywords = await Promise.all(keywordNames.map((name: string) => findOrCreateTag(name)));
+  const [thumbnail1, thumbnail2] = imgInfos
+    .slice(0, 2)
+    .map(({ key }) => `${process.env.IMG_URL_END_POINT}/${key}.webp`);
+  const newWorldcup = worldcupRepository.create({
+    title,
+    thumbnail1,
+    thumbnail2,
+    description,
+    keywords,
+  });
+  await worldcupRepository.save(newWorldcup);
+  await saveCandidates(imgInfos, newWorldcup);
 };
 
 export const removeById = async (id) => {
@@ -74,4 +89,3 @@ export const getWorldcupTitle = async (id: number) => {
   const worldcup = await worldcupRepository.findOne(id, { select: ['title'] });
   return worldcup.title;
 };
-

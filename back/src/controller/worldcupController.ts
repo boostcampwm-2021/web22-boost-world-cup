@@ -27,7 +27,8 @@ const worldcupController = {
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {
-    return await worldcupService.save(request.body);
+    await worldcupService.save(request.body);
+    response.json({ result: 'success', message: null });
   },
 
   remove: async (request: Request, response: Response, next: NextFunction) => {
