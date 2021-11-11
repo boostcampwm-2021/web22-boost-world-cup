@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
   "devDependencies": {
+    "@types/mime-types": "^2.1.1",
     "@types/node": "^8.0.29",
+    "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
     "eslint": "^7.32.0",
@@ -15,17 +17,20 @@
   },
   "dependencies": {
     "@types/passport": "^1.0.7",
+    "aws-sdk": "^2.1025.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.6.0",
     "express": "^4.15.4",
     "express-session": "^1.17.2",
+    "mime-types": "^2.1.34",
     "mysql": "^2.14.1",
     "passport": "^0.5.0",
     "passport-github": "^1.1.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-kakao": "^1.0.1",
     "reflect-metadata": "^0.1.10",
-    "typeorm": "0.2.38"
+    "typeorm": "0.2.38",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "dev": "ts-node-dev --files src/index.ts",

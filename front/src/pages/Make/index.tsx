@@ -26,7 +26,7 @@ function Make(): JSX.Element {
     }
     const newFiles = [...files].filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name));
     const contentTypes = newFiles.map((file) => file.type);
-    const { data } = await axios.post('http://localhost:8000/api/images/presigned-url', { contentTypes });
+    const { data } = await axios.post('/api/bucket/url', { contentTypes });
     const newImgInfos: ImgInfo[] = data.map((presignedData: PreSignedData, idx: number) => {
       const { presignedURL, key } = presignedData;
       const file = newFiles[idx];
@@ -48,7 +48,12 @@ function Make(): JSX.Element {
       type: 'CHANGE_IMG_INFOS',
       payload: [...imgInfos.slice(0, targetIdx), ...imgInfos.slice(targetIdx + 1)],
     });
-    axios.delete(`http://localhost:8000/api/images/${imgKey}`);
+
+    const targetIdxInPriViews = preViews.findIndex((info: ImgInfo) => info.key === imgKey);
+    if (targetIdxInPriViews !== -1) {
+      setPreViews([...preViews.slice(0, targetIdxInPriViews), ...preViews.slice(targetIdxInPriViews + 1)]);
+    }
+    axios.delete(`/api/candidates/${imgKey}`);
   };
 
   const getOnImgChange = (preImgKey: string) => {
@@ -56,15 +61,14 @@ function Make(): JSX.Element {
       if (!e.target.files) return;
       const [file] = [...e.target.files];
       const contentTypes = [file.type];
-      const { data } = await axios.post('http://localhost:8000/api/images/presigned-url', { contentTypes });
-      const { key, preSignedData } = data[0];
-      const { fields, url } = preSignedData;
-      const fileData = new FormData();
-      Object.keys(fields).forEach((key) => {
-        fileData.append(key, fields[key]);
+      const { data } = await axios.post('/api/bucket/url', { contentTypes });
+      const { key, presignedURL } = data[0];
+      const fileReader = new FileReader();
+      fileReader.addEventListener('load', ({ target }) => {
+        if (!target || !target.result || typeof target.result === 'string') return;
+        axios.put(presignedURL, target.result, { headers: { 'Content-Type': file.type } });
       });
-      fileData.append('file', file);
-      axios.post(url, fileData);
+      fileReader.readAsArrayBuffer(file);
       const targetIdx = imgInfos.findIndex((info: ImgInfo) => info.key === preImgKey);
       worldcupFormDispatcher({
         type: 'CHANGE_IMG_INFOS',
