@@ -1,124 +1,143 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Redirect } from 'react-router';
 import styled, { keyframes, css } from 'styled-components';
-import { setTimeout } from 'timers';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
-import { sendGameResult } from '../../utils/api/game';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from './gameover';
 import { objectDecryption, objectEncryption } from '../../utils/crypto';
+import { getUser } from '../../utils/api/auth';
 
 function Worldcup(): JSX.Element {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(true);
   const [pick, setPick] = useState(0);
-  const [title, setTitle] = useState('');
-  const [round, setRound] = useState(16);
-  const [curRound, setCurRound] = useState(1);
-  const [worldcupId, setWorldcupId] = useState(1);
-  const [completed, setCompleted] = useState(false);
+  const [gameInfo, setGameInfo] = useState<gameInfoData>();
   const [leftCandidate, setLeftCandidate] = useState<candidateData>();
   const [rightCandidate, setRightCandidate] = useState<candidateData>();
-  const [winCandidate, setWinCandidate] = useState<candidateData>();
+
+  const setCandidates = useCallback((candidatesList: candidateData[]) => {
+    candidatesList.sort(() => Math.random() - 0.5);
+    setLeftCandidate(candidatesList[0]);
+    setRightCandidate(candidatesList[1]);
+  }, []);
 
   // eslint-disable-next-line consistent-return
-  const gameInfo = useMemo(() => {
-    const decryptedData = sessionStorage.getItem('_wiziboost');
-    if (decryptedData) {
-      return objectDecryption(decryptedData);
-    }
-  }, []);
-
-  const setGameState = useCallback((gameInfo) => {
-    if (gameInfo) {
-      const { title, round, currentRound, candidatesList } = gameInfo;
+  const getGameInfoAndSetGameInfo = useCallback(() => {
+    const sessionStorageData = sessionStorage.getItem('_wiziboost');
+    if (sessionStorageData) {
+      const decryptedData = objectDecryption(sessionStorageData);
+      setGameInfo(decryptedData);
+      setCandidates(decryptedData.candidatesList);
       setPick(0);
-      setTitle(title);
-      setRound(round);
-      setCurRound(currentRound);
-      candidatesList.sort(() => Math.random() - 0.5);
-      setLeftCandidate(candidatesList[0]);
-      setRightCandidate(candidatesList[1]);
+    } else {
+      setIsInitialized(false);
     }
   }, []);
 
-  const setGameInfo = useCallback(() => {
-    if (gameInfo) {
-      const { isCompleted } = gameInfo;
-      if (isCompleted) {
-        return;
-      }
-      setGameState(gameInfo);
+  const getUserInfo = async () => {
+    const user = await getUser();
+    if (Object.keys(user).length === 0) {
+      setIsLoggedIn(false);
     }
-  }, [gameInfo]);
+  };
 
   useEffect(() => {
-    setGameInfo();
-  }, [setGameInfo]);
-
-  const gameover = useCallback((gameInfo: gameInfoData) => {
-    const { winCandidate, title, worldcupId } = gameInfo;
-    setCompleted(true);
-    setTitle(title);
-    setWinCandidate(winCandidate);
-    setWorldcupId(Number(worldcupId));
+    getUserInfo();
   }, []);
 
-  const imageClickHandler = (event: React.MouseEvent<HTMLElement>) => {
-    const {
-      dataset: { value },
-    } = event.target as HTMLElement;
-    if (value) {
-      setPick(Number(value));
-    }
-    setTimeout(() => {
-      let winId: number | undefined;
-      let loseId: number | undefined;
-      if (value === '1') {
-        winId = leftCandidate?.id;
-        loseId = rightCandidate?.id;
-      } else {
-        winId = rightCandidate?.id;
-        loseId = leftCandidate?.id;
+  useEffect(() => {
+    getGameInfoAndSetGameInfo();
+  }, [getGameInfoAndSetGameInfo]);
+
+  const setSessionStorage = useCallback((gameInfo: gameInfoData): void => {
+    const cipherText = objectEncryption(gameInfo);
+    sessionStorage.setItem('_wiziboost', cipherText);
+  }, []);
+
+  const imageClickHandler = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      const {
+        dataset: { value },
+      } = event.target as HTMLElement;
+      if (value) {
+        setPick(Number(value));
       }
-      if (gameInfo) {
-        const newGameInfo = { ...gameInfo };
-        const winCandidate = gameInfo.candidatesList.find((candidate) => candidate.id === winId);
-        const remainCandidateList = gameInfo.candidatesList.filter(
-          (candidate) => candidate.id !== winId && candidate.id !== loseId,
-        );
-        newGameInfo.candidatesList = [...remainCandidateList];
-        if (gameInfo.selectedCandidate && winCandidate) {
-          newGameInfo.selectedCandidate = [...gameInfo.selectedCandidate, winCandidate];
-        }
-        if (newGameInfo.currentRound === newGameInfo.round) {
-          newGameInfo.round /= 2;
-          newGameInfo.currentRound = 1;
-          newGameInfo.candidatesList = [...newGameInfo.selectedCandidate];
-          newGameInfo.selectedCandidate = [];
+
+      setTimeout(() => {
+        let winId: number | undefined;
+        let loseId: number | undefined;
+
+        if (value === '1') {
+          winId = leftCandidate?.id;
+          loseId = rightCandidate?.id;
         } else {
-          newGameInfo.currentRound = gameInfo.currentRound + 1;
+          winId = rightCandidate?.id;
+          loseId = leftCandidate?.id;
         }
-        const cipherText = objectEncryption(newGameInfo);
-        sessionStorage.setItem('_wiziboost', cipherText);
-        setGameState(newGameInfo);
+        if (gameInfo) {
+          const newGameInfo = { ...gameInfo };
+          const winCandidate = gameInfo.candidatesList.find((candidate) => candidate.id === winId);
+          const remainCandidateList = gameInfo.candidatesList.filter(
+            (candidate) => candidate.id !== winId && candidate.id !== loseId,
+          );
+          newGameInfo.candidatesList = [...remainCandidateList];
+          if (gameInfo.selectedCandidate && winCandidate) {
+            newGameInfo.selectedCandidate = [...gameInfo.selectedCandidate, winCandidate];
+          }
+          if (newGameInfo.round === 1) {
+            newGameInfo.isCompleted = true;
+            if (winCandidate) {
+              newGameInfo.winCandidate = winCandidate;
+            }
+            setGameInfo(newGameInfo);
+            setSessionStorage(newGameInfo);
+            return;
+          }
+          if (newGameInfo.currentRound === newGameInfo.round) {
+            newGameInfo.round /= 2;
+            newGameInfo.currentRound = 1;
+            newGameInfo.candidatesList = [...newGameInfo.selectedCandidate];
+            newGameInfo.selectedCandidate = [];
+          } else {
+            newGameInfo.currentRound = gameInfo.currentRound + 1;
+          }
+          setGameInfo(newGameInfo);
+          setCandidates(newGameInfo.candidatesList);
+          setPick(0);
+          setSessionStorage(newGameInfo);
+        }
+      }, 1500);
+    },
+    [leftCandidate, rightCandidate],
+  );
+
+  // eslint-disable-next-line consistent-return
+  const makeRoundText = (round: number | undefined) => {
+    if (round) {
+      if (round === 1) {
+        return '결승';
       }
-    }, 1500);
-  };
-
-  const makeRoundText = () => {
-    if (round === 1) {
-      return '결승';
+      return `${round * 2}강`;
     }
-    return `${round * 2}강`;
   };
 
-  return !completed ? (
+  // eslint-disable-next-line no-nested-ternary
+  if (!isLoggedIn) {
+    return <Redirect to="/login" />;
+  }
+  if (!isInitialized) {
+    return <Redirect to="/main" />;
+  }
+
+  return !gameInfo?.isCompleted ? (
     <Wrapper>
       <Header type="header" />
       <Container>
         <Title>
-          {title} {curRound}/{round}
+          {gameInfo?.title} {gameInfo?.currentRound}/{gameInfo?.round}
         </Title>
-        <Round>{makeRoundText()}</Round>
+        <Round>{makeRoundText(gameInfo?.round)}</Round>
         <ImageContainer select={pick}>
           <img src={versusImg} alt="versus" />
           <LeftImage
@@ -141,7 +160,7 @@ function Worldcup(): JSX.Element {
       </Container>
     </Wrapper>
   ) : (
-    <Gameover winCandidate={winCandidate} title={title} worldcupId={worldcupId} />
+    <Gameover winCandidate={gameInfo?.winCandidate} title={gameInfo?.title} worldcupId={gameInfo?.worldcupId} />
   );
 }
 

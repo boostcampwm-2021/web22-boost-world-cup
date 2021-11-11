@@ -8,12 +8,14 @@ import { getWorldcupById } from '../../utils/api/worldcups';
 import { getCandidatesList } from '../../utils/api/game';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import { objectEncryption } from '../../utils/crypto';
+import { getUser } from '../../utils/api/auth';
 
 interface Props {
   location: Location;
 }
 
 function Initialize({ location }: Props): JSX.Element {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [ready, setReady] = useState(false);
@@ -39,6 +41,17 @@ function Initialize({ location }: Props): JSX.Element {
     }
     setPossibleRound([...possibleRound, ...tempRoundList]);
   }, [candidatesSize]);
+
+  const getUserInfo = async () => {
+    const user = await getUser();
+    if (Object.keys(user).length === 0) {
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   useEffect(() => {
     fetchWorldAndSetState();
@@ -75,7 +88,11 @@ function Initialize({ location }: Props): JSX.Element {
       setReady(true);
     }
   };
-  return ready ? (
+
+  // eslint-disable-next-line no-nested-ternary
+  return !isLoggedIn ? (
+    <Redirect to="/login" />
+  ) : ready ? (
     <Redirect to="/worldcup" />
   ) : (
     <>
