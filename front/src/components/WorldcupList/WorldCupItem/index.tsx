@@ -13,9 +13,15 @@ interface Props {
   title: string;
   desc: string;
 }
+interface ModalProps {
+  isOpenModal: boolean;
+}
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
   const [isOpenModal, setIsOpenMpdal] = useState(false);
+  const openModal = () => {
+    setIsOpenMpdal(!isOpenModal);
+  };
   return (
     <Item>
       <Thumbnail>
@@ -37,12 +43,14 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
             <span>랭킹보기</span>
           </Ranking>
         </Link>
-        <Share>
+        <Share onClick={openModal}>
           <FaShare />
           <span>공유하기</span>
         </Share>
       </Buttons>
-      {isOpenModal ? <ShareModal /> : ''}
+      <ModalBox isOpenModal={isOpenModal}>
+        <ShareModal />
+      </ModalBox>
     </Item>
   );
 }
@@ -124,6 +132,12 @@ const Share = styled.div`
     color: white;
     background-color: blue;
   }
+`;
+
+const ModalBox = styled.div`
+  visibility: ${(props: ModalProps) => {
+    return props.isOpenModal ? 'visible' : 'hidden';
+  }};
 `;
 
 export default WorldCupItem;
