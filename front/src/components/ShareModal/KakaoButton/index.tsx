@@ -27,8 +27,8 @@ const KaKaoLogo = styled.img.attrs({
   src: `${kakaoLogo}`,
   alt: 'kakao-log',
 })`
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   transition: all 300ms ease-in;
   &:hover {
     transform: scale(1.1);
