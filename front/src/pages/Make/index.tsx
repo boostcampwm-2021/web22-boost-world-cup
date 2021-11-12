@@ -36,7 +36,7 @@ function Make(): JSX.Element {
       const fileReader = new FileReader();
       fileReader.addEventListener('load', ({ target }) => {
         if (!target || !target.result || typeof target.result === 'string') return;
-        axios.put(presignedURL, target.result, { headers: { 'Content-Type': file.type } });
+        axios.put(presignedURL, target.result, { headers: { 'Content-Type': file.type, 'x-amz-acl': 'public-read' } });
       });
       fileReader.readAsArrayBuffer(file);
       return { name: file.name, key };
