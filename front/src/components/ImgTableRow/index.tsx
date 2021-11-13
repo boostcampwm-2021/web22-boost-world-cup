@@ -18,7 +18,7 @@ function ImgTableRow({ imgInfo, num, onDelete, getOnImgNameChange, getOnImgChang
     <Container>
       <RowItem style={{ width: '138px' }}>{num}</RowItem>
       <RowItem style={{ width: '144px' }}>
-        <ImgPreView onDelete={onDelete} info={imgInfo} width={120} height={120} deleteBtnExist={false} />
+        <ImgPreView info={imgInfo} tab={2} />
       </RowItem>
       <RowItem style={{ width: '487px' }}>
         <TextInput
