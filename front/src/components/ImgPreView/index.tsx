@@ -14,22 +14,7 @@ interface Props {
 
 function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
-  const [imgURL, setImgURL] = useState(
-    `https://kr.object.ncloudstorage.com/image-w${width}h${height}/${info.key}.webp#${Date.now()}`,
-  );
-
-  useEffect(() => {
-    const { key } = info;
-    const intervalId = setInterval(() => {
-      if (!isLoading) {
-        clearInterval(intervalId);
-        return;
-      }
-      const newImgURL = `https://kr.object.ncloudstorage.com/image-w${width}h${height}/${key}.webp#${Date.now()}`;
-      setImgURL(newImgURL);
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, [isLoading]);
+  const imgURL = `https://kr.object.ncloudstorage.com/wiziboost-image-raw/${info.key}`;
 
   return (
     <Container isLoading={isLoading} style={{ width, height }}>
@@ -39,7 +24,16 @@ function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): J
           <MdCancel size={40} color="red" />
         </Btn>
       )}
-      <Img src={imgURL} onLoad={() => setIsLoading(false)} alt="" isLoading={isLoading} width={width} height={height} />
+      {info.isUploaded && (
+        <Img
+          src={imgURL}
+          onLoad={() => setIsLoading(false)}
+          alt=""
+          isLoading={isLoading}
+          width={width}
+          height={height}
+        />
+      )}
     </Container>
   );
 }
