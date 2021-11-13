@@ -1,50 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { MdCancel } from 'react-icons/md';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Loading from 'react-loading';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {
-  onDelete: (key: string) => void;
   info: ImgInfo;
-  deleteBtnExist: boolean;
-  width: 143 | 120;
-  height: 160 | 120;
+  tab: 1 | 2;
 }
 
-function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): JSX.Element {
+function ImgPreView({ info, tab }: Props): JSX.Element {
+  const imgURLEndPoint = 'https://kr.object.ncloudstorage.com';
+  const resizedImgURL = `${imgURLEndPoint}/image-w120h120/${info.key}.webp`;
+  const originImgURL = `${imgURLEndPoint}/wiziboost-image-raw/${info.key}`;
+  const initialImgURL = tab === 1 ? originImgURL : resizedImgURL;
   const [isLoading, setIsLoading] = useState(true);
-  const [imgURL, setImgURL] = useState(
-    `https://kr.object.ncloudstorage.com/image-w${width}h${height}/${info.key}.webp#${Date.now()}`,
-  );
-
-  useEffect(() => {
-    const { key } = info;
-    const intervalId = setInterval(() => {
-      if (!isLoading) {
-        clearInterval(intervalId);
-        return;
-      }
-      const newImgURL = `https://kr.object.ncloudstorage.com/image-w${width}h${height}/${key}.webp#${Date.now()}`;
-      setImgURL(newImgURL);
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, [isLoading]);
+  const [imgURL, setImgURL] = useState(initialImgURL);
+  const placeholder = <Loading type="spin" color="black" />;
+  const onError = () => setImgURL(originImgURL);
 
   return (
-    <Container isLoading={isLoading} style={{ width, height }}>
-      {isLoading && <Loading type="spin" color="black" />}
-      {!isLoading && deleteBtnExist && (
-        <Btn type="button" onClick={() => onDelete(info.key)}>
-          <MdCancel size={40} color="red" />
-        </Btn>
+    <Container isLoading={isLoading} tab={tab}>
+      {isLoading && placeholder}
+      {info.isUploaded && (
+        <Img src={imgURL} onLoad={() => setIsLoading(false)} onError={onError} alt="" isLoading={isLoading} tab={tab} />
       )}
-      <Img src={imgURL} onLoad={() => setIsLoading(false)} alt="" isLoading={isLoading} width={width} height={height} />
     </Container>
   );
 }
 
-const Container = styled.li<{ isLoading: boolean }>`
+const Container = styled.li<{ isLoading: boolean; tab: number }>`
+  width: ${({ tab }) => (tab === 1 ? '143px' : '120px')};
+  height: ${({ tab }) => (tab === 1 ? '160px' : '120px')};
   position: relative;
   border-radius: 13px;
   border: ${({ isLoading }) => (isLoading ? `1px solid black` : `none`)};
@@ -56,18 +42,11 @@ const Container = styled.li<{ isLoading: boolean }>`
   }
 `;
 
-const Btn = styled.button`
-  position: absolute;
-  background-color: ${({ theme }) => theme.color.white};
-  border-radius: 50%;
-  height: 40px;
-  right: -20px;
-  top: -20px;
-`;
-
-const Img = styled.img<{ isLoading: boolean }>`
+const Img = styled.img<{ isLoading: boolean; tab: number }>`
   border-radius: 13px;
-  display: ${({ isLoading }) => (isLoading ? `none` : `inline`)};
+  visibility: ${({ isLoading }) => (isLoading ? 'hidden' : 'visible')};
+  width: ${({ tab }) => (tab === 1 ? '143px' : '120px')};
+  height: ${({ tab }) => (tab === 1 ? '160px' : '120px')};
 `;
 
 export default ImgPreView;

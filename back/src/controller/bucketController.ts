@@ -14,6 +14,7 @@ const bucketController = {
           Key: key,
           Expires: 60,
           ContentType: type,
+          ACL: 'public-read',
         });
         return { presignedURL, key };
       }),

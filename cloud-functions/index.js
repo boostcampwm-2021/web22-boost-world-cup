@@ -1,9 +1,6 @@
 const sharp = require('sharp');
 const aws = require('aws-sdk');
-const sizes = [
-  { width: 120, height: 120 },
-  { width: 143, height: 160 },
-];
+const sizes = [{ width: 120, height: 120 }];
 const credentials = new aws.Credentials({
   accessKeyId: process.env.NCP_ACCESS_KEY_ID,
   secretAccessKey: process.env.NCP_SECRET_ACCESS_KEY,

@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React, { useReducer, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
@@ -10,16 +10,17 @@ function Make(): JSX.Element {
   const [currentPage, setCurrentPage] = useState(1);
   const [preViews, setPreViews] = useState<ImgInfo[]>([]);
   const [worldcupFormState, worldcupFormDispatcher] = useReducer(worldcupFormReducer, initialWorldcupFormState);
+  const previewStartIdx = useRef(0);
   const { title, desc, keywords, imgInfos } = worldcupFormState;
 
   const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'title', payload: target.value });
+    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
   };
   const onDescChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'desc', payload: target.value });
+    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
   };
   const onKeywordsChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'keywords', payload: [target.value] });
+    worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
   };
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
@@ -34,22 +35,24 @@ function Make(): JSX.Element {
       const { presignedURL, key } = presignedData;
       const file = newFiles[idx];
       const fileReader = new FileReader();
-      fileReader.addEventListener('load', ({ target }) => {
+      fileReader.addEventListener('load', async ({ target }) => {
         if (!target || !target.result || typeof target.result === 'string') return;
-        axios.put(presignedURL, target.result, { headers: { 'Content-Type': file.type } });
+        await axios.put(presignedURL, target.result, {
+          headers: { 'Content-Type': file.type, 'x-amz-acl': 'public-read' },
+        });
+        worldcupFormDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: key });
       });
       fileReader.readAsArrayBuffer(file);
-      return { name: file.name, key };
+      return { name: file.name, isUploaded: false, key };
     });
-    worldcupFormDispatcher({ type: 'imgInfos', payload: [...imgInfos, ...newImgInfos] });
+    worldcupFormDispatcher({ type: 'ADD_IMGS', payload: newImgInfos });
     setPreViews([...preViews, ...newImgInfos]);
   };
 
   const onDeleteImg = (imgKey: string) => {
-    const targetIdx = imgInfos.findIndex((info: ImgInfo) => info.key === imgKey);
     worldcupFormDispatcher({
-      type: 'imgInfos',
-      payload: [...imgInfos.slice(0, targetIdx), ...imgInfos.slice(targetIdx + 1)],
+      type: 'DELETE_IMG',
+      payload: imgKey,
     });
 
     const targetIdxInPriViews = preViews.findIndex((info: ImgInfo) => info.key === imgKey);
@@ -59,7 +62,7 @@ function Make(): JSX.Element {
     axios.delete(`/api/candidates/${imgKey}`);
   };
 
-  const getOnImgChange = (preImgKey: string) => {
+  const getOnImgChange = (preKey: string) => {
     return async (e: React.ChangeEvent<HTMLInputElement>) => {
       if (!e.target.files) return;
       const [file] = [...e.target.files];
@@ -67,15 +70,15 @@ function Make(): JSX.Element {
       const { data } = await axios.post('/api/bucket/url', { contentTypes });
       const { key, presignedURL } = data[0];
       const fileReader = new FileReader();
-      fileReader.addEventListener('load', ({ target }) => {
+      fileReader.addEventListener('load', async ({ target }) => {
         if (!target || !target.result || typeof target.result === 'string') return;
-        axios.put(presignedURL, target.result, { headers: { 'Content-Type': file.type } });
+        await axios.put(presignedURL, target.result, { headers: { 'Content-Type': file.type } });
+        worldcupFormDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: key });
       });
       fileReader.readAsArrayBuffer(file);
-      const targetIdx = imgInfos.findIndex((info: ImgInfo) => info.key === preImgKey);
       worldcupFormDispatcher({
-        type: 'imgInfos',
-        payload: [...imgInfos.slice(0, targetIdx), { key, name: file.name }, ...imgInfos.slice(targetIdx + 1)],
+        type: 'CHANGE_IMG',
+        payload: { newKey: key, name: file.name, preKey },
       });
     };
   };
@@ -84,6 +87,7 @@ function Make(): JSX.Element {
     return () => {
       if (currentTab === tabNum) return;
       setCurrentTab(tabNum);
+      previewStartIdx.current = imgInfos.length;
     };
   };
 
@@ -97,23 +101,14 @@ function Make(): JSX.Element {
     });
   };
 
-  const getOnImgNameChange = (imgKey: string) => {
+  const getOnImgNameChange = (key: string) => {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
-      const targetIdx = imgInfos.findIndex((info) => info.key === imgKey);
       worldcupFormDispatcher({
-        type: 'imgInfos',
-        payload: [
-          ...imgInfos.slice(0, targetIdx),
-          { ...imgInfos[targetIdx], name: e.target.value },
-          ...imgInfos.slice(targetIdx + 1),
-        ],
+        type: 'CHANGE_IMG_NAME',
+        payload: { key, name: e.target.value },
       });
     };
   };
-
-  useEffect(() => {
-    setPreViews([]);
-  }, [currentTab]);
 
   return (
     <>
@@ -128,7 +123,7 @@ function Make(): JSX.Element {
             onAddImgs={onAddImgs}
             onDeleteImg={onDeleteImg}
             onStore={onStore}
-            imgInfos={preViews}
+            imgInfos={imgInfos.slice(previewStartIdx.current)}
           />
         )}
         {currentTab === 2 && (
