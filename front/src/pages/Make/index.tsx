@@ -87,6 +87,7 @@ function Make(): JSX.Element {
     return () => {
       if (currentTab === tabNum) return;
       setCurrentTab(tabNum);
+      previewStartIdx.current = imgInfos.length;
     };
   };
 
@@ -108,11 +109,6 @@ function Make(): JSX.Element {
       });
     };
   };
-
-  useEffect(() => {
-    if (currentTab !== 1) return;
-    previewStartIdx.current = imgInfos.length;
-  }, [currentTab]);
 
   return (
     <>
