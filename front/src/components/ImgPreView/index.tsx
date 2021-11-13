@@ -1,44 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { MdCancel } from 'react-icons/md';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Loading from 'react-loading';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {
-  onDelete: (key: string) => void;
   info: ImgInfo;
-  deleteBtnExist: boolean;
-  width: 143 | 120;
-  height: 160 | 120;
 }
 
-function ImgPreView({ onDelete, info, width, height, deleteBtnExist }: Props): JSX.Element {
+function ImgPreView({ info }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
   const imgURL = `https://kr.object.ncloudstorage.com/wiziboost-image-raw/${info.key}`;
 
   return (
-    <Container isLoading={isLoading} style={{ width, height }}>
+    <Container isLoading={isLoading}>
       {isLoading && <Loading type="spin" color="black" />}
-      {!isLoading && deleteBtnExist && (
-        <Btn type="button" onClick={() => onDelete(info.key)}>
-          <MdCancel size={40} color="red" />
-        </Btn>
-      )}
       {info.isUploaded && (
-        <Img
-          src={imgURL}
-          onLoad={() => setIsLoading(false)}
-          alt=""
-          isLoading={isLoading}
-          width={width}
-          height={height}
-        />
+        <Img src={imgURL} onLoad={() => setIsLoading(false)} alt="" isLoading={isLoading} width={143} height={160} />
       )}
     </Container>
   );
 }
 
 const Container = styled.li<{ isLoading: boolean }>`
+  width: 143px;
+  height: 160px;
   position: relative;
   border-radius: 13px;
   border: ${({ isLoading }) => (isLoading ? `1px solid black` : `none`)};
@@ -50,18 +35,9 @@ const Container = styled.li<{ isLoading: boolean }>`
   }
 `;
 
-const Btn = styled.button`
-  position: absolute;
-  background-color: ${({ theme }) => theme.color.white};
-  border-radius: 50%;
-  height: 40px;
-  right: -20px;
-  top: -20px;
-`;
-
 const Img = styled.img<{ isLoading: boolean }>`
   border-radius: 13px;
-  display: ${({ isLoading }) => (isLoading ? `none` : `inline`)};
+  visibility: ${({ isLoading }) => (isLoading ? 'hidden' : 'visible')};
 `;
 
 export default ImgPreView;
