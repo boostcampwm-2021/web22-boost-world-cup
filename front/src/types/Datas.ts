@@ -6,6 +6,7 @@ export interface PreSignedData {
 export interface ImgInfo {
   key: string;
   name: string;
+  isUploaded: boolean;
 }
 
 export interface candidateData {
