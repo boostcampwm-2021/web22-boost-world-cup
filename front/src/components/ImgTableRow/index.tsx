@@ -1,19 +1,105 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { WorldcupDispatcher } from '../../pages/Make/store';
 import { ImgInfo } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
+import { deleteImage, getSignedURLs, uploadImage } from '../../utils/api/image';
+import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 
 interface Props {
   imgInfo: ImgInfo;
   num: number;
-  onDelete: (key: string) => void;
-  getOnImgNameChange: (imgKey: string) => React.ChangeEventHandler<HTMLInputElement>;
-  getOnImgChange: (imgKey: string) => React.ChangeEventHandler<HTMLInputElement>;
 }
 
-function ImgTableRow({ imgInfo, num, onDelete, getOnImgNameChange, getOnImgChange }: Props): JSX.Element {
+function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
+  const worldcupDispatcher = useContext(WorldcupDispatcher);
+  const [deleteImageResult, deleteImageDispatcher] = useApiRequest(deleteImage);
+  const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
+  const [uploadImageResult, uploadImageDispatcher] = useApiRequest(uploadImage);
+  const [willUploadFile, setWillUploadFile] = useState<File | null>(null);
+
+  const onDeleteImg = () => {
+    deleteImageDispatcher({ type: REQUEST, requestProps: [imgInfo.key] });
+  };
+  const onImgNameChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    worldcupDispatcher({ type: 'CHANGE_IMG_NAME', payload: { key: imgInfo.key, name: target.value } });
+  };
+  const onImgChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    if (!target.files) return;
+    const [file] = [...target.files];
+    const contentTypes = [file.type];
+    getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
+    setWillUploadFile(file);
+  };
+
+  useEffect(() => {
+    const { type } = deleteImageResult;
+    switch (type) {
+      case NULL:
+      case REQUEST:
+        return;
+      case SUCCESS: {
+        worldcupDispatcher({ type: 'DELETE_IMG', payload: imgInfo.key });
+        return;
+      }
+      case FAILURE: {
+        return;
+      }
+      default:
+        throw new Error('Unexpected request type');
+    }
+  }, [deleteImageResult]);
+
+  useEffect(() => {
+    const { type } = getSignedURLsResult;
+    switch (type) {
+      case NULL:
+      case REQUEST:
+        return;
+      case SUCCESS: {
+        if (!willUploadFile) return;
+        const { data } = getSignedURLsResult;
+        const { key, presignedURL } = data[0];
+        const fileReader = new FileReader();
+        fileReader.addEventListener('load', async ({ target }) => {
+          if (!target || !target.result || typeof target.result === 'string') return;
+          uploadImageDispatcher({ type: REQUEST, requestProps: [presignedURL, target.result, willUploadFile.type] });
+        });
+        fileReader.readAsArrayBuffer(willUploadFile);
+        worldcupDispatcher({
+          type: 'CHANGE_IMG',
+          payload: { newKey: key, name: willUploadFile.name, preKey: imgInfo.key },
+        });
+        return;
+      }
+      case FAILURE: {
+        return;
+      }
+      default:
+        throw new Error('Unexpected request type');
+    }
+  }, [getSignedURLsResult]);
+
+  useEffect(() => {
+    const { type } = uploadImageResult;
+    switch (type) {
+      case NULL:
+      case REQUEST:
+        return;
+      case SUCCESS: {
+        worldcupDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: imgInfo.key });
+        return;
+      }
+      case FAILURE: {
+        return;
+      }
+      default:
+        throw new Error('Unexpected request type');
+    }
+  }, [uploadImageResult]);
+
   return (
     <Container>
       <RowItem style={{ width: '138px' }}>{num}</RowItem>
@@ -23,17 +109,17 @@ function ImgTableRow({ imgInfo, num, onDelete, getOnImgNameChange, getOnImgChang
       <RowItem style={{ width: '487px' }}>
         <TextInput
           name="imgName"
-          onChange={getOnImgNameChange(imgInfo.key)}
+          onChange={onImgNameChange}
           width="400px"
           placeholder="이미지의 이름을 입력해주세요."
           defaultValue={imgInfo.name}
         />
       </RowItem>
       <RowItem style={{ width: '625px' }}>
-        <ImgInput onChange={getOnImgChange(imgInfo.key)} type="changeImg" />
+        <ImgInput onChange={onImgChange} type="changeImg" />
       </RowItem>
       <RowItem style={{ width: '450px' }}>
-        <DeleteBtn type="button" onClick={() => onDelete(imgInfo.key)}>
+        <DeleteBtn type="button" onClick={onDeleteImg}>
           라인 삭제
         </DeleteBtn>
       </RowItem>

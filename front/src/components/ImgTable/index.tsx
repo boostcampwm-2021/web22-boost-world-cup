@@ -1,29 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import { WorldcupState } from '../../pages/Make/store';
 import ImgTableRow from '../ImgTableRow';
 import StoreBtns from '../StoreBtns';
 import Pagination from '../ImgTablePagination';
-import { ImgInfo } from '../../types/Datas';
 
 interface Props {
-  imgInfos: ImgInfo[];
-  onDeleteImg: (key: string) => void;
-  getOnImgNameChange: (imgKey: string) => React.ChangeEventHandler<HTMLInputElement>;
-  getOnImgChange: (preImgKey: string) => React.ChangeEventHandler<HTMLInputElement>;
-  onStore: React.MouseEventHandler<HTMLButtonElement>;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function ImgTable({
-  imgInfos,
-  onDeleteImg,
-  getOnImgNameChange,
-  getOnImgChange,
-  onStore,
-  currentPage,
-  setCurrentPage,
-}: Props): JSX.Element {
+function ImgTable({ currentPage, setCurrentPage }: Props): JSX.Element {
+  const worldcupFormState = useContext(WorldcupState);
+  const { imgInfos } = worldcupFormState;
   const ELEMENT_CNT_PER_PAGE = 8;
   const lastPage = Math.ceil(imgInfos.length / ELEMENT_CNT_PER_PAGE);
 
@@ -46,16 +35,7 @@ function ImgTable({
   const startIdx = ELEMENT_CNT_PER_PAGE * (currentPage - 1);
   const rows = imgInfos
     .slice(startIdx, startIdx + 8)
-    .map((info, idx) => (
-      <ImgTableRow
-        onDelete={onDeleteImg}
-        imgInfo={info}
-        key={info.key}
-        getOnImgNameChange={getOnImgNameChange}
-        getOnImgChange={getOnImgChange}
-        num={startIdx + idx + 1}
-      />
-    ));
+    .map((info, idx) => <ImgTableRow key={info.key} imgInfo={info} num={startIdx + idx + 1} />);
 
   useEffect(() => {
     if (currentPage > lastPage && lastPage >= 1) setCurrentPage(lastPage);
@@ -90,7 +70,7 @@ function ImgTable({
           onPreBtnClick={onPreBtnClick}
           onNextBtnClick={onNextBtnClick}
         />
-        <StoreBtns onStore={onStore} />
+        <StoreBtns />
       </Footer>
     </Container>
   );
