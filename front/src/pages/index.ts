@@ -5,3 +5,4 @@ export { default as Make } from './Make';
 export { default as SignUp } from './SignUp';
 export { default as Initialize } from './Initialize';
 export { default as Worldcup } from './Worldcup';
+export { default as NotFound } from './NotFound';
