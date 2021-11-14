@@ -10,13 +10,13 @@ const ormConfig: ConnectionOptions = {
   database: process.env.DATABASE_NAME,
   synchronize: true,
   logging: false,
-  entities: ['src/entity/**/*.ts'],
-  migrations: ['src/migration/**/*.ts'],
-  subscribers: ['src/subscriber/**/*.ts'],
+  entities: [__dirname + '/../entity/**/*{.ts,.js}'],
+  migrations: [__dirname + '/../migration/**/*{.ts,.js}'],
+  subscribers: [__dirname + '/../subscriber/**/*{.ts,.js}'],
   cli: {
-    entitiesDir: 'src/entity',
-    migrationsDir: 'src/migration',
-    subscribersDir: 'src/subscriber',
+    entitiesDir: __dirname +'/../entity',
+    migrationsDir: __dirname + '/../migration',
+    subscribersDir: __dirname + '/../subscriber',
   },
 };
 
