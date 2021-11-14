@@ -5,6 +5,7 @@ import * as passport from 'passport';
 import sessionConfig from '../config/session';
 import indexRouter from '../api';
 import passportInit from './passport';
+import { NextFunction, Request, Response } from 'express';
 
 const expressLoader = (app) => {
   app.use(express.json());
@@ -18,6 +19,9 @@ const expressLoader = (app) => {
   passportInit();
 
   app.use('/api', indexRouter);
+  app.use('*', (req, res) => {
+    res.sendFile(__dirname + '/../../public/index.html');
+  })
 };
 
 export default expressLoader;
