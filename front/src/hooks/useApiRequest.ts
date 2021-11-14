@@ -8,6 +8,11 @@ interface RequestState<T> {
   status?: number;
 }
 
+export const NULL = 'NULL';
+export const REQUEST = 'REQUEST';
+export const SUCCESS = 'SUCCESS';
+export const FAILURE = 'FAILURE';
+
 type RequestReducer<T> = (action: RequestState<T>, state: RequestState<T>) => RequestState<T>;
 
 const requestReducer = <T>(state: RequestState<T>, action: RequestState<T>): RequestState<T> => {
