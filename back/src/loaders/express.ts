@@ -5,7 +5,7 @@ import * as passport from 'passport';
 import sessionConfig from '../config/session';
 import indexRouter from '../api';
 import passportInit from './passport';
-import { NextFunction, Request, Response } from 'express';
+import { join } from 'path';
 
 const expressLoader = (app) => {
   app.use(express.json());
@@ -20,7 +20,7 @@ const expressLoader = (app) => {
 
   app.use('/api', indexRouter);
   app.use('*', (req, res) => {
-    res.sendFile(__dirname + '/../../public/index.html');
+    res.sendFile(join(__dirname, '..', '..', '/public/index.html'));
   })
 };
 
