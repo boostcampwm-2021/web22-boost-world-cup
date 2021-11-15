@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import WorldCupItem from './WorldCupItem';
+import MyWorldCupItem from './MyWorldCupItem';
 import Loader from './Loader';
-import { getWorldcupList, getWorldcupListBySearch, getWorldcupListByKeyword } from '../../utils/api/worldcups';
+import { getWorldcupList } from '../../utils/api/worldcups';
 
 interface WorldcupType {
   id: number;
@@ -12,12 +13,14 @@ interface WorldcupType {
   description: string;
 }
 interface Props {
+  type: 'worldcup' | 'myWorldcup';
   offset: number;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
-  selectedTag: string;
-  searchWord: string;
+  searchWord?: string;
+  selectedTag?: string;
 }
-function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JSX.Element {
+
+function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Props): JSX.Element {
   const [isClickMore, setIsClickMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<WorldcupType[]>([]);
@@ -30,10 +33,7 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
     setIsClickMore(!isClickMore);
   };
   const fetchData = async () => {
-    let newItems;
-    if (searchWord) newItems = await getWorldcupListBySearch({ offset, limit, search: searchWord });
-    else if (selectedTag) newItems = await getWorldcupListByKeyword({ offset, limit, keyword: selectedTag });
-    else newItems = await getWorldcupList({ offset, limit });
+    const newItems = await getWorldcupList({ offset, limit, search: searchWord, keyword: selectedTag });
     if (!newItems.length && observer.current) {
       observer.current.disconnect();
       setLoading(false);
@@ -73,15 +73,25 @@ function WorldcupList({ offset, setOffset, selectedTag, searchWord }: Props): JS
   return (
     <>
       <Container>
-        {items.map((item) => (
-          <WorldCupItem
-            id={item.id}
-            thumbnail1={item.thumbnail1}
-            thumbnail2={item.thumbnail2}
-            title={item.title}
-            desc={item.description}
-          />
-        ))}
+        {items.map((item) =>
+          type === 'worldcup' ? (
+            <WorldCupItem
+              id={item.id}
+              thumbnail1={item.thumbnail1}
+              thumbnail2={item.thumbnail2}
+              title={item.title}
+              desc={item.description}
+            />
+          ) : (
+            <MyWorldCupItem
+              id={item.id}
+              thumbnail1={item.thumbnail1}
+              thumbnail2={item.thumbnail2}
+              title={item.title}
+              desc={item.description}
+            />
+          ),
+        )}
       </Container>
       {!isClickMore ? (
         <MoreButton onClick={onClickMoreButton}>
