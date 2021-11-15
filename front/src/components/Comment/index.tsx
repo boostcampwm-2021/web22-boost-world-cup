@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import styled from 'styled-components';
+import { createComment } from '../../utils/api/comment';
 
 interface Props {
   worldcupId: string;
@@ -9,11 +10,10 @@ interface Props {
 function Comment({ worldcupId }: Props): JSX.Element {
   const [comment, setComment] = useState('');
 
-  const onSubmit = (event: React.MouseEvent<HTMLElement>) => {
+  const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     setComment('');
-    console.log(worldcupId);
-    console.log(comment);
+    await createComment(worldcupId, comment);
   };
 
   const commentChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
