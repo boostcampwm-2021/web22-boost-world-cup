@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ImgInput from '../ImgInput';
 import ImgPreView from '../ImgPreView';
 import { ImgInfo } from '../../types/Datas';
-import { UploadImgState } from '../../pages/Make/store';
+import { UploadImgState } from '../../store/UploadImgStore';
 
 interface Props {
   imgInfos: ImgInfo[];

@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
-import { UploadImgDispatcher, WorldcupDispatcher } from './store';
+import { WorldcupDispatcher } from './store';
 import { ImgInfosState } from '../../store/ImgsStore';
+import { UploadImgDispatcher } from '../../store/UploadImgStore';
 
 function View(): JSX.Element {
   const [currentTab, setCurrentTab] = useState(1);

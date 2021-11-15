@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { UploadImgState, UploadImgDispatcher } from '../../pages/Make/store';
+import { UploadImgState, UploadImgDispatcher } from '../../store/UploadImgStore';
 import { ImgInfosState, ImgInfosDispatcher } from '../../store/ImgsStore';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { getSignedURLs } from '../../utils/api/image';
