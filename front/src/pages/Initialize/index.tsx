@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSetRecoilState } from 'recoil';
+import { loginState } from '../../recoil/atom';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from '../../components/RoundSelector';
@@ -15,7 +17,7 @@ interface Props {
 }
 
 function Initialize({ location }: Props): JSX.Element {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [ready, setReady] = useState(false);
@@ -46,12 +48,12 @@ function Initialize({ location }: Props): JSX.Element {
     const user = await getUser();
     if (Object.keys(user).length === 0) {
       setIsLoggedIn(false);
+      return false;
     }
+    setIsLoggedIn(true);
+    return true;
   };
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+  const isLoggedIn = useMemo(() => getUserInfo(), []);
 
   useEffect(() => {
     fetchWorldAndSetState();
@@ -89,10 +91,11 @@ function Initialize({ location }: Props): JSX.Element {
     }
   };
 
-  // eslint-disable-next-line no-nested-ternary
-  return !isLoggedIn ? (
-    <Redirect to="/login" />
-  ) : ready ? (
+  if (!isLoggedIn) {
+    return <Redirect to="/login" />;
+  }
+
+  return ready ? (
     <Redirect to="/worldcup" />
   ) : (
     <>

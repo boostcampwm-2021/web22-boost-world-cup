@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Redirect } from 'react-router';
 import styled, { keyframes, css } from 'styled-components';
+import { useSetRecoilState } from 'recoil';
+import { loginState } from '../../recoil/atom';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
@@ -9,7 +11,7 @@ import { objectDecryption, objectEncryption } from '../../utils/crypto';
 import { getUser } from '../../utils/api/auth';
 
 function Worldcup(): JSX.Element {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const [isInitialized, setIsInitialized] = useState(true);
   const [pick, setPick] = useState(0);
   const [gameInfo, setGameInfo] = useState<gameInfoData>();
@@ -39,12 +41,12 @@ function Worldcup(): JSX.Element {
     const user = await getUser();
     if (Object.keys(user).length === 0) {
       setIsLoggedIn(false);
+      return false;
     }
+    setIsLoggedIn(true);
+    return true;
   };
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+  const isLoggedIn = useMemo(() => getUserInfo(), []);
 
   useEffect(() => {
     getGameInfoAndSetGameInfo();
