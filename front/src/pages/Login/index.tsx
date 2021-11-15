@@ -29,13 +29,13 @@ function Login(): JSX.Element {
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
       <ButtonContainer>
-        <a href="/api/auth/github">
+        <a href={process.env.REACT_APP_GITHUB_CALLBACK_URL}>
           <SocialLoginButton mark={<GoMarkGithub />} contents="Continue with Github" />
         </a>
-        <a href="/api/auth/kakao">
+        <a href={process.env.REACT_APP_KAKAO_CALLBACK_URL}>
           <SocialLoginButton mark={<SiKakaotalk />} contents="Continue with Kakao" />
         </a>
-        <a href="/api/auth/google">
+        <a href={process.env.REACT_APP_GOOGLE_CALLBACK_URL}>
           <SocialLoginButton mark={<FcGoogle />} contents="Continue with Google" />
         </a>
       </ButtonContainer>
