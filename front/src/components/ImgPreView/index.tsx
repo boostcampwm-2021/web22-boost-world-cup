@@ -9,8 +9,8 @@ import { ImgInfosDispatcher } from '../../store/ImgsStore';
 interface Props {
   info: ImgInfo;
   tab: 1 | 2;
-  willUploadFile?: File;
-  presignedURL?: string;
+  willUploadFile: File | null;
+  presignedURL: string | null;
   onUploadSuccess?: (info: ImgInfo) => void;
 }
 
@@ -29,7 +29,12 @@ function ImgPreView({ info, tab, willUploadFile, presignedURL, onUploadSuccess }
   const onError = () => setImgURL(originImgURL);
 
   useEffect(() => {
-    if (tab !== 1 || !willUploadFile) return;
+    setImgURL(initialImgURL);
+  }, [info.key]);
+
+  useEffect(() => {
+    if (!willUploadFile || !presignedURL) return;
+    setIsLoading(true);
     const fileReader = new FileReader();
     fileReader.addEventListener('load', async ({ target }) => {
       if (!target || !target.result || typeof target.result === 'string') return;
@@ -39,7 +44,7 @@ function ImgPreView({ info, tab, willUploadFile, presignedURL, onUploadSuccess }
       });
     });
     fileReader.readAsArrayBuffer(willUploadFile);
-  }, []);
+  }, [willUploadFile, presignedURL]);
 
   useEffect(() => {
     const { type } = uploadImageResult;

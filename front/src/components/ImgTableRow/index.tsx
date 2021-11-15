@@ -5,7 +5,7 @@ import { ImgInfo } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
-import { deleteImage, getSignedURLs, uploadImage } from '../../utils/api/image';
+import { deleteImage, getSignedURLs } from '../../utils/api/image';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 
 interface Props {
@@ -15,10 +15,10 @@ interface Props {
 
 function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
   const imgInfosDispatcher = useContext(ImgInfosDispatcher);
+  const [willUploadFile, setWillUploadFile] = useState<File | null>(null);
+  const [presignedURL, setPresignedURL] = useState<string | null>(null);
   const [deleteImageResult, deleteImageDispatcher] = useApiRequest(deleteImage);
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
-  const [uploadImageResult, uploadImageDispatcher] = useApiRequest(uploadImage);
-  const [willUploadFile, setWillUploadFile] = useState<File | null>(null);
 
   const onDeleteImg = () => {
     deleteImageDispatcher({ type: REQUEST, requestProps: [imgInfo.key] });
@@ -62,12 +62,7 @@ function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
         if (!willUploadFile) return;
         const { data } = getSignedURLsResult;
         const { key, presignedURL } = data[0];
-        const fileReader = new FileReader();
-        fileReader.addEventListener('load', async ({ target }) => {
-          if (!target || !target.result || typeof target.result === 'string') return;
-          uploadImageDispatcher({ type: REQUEST, requestProps: [presignedURL, target.result, willUploadFile.type] });
-        });
-        fileReader.readAsArrayBuffer(willUploadFile);
+        setPresignedURL(presignedURL);
         imgInfosDispatcher({
           type: 'CHANGE_IMG',
           payload: { newKey: key, name: willUploadFile.name, preKey: imgInfo.key },
@@ -83,28 +78,15 @@ function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
   }, [getSignedURLsResult]);
 
   useEffect(() => {
-    const { type } = uploadImageResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        imgInfosDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: imgInfo.key });
-        return;
-      }
-      case FAILURE: {
-        return;
-      }
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [uploadImageResult]);
+    setPresignedURL(null);
+    setWillUploadFile(null);
+  }, [imgInfo.key]);
 
   return (
     <Container>
       <RowItem style={{ width: '138px' }}>{num}</RowItem>
       <RowItem style={{ width: '144px' }}>
-        <ImgPreView info={imgInfo} tab={2} />
+        <ImgPreView info={imgInfo} tab={2} willUploadFile={willUploadFile} presignedURL={presignedURL} />
       </RowItem>
       <RowItem style={{ width: '487px' }}>
         <TextInput
