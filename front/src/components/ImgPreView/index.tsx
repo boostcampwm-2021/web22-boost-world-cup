@@ -11,9 +11,10 @@ interface Props {
   tab: 1 | 2;
   willUploadFile?: File;
   presignedURL?: string;
+  onUploadSuccess?: (info: ImgInfo) => void;
 }
 
-function ImgPreView({ info, tab, willUploadFile, presignedURL }: Props): JSX.Element {
+function ImgPreView({ info, tab, willUploadFile, presignedURL, onUploadSuccess }: Props): JSX.Element {
   const IMG_URL_END_POINT = 'https://kr.object.ncloudstorage.com';
   const resizedImgURL = `${IMG_URL_END_POINT}/image-w120h120/${info.key}.webp`;
   const originImgURL = `${IMG_URL_END_POINT}/wiziboost-image-raw/${info.key}`;
@@ -49,6 +50,7 @@ function ImgPreView({ info, tab, willUploadFile, presignedURL }: Props): JSX.Ele
         return;
       case 'SUCCESS': {
         worldcupFormDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: info.key });
+        if (onUploadSuccess) onUploadSuccess(info);
         return;
       }
       case 'FAILURE': {
