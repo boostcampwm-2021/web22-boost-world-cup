@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
+import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar, StoreBtns } from '../../components';
 import { usePagination, useTabBar, useImgInfos, useWorldcupForm } from '../../hooks';
 
 function Make(): JSX.Element {
@@ -20,7 +20,6 @@ function Make(): JSX.Element {
           <MakeWorldcupForm
             previewStartIdx={previewStartIdx}
             imgInfos={imgInfos}
-            worldcupFormState={worldcupFormState}
             onTitleChange={({ target }) => {
               worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
             }}
@@ -41,9 +40,9 @@ function Make(): JSX.Element {
             offset={offset}
             onPageChange={onPageChange}
             imgInfosDispatcher={imgInfosDispatcher}
-            worldcupFormState={worldcupFormState}
           />
         )}
+        <StoreBtns imgInfos={imgInfos} worldcupFormState={worldcupFormState} />
       </Content>
     </>
   );

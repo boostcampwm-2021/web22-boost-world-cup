@@ -10,12 +10,10 @@ import { ImgsAction } from '../../hooks/useImgInfos';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
-import StoreBtns from '../StoreBtns';
 
 interface Props {
   previewStartIdx: number;
   imgInfos: ImgInfo[];
-  worldcupFormState: WorldcupState;
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
   onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -25,7 +23,6 @@ interface Props {
 function MakeWorldcupForm({
   previewStartIdx,
   imgInfos,
-  worldcupFormState,
   onTitleChange,
   onDescChange,
   onKeywordsChange,
@@ -122,7 +119,6 @@ function MakeWorldcupForm({
           <ImgInput onChange={onAddImgs} type="addImgs" />
         )}
       </VerticalWrapper>
-      <StoreBtns imgInfos={imgInfos} worldcupFormState={worldcupFormState} />
     </Container>
   );
 }
