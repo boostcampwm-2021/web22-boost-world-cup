@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Loading from 'react-loading';
 import { ImgInfo } from '../../types/Datas';
-import useApiRequest from '../../hooks/useApiRequest';
+import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { uploadImage } from '../../utils/api/image';
 import { ImgInfosDispatcher } from '../../store/ImgsStore';
 
@@ -34,7 +34,7 @@ function ImgPreView({ info, tab, willUploadFile, presignedURL, onUploadSuccess }
     fileReader.addEventListener('load', async ({ target }) => {
       if (!target || !target.result || typeof target.result === 'string') return;
       uploadImageDispatcher({
-        type: 'REQUEST',
+        type: REQUEST,
         requestProps: [presignedURL, target.result, willUploadFile.type],
       });
     });
@@ -44,15 +44,15 @@ function ImgPreView({ info, tab, willUploadFile, presignedURL, onUploadSuccess }
   useEffect(() => {
     const { type } = uploadImageResult;
     switch (type) {
-      case 'NULL':
-      case 'REQUEST':
+      case NULL:
+      case REQUEST:
         return;
-      case 'SUCCESS': {
+      case SUCCESS: {
         imgInfosDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: info.key });
         if (onUploadSuccess) onUploadSuccess(info);
         return;
       }
-      case 'FAILURE': {
+      case FAILURE: {
         return;
       }
       default:
