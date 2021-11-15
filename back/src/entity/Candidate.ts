@@ -16,6 +16,9 @@ export class Candidate {
   @Column({ name: 'win_cnt', default: '0' })
   winCnt: number;
 
+  @Column({ name: 'victory_cnt', default: '0' })
+  victoryCnt: number;
+
   @Column()
   name: string;
 
