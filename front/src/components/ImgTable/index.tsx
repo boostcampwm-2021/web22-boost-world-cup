@@ -32,7 +32,7 @@ function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange }: Pro
     onPageChange(nextPage);
   };
 
-  const rows = imgInfos.map((info, idx) => <ImgTableRow key={info.key} imgInfo={info} num={offset + idx + 1} />);
+  const rows = imgInfos.map((info, idx) => <ImgTableRow key={info.id} imgInfo={info} num={offset + idx + 1} />);
 
   return (
     <Container>

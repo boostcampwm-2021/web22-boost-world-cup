@@ -14,7 +14,7 @@ function ImgPreViewList({ imgInfos, onAddImgs }: Props): JSX.Element {
   const { willUploadFiles, presignedURLs } = useContext(UploadImgState);
   const imgs = imgInfos.map((info: ImgInfo, idx: number) => (
     <ImgPreView
-      key={info.key}
+      key={info.id}
       info={info}
       tab={1}
       willUploadFile={willUploadFiles[idx]}

@@ -4,6 +4,7 @@ import { UploadImgState, UploadImgDispatcher } from '../../store/UploadImgStore'
 import { ImgInfosState, ImgInfosDispatcher } from '../../store/ImgsStore';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { getSignedURLs } from '../../utils/api/image';
+import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
@@ -48,7 +49,7 @@ function MakeWorldcupForm({ previewStartIdx, onTitleChange, onDescChange, onKeyw
         const newImgInfos = presignedDatas.map((presignedData: PreSignedData, idx: number) => {
           const { key } = presignedData;
           const file = willUploadFiles[idx];
-          return { name: file.name, isUploaded: false, key };
+          return { name: file.name, isUploaded: false, id: getUUID(), key };
         });
         uploadDispatcher({
           type: 'ADD_PRESIGNED_URL',
