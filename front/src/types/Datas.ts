@@ -7,6 +7,7 @@ export interface ImgInfo {
   key: string;
   name: string;
   isUploaded: boolean;
+  id: number;
 }
 
 export interface candidateData {

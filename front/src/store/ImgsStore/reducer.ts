@@ -18,7 +18,7 @@ export default (state: ImgsState, action: ImgsAction): ImgsState => {
       const targetIdx = state.findIndex((info) => info.key === preKey);
       const newImgInfos = [
         ...state.slice(0, targetIdx),
-        { key: newKey, name: newName, isUploaded: false },
+        { ...state[targetIdx], key: newKey, name: newName, isUploaded: false },
         ...state.slice(targetIdx + 1),
       ];
       return newImgInfos;
