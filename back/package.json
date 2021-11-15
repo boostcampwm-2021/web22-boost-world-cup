@@ -34,7 +34,7 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "dev": "ts-node-dev --files src/index.ts",
+    "dev": "export NODE_ENV=development && ts-node-dev --files src/index.ts",
     "start": "ts-node --files src/index.ts"
   }
 }

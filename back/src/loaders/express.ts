@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
@@ -14,14 +15,14 @@ const expressLoader = (app) => {
   app.use(session(sessionConfig));
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(express.static('public'));
 
+  process.env.NODE_ENV !== 'development' ? app.use(express.static('public')) : false;
   passportInit();
 
   app.use('/api', indexRouter);
   app.use('*', (req, res) => {
     res.sendFile(join(__dirname, '..', '..', '/public/index.html'));
-  })
+  });
 };
 
 export default expressLoader;
