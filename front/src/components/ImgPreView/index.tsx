@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Loading from 'react-loading';
 import { ImgInfo } from '../../types/Datas';
-import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
-import { uploadImage } from '../../utils/api/image';
-import { ImgInfosDispatcher } from '../../store/ImgsStore';
+import { useUploadImg } from '../../hooks';
 
 interface Props {
   info: ImgInfo;
@@ -20,56 +18,26 @@ function ImgPreView({ info, tab, willUploadFile, presignedURL, onUploadSuccess }
   const originImgURL = `${IMG_URL_END_POINT}/wiziboost-image-raw/${info.key}`;
   const initialImgURL = tab === 1 ? originImgURL : resizedImgURL;
 
-  const [isLoading, setIsLoading] = useState(true);
   const [imgURL, setImgURL] = useState(initialImgURL);
-  const [uploadImageResult, uploadImageDispatcher] = useApiRequest(uploadImage);
-  const imgInfosDispatcher = useContext(ImgInfosDispatcher);
-
+  const [isLoading, setIsLoading] = useUploadImg(info, willUploadFile, presignedURL, onUploadSuccess);
   const placeholder = <Loading type="spin" color="black" />;
-  const onError = () => setImgURL(originImgURL);
 
   useEffect(() => {
     setImgURL(initialImgURL);
   }, [info.key]);
 
-  useEffect(() => {
-    if (!willUploadFile || !presignedURL) return;
-    setIsLoading(true);
-    const fileReader = new FileReader();
-    fileReader.addEventListener('load', async ({ target }) => {
-      if (!target || !target.result || typeof target.result === 'string') return;
-      uploadImageDispatcher({
-        type: REQUEST,
-        requestProps: [presignedURL, target.result, willUploadFile.type],
-      });
-    });
-    fileReader.readAsArrayBuffer(willUploadFile);
-  }, [willUploadFile, presignedURL]);
-
-  useEffect(() => {
-    const { type } = uploadImageResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        imgInfosDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: info.key });
-        if (onUploadSuccess) onUploadSuccess(info);
-        return;
-      }
-      case FAILURE: {
-        return;
-      }
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [uploadImageResult]);
-
   return (
     <Container isLoading={isLoading} tab={tab}>
       {isLoading && placeholder}
       {info.isUploaded && (
-        <Img src={imgURL} onLoad={() => setIsLoading(false)} onError={onError} alt="" isLoading={isLoading} tab={tab} />
+        <Img
+          src={imgURL}
+          onLoad={() => setIsLoading(false)}
+          onError={() => setImgURL(originImgURL)}
+          alt=""
+          isLoading={isLoading}
+          tab={tab}
+        />
       )}
     </Container>
   );
