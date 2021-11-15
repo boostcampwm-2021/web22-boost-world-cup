@@ -11,25 +11,18 @@ import StoreBtns from '../StoreBtns';
 
 interface Props {
   previewStartIdx: number;
+  onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
+  onDescChange: React.ChangeEventHandler<HTMLInputElement>;
+  onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-function MakeWorldcupForm({ previewStartIdx }: Props): JSX.Element {
+function MakeWorldcupForm({ previewStartIdx, onTitleChange, onDescChange, onKeywordsChange }: Props): JSX.Element {
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
   const uploadDispatcher = useContext(UploadImgDispatcher);
   const { willUploadFiles } = useContext(UploadImgState);
   const worldcupFormDispatcher = useContext(WorldcupDispatcher);
   const { imgInfos } = useContext(WorldcupState);
   const previews = imgInfos.slice(previewStartIdx);
-
-  const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
-  };
-  const onDescChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
-  };
-  const onKeywordsChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
-  };
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
     const { files } = target;
