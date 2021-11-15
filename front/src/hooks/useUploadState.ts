@@ -1,3 +1,5 @@
+import React, { useReducer, useEffect } from 'react';
+
 export interface UploadState {
   willUploadFiles: File[];
   presignedURLs: string[];
@@ -8,12 +10,12 @@ export type UploadAction =
   | { type: 'ADD_PRESIGNED_URL'; payload: string[] }
   | { type: 'RESET' };
 
-export const initialUploadState: UploadState = {
+const initialUploadState: UploadState = {
   willUploadFiles: [],
   presignedURLs: [],
 };
 
-export default (state: UploadState, action: UploadAction): UploadState => {
+const uploadStateReducer = (state: UploadState, action: UploadAction): UploadState => {
   switch (action.type) {
     case 'ADD_FILES': {
       const { payload: newFiles } = action;
@@ -30,3 +32,15 @@ export default (state: UploadState, action: UploadAction): UploadState => {
       throw new Error('Unexpected action type');
   }
 };
+
+const useUploadState = (): [UploadState, React.Dispatch<UploadAction>] => {
+  const [uploadState, uploadStateDispatcher] = useReducer(uploadStateReducer, initialUploadState);
+
+  useEffect(() => {
+    return () => uploadStateDispatcher({ type: 'RESET' });
+  }, []);
+
+  return [uploadState, uploadStateDispatcher];
+};
+
+export default useUploadState;

@@ -1,21 +1,15 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
-import { UploadImgDispatcher } from '../../store/UploadImgStore';
 import { WorldcupFormDispatcher } from '../../store/WorldcupFormStore';
 import { usePagination, useTabBar, useImgInfos } from '../../hooks';
 
 function Make(): JSX.Element {
-  const uploadImgDispatcher = useContext(UploadImgDispatcher);
   const worldcupFormDispatcher = useContext(WorldcupFormDispatcher);
   const [imgInfos, imgInfosDispatcher] = useImgInfos();
   const PAGINATION_LIMIT = 8;
-  const tabChangeEffect = () => {
-    uploadImgDispatcher({ type: 'RESET' });
-    setPreviewStartIdx(imgInfos.length);
-  };
   const [previewStartIdx, setPreviewStartIdx] = useState(0);
-  const [currentTab, onTabChange] = useTabBar(tabChangeEffect);
+  const [currentTab, onTabChange] = useTabBar(() => setPreviewStartIdx(imgInfos.length));
   const [currentPage, offset, lastPage, onPageChange] = usePagination(imgInfos.length, PAGINATION_LIMIT);
 
   return (

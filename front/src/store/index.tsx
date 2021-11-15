@@ -1,5 +1,4 @@
 import React from 'react';
-import UploadImgStore from './UploadImgStore';
 import WorldcupFormStore from './WorldcupFormStore';
 
 interface Props {
@@ -7,11 +6,7 @@ interface Props {
 }
 
 function GlobalStore({ children }: Props): JSX.Element {
-  return (
-    <WorldcupFormStore>
-      <UploadImgStore>{children}</UploadImgStore>
-    </WorldcupFormStore>
-  );
+  return <WorldcupFormStore>{children}</WorldcupFormStore>;
 }
 
 export default GlobalStore;

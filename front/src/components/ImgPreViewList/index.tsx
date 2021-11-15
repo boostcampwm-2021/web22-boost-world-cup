@@ -1,19 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ImgInput from '../ImgInput';
 import ImgPreView from '../ImgPreView';
 import { ImgInfo } from '../../types/Datas';
-import { UploadImgState } from '../../store/UploadImgStore';
 import { ImgsAction } from '../../hooks/useImgInfos';
+import { UploadState } from '../../hooks/useUploadState';
 
 interface Props {
   imgInfos: ImgInfo[];
+  uploadState: UploadState;
   onAddImgs: React.ChangeEventHandler<HTMLInputElement>;
   imgInfosDispatcher: React.Dispatch<ImgsAction>;
 }
 
-function ImgPreViewList({ imgInfos, onAddImgs, imgInfosDispatcher }: Props): JSX.Element {
-  const { willUploadFiles, presignedURLs } = useContext(UploadImgState);
+function ImgPreViewList({ imgInfos, uploadState, onAddImgs, imgInfosDispatcher }: Props): JSX.Element {
+  const { willUploadFiles, presignedURLs } = uploadState;
   const imgs = imgInfos.map((info: ImgInfo, idx: number) => (
     <ImgPreView
       key={info.id}

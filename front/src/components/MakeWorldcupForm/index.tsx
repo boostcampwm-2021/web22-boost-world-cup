@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { UploadImgState, UploadImgDispatcher } from '../../store/UploadImgStore';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import { useUploadState } from '../../hooks';
 import { getSignedURLs } from '../../utils/api/image';
 import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
@@ -29,8 +29,8 @@ function MakeWorldcupForm({
   imgInfosDispatcher,
 }: Props): JSX.Element {
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
-  const uploadDispatcher = useContext(UploadImgDispatcher);
-  const { willUploadFiles } = useContext(UploadImgState);
+  const [uploadState, uploadStateDispatcher] = useUploadState();
+  const { willUploadFiles } = uploadState;
   const previews = imgInfos.slice(previewStartIdx);
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
@@ -41,7 +41,7 @@ function MakeWorldcupForm({
     const newFiles = [...files].filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name));
     const contentTypes = newFiles.map((file) => file.type);
     getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
-    uploadDispatcher({ type: 'ADD_FILES', payload: newFiles });
+    uploadStateDispatcher({ type: 'ADD_FILES', payload: newFiles });
   };
 
   useEffect(() => {
@@ -58,7 +58,7 @@ function MakeWorldcupForm({
           const file = willUploadFiles[idx];
           return { name: file.name, isUploaded: false, id: getUUID(), key };
         });
-        uploadDispatcher({
+        uploadStateDispatcher({
           type: 'ADD_PRESIGNED_URL',
           payload: presignedDatas.map((data: PreSignedData) => data.presignedURL),
         });
@@ -109,7 +109,12 @@ function MakeWorldcupForm({
       <VerticalWrapper>
         <Label>이상형 월드컵 이미지 업로드</Label>
         {previews.length ? (
-          <ImgPreViewList imgInfos={previews} onAddImgs={onAddImgs} imgInfosDispatcher={imgInfosDispatcher} />
+          <ImgPreViewList
+            imgInfos={previews}
+            uploadState={uploadState}
+            onAddImgs={onAddImgs}
+            imgInfosDispatcher={imgInfosDispatcher}
+          />
         ) : (
           <ImgInput onChange={onAddImgs} type="addImgs" />
         )}
