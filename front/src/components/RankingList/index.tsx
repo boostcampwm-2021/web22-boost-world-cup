@@ -82,6 +82,7 @@ const Caption = styled.div`
   margin: 0 auto;
   font-size: 1.8em;
   font-weight: bold;
+  margin-bottom: 1em;
 `;
 const LeftCaption = styled.div`
   width: 500px;
