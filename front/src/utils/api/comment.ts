@@ -7,7 +7,10 @@ interface createCommentResponse {
 
 export const getComments = async (worldcupId: string): Promise<CommentData[]> => {
   const response = await axios.get(`/api/comments/${worldcupId}`);
-  return response.data;
+  const {
+    data: { comments },
+  } = response;
+  return comments;
 };
 
 export const createComment = async (worldcupId: string, message: string): Promise<createCommentResponse> => {

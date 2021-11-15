@@ -32,7 +32,6 @@ function Comment({ worldcupId }: Props): JSX.Element {
     } = event;
     setMessage(value);
   };
-
   return (
     <Wrapper>
       <InputContainer>
@@ -43,13 +42,37 @@ function Comment({ worldcupId }: Props): JSX.Element {
       <CommentsContainer>
         <Text>댓글 (개수)</Text>
         <Comments>
-          <Text>yongjin 2021-10-28 15:30:28</Text>
-          <Text>재미있네요!</Text>
+          {comments.map((comment) => (
+            <EachComment>
+              <SubContainer>
+                <Writer>{comment.nickname}</Writer>
+                <Date>{comment.createdAt}</Date>
+              </SubContainer>
+              <Message>{comment.message}</Message>
+            </EachComment>
+          ))}
         </Comments>
       </CommentsContainer>
     </Wrapper>
   );
 }
+const SubContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const EachComment = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const Writer = styled.div`
+  ${({ theme }) => theme.fontStyle.bodyBold};
+`;
+const Date = styled.div`
+  ${({ theme }) => theme.fontStyle.body};
+`;
+const Message = styled.div`
+  ${({ theme }) => theme.fontStyle.body};
+`;
 
 const Comments = styled.div`
   display: flex;

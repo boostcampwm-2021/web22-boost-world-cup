@@ -30,6 +30,5 @@ export interface CommentData {
   id: number;
   message: string;
   createdAt: Date;
-  userId: number;
-  worldcupId: number;
+  nickname: string;
 }
