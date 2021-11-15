@@ -23,7 +23,8 @@ function Comment({ worldcupId }: Props): JSX.Element {
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     setMessage('');
-    await createComment(worldcupId, message);
+    const { nickname, createdAt, message: newMessage } = await createComment(worldcupId, message);
+    setComments([...comments, { message: newMessage, createdAt, nickname }]);
   };
 
   const commentChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +89,7 @@ const CommentsContainer = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 1312px;
+  width: 90%;
   height: 260px;
 `;
 

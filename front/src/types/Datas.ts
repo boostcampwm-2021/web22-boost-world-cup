@@ -27,7 +27,6 @@ export interface gameInfoData {
 }
 
 export interface CommentData {
-  id: number;
   message: string;
   createdAt: Date;
   nickname: string;

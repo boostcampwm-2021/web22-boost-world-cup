@@ -20,8 +20,13 @@ const commentController = {
     } = request;
     const user = await findUserById(userId);
     const worldcup = await findWorldcupById(worldcupId);
-    await commentService.save(user, worldcup, message);
-    response.json({ result: 'success' });
+    const comment = await commentService.save(user, worldcup, message);
+    const {
+      user: { nickname },
+      message: saveMessage,
+      createdAt,
+    } = comment;
+    response.json({ nickname, createdAt, message: saveMessage });
   },
 };
 
