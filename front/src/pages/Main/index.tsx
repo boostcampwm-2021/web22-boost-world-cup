@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
 import { loginState } from '../../recoil/atom';
@@ -7,17 +7,23 @@ import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
 import WorldCupList from '../../components/WorldcupList';
 
+enum filtering {
+  tag,
+  search,
+}
 function Main(): JSX.Element {
   const setIsLoggedIn = useSetRecoilState(loginState);
   const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   const [offset, setOffset] = useState(0);
+  const filterStandard = useRef<filtering>(0);
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setSearchWord(inputWord);
     setOffset(0);
     setInputWord('');
+    filterStandard.current = 1;
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputWord(event.target.value);
@@ -25,6 +31,7 @@ function Main(): JSX.Element {
   const onClickTag = (keyword: string) => {
     setOffset(0);
     setSelectedTag(keyword);
+    filterStandard.current = 0;
   };
   const getUserInfo = async () => {
     const user = await getUser();
@@ -48,7 +55,13 @@ function Main(): JSX.Element {
     <Wrapper>
       <Header type="searchHeader" onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
       <Keywords onClickTag={onClickTag} />
-      <WorldCupList offset={offset} setOffset={setOffset} selectedTag={selectedTag} searchWord={searchWord} />
+      <WorldCupList
+        offset={offset}
+        setOffset={setOffset}
+        selectedTag={selectedTag}
+        searchWord={searchWord}
+        filterStandard={filterStandard}
+      />
     </Wrapper>
   );
 }
