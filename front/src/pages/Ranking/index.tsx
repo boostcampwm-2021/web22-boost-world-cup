@@ -18,6 +18,7 @@ const RankingContent = styled.div`
   margin: 0 auto;
   margin-top: 5em;
   padding: 2em 6em 2em 0;
-  background-color: skyblue;
+  background: rgb(245, 220, 216);
+  background: linear-gradient(0deg, rgba(245, 220, 216, 1) 37%, rgba(210, 128, 120, 1) 100%);
 `;
 export default Ranking;

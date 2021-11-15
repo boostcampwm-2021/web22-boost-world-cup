@@ -32,7 +32,7 @@ function RankingItem({ id, url, name, winCnt, showCnt, info }: ItemProps): JSX.E
         <span>{name}</span>
       </LeftSection>
       <RightSection>
-        <div />
+        <div style={{ width: '300px' }} />
         <Bar>
           <Ratio width={winCnt / showCnt} />
           <span>{`${((winCnt / showCnt) * 100).toFixed(2)}%`}</span>
@@ -53,13 +53,13 @@ const Section = styled.div`
   font-size: 1.3em;
   font-weight: bold;
   margin-bottom: 1em;
-  cursor: pointer;
 `;
 const LeftSection = styled.div`
   width: 500px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  cursor: pointer;
   img {
     width: 80px;
     height: 80px;
@@ -87,6 +87,7 @@ const Bar = styled.div`
   span {
     position: absolute;
     right: 0.5em;
+    color: ${({ theme }) => theme.color.gray[0]};
   }
 `;
 const Ratio = styled.div`
@@ -96,6 +97,6 @@ const Ratio = styled.div`
   border-radius: 12px;
   width: ${(props: RatioProp) => `${props.width * 300}px`};
   height: 40px;
-  background-color: ${({ theme }) => theme.color.primary};
+  background-color: ${({ theme }) => theme.color.highlight};
 `;
 export default RankingItem;
