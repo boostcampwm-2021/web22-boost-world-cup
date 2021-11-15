@@ -5,6 +5,10 @@ import MyWorldCupItem from './MyWorldCupItem';
 import Loader from './Loader';
 import { getWorldcupList } from '../../utils/api/worldcups';
 
+enum filtering {
+  tag,
+  search,
+}
 interface WorldcupType {
   id: number;
   thumbnail1: string;
@@ -18,15 +22,16 @@ interface Props {
   setOffset: React.Dispatch<React.SetStateAction<number>>;
   searchWord?: string;
   selectedTag?: string;
+  filterStandard: React.MutableRefObject<filtering>;
 }
 
 function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Props): JSX.Element {
   const [isClickMore, setIsClickMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<WorldcupType[]>([]);
+  const observer = useRef<IntersectionObserver | null>(null);
   const target = useRef<HTMLDivElement | null>(null);
   const isMounted = useRef(false);
-  const observer = useRef<IntersectionObserver | null>(null);
   const threshold = 0.4;
   const limit = 8;
   const onClickMoreButton = () => {
@@ -36,12 +41,9 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
     const newItems = await getWorldcupList({ offset, limit, search: searchWord, keyword: selectedTag });
     if (!newItems.length && observer.current) {
       observer.current.disconnect();
-      // let newItems;
-      // if (searchWord) newItems = await getWorldcupListBySearch({ offset, limit, search: searchWord });
-      // else if (selectedTag) newItems = await getWorldcupListByKeyword({ offset, limit, keyword: selectedTag });
-      // else newItems = await getWorldcupList({ offset, limit });
-      // if (!newItems.length) {
-      //   (observer.current as IntersectionObserver).disconnect();
+
+      if (!newItems.length) {
+        (observer.current as IntersectionObserver).disconnect();
       setLoading(false);
       return;
     }
