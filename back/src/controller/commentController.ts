@@ -1,9 +1,18 @@
+import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders';
 import { NextFunction, Request, Response } from 'express';
 import * as commentService from '../services/commentService';
 import { findById as findUserById } from '../services/userService';
 import { findById as findWorldcupById } from '../services/worldcupService';
 
 const commentController = {
+  getComments: async (request: Request, response: Response, next: NextFunction) => {
+    const {
+      params: { worldcupId },
+    } = request;
+    const comments = await commentService.findByWorldcupId(worldcupId);
+    response.json({ comments });
+  },
+
   saveComment: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { worldcupId, message },
