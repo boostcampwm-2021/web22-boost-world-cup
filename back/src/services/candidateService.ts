@@ -13,6 +13,21 @@ export const getRandomCandidateList = async (worldcupId: number, round: number) 
   return randomCandidateList;
 };
 
+export const findOneWithInfoById = async (id: number) => {
+  const candidateRepository = getRepository(Candidate);
+  return await candidateRepository.findOne(id, { relations: ['info'] });
+};
+
+export const findOneById = async (id: number) => {
+  const candidateRepository = getRepository(Candidate);
+  return await candidateRepository.findOne(id);
+};
+
+export const saveCandidate = async (candidate: Candidate) => {
+  const candidateRepository = getRepository(Candidate);
+  return await candidateRepository.save(candidate);
+};
+
 export const findOneByKey = async (candidateKey: string) => {
   const candidateRepository = getRepository(Candidate);
   return await candidateRepository.findOne({ url: `${process.env.IMG_URL_END_POINT}/${candidateKey}` });
