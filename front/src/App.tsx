@@ -20,6 +20,7 @@ function App(): JSX.Element {
           <Route path={ROUTE.INITIALIZE} component={PAGE.Initialize} />
           <Route path={ROUTE.WORLDCUP} component={PAGE.Worldcup} />
           <Route path={ROUTE.MYWORLDCUP} component={PAGE.MyWorldcup} />
+          <Route path={ROUTE.RANKING} component={PAGE.Ranking} />
           <Route component={PAGE.NotFound} />
         </Switch>
       </Router>
