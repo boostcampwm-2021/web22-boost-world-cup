@@ -1,7 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  OneToMany,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+  JoinColumn,
+} from 'typeorm';
 import { Candidate } from './Candidate';
 import { Keyword } from './Keyword';
 import { Comment } from './Comment';
+import { User } from './User';
 
 @Entity()
 export class Worldcup {
@@ -42,4 +53,8 @@ export class Worldcup {
 
   @OneToMany((type) => Comment, (comment) => comment.worldcup)
   comments: Comment[];
+
+  @ManyToOne((type) => User, (user) => user.worldcups)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }
