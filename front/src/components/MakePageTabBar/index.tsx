@@ -3,16 +3,16 @@ import styled from 'styled-components';
 
 interface Props {
   currentTab: number;
-  getOnTabChange: (tabNum: number) => React.MouseEventHandler<HTMLButtonElement>;
+  onTabChange: (pressedTab: number) => void;
 }
 
-function MakePageTabBar({ currentTab, getOnTabChange }: Props): JSX.Element {
+function MakePageTabBar({ currentTab, onTabChange }: Props): JSX.Element {
   return (
     <BtnsWrapper>
-      <TabBtn activated={currentTab === 1} onClick={getOnTabChange(1)}>
+      <TabBtn activated={currentTab === 1} onClick={() => onTabChange(1)}>
         1. 기본정보 수정 / 이미지 업로드
       </TabBtn>
-      <TabBtn activated={currentTab === 2} onClick={getOnTabChange(2)}>
+      <TabBtn activated={currentTab === 2} onClick={() => onTabChange(2)}>
         2. 이미지 이름 수정 / 삭제
       </TabBtn>
     </BtnsWrapper>

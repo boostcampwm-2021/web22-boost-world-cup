@@ -11,10 +11,7 @@ const candidateController = {
         Key: key,
       })
       .promise();
-    const sizes = [
-      { width: 143, height: 160 },
-      { width: 120, height: 120 },
-    ];
+    const sizes = [{ width: 120, height: 120 }];
     await Promise.all(
       sizes.map(({ width, height }) =>
         s3

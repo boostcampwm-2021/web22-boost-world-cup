@@ -1,22 +1,31 @@
-import React, { useRef } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import ImgInput from '../ImgInput';
 import ImgPreView from '../ImgPreView';
 import { ImgInfo } from '../../types/Datas';
+import { UploadImgState } from '../../pages/Make/store';
 
 interface Props {
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
-  onDeleteImg: (key: string) => void;
   imgInfos: ImgInfo[];
+  onAddImgs: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-function ImgPreViewList({ onChange, onDeleteImg, imgInfos }: Props): JSX.Element {
-  const imgListRef = useRef<HTMLUListElement | null>(null);
-  const imgs = imgInfos.map((info: ImgInfo) => <ImgPreView key={info.key} info={info} tab={1} />);
+function ImgPreViewList({ imgInfos, onAddImgs }: Props): JSX.Element {
+  const { willUploadFiles, presignedURLs } = useContext(UploadImgState);
+  const imgs = imgInfos.map((info: ImgInfo, idx: number) => (
+    <ImgPreView
+      key={info.key}
+      info={info}
+      tab={1}
+      willUploadFile={willUploadFiles[idx]}
+      presignedURL={presignedURLs[idx]}
+    />
+  ));
+
   return (
     <Container>
-      <ImgInput onChange={onChange} type="addAdditionalImgs" />
-      <ImgsWrapper ref={imgListRef}>{imgs}</ImgsWrapper>
+      <ImgInput onChange={onAddImgs} type="addAdditionalImgs" />
+      <ImgsWrapper>{imgs}</ImgsWrapper>
     </Container>
   );
 }

@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { ImgInfo } from '../../types/Datas';
 
 interface pagingQueryType {
   offset: number;
@@ -61,3 +62,10 @@ export const getWorldcupById = async (id: number) => {
   const { data: worldcup } = response;
   return worldcup;
 };
+
+export const createWorldcup = (
+  title: string,
+  desc: string,
+  keywords: string[],
+  imgInfos: ImgInfo[],
+): Promise<AxiosResponse> => axios.post('/api/worldcups', { title, desc, keywords, imgInfos });

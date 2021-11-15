@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { WorldcupState } from '../../pages/Make/store';
+import { createWorldcup } from '../../utils/api/worldcups';
+import { MAIN } from '../../commons/constants/route';
+import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 
-interface Props {
-  onStore: React.MouseEventHandler<HTMLButtonElement>;
-}
+function StoreBtns(): JSX.Element {
+  const worldcupFormState = useContext(WorldcupState);
+  const [createWorldcupResult, createWorldcupDispatcher] = useApiRequest(createWorldcup);
+  const history = useHistory();
 
-function StoreBtns({ onStore }: Props): JSX.Element {
+  const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+    const { title, desc, keywords, imgInfos } = worldcupFormState;
+    createWorldcupDispatcher({ type: REQUEST, requestProps: [title, desc, keywords, imgInfos] });
+  };
+
+  useEffect(() => {
+    const { type } = createWorldcupResult;
+    switch (type) {
+      case NULL:
+      case REQUEST:
+        return;
+      case SUCCESS: {
+        history.push(MAIN);
+        return;
+      }
+      case FAILURE: {
+        return;
+      }
+      default: {
+        throw new Error('Unexpected request type');
+      }
+    }
+  }, [createWorldcupResult]);
+
   return (
     <BtnsWrapper>
       <Btn type="button">임시저장</Btn>
