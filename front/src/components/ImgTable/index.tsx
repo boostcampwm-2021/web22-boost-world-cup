@@ -1,21 +1,19 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { WorldcupState } from '../../pages/Make/store';
 import ImgTableRow from '../ImgTableRow';
 import StoreBtns from '../StoreBtns';
 import Pagination from '../ImgTablePagination';
+import { ImgInfo } from '../../types/Datas';
 
 interface Props {
+  imgInfos: ImgInfo[];
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  lastPage: number;
+  startIdx: number;
 }
 
-function ImgTable({ currentPage, setCurrentPage }: Props): JSX.Element {
-  const worldcupFormState = useContext(WorldcupState);
-  const { imgInfos } = worldcupFormState;
-  const ELEMENT_CNT_PER_PAGE = 8;
-  const lastPage = Math.ceil(imgInfos.length / ELEMENT_CNT_PER_PAGE);
-
+function ImgTable({ imgInfos, currentPage, setCurrentPage, lastPage, startIdx }: Props): JSX.Element {
   const onPageChange: React.MouseEventHandler<HTMLButtonElement> = ({ currentTarget }) => {
     const nextPage = Number(currentTarget.innerText);
     if (currentPage === nextPage) return;
@@ -32,10 +30,7 @@ function ImgTable({ currentPage, setCurrentPage }: Props): JSX.Element {
     setCurrentPage(currentPage + 1);
   };
 
-  const startIdx = ELEMENT_CNT_PER_PAGE * (currentPage - 1);
-  const rows = imgInfos
-    .slice(startIdx, startIdx + 8)
-    .map((info, idx) => <ImgTableRow key={info.key} imgInfo={info} num={startIdx + idx + 1} />);
+  const rows = imgInfos.map((info, idx) => <ImgTableRow key={info.key} imgInfo={info} num={startIdx + idx + 1} />);
 
   useEffect(() => {
     if (currentPage > lastPage && lastPage >= 1) setCurrentPage(lastPage);

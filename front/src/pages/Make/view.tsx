@@ -7,10 +7,15 @@ function View(): JSX.Element {
   const [currentTab, setCurrentTab] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [previewStartIdx, setPreviewStartIdx] = useState(0);
+
   const uploadImgDispatcher = useContext(UploadImgDispatcher);
   const worldcupFormDispatcher = useContext(WorldcupDispatcher);
-  const worldcupFormState = useContext(WorldcupState);
-  const { imgInfos } = worldcupFormState;
+  const { imgInfos } = useContext(WorldcupState);
+
+  const ELEMENT_CNT_PER_PAGE = 8;
+  const LAST_PAGE = Math.ceil(imgInfos.length / ELEMENT_CNT_PER_PAGE);
+  const startIdx = ELEMENT_CNT_PER_PAGE * (currentPage - 1);
+  const showImgInfos = imgInfos.slice(startIdx, startIdx + 8);
 
   const onTabChange = (pressedTab: number) => {
     if (pressedTab === currentTab) return;
@@ -42,7 +47,15 @@ function View(): JSX.Element {
             onKeywordsChange={onKeywordsChange}
           />
         )}
-        {currentTab === 2 && <ImgTable currentPage={currentPage} setCurrentPage={setCurrentPage} />}
+        {currentTab === 2 && (
+          <ImgTable
+            imgInfos={showImgInfos}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            lastPage={LAST_PAGE}
+            startIdx={startIdx}
+          />
+        )}
       </Content>
     </>
   );
