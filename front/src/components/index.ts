@@ -8,3 +8,4 @@ export { default as Header } from './Header';
 export { default as ImgTable } from './ImgTable';
 export { default as MakePageTabBar } from './MakePageTabBar';
 export { default as StoreBtns } from './StoreBtns';
+export { default as RankingList } from './RankingList';
