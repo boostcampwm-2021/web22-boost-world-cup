@@ -1,6 +1,7 @@
-import { ImgInfo } from '../../types/Datas';
+import React, { useReducer } from 'react';
+import { ImgInfo } from '../types/Datas';
 
-export type ImgsState = ImgInfo[];
+type ImgsState = ImgInfo[];
 
 export type ImgsAction =
   | { type: 'CHANGE_IMG'; payload: { preKey: string; newKey: string; name: string } }
@@ -9,9 +10,9 @@ export type ImgsAction =
   | { type: 'DELETE_IMG'; payload: string }
   | { type: 'FINISH_IMG_UPLOAD'; payload: string };
 
-export const initialImgsState: ImgsState = [];
+const initialImgsState: ImgsState = [];
 
-export default (state: ImgsState, action: ImgsAction): ImgsState => {
+const imgsReducer = (state: ImgsState, action: ImgsAction): ImgsState => {
   switch (action.type) {
     case 'CHANGE_IMG': {
       const { preKey, newKey, name: newName } = action.payload;
@@ -63,3 +64,10 @@ export default (state: ImgsState, action: ImgsAction): ImgsState => {
     }
   }
 };
+
+const useImgInfos = (): [ImgsState, React.Dispatch<ImgsAction>] => {
+  const [imgInfos, imgInfosDispatcher] = useReducer(imgsReducer, initialImgsState);
+  return [imgInfos, imgInfosDispatcher];
+};
+
+export default useImgInfos;

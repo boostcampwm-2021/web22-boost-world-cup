@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { UploadImgState, UploadImgDispatcher } from '../../store/UploadImgStore';
-import { ImgInfosState, ImgInfosDispatcher } from '../../store/ImgsStore';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { getSignedURLs } from '../../utils/api/image';
 import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
+import { ImgsAction } from '../../hooks/useImgInfos';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
@@ -13,17 +13,24 @@ import StoreBtns from '../StoreBtns';
 
 interface Props {
   previewStartIdx: number;
+  imgInfos: ImgInfo[];
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
   onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
+  imgInfosDispatcher: React.Dispatch<ImgsAction>;
 }
 
-function MakeWorldcupForm({ previewStartIdx, onTitleChange, onDescChange, onKeywordsChange }: Props): JSX.Element {
+function MakeWorldcupForm({
+  previewStartIdx,
+  imgInfos,
+  onTitleChange,
+  onDescChange,
+  onKeywordsChange,
+  imgInfosDispatcher,
+}: Props): JSX.Element {
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
   const uploadDispatcher = useContext(UploadImgDispatcher);
-  const imgInfosDispatcher = useContext(ImgInfosDispatcher);
   const { willUploadFiles } = useContext(UploadImgState);
-  const imgInfos = useContext(ImgInfosState);
   const previews = imgInfos.slice(previewStartIdx);
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
@@ -102,12 +109,12 @@ function MakeWorldcupForm({ previewStartIdx, onTitleChange, onDescChange, onKeyw
       <VerticalWrapper>
         <Label>이상형 월드컵 이미지 업로드</Label>
         {previews.length ? (
-          <ImgPreViewList imgInfos={previews} onAddImgs={onAddImgs} />
+          <ImgPreViewList imgInfos={previews} onAddImgs={onAddImgs} imgInfosDispatcher={imgInfosDispatcher} />
         ) : (
           <ImgInput onChange={onAddImgs} type="addImgs" />
         )}
       </VerticalWrapper>
-      <StoreBtns />
+      <StoreBtns imgInfos={imgInfos} />
     </Container>
   );
 }

@@ -1,15 +1,14 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
-import { ImgInfosState } from '../../store/ImgsStore';
 import { UploadImgDispatcher } from '../../store/UploadImgStore';
 import { WorldcupFormDispatcher } from '../../store/WorldcupFormStore';
-import { usePagination, useTabBar } from '../../hooks';
+import { usePagination, useTabBar, useImgInfos } from '../../hooks';
 
 function Make(): JSX.Element {
   const uploadImgDispatcher = useContext(UploadImgDispatcher);
   const worldcupFormDispatcher = useContext(WorldcupFormDispatcher);
-  const imgInfos = useContext(ImgInfosState);
+  const [imgInfos, imgInfosDispatcher] = useImgInfos();
   const PAGINATION_LIMIT = 8;
   const tabChangeEffect = () => {
     uploadImgDispatcher({ type: 'RESET' });
@@ -27,6 +26,7 @@ function Make(): JSX.Element {
         {currentTab === 1 && (
           <MakeWorldcupForm
             previewStartIdx={previewStartIdx}
+            imgInfos={imgInfos}
             onTitleChange={({ target }) => {
               worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
             }}
@@ -36,6 +36,7 @@ function Make(): JSX.Element {
             onKeywordsChange={({ target }) => {
               worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
             }}
+            imgInfosDispatcher={imgInfosDispatcher}
           />
         )}
         {currentTab === 2 && (
@@ -45,6 +46,7 @@ function Make(): JSX.Element {
             lastPage={lastPage}
             offset={offset}
             onPageChange={onPageChange}
+            imgInfosDispatcher={imgInfosDispatcher}
           />
         )}
       </Content>

@@ -4,13 +4,15 @@ import ImgInput from '../ImgInput';
 import ImgPreView from '../ImgPreView';
 import { ImgInfo } from '../../types/Datas';
 import { UploadImgState } from '../../store/UploadImgStore';
+import { ImgsAction } from '../../hooks/useImgInfos';
 
 interface Props {
   imgInfos: ImgInfo[];
   onAddImgs: React.ChangeEventHandler<HTMLInputElement>;
+  imgInfosDispatcher: React.Dispatch<ImgsAction>;
 }
 
-function ImgPreViewList({ imgInfos, onAddImgs }: Props): JSX.Element {
+function ImgPreViewList({ imgInfos, onAddImgs, imgInfosDispatcher }: Props): JSX.Element {
   const { willUploadFiles, presignedURLs } = useContext(UploadImgState);
   const imgs = imgInfos.map((info: ImgInfo, idx: number) => (
     <ImgPreView
@@ -19,6 +21,7 @@ function ImgPreViewList({ imgInfos, onAddImgs }: Props): JSX.Element {
       tab={1}
       willUploadFile={willUploadFiles[idx]}
       presignedURL={presignedURLs[idx]}
+      imgInfosDispatcher={imgInfosDispatcher}
     />
   ));
 

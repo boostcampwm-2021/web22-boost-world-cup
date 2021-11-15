@@ -4,6 +4,7 @@ import ImgTableRow from '../ImgTableRow';
 import StoreBtns from '../StoreBtns';
 import Pagination from '../ImgTablePagination';
 import { ImgInfo } from '../../types/Datas';
+import { ImgsAction } from '../../hooks/useImgInfos';
 
 interface Props {
   imgInfos: ImgInfo[];
@@ -11,9 +12,10 @@ interface Props {
   lastPage: number;
   offset: number;
   onPageChange: (nextPage: number) => void;
+  imgInfosDispatcher: React.Dispatch<ImgsAction>;
 }
 
-function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange }: Props): JSX.Element {
+function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange, imgInfosDispatcher }: Props): JSX.Element {
   const onSpecificPageBtnClick: React.MouseEventHandler<HTMLButtonElement> = ({ currentTarget }) => {
     const nextPage = Number(currentTarget.innerText);
     if (currentPage === nextPage) return;
@@ -32,7 +34,9 @@ function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange }: Pro
     onPageChange(nextPage);
   };
 
-  const rows = imgInfos.map((info, idx) => <ImgTableRow key={info.id} imgInfo={info} num={offset + idx + 1} />);
+  const rows = imgInfos.map((info, idx) => (
+    <ImgTableRow key={info.id} imgInfo={info} num={offset + idx + 1} imgInfosDispatcher={imgInfosDispatcher} />
+  ));
 
   return (
     <Container>
@@ -63,7 +67,7 @@ function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange }: Pro
           onPreBtnClick={onPreBtnClick}
           onNextBtnClick={onNextBtnClick}
         />
-        <StoreBtns />
+        <StoreBtns imgInfos={imgInfos} />
       </Footer>
     </Container>
   );

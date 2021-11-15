@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ImgInfosDispatcher } from '../../store/ImgsStore';
 import { ImgInfo } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import { deleteImage, getSignedURLs } from '../../utils/api/image';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import { ImgsAction } from '../../hooks/useImgInfos';
 
 interface Props {
   imgInfo: ImgInfo;
   num: number;
+  imgInfosDispatcher: React.Dispatch<ImgsAction>;
 }
 
-function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
-  const imgInfosDispatcher = useContext(ImgInfosDispatcher);
+function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   const [willUploadFile, setWillUploadFile] = useState<File | null>(null);
   const [presignedURL, setPresignedURL] = useState<string | null>(null);
   const [deleteImageResult, deleteImageDispatcher] = useApiRequest(deleteImage);
@@ -86,7 +86,13 @@ function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
     <Container>
       <RowItem style={{ width: '138px' }}>{num}</RowItem>
       <RowItem style={{ width: '144px' }}>
-        <ImgPreView info={imgInfo} tab={2} willUploadFile={willUploadFile} presignedURL={presignedURL} />
+        <ImgPreView
+          info={imgInfo}
+          tab={2}
+          willUploadFile={willUploadFile}
+          presignedURL={presignedURL}
+          imgInfosDispatcher={imgInfosDispatcher}
+        />
       </RowItem>
       <RowItem style={{ width: '487px' }}>
         <TextInput

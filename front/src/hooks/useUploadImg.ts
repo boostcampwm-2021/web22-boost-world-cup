@@ -1,6 +1,6 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { ImgInfosDispatcher } from '../store/ImgsStore';
+import React, { useEffect, useState } from 'react';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from './useApiRequest';
+import { ImgsAction } from './useImgInfos';
 import { uploadImage } from '../utils/api/image';
 import { ImgInfo } from '../types/Datas';
 
@@ -8,10 +8,10 @@ const useUploadImg = (
   imgInfo: ImgInfo,
   file: File | null,
   presignedURL: string | null,
+  imgInfosDispatcher: React.Dispatch<ImgsAction>,
   onUploadSuccess?: (imgInfo: ImgInfo) => void,
 ): [boolean, React.Dispatch<React.SetStateAction<boolean>>] => {
   const [isLoading, setIsLoading] = useState(true);
-  const imgInfosDispatcher = useContext(ImgInfosDispatcher);
   const [uploadImageResult, uploadImageDispatcher] = useApiRequest(uploadImage);
 
   useEffect(() => {
