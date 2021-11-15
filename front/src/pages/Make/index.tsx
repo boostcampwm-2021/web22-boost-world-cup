@@ -4,38 +4,20 @@ import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../compon
 import { ImgInfosState } from '../../store/ImgsStore';
 import { UploadImgDispatcher } from '../../store/UploadImgStore';
 import { WorldcupFormDispatcher } from '../../store/WorldcupFormStore';
+import { usePagination, useTabBar } from '../../hooks';
 
 function Make(): JSX.Element {
-  const [currentTab, setCurrentTab] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [previewStartIdx, setPreviewStartIdx] = useState(0);
-
   const uploadImgDispatcher = useContext(UploadImgDispatcher);
   const worldcupFormDispatcher = useContext(WorldcupFormDispatcher);
   const imgInfos = useContext(ImgInfosState);
-
-  const ELEMENT_CNT_PER_PAGE = 8;
-  const LAST_PAGE = Math.ceil(imgInfos.length / ELEMENT_CNT_PER_PAGE);
-  const startIdx = ELEMENT_CNT_PER_PAGE * (currentPage - 1);
-  const showImgInfos = imgInfos.slice(startIdx, startIdx + 8);
-
-  const onTabChange = (pressedTab: number) => {
-    if (pressedTab === currentTab) return;
-    setCurrentTab(pressedTab);
+  const PAGINATION_LIMIT = 8;
+  const tabChangeEffect = () => {
     uploadImgDispatcher({ type: 'RESET' });
     setPreviewStartIdx(imgInfos.length);
   };
-
-  const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
-  };
-  const onDescChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
-  };
-  const onKeywordsChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
-  };
-  const onPageChange = (nextPage: number) => setCurrentPage(nextPage);
+  const [previewStartIdx, setPreviewStartIdx] = useState(0);
+  const [currentTab, onTabChange] = useTabBar(tabChangeEffect);
+  const [currentPage, offset, lastPage, onPageChange] = usePagination(imgInfos.length, PAGINATION_LIMIT);
 
   return (
     <>
@@ -45,18 +27,23 @@ function Make(): JSX.Element {
         {currentTab === 1 && (
           <MakeWorldcupForm
             previewStartIdx={previewStartIdx}
-            onTitleChange={onTitleChange}
-            onDescChange={onDescChange}
-            onKeywordsChange={onKeywordsChange}
+            onTitleChange={({ target }) => {
+              worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
+            }}
+            onDescChange={({ target }) => {
+              worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
+            }}
+            onKeywordsChange={({ target }) => {
+              worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
+            }}
           />
         )}
         {currentTab === 2 && (
           <ImgTable
-            imgInfos={showImgInfos}
+            imgInfos={imgInfos.slice(offset, offset + PAGINATION_LIMIT)}
             currentPage={currentPage}
-            lastPage={LAST_PAGE}
-            startIdx={startIdx}
-            setCurrentPage={setCurrentPage}
+            lastPage={lastPage}
+            offset={offset}
             onPageChange={onPageChange}
           />
         )}
