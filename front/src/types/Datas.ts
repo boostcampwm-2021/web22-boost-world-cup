@@ -25,3 +25,11 @@ export interface gameInfoData {
   selectedCandidate: candidateData[];
   winCandidate: candidateData;
 }
+
+export interface CommentData {
+  id: number;
+  message: string;
+  createdAt: Date;
+  userId: number;
+  worldcupId: number;
+}
