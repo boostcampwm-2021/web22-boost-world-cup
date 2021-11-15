@@ -6,7 +6,7 @@ import { loginState } from '../../recoil/atom';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
-import Gameover from './gameover';
+import Gameover from '../Gameover';
 import { objectDecryption, objectEncryption } from '../../utils/crypto';
 import { getUser } from '../../utils/api/auth';
 import { sendCurrentResult, sendFinalResult } from '../../utils/api/ranking';
