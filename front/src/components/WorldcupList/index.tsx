@@ -36,6 +36,12 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
     const newItems = await getWorldcupList({ offset, limit, search: searchWord, keyword: selectedTag });
     if (!newItems.length && observer.current) {
       observer.current.disconnect();
+      // let newItems;
+      // if (searchWord) newItems = await getWorldcupListBySearch({ offset, limit, search: searchWord });
+      // else if (selectedTag) newItems = await getWorldcupListByKeyword({ offset, limit, keyword: selectedTag });
+      // else newItems = await getWorldcupList({ offset, limit });
+      // if (!newItems.length) {
+      //   (observer.current as IntersectionObserver).disconnect();
       setLoading(false);
       return;
     }
@@ -59,9 +65,9 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
     }
   };
   useEffect(() => {
-    if (isClickMore && target.current && observer.current) {
-      observer.current = new IntersectionObserver(onIntersect, { threshold });
-      observer.current.observe(target.current);
+    if (isClickMore) {
+      (observer.current as IntersectionObserver) = new IntersectionObserver(onIntersect, { threshold });
+      (observer.current as IntersectionObserver).observe(target.current as HTMLDivElement);
     }
   }, [offset, isClickMore]);
   useEffect(() => {
