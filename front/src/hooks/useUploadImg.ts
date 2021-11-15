@@ -16,16 +16,15 @@ const useUploadImg = (
 
   useEffect(() => {
     if (!file || !presignedURL) return;
-    setIsLoading(true);
-    const fileReader = new FileReader();
-    fileReader.addEventListener('load', async ({ target }) => {
-      if (!target || !target.result || typeof target.result === 'string') return;
+    const upload = async () => {
+      const fileBuffer = await file.arrayBuffer();
       uploadImageDispatcher({
         type: REQUEST,
-        requestProps: [presignedURL, target.result, file.type],
+        requestProps: [presignedURL, fileBuffer, file.type],
       });
-    });
-    fileReader.readAsArrayBuffer(file);
+    };
+    setIsLoading(true);
+    upload();
   }, [file, presignedURL]);
 
   useEffect(() => {
