@@ -33,6 +33,7 @@ function View(): JSX.Element {
   const onKeywordsChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
   };
+  const onPageChange = (nextPage: number) => setCurrentPage(nextPage);
 
   return (
     <>
@@ -51,9 +52,10 @@ function View(): JSX.Element {
           <ImgTable
             imgInfos={showImgInfos}
             currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
             lastPage={LAST_PAGE}
             startIdx={startIdx}
+            setCurrentPage={setCurrentPage}
+            onPageChange={onPageChange}
           />
         )}
       </Content>

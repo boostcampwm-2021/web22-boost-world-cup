@@ -8,26 +8,29 @@ import { ImgInfo } from '../../types/Datas';
 interface Props {
   imgInfos: ImgInfo[];
   currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   lastPage: number;
   startIdx: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  onPageChange: (nextPage: number) => void;
 }
 
-function ImgTable({ imgInfos, currentPage, setCurrentPage, lastPage, startIdx }: Props): JSX.Element {
-  const onPageChange: React.MouseEventHandler<HTMLButtonElement> = ({ currentTarget }) => {
+function ImgTable({ imgInfos, currentPage, lastPage, startIdx, setCurrentPage, onPageChange }: Props): JSX.Element {
+  const onSpecificPageBtnClick: React.MouseEventHandler<HTMLButtonElement> = ({ currentTarget }) => {
     const nextPage = Number(currentTarget.innerText);
     if (currentPage === nextPage) return;
-    setCurrentPage(nextPage);
+    onPageChange(nextPage);
   };
 
   const onPreBtnClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (currentPage === 1) return;
-    setCurrentPage(currentPage - 1);
+    const nextPage = currentPage - 1;
+    onPageChange(nextPage);
   };
 
   const onNextBtnClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (currentPage === lastPage) return;
-    setCurrentPage(currentPage + 1);
+    const nextPage = currentPage + 1;
+    onPageChange(nextPage);
   };
 
   const rows = imgInfos.map((info, idx) => <ImgTableRow key={info.key} imgInfo={info} num={startIdx + idx + 1} />);
@@ -61,7 +64,7 @@ function ImgTable({ imgInfos, currentPage, setCurrentPage, lastPage, startIdx }:
         <Pagination
           pageCnt={lastPage}
           currentPage={currentPage}
-          onPageChange={onPageChange}
+          onSpecificPageBtnClick={onSpecificPageBtnClick}
           onPreBtnClick={onPreBtnClick}
           onNextBtnClick={onNextBtnClick}
         />
