@@ -1,38 +1,66 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { createComment } from '../../utils/api/comment';
+import { createComment, getComments } from '../../utils/api/comment';
+import { CommentData } from '../../types/Datas';
 
 interface Props {
   worldcupId: string;
 }
 
 function Comment({ worldcupId }: Props): JSX.Element {
-  const [comment, setComment] = useState('');
+  const [message, setMessage] = useState('');
+  const [comments, setComments] = useState<CommentData[]>([]);
+
+  const getCommentsAndSetComments = async (worldcupId: string) => {
+    const commentsList = await getComments(worldcupId);
+    setComments(commentsList);
+  };
+
+  useEffect(() => {
+    getCommentsAndSetComments(worldcupId);
+  }, []);
 
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    setComment('');
-    await createComment(worldcupId, comment);
+    setMessage('');
+    await createComment(worldcupId, message);
   };
 
   const commentChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
-    setComment(value);
+    setMessage(value);
   };
 
   return (
     <Wrapper>
       <InputContainer>
         <Text>나의 한마디</Text>
-        <CommentInput placeholder="메시지를 입력하세요." onChange={commentChangeEvent} value={comment} />
+        <CommentInput placeholder="메시지를 입력하세요." onChange={commentChangeEvent} value={message} />
         <SubmitButton onClick={onSubmit}>확인</SubmitButton>
       </InputContainer>
+      <CommentsContainer>
+        <Text>댓글 (개수)</Text>
+        <Comments>
+          <Text>yongjin 2021-10-28 15:30:28</Text>
+          <Text>재미있네요!</Text>
+        </Comments>
+      </CommentsContainer>
     </Wrapper>
   );
 }
+
+const Comments = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.color.white};
+`;
+
+const CommentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const Wrapper = styled.div`
   display: flex;
