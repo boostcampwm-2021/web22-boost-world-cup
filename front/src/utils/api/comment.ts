@@ -1,10 +1,13 @@
 import axios from 'axios';
 
-export const createComment = async (worldcupId: string, message: string): Promise<void> => {
+interface createCommentResponse {
+  result: 'success' | 'fail';
+}
+
+export const createComment = async (worldcupId: string, message: string): Promise<createCommentResponse> => {
   const response = await axios.post('/api/comments', {
     worldcupId,
     message,
   });
-  console.log(response);
-  // return response.data;
+  return response.data;
 };
