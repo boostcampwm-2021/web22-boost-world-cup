@@ -25,7 +25,9 @@ function HeaderModal({ open, setModal }: Props): JSX.Element {
       {open ? (
         <MenuBox>
           <li>내 정보</li>
-          <li>내가 만든 월드컵</li>
+          <li>
+            <Link to="/myworldcup">내가 만든 월드컵</Link>
+          </li>
           <li>
             <Link to="/make">월드컵 만들기</Link>
           </li>
