@@ -4,7 +4,11 @@ import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } fr
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import KakaoButton from './KakaoButton';
 
-const ShareModal = (): JSX.Element => {
+interface ShareModalProps {
+  id: number;
+}
+const ShareModal = ({ id }: ShareModalProps): JSX.Element => {
+  const url = `${window.location.origin}/initialize/${id}`;
   return (
     <ModalBox>
       <KakaoButton />
@@ -14,7 +18,7 @@ const ShareModal = (): JSX.Element => {
       <TwitterButton>
         <TwitterIcon size={48} borderRadius={24} />
       </TwitterButton>
-      <CopyToClipboard text={window.location.href}>
+      <CopyToClipboard text={url}>
         <URLButton type="button">URL</URLButton>
       </CopyToClipboard>
     </ModalBox>

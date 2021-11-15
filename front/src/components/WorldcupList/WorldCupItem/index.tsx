@@ -18,9 +18,9 @@ interface ModalProps {
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
-  const [isOpenModal, setIsOpenMpdal] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const openModal = () => {
-    setIsOpenMpdal(!isOpenModal);
+    setIsOpenModal(!isOpenModal);
   };
   return (
     <Item>
@@ -49,7 +49,7 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
         </Share>
       </Buttons>
       <ModalBox isOpenModal={isOpenModal}>
-        <ShareModal />
+        <ShareModal id={id} />
       </ModalBox>
     </Item>
   );
