@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import * as candidateService from '../services/candidateService';
 import { makeInfoData, setInfoData } from '../services/infoService';
+import { plusTotalCnt } from '../services/worldcupService';
 
 const rankingController = {
   saveCurrentResult: async (request: Request, response: Response, next: NextFunction) => {
@@ -8,6 +9,7 @@ const rankingController = {
       body: { winId, loseId },
       user: { gender, age },
     } = request;
+
     const winCandidate = await candidateService.findOneWithInfoById(winId);
     const loseCandidate = await candidateService.findOneById(loseId);
 
@@ -22,6 +24,26 @@ const rankingController = {
     }
     await candidateService.saveCandidate(winCandidate);
     await candidateService.saveCandidate(loseCandidate);
+    response.json({ result: 'success' });
+  },
+  saveFinalResult: async (request: Request, response: Response, next: NextFunction) => {
+    const {
+      body: { worldcupId, winId, loseId },
+      user: { gender, age },
+    } = request;
+
+    const winCandidate = await candidateService.findOneWithInfoById(winId);
+    const loseCandidate = await candidateService.findOneById(loseId);
+
+    winCandidate.showCnt += 1;
+    winCandidate.winCnt += 1;
+    winCandidate.victoryCnt += 1;
+    loseCandidate.showCnt += 1;
+
+    winCandidate.info = setInfoData(winCandidate.info, gender, age);
+    await candidateService.saveCandidate(winCandidate);
+    await candidateService.saveCandidate(loseCandidate);
+    await plusTotalCnt(worldcupId);
     response.json({ result: 'success' });
   },
 };

@@ -4,5 +4,6 @@ import controller from '../controller/rankingController';
 const router = Router();
 
 router.post('/current', controller.saveCurrentResult);
+router.post('/final', controller.saveFinalResult);
 
 export default router;

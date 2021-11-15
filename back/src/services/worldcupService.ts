@@ -89,3 +89,10 @@ export const getWorldcupTitle = async (id: number) => {
   const worldcup = await worldcupRepository.findOne(id, { select: ['title'] });
   return worldcup.title;
 };
+
+export const plusTotalCnt = async (id: number) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcup = await worldcupRepository.findOne(id);
+  worldcup.totalCnt += 1;
+  return await worldcupRepository.save(worldcup);
+};
