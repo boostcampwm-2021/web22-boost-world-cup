@@ -12,13 +12,13 @@ interface Props {
   disabled?: boolean;
 }
 
-function TextInput({ name, onChange, width, ...props }: Props): JSX.Element {
+function TextInput({ name, onChange, width, defaultValue, ...props }: Props): JSX.Element {
   const inputRef = useRef<null | HTMLInputElement>(null);
   useEffect(() => {
     const input = inputRef.current;
-    if (!props.defaultValue || !input) return;
-    input.value = String(props.defaultValue);
-  }, []);
+    if (!defaultValue || !input) return;
+    input.value = String(defaultValue);
+  }, [defaultValue]);
   return <Input ref={inputRef} style={{ width }} name={name} onChange={onChange} {...props} autoComplete="off" />;
 }
 
