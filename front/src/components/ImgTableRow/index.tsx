@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { WorldcupDispatcher } from '../../pages/Make/store';
+import { ImgInfosDispatcher } from '../../store/ImgsStore';
 import { ImgInfo } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
@@ -14,7 +14,7 @@ interface Props {
 }
 
 function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
-  const worldcupDispatcher = useContext(WorldcupDispatcher);
+  const imgInfosDispatcher = useContext(ImgInfosDispatcher);
   const [deleteImageResult, deleteImageDispatcher] = useApiRequest(deleteImage);
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
   const [uploadImageResult, uploadImageDispatcher] = useApiRequest(uploadImage);
@@ -24,7 +24,7 @@ function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
     deleteImageDispatcher({ type: REQUEST, requestProps: [imgInfo.key] });
   };
   const onImgNameChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupDispatcher({ type: 'CHANGE_IMG_NAME', payload: { key: imgInfo.key, name: target.value } });
+    imgInfosDispatcher({ type: 'CHANGE_IMG_NAME', payload: { key: imgInfo.key, name: target.value } });
   };
   const onImgChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     if (!target.files) return;
@@ -41,7 +41,7 @@ function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
       case REQUEST:
         return;
       case SUCCESS: {
-        worldcupDispatcher({ type: 'DELETE_IMG', payload: imgInfo.key });
+        imgInfosDispatcher({ type: 'DELETE_IMG', payload: imgInfo.key });
         return;
       }
       case FAILURE: {
@@ -68,7 +68,7 @@ function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
           uploadImageDispatcher({ type: REQUEST, requestProps: [presignedURL, target.result, willUploadFile.type] });
         });
         fileReader.readAsArrayBuffer(willUploadFile);
-        worldcupDispatcher({
+        imgInfosDispatcher({
           type: 'CHANGE_IMG',
           payload: { newKey: key, name: willUploadFile.name, preKey: imgInfo.key },
         });
@@ -89,7 +89,7 @@ function ImgTableRow({ imgInfo, num }: Props): JSX.Element {
       case REQUEST:
         return;
       case SUCCESS: {
-        worldcupDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: imgInfo.key });
+        imgInfosDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: imgInfo.key });
         return;
       }
       case FAILURE: {

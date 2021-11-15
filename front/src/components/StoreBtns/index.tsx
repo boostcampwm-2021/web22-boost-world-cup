@@ -2,18 +2,20 @@ import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { WorldcupState } from '../../pages/Make/store';
+import { ImgInfosState } from '../../store/ImgsStore';
 import { createWorldcup } from '../../utils/api/worldcups';
 import { MAIN } from '../../commons/constants/route';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 
 function StoreBtns(): JSX.Element {
   const worldcupFormState = useContext(WorldcupState);
+  const imgInfos = useContext(ImgInfosState);
   const [createWorldcupResult, createWorldcupDispatcher] = useApiRequest(createWorldcup);
   const history = useHistory();
 
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
-    const { title, desc, keywords, imgInfos } = worldcupFormState;
+    const { title, desc, keywords } = worldcupFormState;
     createWorldcupDispatcher({ type: REQUEST, requestProps: [title, desc, keywords, imgInfos] });
   };
 

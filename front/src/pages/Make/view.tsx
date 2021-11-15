@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
-import { UploadImgDispatcher, WorldcupState, WorldcupDispatcher } from './store';
+import { UploadImgDispatcher, WorldcupDispatcher } from './store';
+import { ImgInfosState } from '../../store/ImgsStore';
 
 function View(): JSX.Element {
   const [currentTab, setCurrentTab] = useState(1);
@@ -10,7 +11,7 @@ function View(): JSX.Element {
 
   const uploadImgDispatcher = useContext(UploadImgDispatcher);
   const worldcupFormDispatcher = useContext(WorldcupDispatcher);
-  const { imgInfos } = useContext(WorldcupState);
+  const imgInfos = useContext(ImgInfosState);
 
   const ELEMENT_CNT_PER_PAGE = 8;
   const LAST_PAGE = Math.ceil(imgInfos.length / ELEMENT_CNT_PER_PAGE);

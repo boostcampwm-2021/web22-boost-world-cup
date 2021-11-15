@@ -4,7 +4,7 @@ import Loading from 'react-loading';
 import { ImgInfo } from '../../types/Datas';
 import useApiRequest from '../../hooks/useApiRequest';
 import { uploadImage } from '../../utils/api/image';
-import { WorldcupDispatcher } from '../../pages/Make/store';
+import { ImgInfosDispatcher } from '../../store/ImgsStore';
 
 interface Props {
   info: ImgInfo;
@@ -23,7 +23,7 @@ function ImgPreView({ info, tab, willUploadFile, presignedURL, onUploadSuccess }
   const [isLoading, setIsLoading] = useState(true);
   const [imgURL, setImgURL] = useState(initialImgURL);
   const [uploadImageResult, uploadImageDispatcher] = useApiRequest(uploadImage);
-  const worldcupFormDispatcher = useContext(WorldcupDispatcher);
+  const imgInfosDispatcher = useContext(ImgInfosDispatcher);
 
   const placeholder = <Loading type="spin" color="black" />;
   const onError = () => setImgURL(originImgURL);
@@ -42,14 +42,13 @@ function ImgPreView({ info, tab, willUploadFile, presignedURL, onUploadSuccess }
   }, []);
 
   useEffect(() => {
-    if (!worldcupFormDispatcher) return;
     const { type } = uploadImageResult;
     switch (type) {
       case 'NULL':
       case 'REQUEST':
         return;
       case 'SUCCESS': {
-        worldcupFormDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: info.key });
+        imgInfosDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: info.key });
         if (onUploadSuccess) onUploadSuccess(info);
         return;
       }

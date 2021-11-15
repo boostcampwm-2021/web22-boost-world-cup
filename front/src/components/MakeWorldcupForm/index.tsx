@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { WorldcupState, WorldcupDispatcher, UploadImgState, UploadImgDispatcher } from '../../pages/Make/store';
+import { UploadImgState, UploadImgDispatcher } from '../../pages/Make/store';
+import { ImgInfosState, ImgInfosDispatcher } from '../../store/ImgsStore';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { getSignedURLs } from '../../utils/api/image';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
@@ -19,9 +20,9 @@ interface Props {
 function MakeWorldcupForm({ previewStartIdx, onTitleChange, onDescChange, onKeywordsChange }: Props): JSX.Element {
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
   const uploadDispatcher = useContext(UploadImgDispatcher);
+  const imgInfosDispatcher = useContext(ImgInfosDispatcher);
   const { willUploadFiles } = useContext(UploadImgState);
-  const worldcupFormDispatcher = useContext(WorldcupDispatcher);
-  const { imgInfos } = useContext(WorldcupState);
+  const imgInfos = useContext(ImgInfosState);
   const previews = imgInfos.slice(previewStartIdx);
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
@@ -53,7 +54,7 @@ function MakeWorldcupForm({ previewStartIdx, onTitleChange, onDescChange, onKeyw
           type: 'ADD_PRESIGNED_URL',
           payload: presignedDatas.map((data: PreSignedData) => data.presignedURL),
         });
-        worldcupFormDispatcher({ type: 'ADD_IMGS', payload: newImgInfos });
+        imgInfosDispatcher({ type: 'ADD_IMGS', payload: newImgInfos });
         return;
       }
       case FAILURE: {
