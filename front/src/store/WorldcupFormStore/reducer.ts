@@ -1,21 +1,21 @@
-export interface WorldcupFormState {
+export interface WorldcupState {
   title: string;
   desc: string;
   keywords: string[];
 }
 
-export type WorldcupFormAction =
+export type WorldcupAction =
   | { type: 'CHANGE_TITLE'; payload: string }
   | { type: 'CHANGE_DESC'; payload: string }
   | { type: 'ADD_KEYWORD'; payload: string };
 
-export const initialWorldcupFormState: WorldcupFormState = {
+export const initialWorldcupState: WorldcupState = {
   title: '',
   desc: '',
   keywords: [],
 };
 
-export const worldcupFormReducer = (state: WorldcupFormState, action: WorldcupFormAction): WorldcupFormState => {
+export default (state: WorldcupState, action: WorldcupAction): WorldcupState => {
   switch (action.type) {
     case 'CHANGE_TITLE': {
       const { payload: newTitle } = action;

@@ -1,14 +1,14 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { WorldcupState } from '../../pages/Make/store';
 import { ImgInfosState } from '../../store/ImgsStore';
+import { WorldcupFormState } from '../../store/WorldcupFormStore';
 import { createWorldcup } from '../../utils/api/worldcups';
 import { MAIN } from '../../commons/constants/route';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 
 function StoreBtns(): JSX.Element {
-  const worldcupFormState = useContext(WorldcupState);
+  const worldcupFormState = useContext(WorldcupFormState);
   const imgInfos = useContext(ImgInfosState);
   const [createWorldcupResult, createWorldcupDispatcher] = useApiRequest(createWorldcup);
   const history = useHistory();
