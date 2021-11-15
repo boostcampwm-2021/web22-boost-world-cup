@@ -2,10 +2,23 @@ import { NextFunction, Request, Response } from 'express';
 import { Info } from '../entity/Info';
 import * as candidateService from '../services/candidateService';
 
+export enum GENDER {
+  MALE = 1,
+  FEMALE,
+}
+export enum AGE {
+  TEENS = 1,
+  TWENTIES,
+  THIRTIES,
+  FORTIES,
+  ETC,
+}
+
 const rankingController = {
   saveCurrentResult: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { winId, loseId },
+      user: { gender, age },
     } = request;
     const winCandidate = await candidateService.findOneWithInfoById(winId);
     const loseCandidate = await candidateService.findOneById(loseId);
@@ -16,8 +29,18 @@ const rankingController = {
 
     if (!winCandidate.info) {
       winCandidate.info = new Info();
-      switch (request.user.age) {
-        case 1:
+      switch (gender) {
+        case GENDER.MALE:
+          winCandidate.info.male = 1;
+          break;
+        case GENDER.FEMALE:
+          winCandidate.info.female = 1;
+          break;
+        default:
+          break;
+      }
+      switch (age) {
+        case AGE.TEENS:
           winCandidate.info.teens = 1;
           break;
         case 2:
@@ -35,19 +58,9 @@ const rankingController = {
         default:
           break;
       }
-      switch (request.user.gender) {
-        case 1:
-          winCandidate.info.male = 1;
-          break;
-        case 2:
-          winCandidate.info.female = 1;
-          break;
-        default:
-          break;
-      }
       winCandidate.info.total = 1;
     } else {
-      switch (request.user.age) {
+      switch (age) {
         case 1:
           winCandidate.info.teens += 1;
           break;
@@ -66,7 +79,7 @@ const rankingController = {
         default:
           break;
       }
-      switch (request.user.gender) {
+      switch (gender) {
         case 1:
           winCandidate.info.male += 1;
           break;
