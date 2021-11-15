@@ -28,6 +28,6 @@ export interface gameInfoData {
 
 export interface CommentData {
   message: string;
-  createdAt: Date;
+  createdAt: string;
   nickname: string;
 }

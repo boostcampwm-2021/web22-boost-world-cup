@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { createComment, getComments } from '../../utils/api/comment';
 import { CommentData } from '../../types/Datas';
@@ -11,28 +11,47 @@ function Comment({ worldcupId }: Props): JSX.Element {
   const [message, setMessage] = useState('');
   const [comments, setComments] = useState<CommentData[]>([]);
 
-  const getCommentsAndSetComments = async (worldcupId: string) => {
-    const commentsList = await getComments(worldcupId);
-    setComments(commentsList);
-  };
+  const getCommentsAndSetComments = useCallback(
+    async (worldcupId: string) => {
+      const commentsList = await getComments(worldcupId);
+      setComments(commentsList);
+    },
+    [worldcupId],
+  );
 
   useEffect(() => {
     getCommentsAndSetComments(worldcupId);
   }, []);
 
-  const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    setMessage('');
-    const { nickname, createdAt, message: newMessage } = await createComment(worldcupId, message);
-    setComments([...comments, { message: newMessage, createdAt, nickname }]);
-  };
+  const onSubmit = useCallback(
+    async (event: React.MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+      if (message === '') {
+        return;
+      }
+      setMessage('');
+      const { nickname, createdAt, message: newMessage } = await createComment(worldcupId, message);
+      setComments([...comments, { message: newMessage, createdAt, nickname }]);
+    },
+    [comments, message],
+  );
 
-  const commentChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setMessage(value);
-  };
+  const commentChangeEvent = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const {
+        target: { value },
+      } = event;
+      setMessage(value);
+    },
+    [message],
+  );
+
+  const getDateString = useCallback((date: string) => {
+    const yymmdd = date.split('T')[0];
+    const hhmmss = date.split('T')[1].split('.')[0];
+    return `${yymmdd} ${hhmmss}`;
+  }, []);
+
   return (
     <Wrapper>
       <InputContainer>
@@ -47,7 +66,7 @@ function Comment({ worldcupId }: Props): JSX.Element {
             <EachComment>
               <SubContainer>
                 <Writer>{comment.nickname}</Writer>
-                <Date>{comment.createdAt}</Date>
+                <Date>{getDateString(comment.createdAt)}</Date>
               </SubContainer>
               <Message>{comment.message}</Message>
             </EachComment>
