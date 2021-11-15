@@ -9,6 +9,7 @@ import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from './gameover';
 import { objectDecryption, objectEncryption } from '../../utils/crypto';
 import { getUser } from '../../utils/api/auth';
+import { sendCurrentResult } from '../../utils/api/ranking';
 
 function Worldcup(): JSX.Element {
   const setIsLoggedIn = useSetRecoilState(loginState);
@@ -96,6 +97,7 @@ function Worldcup(): JSX.Element {
             setSessionStorage(newGameInfo);
             return;
           }
+          sendCurrentResult(winId as number, loseId as number);
           if (newGameInfo.currentRound === newGameInfo.round) {
             newGameInfo.round /= 2;
             newGameInfo.currentRound = 1;
