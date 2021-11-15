@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { Worldcup } from './Worldcup';
 import { Comment } from './Comment';
 
 @Entity()
@@ -23,4 +24,7 @@ export class User {
 
   @OneToMany((type) => Comment, (comment) => comment.worldcup)
   comments: Comment[];
+
+  @OneToMany((type) => Worldcup, (worldcup) => worldcup.user)
+  worldcups: Worldcup[];
 }
