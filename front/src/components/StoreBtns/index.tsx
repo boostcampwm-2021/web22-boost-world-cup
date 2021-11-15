@@ -1,18 +1,18 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { WorldcupFormState } from '../../store/WorldcupFormStore';
 import { createWorldcup } from '../../utils/api/worldcups';
 import { MAIN } from '../../commons/constants/route';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import { WorldcupState } from '../../hooks/useWorldcupForm';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {
   imgInfos: ImgInfo[];
+  worldcupFormState: WorldcupState;
 }
 
-function StoreBtns({ imgInfos }: Props): JSX.Element {
-  const worldcupFormState = useContext(WorldcupFormState);
+function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
   const [createWorldcupResult, createWorldcupDispatcher] = useApiRequest(createWorldcup);
   const history = useHistory();
 

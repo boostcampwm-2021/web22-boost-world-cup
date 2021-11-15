@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { useUploadState } from '../../hooks';
+import { WorldcupState } from '../../hooks/useWorldcupForm';
 import { getSignedURLs } from '../../utils/api/image';
 import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
@@ -14,6 +15,7 @@ import StoreBtns from '../StoreBtns';
 interface Props {
   previewStartIdx: number;
   imgInfos: ImgInfo[];
+  worldcupFormState: WorldcupState;
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
   onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -23,6 +25,7 @@ interface Props {
 function MakeWorldcupForm({
   previewStartIdx,
   imgInfos,
+  worldcupFormState,
   onTitleChange,
   onDescChange,
   onKeywordsChange,
@@ -119,7 +122,7 @@ function MakeWorldcupForm({
           <ImgInput onChange={onAddImgs} type="addImgs" />
         )}
       </VerticalWrapper>
-      <StoreBtns imgInfos={imgInfos} />
+      <StoreBtns imgInfos={imgInfos} worldcupFormState={worldcupFormState} />
     </Container>
   );
 }

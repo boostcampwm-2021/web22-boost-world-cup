@@ -5,9 +5,11 @@ import StoreBtns from '../StoreBtns';
 import Pagination from '../ImgTablePagination';
 import { ImgInfo } from '../../types/Datas';
 import { ImgsAction } from '../../hooks/useImgInfos';
+import { WorldcupState } from '../../hooks/useWorldcupForm';
 
 interface Props {
   imgInfos: ImgInfo[];
+  worldcupFormState: WorldcupState;
   currentPage: number;
   lastPage: number;
   offset: number;
@@ -15,7 +17,15 @@ interface Props {
   imgInfosDispatcher: React.Dispatch<ImgsAction>;
 }
 
-function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange, imgInfosDispatcher }: Props): JSX.Element {
+function ImgTable({
+  imgInfos,
+  worldcupFormState,
+  currentPage,
+  lastPage,
+  offset,
+  onPageChange,
+  imgInfosDispatcher,
+}: Props): JSX.Element {
   const onSpecificPageBtnClick: React.MouseEventHandler<HTMLButtonElement> = ({ currentTarget }) => {
     const nextPage = Number(currentTarget.innerText);
     if (currentPage === nextPage) return;
@@ -67,7 +77,7 @@ function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange, imgIn
           onPreBtnClick={onPreBtnClick}
           onNextBtnClick={onNextBtnClick}
         />
-        <StoreBtns imgInfos={imgInfos} />
+        <StoreBtns imgInfos={imgInfos} worldcupFormState={worldcupFormState} />
       </Footer>
     </Container>
   );

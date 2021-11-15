@@ -1,11 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
-import { WorldcupFormDispatcher } from '../../store/WorldcupFormStore';
-import { usePagination, useTabBar, useImgInfos } from '../../hooks';
+import { usePagination, useTabBar, useImgInfos, useWorldcupForm } from '../../hooks';
 
 function Make(): JSX.Element {
-  const worldcupFormDispatcher = useContext(WorldcupFormDispatcher);
+  const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
   const [imgInfos, imgInfosDispatcher] = useImgInfos();
   const PAGINATION_LIMIT = 8;
   const [previewStartIdx, setPreviewStartIdx] = useState(0);
@@ -21,6 +20,7 @@ function Make(): JSX.Element {
           <MakeWorldcupForm
             previewStartIdx={previewStartIdx}
             imgInfos={imgInfos}
+            worldcupFormState={worldcupFormState}
             onTitleChange={({ target }) => {
               worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
             }}
@@ -41,6 +41,7 @@ function Make(): JSX.Element {
             offset={offset}
             onPageChange={onPageChange}
             imgInfosDispatcher={imgInfosDispatcher}
+            worldcupFormState={worldcupFormState}
           />
         )}
       </Content>
