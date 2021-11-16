@@ -5,7 +5,7 @@ function RankingModal(): JSX.Element {
   const data = [200, 150, 50, 30, 40, 50, 30, 50];
   const ageData = data.slice(3);
   const svgRef = useRef<SVGSVGElement>(null);
-  const color = ['skyblue', 'red', 'yellow', 'green', 'pink'];
+  const color = ['#AED6F1 ', '#5DADE2', '#2E86C1', '#21618C', '#212F3C'];
   const getCoordCircle = (percent: number) => {
     const x = Math.cos(2 * Math.PI * percent);
     const y = Math.sin(2 * Math.PI * percent);
@@ -35,7 +35,7 @@ function RankingModal(): JSX.Element {
       animate.setAttribute('attributeName', 'stroke-dashoffset');
       animate.setAttribute('begin', `${animationDuration * index}`);
       animate.setAttribute('from', `${targetRad}`);
-      animate.setAttribute('to', '0.025');
+      animate.setAttribute('to', '0.015');
       animate.setAttribute('dur', `${animationDuration}`);
       animate.setAttribute('fill', 'freeze');
       path.appendChild(animate);
@@ -44,6 +44,17 @@ function RankingModal(): JSX.Element {
       return path;
     });
   }, []);
-  return <svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />;
+  return <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />;
 }
+const Svg = styled.svg`
+  background-color: white;
+  path {
+    cursor: pointer;
+    transition: all 300ms ease-in;
+    &:hover {
+      transform: scale(1.1);
+      opacity: 0.6;
+    }
+  }
+`;
 export default RankingModal;
