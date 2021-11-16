@@ -14,11 +14,11 @@ import ImgPreViewList from '../ImgPreViewList';
 interface Props {
   imgInfos: ImgInfo[];
   worldcupFormState: WorldcupState;
-  onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
-  onDescChange: React.ChangeEventHandler<HTMLInputElement>;
   onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
   imgInfosDispatcher: React.Dispatch<ImgsAction>;
   getSignedURLsSuccessEffect: (newImgInfos: ImgInfo[]) => void;
+  onTitleChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onDescChange?: React.ChangeEventHandler<HTMLInputElement>;
   onTitleBlur?: React.FocusEventHandler<HTMLInputElement>;
   onDescBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
