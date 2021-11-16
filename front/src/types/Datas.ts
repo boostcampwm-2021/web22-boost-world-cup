@@ -34,3 +34,8 @@ export interface CommentData {
   createdAt: string;
   nickname: string;
 }
+
+export interface ErrorResponseData {
+  result: 'fail';
+  message: string;
+}
