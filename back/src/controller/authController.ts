@@ -21,8 +21,8 @@ const authController = {
   info: async (request: Request, response: Response, next: NextFunction) => {
     let data = {};
     if (request.user) {
-      const { nickname, gender, age } = request.user;
-      data = { nickname, gender, age };
+      const { id, nickname, gender, age } = request.user;
+      data = { id, nickname, gender, age };
     }
     response.json({
       result: 'success',
