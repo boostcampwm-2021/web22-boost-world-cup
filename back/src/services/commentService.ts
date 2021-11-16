@@ -40,3 +40,13 @@ export const deleteById = async (commentId: string) => {
     throw new Error(err);
   }
 };
+
+export const getCountByWorldcupId = async (worldcup: Worldcup) => {
+  try {
+    const commentRepository = getRepository(Comment);
+    const commentCount = await commentRepository.count({ worldcup });
+    return { commentCount };
+  } catch (err) {
+    throw new Error(err);
+  }
+};

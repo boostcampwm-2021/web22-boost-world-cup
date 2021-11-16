@@ -39,6 +39,18 @@ const commentController = {
       next(err);
     }
   },
+
+  count: async (request: Request, response: Response, next: NextFunction) => {
+    const {
+      params: { worldcupId },
+    } = request;
+    try {
+      const worldcup = await findWorldcupById(worldcupId);
+      response.json(await commentService.getCountByWorldcupId(worldcup));
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default commentController;
