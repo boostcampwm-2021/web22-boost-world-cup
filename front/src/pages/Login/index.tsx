@@ -1,30 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
 import { GoMarkGithub } from 'react-icons/go';
 import { SiKakaotalk } from 'react-icons/si';
 import { FcGoogle } from 'react-icons/fc';
-import { getUser } from '../../utils/api/auth';
 import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 
 function Login(): JSX.Element {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const getUserInfo = async () => {
-    const user = await getUser();
-    if (Object.keys(user).length !== 0) {
-      setIsLoggedIn(true);
-    }
-  };
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
-
-  return isLoggedIn ? (
-    <Redirect to="/main" />
-  ) : (
+  return (
     <Container>
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
