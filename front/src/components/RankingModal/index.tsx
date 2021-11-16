@@ -4,6 +4,7 @@ import styled from 'styled-components';
 function RankingModal(): JSX.Element {
   const data = [200, 150, 50, 30, 40, 50, 30, 50];
   const ageData = data.slice(3);
+  const ageAcc = ageData.map((value) => value / data[0]);
   const svgRef = useRef<SVGSVGElement>(null);
   const color = ['#AED6F1 ', '#5DADE2', '#2E86C1', '#21618C', '#212F3C'];
   const getCoordCircle = (percent: number) => {
@@ -44,8 +45,44 @@ function RankingModal(): JSX.Element {
       return path;
     });
   }, []);
-  return <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />;
+  return (
+    <Modal>
+      <Doughnut>
+        <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />
+        <DoughnutDesc>
+          {ageAcc.map((value, index) => {
+            return (
+              <DescRow color={color[index]}>
+                <div />
+                <span>{(index + 1) * 10}대</span>
+                <span>{(value * 100).toFixed(2)} %</span>
+              </DescRow>
+            );
+          })}
+        </DoughnutDesc>
+      </Doughnut>
+      <Line />
+    </Modal>
+  );
 }
+const Modal = styled.div`
+  position: absolute;
+  top: 10em;
+  left: 20vw;
+  display: flex;
+  width: 50vw;
+  height: 30vh;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  border-radius: 12px;
+`;
+const Doughnut = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  width: 60%;
+`;
 const Svg = styled.svg`
   background-color: white;
   path {
@@ -57,4 +94,27 @@ const Svg = styled.svg`
     }
   }
 `;
+const DoughnutDesc = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 30%;
+  height: 100%;
+`;
+const DescRow = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 0.6em;
+  div {
+    margin-right: 1em;
+    background-color: ${(props) => props.color};
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+  }
+  span {
+    margin-right: 0.1em;
+  }
+`;
+const Line = styled.section``;
 export default RankingModal;
