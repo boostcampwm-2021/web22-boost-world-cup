@@ -5,7 +5,7 @@ import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import { getSignedURLs } from '../../utils/api/image';
-import { deleteCandidate } from '../../utils/api/candidate';
+import { deleteCandidate, patchCandidateName } from '../../utils/api/candidate';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { ImgsAction } from '../../hooks/useImgInfos';
 
@@ -19,12 +19,15 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   const [willUploadFile, setWillUploadFile] = useState<File | null>(null);
   const [presignedURL, setPresignedURL] = useState<string | null>(null);
   const [deleteCandidateResult, deleteCandidateDispatcher] = useApiRequest(deleteCandidate);
+  const [patchCandidateNameResult, patchCandidateNameDispatcher] = useApiRequest(patchCandidateName);
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
 
   const onDeleteImg = () => {
     deleteCandidateDispatcher({ type: REQUEST, requestProps: [imgInfo.key] });
   };
-  const onImgNameChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+  const onImgNameBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
+    if (imgInfo.name === target.value) return;
+    patchCandidateNameDispatcher({ type: REQUEST, requestProps: [imgInfo.key, target.value] });
     imgInfosDispatcher({ type: 'CHANGE_IMG_NAME', payload: { key: imgInfo.key, name: target.value } });
   };
   const onImgChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -98,7 +101,7 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
       <RowItem style={{ width: '487px' }}>
         <TextInput
           name="imgName"
-          onChange={onImgNameChange}
+          onBlur={onImgNameBlur}
           width="400px"
           placeholder="이미지의 이름을 입력해주세요."
           defaultValue={imgInfo.name}
