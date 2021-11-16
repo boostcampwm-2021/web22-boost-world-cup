@@ -231,9 +231,9 @@ const ImageContainer = styled.div<{ select: number }>`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 80vh;
+  height: calc(100% - 100px);
   img {
-    width: 20%;
+    width: 15%;
     position: absolute;
     transform: translate(-50%, 0);
     left: 50%;
@@ -243,6 +243,13 @@ const ImageContainer = styled.div<{ select: number }>`
 `;
 
 const selected = keyframes`
+  from {}
+  to {
+    background-size: 100% 90%;
+  }
+`;
+
+const notSelected = keyframes`
   from {
     width:100%;
   }
@@ -254,13 +261,19 @@ const selected = keyframes`
 const LeftImage = styled.div<{ imageUrl: string; select: number }>`
   width: 100%;
   background: url(${({ imageUrl }) => imageUrl});
-  background-size: 100%;
+  background-size: 100% 60%;
   background-repeat: no-repeat;
   background-position: center;
   animation: ${({ select }) =>
+    select === 1
+      ? css`
+          ${selected} 1s ease forwards;
+        `
+      : css``};
+  animation: ${({ select }) =>
     select === 2
       ? css`
-          ${selected} 1s ease-in-out forwards;
+          ${notSelected} 1s ease forwards;
         `
       : css``};
 `;
@@ -268,11 +281,18 @@ const LeftImage = styled.div<{ imageUrl: string; select: number }>`
 const RightImage = styled.div<{ imageUrl: string; select: number }>`
   width: 100%;
   background: url(${(props) => props.imageUrl});
-  background-size: 100%;
+  background-size: 100% 60%;
   background-repeat: no-repeat;
   background-position: center;
+  animation: ${({ select }) => (select === 2 ? css`` : css``)};
   animation: ${({ select }) =>
     select === 1
+      ? css`
+          ${notSelected} 1s ease forwards;
+        `
+      : css``};
+  animation: ${({ select }) =>
+    select === 2
       ? css`
           ${selected} 1s ease forwards;
         `
