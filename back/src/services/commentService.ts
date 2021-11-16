@@ -7,7 +7,8 @@ export const findByWorldcupId = async (worldcupId: string, offset: string, limit
   return await getRepository(Comment)
     .createQueryBuilder('comment')
     .select([
-      'comment.id AS id',
+      'comment.id AS commentId',
+      'user.id AS userId',
       'comment.message AS message',
       'comment.created_at AS createdAt',
       'user.nickname AS nickname',
@@ -27,4 +28,15 @@ export const save = async (user: User, worldcup: Worldcup, message: string) => {
   comment.worldcup = worldcup;
   comment.message = message;
   return await commentRepository.save(comment);
+};
+
+export const deleteById = async (commentId: string) => {
+  try {
+    const commentRepository = getRepository(Comment);
+    const commentToRemove = await commentRepository.findOne(commentId);
+    await commentRepository.remove(commentToRemove);
+    return { result: 'success' };
+  } catch (err) {
+    throw new Error(err);
+  }
 };

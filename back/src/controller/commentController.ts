@@ -1,11 +1,10 @@
-import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders';
 import { NextFunction, Request, Response } from 'express';
 import * as commentService from '../services/commentService';
 import { findById as findUserById } from '../services/userService';
 import { findById as findWorldcupById } from '../services/worldcupService';
 
 const commentController = {
-  getComments: async (request: Request, response: Response, next: NextFunction) => {
+  get: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { worldcupId },
       query: { offset, limit },
@@ -14,7 +13,7 @@ const commentController = {
     response.json({ comments });
   },
 
-  saveComment: async (request: Request, response: Response, next: NextFunction) => {
+  save: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { worldcupId, message },
       user: { id: userId },
@@ -24,10 +23,21 @@ const commentController = {
     const comment = await commentService.save(user, worldcup, message);
     const {
       user: { nickname },
-      message: saveMessage,
       createdAt,
+      id: commentId,
     } = comment;
-    response.json({ nickname, createdAt, message: saveMessage });
+    response.json({ commentId, userId, nickname, createdAt, message });
+  },
+
+  delete: async (request: Request, response: Response, next: NextFunction) => {
+    const {
+      params: { commentId },
+    } = request;
+    try {
+      response.json(await commentService.deleteById(commentId));
+    } catch (err) {
+      next(err);
+    }
   },
 };
 
