@@ -2,19 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
+  tabTitle: Array<string>;
   currentTab: number;
   onTabChange: (pressedTab: number) => void;
 }
 
-function MakePageTabBar({ currentTab, onTabChange }: Props): JSX.Element {
+function MakePageTabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
   return (
     <BtnsWrapper>
-      <TabBtn activated={currentTab === 1} onClick={() => onTabChange(1)}>
-        1. 기본정보 수정 / 이미지 업로드
-      </TabBtn>
-      <TabBtn activated={currentTab === 2} onClick={() => onTabChange(2)}>
-        2. 이미지 이름 수정 / 삭제
-      </TabBtn>
+      {tabTitle.map((title, index) => {
+        return (
+          <TabBtn activated={currentTab === index + 1} onClick={() => onTabChange(index + 1)}>
+            {title}
+          </TabBtn>
+        );
+      })}
     </BtnsWrapper>
   );
 }

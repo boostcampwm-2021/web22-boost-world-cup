@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
+import { TabBar } from '../../components';
+import { useTabBar } from '../../hooks';
 
 function RankingList(): JSX.Element {
+  const tabTitle = ['연령별, 성별'];
+
   const data = [
     {
       id: 1,
