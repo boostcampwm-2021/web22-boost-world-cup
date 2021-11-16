@@ -18,6 +18,7 @@ interface Props {
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
   onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
   imgInfosDispatcher: React.Dispatch<ImgsAction>;
+  getSignedURLsSuccessEffect: (newImgInfos: ImgInfo[]) => void;
 }
 
 function MakeWorldcupForm({
@@ -27,6 +28,7 @@ function MakeWorldcupForm({
   onDescChange,
   onKeywordsChange,
   imgInfosDispatcher,
+  getSignedURLsSuccessEffect,
 }: Props): JSX.Element {
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
   const [uploadState, uploadStateDispatcher] = useUploadState();
@@ -62,7 +64,7 @@ function MakeWorldcupForm({
           type: 'ADD_PRESIGNED_URL',
           payload: presignedDatas.map((data: PreSignedData) => data.presignedURL),
         });
-        imgInfosDispatcher({ type: 'ADD_IMGS', payload: newImgInfos });
+        if (getSignedURLsSuccessEffect) getSignedURLsSuccessEffect(newImgInfos);
         return;
       }
       case FAILURE: {
