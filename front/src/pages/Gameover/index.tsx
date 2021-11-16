@@ -47,11 +47,11 @@ const Name = styled.div`
   display: flex;
   left: 50%;
   transform: translate(-50%);
-  top: 660px;
+  top: 160px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 80px;
+  width: 100px;
   border-radius: 5px;
   height: 40px;
   background-color: ${({ theme }) => theme.color.primary};
