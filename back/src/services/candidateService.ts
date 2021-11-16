@@ -57,3 +57,12 @@ export const save = async (imgInfos, worldcup) => {
   );
   return await candidateRepository.save(candidates);
 };
+
+export const patchCandidate = async (key: string, name: string, newKey?: string) => {
+  const candidateRepository = getRepository(Candidate);
+  const candidate = await findOneByKey(key);
+  if (!candidate) return;
+  candidate.name = name;
+  if (newKey) candidate.url = `${process.env.IMG_URL_END_POINT}/${key}.webp`;
+  candidateRepository.save(candidate);
+};
