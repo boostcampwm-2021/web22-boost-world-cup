@@ -19,6 +19,7 @@ function Make(): JSX.Element {
         {currentTab === 1 && (
           <MakeWorldcupForm
             previews={imgInfos.slice(previewStartIdx)}
+            worldcupFormState={worldcupFormState}
             onTitleChange={({ target }) => {
               worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
             }}

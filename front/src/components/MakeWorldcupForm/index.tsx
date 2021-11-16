@@ -6,12 +6,14 @@ import { getSignedURLs } from '../../utils/api/image';
 import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
 import { ImgsAction } from '../../hooks/useImgInfos';
+import { WorldcupState } from '../../hooks/useWorldcupForm';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
 
 interface Props {
   previews: ImgInfo[];
+  worldcupFormState: WorldcupState;
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
   onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -20,6 +22,7 @@ interface Props {
 
 function MakeWorldcupForm({
   previews,
+  worldcupFormState,
   onTitleChange,
   onDescChange,
   onKeywordsChange,
@@ -28,6 +31,7 @@ function MakeWorldcupForm({
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
   const [uploadState, uploadStateDispatcher] = useUploadState();
   const { willUploadFiles } = uploadState;
+  const { title, desc } = worldcupFormState;
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
     const { files } = target;
@@ -81,6 +85,7 @@ function MakeWorldcupForm({
             onChange={onTitleChange}
             width="1236px"
             placeholder="이상형월드컵의 제목을 입력하세요. ex) 여자 아이돌 이상형 월드컵, 남자 연예인 이상형월드컵"
+            defaultValue={title}
           />
         </HorizontalWrapper>
         <HorizontalWrapper>
@@ -90,6 +95,7 @@ function MakeWorldcupForm({
             onChange={onDescChange}
             width="1236px"
             placeholder="설명, 하고싶은 말 등을 자유롭게 입력하세요."
+            defaultValue={desc}
           />
         </HorizontalWrapper>
         <HorizontalWrapper>
