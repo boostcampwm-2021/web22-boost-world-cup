@@ -7,7 +7,7 @@ interface Props {
   onTabChange: (pressedTab: number) => void;
 }
 
-function MakePageTabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
+function TabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
   return (
     <BtnsWrapper>
       {tabTitle.map((title, index) => {
@@ -40,4 +40,4 @@ const BtnsWrapper = styled.div`
   display: flex;
 `;
 
-export default MakePageTabBar;
+export default TabBar;

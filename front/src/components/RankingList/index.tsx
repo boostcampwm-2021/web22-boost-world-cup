@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { TabBar } from '../../components';
 import { useTabBar } from '../../hooks';
 
 function RankingList(): JSX.Element {
-  const tabTitle = ['연령별, 성별'];
-
+  const tabTitle = ['연령별', '성별'];
+  const [currentTab, onTabChange] = useTabBar();
   const data = [
     {
       id: 1,
@@ -45,6 +45,7 @@ function RankingList(): JSX.Element {
   ];
   return (
     <>
+      <TabBar tabTitle={tabTitle} currentTab={currentTab} onTabChange={onTabChange} />
       <Caption>
         <LeftCaption>
           <span>순위</span>
