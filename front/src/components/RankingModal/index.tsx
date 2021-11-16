@@ -49,17 +49,17 @@ function RankingModal(): JSX.Element {
     <Modal>
       <Doughnut>
         <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />
-        <DoughnutDesc>
+        <DoughnutLabel>
           {ageAcc.map((value, index) => {
             return (
               <DescRow color={color[index]}>
                 <div />
                 <span>{(index + 1) * 10}대</span>
-                <span>{(value * 100).toFixed(2)} %</span>
+                <span>{(value * 100).toFixed(0)}%</span>
               </DescRow>
             );
           })}
-        </DoughnutDesc>
+        </DoughnutLabel>
       </Doughnut>
       <Line />
     </Modal>
@@ -81,7 +81,7 @@ const Doughnut = styled.section`
   align-items: center;
   justify-content: space-around;
   height: 100%;
-  width: 60%;
+  width: 50%;
 `;
 const Svg = styled.svg`
   background-color: white;
@@ -94,26 +94,24 @@ const Svg = styled.svg`
     }
   }
 `;
-const DoughnutDesc = styled.div`
+const DoughnutLabel = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 30%;
+  width: 40%;
   height: 100%;
 `;
 const DescRow = styled.div`
   display: flex;
+  justify-content: space-evenly;
   align-items: center;
   margin: 0.6em;
   div {
-    margin-right: 1em;
+    margin-right: -1em;
     background-color: ${(props) => props.color};
     width: 20px;
     height: 20px;
     border-radius: 50px;
-  }
-  span {
-    margin-right: 0.1em;
   }
 `;
 const Line = styled.section``;
