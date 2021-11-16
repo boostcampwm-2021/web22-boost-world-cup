@@ -39,6 +39,8 @@ function App(): JSX.Element {
           <Route path={ROUTE.WORLDCUP} component={PAGE.Worldcup} />
           <Route path={ROUTE.MYWORLDCUP} component={PAGE.MyWorldcup} />
           <Route path={ROUTE.RANKING} component={PAGE.Ranking} />
+          <Route path={ROUTE.MYINFO} component={PAGE.MyInfo} />
+          <Route path={ROUTE.LEAVE} component={PAGE.Leave} />
           <Route component={PAGE.NotFound} />
         </Switch>
       </Router>

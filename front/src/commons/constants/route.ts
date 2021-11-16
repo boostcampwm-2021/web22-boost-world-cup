@@ -7,3 +7,5 @@ export const INITIALIZE = '/initialize';
 export const WORLDCUP = '/worldcup';
 export const MYWORLDCUP = '/myworldcup';
 export const RANKING = '/ranking';
+export const MYINFO = '/myinfo';
+export const LEAVE = '/leave';
