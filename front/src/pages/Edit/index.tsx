@@ -4,10 +4,11 @@ import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../compon
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { useTabBar, useWorldcupForm, useImgInfos, usePagination } from '../../hooks';
 import { getWorldcupMetadata, getWorldcupCandidates } from '../../utils/api/worldcups';
+import { ImgInfo } from '../../types/Datas';
 
 function Edit(): JSX.Element {
   const PAGINATION_LIMIT = 8;
-  const [previews, setPreviews] = useState([]);
+  const [previews, setPreviews] = useState<ImgInfo[]>([]);
   const [totalCnt, setTotalCnt] = useState(0);
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
   const [currentTab, onTabChange] = useTabBar();
@@ -16,6 +17,10 @@ function Edit(): JSX.Element {
   const [getMetadataResult, getMetadataDispatcher] = useApiRequest(getWorldcupMetadata);
   const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
   const worldcupId = useMemo(() => window.location.pathname.split('/')[2], [window.location]);
+
+  const getSignedURLsSuccessEffect = (newPreviews: ImgInfo[]) => {
+    setPreviews([...previews, ...newPreviews]);
+  };
 
   useEffect(() => {
     getMetadataDispatcher({ type: REQUEST, requestProps: [worldcupId] });
@@ -83,6 +88,7 @@ function Edit(): JSX.Element {
               worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
             }}
             imgInfosDispatcher={imgInfosDispatcher}
+            getSignedURLsSuccessEffect={getSignedURLsSuccessEffect}
           />
         )}
         {currentTab === 2 && (
