@@ -25,3 +25,9 @@ export interface gameInfoData {
   selectedCandidate: candidateData[];
   winCandidate: candidateData;
 }
+
+export interface CommentData {
+  message: string;
+  createdAt: string;
+  nickname: string;
+}

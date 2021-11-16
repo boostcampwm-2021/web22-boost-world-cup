@@ -1,15 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Redirect } from 'react-router';
 import styled, { keyframes, css } from 'styled-components';
+import { useSetRecoilState } from 'recoil';
+import { loginState } from '../../recoil/atom';
 import { Header } from '../../components';
 import versusImg from '../../images/versus.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
-import Gameover from './gameover';
+import Gameover from '../Gameover';
 import { objectDecryption, objectEncryption } from '../../utils/crypto';
 import { getUser } from '../../utils/api/auth';
+import { sendCurrentResult, sendFinalResult } from '../../utils/api/ranking';
 
 function Worldcup(): JSX.Element {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const setIsLoggedIn = useSetRecoilState(loginState);
   const [isInitialized, setIsInitialized] = useState(true);
   const [pick, setPick] = useState(0);
   const [gameInfo, setGameInfo] = useState<gameInfoData>();
@@ -39,12 +42,12 @@ function Worldcup(): JSX.Element {
     const user = await getUser();
     if (Object.keys(user).length === 0) {
       setIsLoggedIn(false);
+      return false;
     }
+    setIsLoggedIn(true);
+    return true;
   };
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+  const isLoggedIn = useMemo(() => getUserInfo(), []);
 
   useEffect(() => {
     getGameInfoAndSetGameInfo();
@@ -92,8 +95,10 @@ function Worldcup(): JSX.Element {
             }
             setGameInfo(newGameInfo);
             setSessionStorage(newGameInfo);
+            sendFinalResult(gameInfo.worldcupId, winId as number, loseId as number);
             return;
           }
+          sendCurrentResult(winId as number, loseId as number);
           if (newGameInfo.currentRound === newGameInfo.round) {
             newGameInfo.round /= 2;
             newGameInfo.currentRound = 1;
