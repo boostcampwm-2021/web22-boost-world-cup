@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 function RankingModal(): JSX.Element {
   const data = [200, 150, 50, 30, 40, 50, 30, 50];
-  const ageData = data.slice(3);
-  const ageAcc = ageData.map((value) => value / data[0]);
+  const ageAcc = data.slice(3).map((value) => value / data[0]);
   const svgRef = useRef<SVGSVGElement>(null);
   const color = ['#AED6F1 ', '#5DADE2', '#2E86C1', '#21618C', '#212F3C'];
   const getCoordCircle = (percent: number) => {
@@ -14,14 +13,13 @@ function RankingModal(): JSX.Element {
   };
   useEffect(() => {
     let acc = 0;
-    ageData.map((value, index) => {
+    ageAcc.map((value, index) => {
       const [startX, startY] = getCoordCircle(acc);
-      const ratio = value / data[0];
-      acc += ratio;
+      acc += value;
       const [endX, endY] = getCoordCircle(acc);
-      const isLargeArc = ratio > 0.5 ? 1 : 0;
-      const targetRad = 2 * Math.PI * ratio;
-      const targetRestRad = 2 * Math.PI * (1 - ratio);
+      const isLargeArc = value > 0.5 ? 1 : 0;
+      const targetRad = 2 * Math.PI * value;
+      const targetRestRad = 2 * Math.PI * (1 - value);
       const animationDuration = 0.2;
 
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
