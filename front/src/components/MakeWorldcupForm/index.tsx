@@ -12,7 +12,7 @@ import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
 
 interface Props {
-  previews: ImgInfo[];
+  imgInfos: ImgInfo[];
   worldcupFormState: WorldcupState;
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -22,7 +22,7 @@ interface Props {
 }
 
 function MakeWorldcupForm({
-  previews,
+  imgInfos,
   worldcupFormState,
   onTitleChange,
   onDescChange,
@@ -40,7 +40,7 @@ function MakeWorldcupForm({
     if (!files) {
       return;
     }
-    const newFiles = [...files].filter((file: File) => !previews.map((info: ImgInfo) => info.name).includes(file.name));
+    const newFiles = [...files].filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name));
     const contentTypes = newFiles.map((file) => file.type);
     getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
     uploadStateDispatcher({ type: 'ADD_FILES', payload: newFiles });
@@ -112,9 +112,9 @@ function MakeWorldcupForm({
       </InputsWrapper>
       <VerticalWrapper>
         <Label>이상형 월드컵 이미지 업로드</Label>
-        {previews.length ? (
+        {imgInfos.length ? (
           <ImgPreViewList
-            imgInfos={previews}
+            imgInfos={imgInfos}
             uploadState={uploadState}
             onAddImgs={onAddImgs}
             imgInfosDispatcher={imgInfosDispatcher}

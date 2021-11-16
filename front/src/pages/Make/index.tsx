@@ -23,7 +23,7 @@ function Make(): JSX.Element {
         <MakePageTabBar currentTab={currentTab} onTabChange={onTabChange} />
         {currentTab === 1 && (
           <MakeWorldcupForm
-            previews={imgInfos.slice(previewStartIdx)}
+            imgInfos={imgInfos.slice(previewStartIdx)}
             worldcupFormState={worldcupFormState}
             onTitleChange={({ target }) => {
               worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });

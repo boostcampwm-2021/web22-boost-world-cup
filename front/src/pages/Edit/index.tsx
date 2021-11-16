@@ -8,18 +8,18 @@ import { ImgInfo } from '../../types/Datas';
 
 function Edit(): JSX.Element {
   const PAGINATION_LIMIT = 8;
-  const [previews, setPreviews] = useState<ImgInfo[]>([]);
+  const [addedImgs, addedImgsDispatcher] = useImgInfos();
+  const [candidates, candidatesDispatcher] = useImgInfos();
   const [totalCnt, setTotalCnt] = useState(0);
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
   const [currentTab, onTabChange] = useTabBar();
-  const [imgInfos, imgInfosDispatcher] = useImgInfos();
   const [currentPage, offset, lastPage, onPageChange] = usePagination(totalCnt, PAGINATION_LIMIT);
   const [getMetadataResult, getMetadataDispatcher] = useApiRequest(getWorldcupMetadata);
   const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
   const worldcupId = useMemo(() => window.location.pathname.split('/')[2], [window.location]);
 
-  const getSignedURLsSuccessEffect = (newPreviews: ImgInfo[]) => {
-    setPreviews([...previews, ...newPreviews]);
+  const getSignedURLsSuccessEffect = (addedImgs: ImgInfo[]) => {
+    addedImgsDispatcher({ type: 'ADD_IMGS', payload: addedImgs });
   };
 
   useEffect(() => {
@@ -59,7 +59,7 @@ function Edit(): JSX.Element {
         return;
       case SUCCESS: {
         const { data: candidates } = getCandidatesResult;
-        imgInfosDispatcher({ type: 'SET_IMGS', payload: candidates });
+        candidatesDispatcher({ type: 'SET_IMGS', payload: candidates });
         return;
       }
       case FAILURE:
@@ -76,7 +76,7 @@ function Edit(): JSX.Element {
         <MakePageTabBar currentTab={currentTab} onTabChange={onTabChange} />
         {currentTab === 1 && (
           <MakeWorldcupForm
-            previews={previews}
+            imgInfos={addedImgs}
             worldcupFormState={worldcupFormState}
             onTitleChange={({ target }) => {
               worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
@@ -87,18 +87,18 @@ function Edit(): JSX.Element {
             onKeywordsChange={({ target }) => {
               worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
             }}
-            imgInfosDispatcher={imgInfosDispatcher}
+            imgInfosDispatcher={addedImgsDispatcher}
             getSignedURLsSuccessEffect={getSignedURLsSuccessEffect}
           />
         )}
         {currentTab === 2 && (
           <ImgTable
-            imgInfos={imgInfos}
+            imgInfos={candidates}
             currentPage={currentPage}
             lastPage={lastPage}
             offset={offset}
             onPageChange={onPageChange}
-            imgInfosDispatcher={imgInfosDispatcher}
+            imgInfosDispatcher={candidatesDispatcher}
           />
         )}
       </Content>
