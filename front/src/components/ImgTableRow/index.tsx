@@ -4,7 +4,8 @@ import { ImgInfo } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
-import { deleteImage, getSignedURLs } from '../../utils/api/image';
+import { getSignedURLs } from '../../utils/api/image';
+import { deleteCandidate } from '../../utils/api/candidate';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { ImgsAction } from '../../hooks/useImgInfos';
 
@@ -17,11 +18,11 @@ interface Props {
 function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   const [willUploadFile, setWillUploadFile] = useState<File | null>(null);
   const [presignedURL, setPresignedURL] = useState<string | null>(null);
-  const [deleteImageResult, deleteImageDispatcher] = useApiRequest(deleteImage);
+  const [deleteCandidateResult, deleteCandidateDispatcher] = useApiRequest(deleteCandidate);
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
 
   const onDeleteImg = () => {
-    deleteImageDispatcher({ type: REQUEST, requestProps: [imgInfo.key] });
+    deleteCandidateDispatcher({ type: REQUEST, requestProps: [imgInfo.key] });
   };
   const onImgNameChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     imgInfosDispatcher({ type: 'CHANGE_IMG_NAME', payload: { key: imgInfo.key, name: target.value } });
@@ -35,7 +36,7 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   };
 
   useEffect(() => {
-    const { type } = deleteImageResult;
+    const { type } = deleteCandidateResult;
     switch (type) {
       case NULL:
       case REQUEST:
@@ -50,7 +51,7 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
       default:
         throw new Error('Unexpected request type');
     }
-  }, [deleteImageResult]);
+  }, [deleteCandidateResult]);
 
   useEffect(() => {
     const { type } = getSignedURLsResult;
