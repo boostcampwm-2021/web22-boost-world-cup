@@ -58,13 +58,13 @@ function Initialize({ location }: Props): JSX.Element {
   useEffect(() => {
     fetchWorldAndSetState();
     initializePossibleRound();
-  }, [fetchWorldAndSetState, initializePossibleRound]);
+  }, [initializePossibleRound]);
 
   const roundSelector = useCallback((newAge: number) => {
     setRound(newAge);
   }, []);
 
-  const makeGameInfo = (gameRound: number, candidatesList: candidateData[]): gameInfoData => {
+  const makeGameInfo = useCallback((gameRound: number, candidatesList: candidateData[]): gameInfoData => {
     return {
       isCompleted: false,
       worldcupId,
@@ -75,7 +75,7 @@ function Initialize({ location }: Props): JSX.Element {
       selectedCandidate: [],
       winCandidate: { id: 0, name: '', url: '' },
     };
-  };
+  }, []);
 
   const startBtnClickHandler = async () => {
     const gameRound = 2 ** (round + 2);
