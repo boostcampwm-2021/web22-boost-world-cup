@@ -7,6 +7,7 @@ const router = Router();
 router.get('/info', controller.info);
 router.post('/signup', controller.signup);
 router.get('/logout', controller.logout);
+router.delete('/user/:id', controller.leave);
 router.get('/github', passport.authenticate('github'));
 router.get('/github/callback', passport.authenticate('github'), controller.githubCallback);
 router.get('/kakao', passport.authenticate('kakao'));

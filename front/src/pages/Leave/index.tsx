@@ -1,17 +1,38 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useRecoilState } from 'recoil';
+import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import logo from '../../images/logo.png';
+import { userState, loginState } from '../../recoil/atom';
+import { deleteUser } from '../../utils/api/auth';
+
+interface UserInfo {
+  id?: number;
+  nickname?: string;
+  gender?: number;
+  age?: number;
+}
 
 const Leave = (): JSX.Element => {
-  return (
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  const [userInfo, setUserInfo] = useRecoilState<UserInfo>(userState);
+  const leaveHandler = useCallback(() => {
+    deleteUser(userInfo.id);
+    setIsLoggedIn(false);
+    setUserInfo({});
+  }, []);
+
+  return !isLoggedIn ? (
+    <Redirect to="/main" />
+  ) : (
     <>
       <Header type="header" />
       <Container>
         <img src={logo} alt="logo" width="220px" height="220px" />
         <Title>탈퇴하시겠습니까?</Title>
         <Contents>탈퇴하시면 복구할 수 없어요!</Contents>
-        <Menu>탈퇴하기</Menu>
+        <Menu onClick={leaveHandler}>탈퇴하기</Menu>
       </Container>
     </>
   );

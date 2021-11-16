@@ -59,6 +59,19 @@ const authController = {
       next(err);
     }
   },
+  leave: async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      await authService.removeUser(request.params.id);
+      request.session.destroy(() => {});
+      response.clearCookie('sid');
+      response.json({
+        result: 'success',
+        message: null,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default authController;

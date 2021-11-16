@@ -22,3 +22,8 @@ export const saveInitUser = async (providerId) => {
   newUser.providerId = providerId;
   return await userRepository.save(newUser);
 };
+
+export const removeUser = async (userId) => {
+  const userRepository = getRepository(User);
+  return await userRepository.delete({ id: userId });
+};
