@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle, Reset, theme } from './commons/style';
+import { getUser } from './utils/api/auth';
 import * as ROUTE from './commons/constants/route';
 import * as PAGE from './pages';
+import { loginState, userState } from './recoil/atom';
 
 function App(): JSX.Element {
+  const setIsLoggedIn = useSetRecoilState(loginState);
+  const setUserInfo = useSetRecoilState(userState);
+
+  const getUserInfo = async () => {
+    const user = await getUser();
+    if (Object.keys(user).length !== 0) {
+      setIsLoggedIn(true);
+      setUserInfo(user);
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
