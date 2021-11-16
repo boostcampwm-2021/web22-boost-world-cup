@@ -20,8 +20,8 @@ function Comment({ worldcupId }: Props): JSX.Element {
         return;
       }
       setMessage('');
-      const { nickname, createdAt, message: newMessage } = await createComment(worldcupId, message);
-      setComments([{ message: newMessage, createdAt, nickname }, ...comments]);
+      const { commentId, userId, nickname, createdAt, message: newMessage } = await createComment(worldcupId, message);
+      setComments([{ commentId, userId, nickname, createdAt, message: newMessage }, ...comments]);
     },
     [comments, message],
   );

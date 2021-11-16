@@ -16,3 +16,12 @@ export const createComment = async (worldcupId: string, message: string): Promis
   });
   return response.data;
 };
+
+interface commonResponse {
+  result: 'success' | 'fail';
+}
+
+export const deleteComment = async (commentId: string): Promise<commonResponse> => {
+  const response = await axios.delete(`/api/comments/${commentId}`);
+  return response.data;
+};

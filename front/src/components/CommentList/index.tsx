@@ -54,7 +54,7 @@ function CommentList({ worldcupId, comments, offset, setOffset, setComments }: P
       <Text>댓글 (개수)</Text>
       <CommentContainer>
         {comments.map((comment) => (
-          <Comment comment={comment} />
+          <Comment comment={comment} setComments={setComments} />
         ))}
       </CommentContainer>
       <div ref={target} style={{ width: '100px', height: '100px', alignSelf: 'center' }}>
