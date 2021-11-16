@@ -25,6 +25,13 @@ const candidateController = {
     await candidateService.removeByKey(key);
     response.json({ result: 'success' });
   },
+
+  patchCandidate: async (request: Request, response: Response, next: NextFunction) => {
+    const { key } = request.params;
+    const { newKey, name } = request.body;
+    await candidateService.patchCandidate(key, name, newKey);
+    response.json({ result: 'success' });
+  },
 };
 
 export default candidateController;
