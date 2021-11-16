@@ -8,7 +8,8 @@ export type ImgsAction =
   | { type: 'CHANGE_IMG_NAME'; payload: { key: string; name: string } }
   | { type: 'ADD_IMGS'; payload: ImgInfo[] }
   | { type: 'DELETE_IMG'; payload: string }
-  | { type: 'FINISH_IMG_UPLOAD'; payload: string };
+  | { type: 'FINISH_IMG_UPLOAD'; payload: string }
+  | { type: 'SET_IMGS'; payload: ImgInfo[] };
 
 const initialImgsState: ImgsState = [];
 
@@ -56,6 +57,11 @@ const imgsReducer = (state: ImgsState, action: ImgsAction): ImgsState => {
         { ...state[targetIdx], isUploaded: true },
         ...state.slice(targetIdx + 1),
       ];
+      return newImgInfos;
+    }
+
+    case 'SET_IMGS': {
+      const { payload: newImgInfos } = action;
       return newImgInfos;
     }
 
