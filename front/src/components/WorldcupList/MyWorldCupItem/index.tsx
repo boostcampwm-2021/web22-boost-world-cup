@@ -49,7 +49,7 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
         </Share>
       </Buttons>
       <ModalBox isOpenModal={isOpenModal}>
-        <ShareModal />
+        <ShareModal id={id} />
       </ModalBox>
     </Item>
   );

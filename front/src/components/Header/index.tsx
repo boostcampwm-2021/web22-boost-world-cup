@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
 import { loginState } from '../../recoil/atom';
-import HeaderModal from '../HeaderModal';
+import HeaderModal from './HeaderModal';
 import SearchBar from '../SearchBar';
 
 interface headerProps {

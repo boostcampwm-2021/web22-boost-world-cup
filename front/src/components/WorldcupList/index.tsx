@@ -5,6 +5,10 @@ import MyWorldCupItem from './MyWorldCupItem';
 import Loader from './Loader';
 import { getWorldcupList } from '../../utils/api/worldcups';
 
+enum filtering {
+  tag,
+  search,
+}
 interface WorldcupType {
   id: number;
   thumbnail1: string;
@@ -24,9 +28,9 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
   const [isClickMore, setIsClickMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<WorldcupType[]>([]);
+  const observer = useRef<IntersectionObserver | null>(null);
   const target = useRef<HTMLDivElement | null>(null);
   const isMounted = useRef(false);
-  const observer = useRef<IntersectionObserver | null>(null);
   const threshold = 0.4;
   const limit = 8;
   const onClickMoreButton = () => {
@@ -34,8 +38,8 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
   };
   const fetchData = async () => {
     const newItems = await getWorldcupList({ offset, limit, search: searchWord, keyword: selectedTag });
-    if (!newItems.length && observer.current) {
-      observer.current.disconnect();
+    if (!newItems.length) {
+      (observer.current as IntersectionObserver).disconnect();
       setLoading(false);
       return;
     }
@@ -59,9 +63,9 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
     }
   };
   useEffect(() => {
-    if (isClickMore && target.current && observer.current) {
-      observer.current = new IntersectionObserver(onIntersect, { threshold });
-      observer.current.observe(target.current);
+    if (isClickMore) {
+      (observer.current as IntersectionObserver) = new IntersectionObserver(onIntersect, { threshold });
+      (observer.current as IntersectionObserver).observe(target.current as HTMLDivElement);
     }
   }, [offset, isClickMore]);
   useEffect(() => {

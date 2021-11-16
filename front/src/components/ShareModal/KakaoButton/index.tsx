@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import kakaoLogo from '../../../images/kakao.png';
 
-const KakaoButton = (): JSX.Element => {
+interface kakaoProps {
+  url: string;
+}
+const KakaoButton = ({ url }: kakaoProps): JSX.Element => {
   const createButton = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
@@ -13,8 +16,34 @@ const KakaoButton = (): JSX.Element => {
     createButton();
   }, []);
   const handleButton = () => {
-    window.Kakao.Link.sendScrap({
-      requestUrl: window.location.href,
+    window.Kakao.Link.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: 'wiziboost worldcup',
+        description: '🔥🔥 선택의 갈림길에서 당신의 선택은?🔥🔥',
+        imageUrl:
+          'https://user-images.githubusercontent.com/56618964/139171179-d285ff52-0f06-44fb-96c1-44444c5b4761.png',
+        link: {
+          mobileWebUrl: url,
+          webUrl: url,
+        },
+      },
+      buttons: [
+        {
+          title: '웹으로 보기',
+          link: {
+            mobileWebUrl: url,
+            webUrl: url,
+          },
+        },
+        {
+          title: '앱으로 보기',
+          link: {
+            mobileWebUrl: url,
+            webUrl: url,
+          },
+        },
+      ],
     });
   };
   return (

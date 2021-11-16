@@ -6,3 +6,4 @@ export const SIGNUP = '/signup';
 export const INITIALIZE = '/initialize';
 export const WORLDCUP = '/worldcup';
 export const MYWORLDCUP = '/myworldcup';
+export const RANKING = '/ranking';
