@@ -34,6 +34,12 @@ const worldcupController = {
   remove: async (request: Request, response: Response, next: NextFunction) => {
     return await worldcupService.removeById(request.params.id);
   },
+
+  patchTitle: (request: Request, response: Response, next: NextFunction) => {
+    const { title } = request.body;
+    const { id } = request.params;
+    return worldcupService.patchWorldcupTitle(Number(id), title);
+  },
 };
 
 export default worldcupController;
