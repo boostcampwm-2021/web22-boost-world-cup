@@ -20,8 +20,8 @@ const expressLoader = (app) => {
 
   app.use('/api', indexRouter);
   app.use('*', (req, res) => {
-    res.sendFile(join(__dirname, '..', '..', '/public/index.html'));
-  })
+    // res.sendFile(join(__dirname, '..', '..', '/public/index.html'));
+  });
 };
 
 export default expressLoader;

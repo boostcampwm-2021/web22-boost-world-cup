@@ -2,8 +2,8 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
-import { loginState } from '../../recoil/atom';
-import { logout } from '../../utils/api/auth';
+import { loginState } from '../../../recoil/atom';
+import { logout } from '../../../utils/api/auth';
 
 interface Props {
   open: boolean;
