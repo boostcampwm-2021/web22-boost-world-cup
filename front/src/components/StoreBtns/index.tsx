@@ -66,6 +66,7 @@ const Btn = styled.button`
 
 const BtnsWrapper = styled.div`
   display: flex;
+  justify-content: flex-end;
   margin-top: 11px;
 `;
 
