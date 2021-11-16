@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar, StoreBtns } from '../../components';
 import { usePagination, useTabBar, useImgInfos, useWorldcupForm } from '../../hooks';
+import { ImgInfo } from '../../types/Datas';
 
 function Make(): JSX.Element {
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
@@ -10,6 +11,10 @@ function Make(): JSX.Element {
   const [previewStartIdx, setPreviewStartIdx] = useState(0);
   const [currentTab, onTabChange] = useTabBar(() => setPreviewStartIdx(imgInfos.length));
   const [currentPage, offset, lastPage, onPageChange] = usePagination(imgInfos.length, PAGINATION_LIMIT);
+
+  const getSignedURLsSuccessEffect = (newImgInfos: ImgInfo[]) => {
+    imgInfosDispatcher({ type: 'ADD_IMGS', payload: newImgInfos });
+  };
 
   return (
     <>
@@ -30,6 +35,7 @@ function Make(): JSX.Element {
               worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
             }}
             imgInfosDispatcher={imgInfosDispatcher}
+            getSignedURLsSuccessEffect={getSignedURLsSuccessEffect}
           />
         )}
         {currentTab === 2 && (
