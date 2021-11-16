@@ -5,3 +5,4 @@ export const MAKE = '/make';
 export const SIGNUP = '/signup';
 export const INITIALIZE = '/initialize';
 export const WORLDCUP = '/worldcup';
+export const MYWORLDCUP = '/myworldcup';
