@@ -14,6 +14,7 @@ export const findByWorldcupId = async (worldcupId: string) => {
     ])
     .innerJoin('comment.user', 'user')
     .where('comment.worldcup_id= :id', { id: worldcupId })
+    .orderBy('comment.created_at', 'DESC')
     .execute();
 };
 
