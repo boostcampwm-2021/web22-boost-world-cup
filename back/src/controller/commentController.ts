@@ -8,8 +8,9 @@ const commentController = {
   getComments: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { worldcupId },
+      query: { offset, limit },
     } = request;
-    const comments = await commentService.findByWorldcupId(worldcupId);
+    const comments = await commentService.findByWorldcupId(worldcupId, offset as string, limit as string);
     response.json({ comments });
   },
 

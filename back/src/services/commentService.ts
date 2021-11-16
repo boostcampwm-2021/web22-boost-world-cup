@@ -3,7 +3,7 @@ import { Comment } from '../entity/Comment';
 import { User } from '../entity/User';
 import { Worldcup } from '../entity/Worldcup';
 
-export const findByWorldcupId = async (worldcupId: string) => {
+export const findByWorldcupId = async (worldcupId: string, offset: string, limit: string) => {
   return await getRepository(Comment)
     .createQueryBuilder('comment')
     .select([
@@ -15,6 +15,8 @@ export const findByWorldcupId = async (worldcupId: string) => {
     .innerJoin('comment.user', 'user')
     .where('comment.worldcup_id= :id', { id: worldcupId })
     .orderBy('comment.created_at', 'DESC')
+    .offset(Number(offset))
+    .limit(Number(limit))
     .execute();
 };
 
