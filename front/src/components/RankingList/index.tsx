@@ -45,7 +45,9 @@ function RankingList(): JSX.Element {
   ];
   return (
     <>
-      <TabBar tabTitle={tabTitle} currentTab={currentTab} onTabChange={onTabChange} />
+      <Navigation>
+        <TabBar tabTitle={tabTitle} currentTab={currentTab} onTabChange={onTabChange} />
+      </Navigation>
       <Caption>
         <LeftCaption>
           <span>순위</span>
@@ -80,7 +82,10 @@ function RankingList(): JSX.Element {
     </>
   );
 }
-
+const Navigation = styled.nav`
+  position: absolute;
+  top: -63px;
+`;
 const Caption = styled.div`
   display: flex;
   justify-content: space-between;

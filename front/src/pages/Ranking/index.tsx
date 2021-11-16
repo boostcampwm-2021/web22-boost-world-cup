@@ -14,6 +14,7 @@ function Ranking(): JSX.Element {
 }
 
 const RankingContent = styled.div`
+  position: relative;
   width: 90vw;
   margin: 0 auto;
   margin-top: 5em;

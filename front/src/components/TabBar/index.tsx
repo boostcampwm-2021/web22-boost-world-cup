@@ -27,6 +27,8 @@ const TabBtn = styled.button<{ activated: boolean }>`
   line-height: 63px;
   text-align: center;
   ${({ theme }) => theme.fontStyle.h3Bold};
+  border: 1px solid ${({ theme }) => theme.color.primary};
+  border-radius: 12px 12px 0 0;
   color: #959595;
   background-color: ${({ activated, theme }) => (activated ? theme.color.primary : theme.color.white)};
   transition: background-color 0.3s, color 0.3s;
