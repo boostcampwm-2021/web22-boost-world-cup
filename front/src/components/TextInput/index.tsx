@@ -3,24 +3,24 @@ import styled from 'styled-components';
 
 interface Props {
   name: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
   width: string;
   placeholder?: string;
   defaultValue?: string | number;
   value?: string | number;
   invalid?: boolean;
   disabled?: boolean;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
-function TextInput({ name, onChange, width, defaultValue, ...props }: Props): JSX.Element {
+function TextInput({ name, width, defaultValue, ...props }: Props): JSX.Element {
   const inputRef = useRef<null | HTMLInputElement>(null);
   useEffect(() => {
     const input = inputRef.current;
     if (!defaultValue || !input) return;
     input.value = String(defaultValue);
   }, [defaultValue]);
-  return <Input ref={inputRef} style={{ width }} name={name} onChange={onChange} {...props} autoComplete="off" />;
+  return <Input ref={inputRef} style={{ width }} name={name} {...props} autoComplete="off" />;
 }
 
 const Input = styled.input`
