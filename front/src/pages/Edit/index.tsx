@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { useTabBar, useWorldcupForm, useImgInfos, usePagination } from '../../hooks';
-import { getWorldcupMetadata } from '../../utils/api/worldcups';
+import { getWorldcupMetadata, getWorldcupCandidates } from '../../utils/api/worldcups';
 
 function Edit(): JSX.Element {
   const PAGINATION_LIMIT = 8;
@@ -14,11 +14,16 @@ function Edit(): JSX.Element {
   const [imgInfos, imgInfosDispatcher] = useImgInfos();
   const [currentPage, offset, lastPage, onPageChange] = usePagination(totalCnt, PAGINATION_LIMIT);
   const [getMetadataResult, getMetadataDispatcher] = useApiRequest(getWorldcupMetadata);
+  const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
   const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
 
   useEffect(() => {
     getMetadataDispatcher({ type: REQUEST, requestProps: [worldcupId] });
   }, [currentTab, worldcupId]);
+
+  useEffect(() => {
+    getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
+  }, [currentPage, worldcupId]);
 
   useEffect(() => {
     const { type } = getMetadataResult;
@@ -39,6 +44,23 @@ function Edit(): JSX.Element {
         throw new Error('Unexpected request type');
     }
   }, [getMetadataResult]);
+
+  useEffect(() => {
+    const { type } = getCandidatesResult;
+    switch (type) {
+      case NULL:
+      case REQUEST:
+        return;
+      case SUCCESS:
+        const { data: candidates } = getCandidatesResult;
+        imgInfosDispatcher({ type: 'SET_IMGS', payload: candidates });
+        return;
+      case FAILURE:
+        return;
+      default:
+        throw new Error('Unexpected request type');
+    }
+  }, [getCandidatesResult]);
 
   return (
     <>
