@@ -64,24 +64,26 @@ function Initialize({ location }: Props): JSX.Element {
     setRound(newAge);
   }, []);
 
-  const makeGameInfo = useCallback((gameRound: number, candidatesList: candidateData[]): gameInfoData => {
-    return {
-      isCompleted: false,
-      worldcupId,
-      title,
-      round: gameRound / 2,
-      currentRound: 1,
-      candidatesList,
-      selectedCandidate: [],
-      winCandidate: { id: 0, name: '', url: '' },
-    };
-  }, []);
+  const makeGameInfo = useCallback(
+    (gameRound: number, candidatesList: candidateData[]): gameInfoData => {
+      return {
+        isCompleted: false,
+        worldcupId,
+        title,
+        round: gameRound / 2,
+        currentRound: 1,
+        candidatesList,
+        selectedCandidate: [],
+        winCandidate: { id: 0, name: '', url: '' },
+      };
+    },
+    [title],
+  );
 
   const startBtnClickHandler = async () => {
     const gameRound = 2 ** (round + 2);
     const candidatesList = await getCandidatesList(worldcupId, gameRound);
     const gameInfo = makeGameInfo(gameRound, candidatesList);
-
     const secretKey = process.env.REACT_APP_SECRET_KEY;
     if (secretKey) {
       sessionStorage.clear();
