@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { useTabBar, useWorldcupForm, useImgInfos, usePagination } from '../../hooks';
-import { getWorldcupMetadata, getWorldcupCandidates } from '../../utils/api/worldcups';
+import { getWorldcupMetadata, getWorldcupCandidates, patchWorldcupTitle } from '../../utils/api/worldcups';
 import { ImgInfo } from '../../types/Datas';
 
 function Edit(): JSX.Element {
@@ -16,10 +16,17 @@ function Edit(): JSX.Element {
   const [currentPage, offset, lastPage, onPageChange] = usePagination(totalCnt, PAGINATION_LIMIT);
   const [getMetadataResult, getMetadataDispatcher] = useApiRequest(getWorldcupMetadata);
   const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
+  const [patchTitleResult, patchTitleDispatcher] = useApiRequest(patchWorldcupTitle);
   const worldcupId = useMemo(() => window.location.pathname.split('/')[2], [window.location]);
 
   const getSignedURLsSuccessEffect = (addedImgs: ImgInfo[]) => {
     addedImgsDispatcher({ type: 'ADD_IMGS', payload: addedImgs });
+  };
+  const onTitleBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
+    const { title } = worldcupFormState;
+    if (title === target.value) return;
+    patchTitleDispatcher({ type: REQUEST, requestProps: [worldcupId, target.value] });
+    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
   };
 
   useEffect(() => {
@@ -78,12 +85,7 @@ function Edit(): JSX.Element {
           <MakeWorldcupForm
             imgInfos={addedImgs}
             worldcupFormState={worldcupFormState}
-            onTitleChange={({ target }) => {
-              worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
-            }}
-            onDescChange={({ target }) => {
-              worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
-            }}
+            onTitleBlur={onTitleBlur}
             onKeywordsChange={({ target }) => {
               worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
             }}
