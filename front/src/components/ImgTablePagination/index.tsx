@@ -5,19 +5,30 @@ import { BiChevronLeftCircle, BiChevronRightCircle } from 'react-icons/bi';
 interface Props {
   pageCnt: number;
   currentPage: number;
-  onPageChange: React.MouseEventHandler<HTMLButtonElement>;
+  onSpecificPageBtnClick: React.MouseEventHandler<HTMLButtonElement>;
   onPreBtnClick: React.MouseEventHandler<HTMLButtonElement>;
   onNextBtnClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function ImgTablePagination({ pageCnt, currentPage, onPageChange, onPreBtnClick, onNextBtnClick }: Props): JSX.Element {
+function ImgTablePagination({
+  pageCnt,
+  currentPage,
+  onSpecificPageBtnClick,
+  onPreBtnClick,
+  onNextBtnClick,
+}: Props): JSX.Element {
   const SHOW_PAGE_CNT = 9;
   const preCycleCnt = SHOW_PAGE_CNT * Math.floor((currentPage - 1) / SHOW_PAGE_CNT);
   const pageBtns = Array.from(
     { length: preCycleCnt + SHOW_PAGE_CNT > pageCnt ? pageCnt - preCycleCnt : SHOW_PAGE_CNT },
     (_, idx) => idx + 1 + preCycleCnt,
   ).map((page) => (
-    <PageBtn activated={page === currentPage} disabled={page === currentPage} onClick={onPageChange} key={page}>
+    <PageBtn
+      activated={page === currentPage}
+      disabled={page === currentPage}
+      onClick={onSpecificPageBtnClick}
+      key={page}
+    >
       {page}
     </PageBtn>
   ));

@@ -1,45 +1,39 @@
-import React, { useEffect, useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { WorldcupState } from '../../pages/Make/store';
 import ImgTableRow from '../ImgTableRow';
-import StoreBtns from '../StoreBtns';
 import Pagination from '../ImgTablePagination';
+import { ImgInfo } from '../../types/Datas';
+import { ImgsAction } from '../../hooks/useImgInfos';
 
 interface Props {
+  imgInfos: ImgInfo[];
   currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  lastPage: number;
+  offset: number;
+  onPageChange: (nextPage: number) => void;
+  imgInfosDispatcher: React.Dispatch<ImgsAction>;
 }
 
-function ImgTable({ currentPage, setCurrentPage }: Props): JSX.Element {
-  const worldcupFormState = useContext(WorldcupState);
-  const { imgInfos } = worldcupFormState;
-  const ELEMENT_CNT_PER_PAGE = 8;
-  const lastPage = Math.ceil(imgInfos.length / ELEMENT_CNT_PER_PAGE);
-
-  const onPageChange: React.MouseEventHandler<HTMLButtonElement> = ({ currentTarget }) => {
+function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange, imgInfosDispatcher }: Props): JSX.Element {
+  const onSpecificPageBtnClick: React.MouseEventHandler<HTMLButtonElement> = ({ currentTarget }) => {
     const nextPage = Number(currentTarget.innerText);
     if (currentPage === nextPage) return;
-    setCurrentPage(nextPage);
+    onPageChange(nextPage);
   };
-
   const onPreBtnClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (currentPage === 1) return;
-    setCurrentPage(currentPage - 1);
+    const nextPage = currentPage - 1;
+    onPageChange(nextPage);
   };
-
   const onNextBtnClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (currentPage === lastPage) return;
-    setCurrentPage(currentPage + 1);
+    const nextPage = currentPage + 1;
+    onPageChange(nextPage);
   };
 
-  const startIdx = ELEMENT_CNT_PER_PAGE * (currentPage - 1);
-  const rows = imgInfos
-    .slice(startIdx, startIdx + 8)
-    .map((info, idx) => <ImgTableRow key={info.key} imgInfo={info} num={startIdx + idx + 1} />);
-
-  useEffect(() => {
-    if (currentPage > lastPage && lastPage >= 1) setCurrentPage(lastPage);
-  }, [imgInfos.length]);
+  const rows = imgInfos.map((info, idx) => (
+    <ImgTableRow key={info.id} imgInfo={info} num={offset + idx + 1} imgInfosDispatcher={imgInfosDispatcher} />
+  ));
 
   return (
     <Container>
@@ -66,11 +60,10 @@ function ImgTable({ currentPage, setCurrentPage }: Props): JSX.Element {
         <Pagination
           pageCnt={lastPage}
           currentPage={currentPage}
-          onPageChange={onPageChange}
+          onSpecificPageBtnClick={onSpecificPageBtnClick}
           onPreBtnClick={onPreBtnClick}
           onNextBtnClick={onNextBtnClick}
         />
-        <StoreBtns />
       </Footer>
     </Container>
   );

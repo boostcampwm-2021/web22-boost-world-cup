@@ -1,35 +1,37 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { WorldcupState, WorldcupDispatcher, UploadImgState, UploadImgDispatcher } from '../../pages/Make/store';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import { useUploadState } from '../../hooks';
+import { WorldcupState } from '../../hooks/useWorldcupForm';
 import { getSignedURLs } from '../../utils/api/image';
+import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
+import { ImgsAction } from '../../hooks/useImgInfos';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
-import StoreBtns from '../StoreBtns';
 
 interface Props {
   previewStartIdx: number;
+  imgInfos: ImgInfo[];
+  onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
+  onDescChange: React.ChangeEventHandler<HTMLInputElement>;
+  onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
+  imgInfosDispatcher: React.Dispatch<ImgsAction>;
 }
 
-function MakeWorldcupForm({ previewStartIdx }: Props): JSX.Element {
+function MakeWorldcupForm({
+  previewStartIdx,
+  imgInfos,
+  onTitleChange,
+  onDescChange,
+  onKeywordsChange,
+  imgInfosDispatcher,
+}: Props): JSX.Element {
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
-  const uploadDispatcher = useContext(UploadImgDispatcher);
-  const { willUploadFiles } = useContext(UploadImgState);
-  const worldcupFormDispatcher = useContext(WorldcupDispatcher);
-  const { imgInfos } = useContext(WorldcupState);
+  const [uploadState, uploadStateDispatcher] = useUploadState();
+  const { willUploadFiles } = uploadState;
   const previews = imgInfos.slice(previewStartIdx);
-
-  const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
-  };
-  const onDescChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
-  };
-  const onKeywordsChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
-  };
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
     const { files } = target;
@@ -39,7 +41,7 @@ function MakeWorldcupForm({ previewStartIdx }: Props): JSX.Element {
     const newFiles = [...files].filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name));
     const contentTypes = newFiles.map((file) => file.type);
     getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
-    uploadDispatcher({ type: 'ADD_FILES', payload: newFiles });
+    uploadStateDispatcher({ type: 'ADD_FILES', payload: newFiles });
   };
 
   useEffect(() => {
@@ -54,13 +56,13 @@ function MakeWorldcupForm({ previewStartIdx }: Props): JSX.Element {
         const newImgInfos = presignedDatas.map((presignedData: PreSignedData, idx: number) => {
           const { key } = presignedData;
           const file = willUploadFiles[idx];
-          return { name: file.name, isUploaded: false, key };
+          return { name: file.name, isUploaded: false, id: getUUID(), key };
         });
-        uploadDispatcher({
+        uploadStateDispatcher({
           type: 'ADD_PRESIGNED_URL',
           payload: presignedDatas.map((data: PreSignedData) => data.presignedURL),
         });
-        worldcupFormDispatcher({ type: 'ADD_IMGS', payload: newImgInfos });
+        imgInfosDispatcher({ type: 'ADD_IMGS', payload: newImgInfos });
         return;
       }
       case FAILURE: {
@@ -107,12 +109,16 @@ function MakeWorldcupForm({ previewStartIdx }: Props): JSX.Element {
       <VerticalWrapper>
         <Label>이상형 월드컵 이미지 업로드</Label>
         {previews.length ? (
-          <ImgPreViewList imgInfos={previews} onAddImgs={onAddImgs} />
+          <ImgPreViewList
+            imgInfos={previews}
+            uploadState={uploadState}
+            onAddImgs={onAddImgs}
+            imgInfosDispatcher={imgInfosDispatcher}
+          />
         ) : (
           <ImgInput onChange={onAddImgs} type="addImgs" />
         )}
       </VerticalWrapper>
-      <StoreBtns />
     </Container>
   );
 }
