@@ -15,7 +15,7 @@ function Edit(): JSX.Element {
   const [currentPage, offset, lastPage, onPageChange] = usePagination(totalCnt, PAGINATION_LIMIT);
   const [getMetadataResult, getMetadataDispatcher] = useApiRequest(getWorldcupMetadata);
   const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
-  const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
+  const worldcupId = useMemo(() => window.location.pathname.split('/')[2], [window.location]);
 
   useEffect(() => {
     getMetadataDispatcher({ type: REQUEST, requestProps: [worldcupId] });
@@ -31,13 +31,14 @@ function Edit(): JSX.Element {
       case NULL:
       case REQUEST:
         return;
-      case SUCCESS:
+      case SUCCESS: {
         const { data: metadata } = getMetadataResult;
         const { totalCnt, title, description } = metadata;
         worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: title });
         worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: description });
         setTotalCnt(totalCnt);
         return;
+      }
       case FAILURE:
         return;
       default:
@@ -51,10 +52,11 @@ function Edit(): JSX.Element {
       case NULL:
       case REQUEST:
         return;
-      case SUCCESS:
+      case SUCCESS: {
         const { data: candidates } = getCandidatesResult;
         imgInfosDispatcher({ type: 'SET_IMGS', payload: candidates });
         return;
+      }
       case FAILURE:
         return;
       default:
