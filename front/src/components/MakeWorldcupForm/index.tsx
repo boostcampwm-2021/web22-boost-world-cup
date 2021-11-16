@@ -19,6 +19,8 @@ interface Props {
   onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
   imgInfosDispatcher: React.Dispatch<ImgsAction>;
   getSignedURLsSuccessEffect: (newImgInfos: ImgInfo[]) => void;
+  onTitleBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onDescBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 function MakeWorldcupForm({
@@ -29,6 +31,8 @@ function MakeWorldcupForm({
   onKeywordsChange,
   imgInfosDispatcher,
   getSignedURLsSuccessEffect,
+  onTitleBlur,
+  onDescBlur,
 }: Props): JSX.Element {
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
   const [uploadState, uploadStateDispatcher] = useUploadState();
@@ -88,6 +92,7 @@ function MakeWorldcupForm({
             width="1236px"
             placeholder="이상형월드컵의 제목을 입력하세요. ex) 여자 아이돌 이상형 월드컵, 남자 연예인 이상형월드컵"
             defaultValue={title}
+            onBlur={onTitleBlur}
           />
         </HorizontalWrapper>
         <HorizontalWrapper>
@@ -98,6 +103,7 @@ function MakeWorldcupForm({
             width="1236px"
             placeholder="설명, 하고싶은 말 등을 자유롭게 입력하세요."
             defaultValue={desc}
+            onBlur={onDescBlur}
           />
         </HorizontalWrapper>
         <HorizontalWrapper>
