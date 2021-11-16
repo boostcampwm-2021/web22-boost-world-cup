@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { useTabBar, useWorldcupForm, useImgInfos, usePagination } from '../../hooks';
-import { getWorldcupMetadata, getWorldcupCandidates, patchWorldcupTitle } from '../../utils/api/worldcups';
+import {
+  getWorldcupMetadata,
+  getWorldcupCandidates,
+  patchWorldcupTitle,
+  patchWorldcupDesc,
+} from '../../utils/api/worldcups';
 import { ImgInfo } from '../../types/Datas';
 
 function Edit(): JSX.Element {
@@ -17,6 +22,7 @@ function Edit(): JSX.Element {
   const [getMetadataResult, getMetadataDispatcher] = useApiRequest(getWorldcupMetadata);
   const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
   const [patchTitleResult, patchTitleDispatcher] = useApiRequest(patchWorldcupTitle);
+  const [patchDescResult, patchDescDispatcher] = useApiRequest(patchWorldcupDesc);
   const worldcupId = useMemo(() => window.location.pathname.split('/')[2], [window.location]);
 
   const getSignedURLsSuccessEffect = (addedImgs: ImgInfo[]) => {
@@ -27,6 +33,12 @@ function Edit(): JSX.Element {
     if (title === target.value) return;
     patchTitleDispatcher({ type: REQUEST, requestProps: [worldcupId, target.value] });
     worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
+  };
+  const onDescBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
+    const { desc } = worldcupFormState;
+    if (desc === target.value) return;
+    patchDescDispatcher({ type: REQUEST, requestProps: [worldcupId, target.value] });
+    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
   };
 
   useEffect(() => {
@@ -86,6 +98,7 @@ function Edit(): JSX.Element {
             imgInfos={addedImgs}
             worldcupFormState={worldcupFormState}
             onTitleBlur={onTitleBlur}
+            onDescBlur={onDescBlur}
             onKeywordsChange={({ target }) => {
               worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
             }}
