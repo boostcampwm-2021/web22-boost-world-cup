@@ -103,3 +103,10 @@ export const patchWorldcupTitle = async (id: number, title: string) => {
   worldcup.title = title;
   worldcupRepository.save(worldcup);
 };
+
+export const patchWorldcupDesc = async (id: number, desc: string) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcup = await worldcupRepository.findOne(id);
+  worldcup.description = desc;
+  worldcupRepository.save(worldcup);
+};
