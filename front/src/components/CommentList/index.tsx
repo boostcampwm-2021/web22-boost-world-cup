@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import Comment from './comment';
 import { CommentData } from '../../types/Datas';
-import Loader from '../WorldcupList/Loader';
+import Loader from '../Loader';
 import { getComments, getCommentsCount } from '../../utils/api/comment';
 
 interface Props {
