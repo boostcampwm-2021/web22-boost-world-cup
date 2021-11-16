@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
-import { TabBar, SearchBar } from '../../components';
+import { TabBar, SearchBar, RankingModal } from '../../components';
 import { useTabBar } from '../../hooks';
 
 function RankingList(): JSX.Element {
@@ -95,6 +95,7 @@ function RankingList(): JSX.Element {
           );
         })}
       </RankingItems>
+      <RankingModal />
     </>
   );
 }

@@ -9,3 +9,4 @@ export { default as ImgTable } from './ImgTable';
 export { default as TabBar } from './TabBar';
 export { default as StoreBtns } from './StoreBtns';
 export { default as RankingList } from './RankingList';
+export { default as RankingModal } from './RankingModal';
