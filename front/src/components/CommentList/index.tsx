@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Comment from './comment';
 import { CommentData } from '../../types/Datas';
 import Loader from '../WorldcupList/Loader';
-import { getComments } from '../../utils/api/comment';
+import { getComments, getCommentsCount } from '../../utils/api/comment';
 
 interface Props {
   worldcupId: string;
@@ -15,6 +15,7 @@ interface Props {
 
 function CommentList({ worldcupId, comments, offset, setOffset, setComments }: Props): JSX.Element {
   const [loading, setLoading] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
   const target = useRef<HTMLDivElement | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
   const threshold = 0.4;
@@ -49,9 +50,18 @@ function CommentList({ worldcupId, comments, offset, setOffset, setComments }: P
     return () => observer.current && (observer.current as IntersectionObserver).disconnect();
   }, [onIntersect]);
 
+  const getCount = async () => {
+    const { commentCount: fetchData } = await getCommentsCount(worldcupId);
+    setCommentCount(fetchData);
+  };
+
+  useEffect(() => {
+    getCount();
+  }, [comments.length]);
+
   return (
     <Wrapper>
-      <Text>댓글 (개수)</Text>
+      <Text>댓글 ({commentCount})</Text>
       <CommentContainer>
         {comments.map((comment) => (
           <Comment comment={comment} setComments={setComments} />

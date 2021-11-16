@@ -25,3 +25,12 @@ export const deleteComment = async (commentId: string): Promise<commonResponse> 
   const response = await axios.delete(`/api/comments/${commentId}`);
   return response.data;
 };
+
+interface lengthResponse {
+  commentCount: number;
+}
+
+export const getCommentsCount = async (worldcupId: string): Promise<lengthResponse> => {
+  const response = await axios.get(`/api/comments/count/${worldcupId}`);
+  return response.data;
+};
