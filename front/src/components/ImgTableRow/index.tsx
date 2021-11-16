@@ -5,7 +5,7 @@ import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import { getSignedURLs } from '../../utils/api/image';
-import { deleteCandidate, patchCandidateName } from '../../utils/api/candidate';
+import { deleteCandidate, patchCandidateName, patchCandidate } from '../../utils/api/candidate';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { ImgsAction } from '../../hooks/useImgInfos';
 
@@ -20,6 +20,7 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   const [presignedURL, setPresignedURL] = useState<string | null>(null);
   const [deleteCandidateResult, deleteCandidateDispatcher] = useApiRequest(deleteCandidate);
   const [patchCandidateNameResult, patchCandidateNameDispatcher] = useApiRequest(patchCandidateName);
+  const [patchCandidateResult, patchCandidateDispatcher] = useApiRequest(patchCandidate);
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
 
   const onDeleteImg = () => {
@@ -65,11 +66,14 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
       case SUCCESS: {
         if (!willUploadFile) return;
         const { data } = getSignedURLsResult;
-        const { key, presignedURL } = data[0];
+        const { key: newKey, presignedURL } = data[0];
+        const { key: preKey } = imgInfo;
+        const { name } = willUploadFile;
         setPresignedURL(presignedURL);
+        patchCandidateDispatcher({ type: REQUEST, requestProps: [preKey, newKey, name] });
         imgInfosDispatcher({
           type: 'CHANGE_IMG',
-          payload: { newKey: key, name: willUploadFile.name, preKey: imgInfo.key },
+          payload: { newKey, name, preKey },
         });
         return;
       }
