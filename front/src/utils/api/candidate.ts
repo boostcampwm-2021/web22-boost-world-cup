@@ -8,3 +8,6 @@ export const createCandidates = (worldcupId: number, newImgInfos: ImgInfo[]): Pr
 
 export const patchCandidateName = (key: string, name: string): Promise<AxiosResponse> =>
   axios.patch(`/api/candidates/${key}/name`, { name });
+
+export const patchCandidate = (preKey: string, newKey: string, name: string): Promise<AxiosResponse> =>
+  axios.patch(`/api/candidates/${preKey}`, { newKey, name });
