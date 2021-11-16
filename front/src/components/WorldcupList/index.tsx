@@ -22,7 +22,6 @@ interface Props {
   setOffset: React.Dispatch<React.SetStateAction<number>>;
   searchWord?: string;
   selectedTag?: string;
-  filterStandard: React.MutableRefObject<filtering>;
 }
 
 function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Props): JSX.Element {
@@ -39,11 +38,8 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
   };
   const fetchData = async () => {
     const newItems = await getWorldcupList({ offset, limit, search: searchWord, keyword: selectedTag });
-    if (!newItems.length && observer.current) {
-      observer.current.disconnect();
-
-      if (!newItems.length) {
-        (observer.current as IntersectionObserver).disconnect();
+    if (!newItems.length) {
+      (observer.current as IntersectionObserver).disconnect();
       setLoading(false);
       return;
     }
