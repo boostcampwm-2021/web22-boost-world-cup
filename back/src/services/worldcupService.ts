@@ -96,3 +96,10 @@ export const plusTotalCnt = async (id: number) => {
   worldcup.totalCnt += 1;
   return await worldcupRepository.save(worldcup);
 };
+
+export const patchWorldcupTitle = async (id: number, title: string) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcup = await worldcupRepository.findOne(id);
+  worldcup.title = title;
+  worldcupRepository.save(worldcup);
+};
