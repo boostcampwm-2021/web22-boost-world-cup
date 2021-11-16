@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { useUploadState } from '../../hooks';
-import { WorldcupState } from '../../hooks/useWorldcupForm';
 import { getSignedURLs } from '../../utils/api/image';
 import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
@@ -12,8 +11,7 @@ import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
 
 interface Props {
-  previewStartIdx: number;
-  imgInfos: ImgInfo[];
+  previews: ImgInfo[];
   onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
   onDescChange: React.ChangeEventHandler<HTMLInputElement>;
   onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -21,8 +19,7 @@ interface Props {
 }
 
 function MakeWorldcupForm({
-  previewStartIdx,
-  imgInfos,
+  previews,
   onTitleChange,
   onDescChange,
   onKeywordsChange,
@@ -31,14 +28,13 @@ function MakeWorldcupForm({
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
   const [uploadState, uploadStateDispatcher] = useUploadState();
   const { willUploadFiles } = uploadState;
-  const previews = imgInfos.slice(previewStartIdx);
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
     const { files } = target;
     if (!files) {
       return;
     }
-    const newFiles = [...files].filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name));
+    const newFiles = [...files].filter((file: File) => !previews.map((info: ImgInfo) => info.name).includes(file.name));
     const contentTypes = newFiles.map((file) => file.type);
     getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
     uploadStateDispatcher({ type: 'ADD_FILES', payload: newFiles });
