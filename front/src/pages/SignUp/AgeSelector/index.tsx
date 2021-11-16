@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 interface Props {
   age: number;
-  ageSelector: (newAge: number) => void;
+  setAge: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function AgeSelector({ age, ageSelector }: Props): JSX.Element {
+function AgeSelector({ age, setAge }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function AgeSelector({ age, ageSelector }: Props): JSX.Element {
   }, []);
 
   const ageSelectHandler = useCallback((age: number) => {
-    ageSelector(age);
+    setAge(age);
   }, []);
 
   const clickBackWindow = useCallback((event: React.MouseEvent<HTMLElement>) => {

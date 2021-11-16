@@ -3,16 +3,16 @@ import styled from 'styled-components';
 
 interface Props {
   gender: number;
-  genderSelector: (newGender: number) => void;
+  setGender: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function GenderSelector({ gender, genderSelector }: Props): JSX.Element {
+function GenderSelector({ gender, setGender }: Props): JSX.Element {
   const genderSelectHandler: React.MouseEventHandler = useCallback((event: React.MouseEvent<HTMLElement>) => {
     const {
       dataset: { value },
     } = event.target as HTMLElement;
     if (value) {
-      genderSelector(parseInt(value, 10));
+      setGender(parseInt(value, 10));
     }
   }, []);
 

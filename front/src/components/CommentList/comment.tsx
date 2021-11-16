@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { isForStatement } from 'typescript';
 import { CommentData } from '../../types/Datas';
 import { deleteComment } from '../../utils/api/comment';
 

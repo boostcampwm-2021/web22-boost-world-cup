@@ -9,10 +9,10 @@ interface Props {
   nickname: string;
   gender: number;
   age: number;
-  changeAuthenticated: (authenticated: boolean) => void;
+  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SignupButton({ location, nickname, gender, age, changeAuthenticated }: Props): JSX.Element {
+function SignupButton({ location, nickname, gender, age, setAuthenticated }: Props): JSX.Element {
   const query = qs.parse(location.search, { ignoreQueryPrefix: true });
   const { client_id: clientId } = query;
 
@@ -25,7 +25,7 @@ function SignupButton({ location, nickname, gender, age, changeAuthenticated }: 
     const response = await signup(clientId, nickname, gender, age);
     const { result } = response;
     if (result === 'success') {
-      changeAuthenticated(true);
+      setAuthenticated(true);
     }
   };
 
