@@ -64,9 +64,9 @@ function RankingList(): JSX.Element {
           <span>순위</span>
           <span>이미지</span>
           <span>이름</span>
+          <div />
         </LeftCaption>
         <RightCaption>
-          <div />
           <div>
             <p>우승비율</p>
             <span>(최종 우승 횟수 / 전체 게임 수)</span>
@@ -78,17 +78,22 @@ function RankingList(): JSX.Element {
         </RightCaption>
       </Caption>
       <RankingItems>
-        {data.map((v, index) => (
-          <RankingItem
-            key={v.id}
-            id={index + 1}
-            url={v.url}
-            name={v.name}
-            winCnt={v.winCnt}
-            showCnt={v.showCnt}
-            info={v.info}
-          />
-        ))}
+        {data.map((v, index) => {
+          return (
+            <>
+              <RankingItem
+                key={v.id}
+                id={index + 1}
+                url={v.url}
+                name={v.name}
+                winCnt={v.winCnt}
+                showCnt={v.showCnt}
+                info={v.info}
+              />
+              {index + 1 < data.length ? <Divider /> : ''}
+            </>
+          );
+        })}
       </RankingItems>
     </>
   );
@@ -105,22 +110,22 @@ const Navigation = styled.nav`
 const Caption = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%;
   margin: 0 auto;
   font-size: 1.8em;
   font-weight: bold;
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 `;
 const LeftCaption = styled.div`
-  width: 500px;
+  width: 40%;
   display: flex;
   justify-content: space-evenly;
 `;
 const RightCaption = styled.div`
-  width: 900px;
+  width: 60%;
   display: flex;
   justify-content: space-around;
   div {
-    width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -130,6 +135,17 @@ const RightCaption = styled.div`
     }
   }
 `;
-const RankingItems = styled.section``;
+const RankingItems = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Divider = styled.hr`
+  height: 1px;
+  width: 90%;
+  background-color: ${({ theme }) => theme.color.gray[0]};
+  margin-bottom: 1em;
+`;
 
 export default RankingList;

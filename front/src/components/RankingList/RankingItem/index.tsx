@@ -30,9 +30,9 @@ function RankingItem({ id, url, name, winCnt, showCnt, info }: ItemProps): JSX.E
         <span>{id}</span>
         <img src={url} alt="월드컵 후보 사진" />
         <span>{name}</span>
+        <div />
       </LeftSection>
       <RightSection>
-        <div style={{ width: '300px' }} />
         <Bar>
           <Ratio width={winCnt / showCnt} />
           <span>{`${((winCnt / showCnt) * 100).toFixed(2)}%`}</span>
@@ -49,24 +49,24 @@ function RankingItem({ id, url, name, winCnt, showCnt, info }: ItemProps): JSX.E
 const Section = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%;
   margin: 0 auto;
   font-size: 1.3em;
-  font-weight: bold;
   margin-bottom: 1em;
 `;
 const LeftSection = styled.div`
-  width: 500px;
+  width: 40%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   cursor: pointer;
   img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
 `;
 const RightSection = styled.div`
-  width: 900px;
+  width: 60%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -80,9 +80,9 @@ const Bar = styled.div`
   position: relative;
   background-color: ${({ theme }) => theme.color.lightpink};
   border-radius: 12px;
-  width: 300px;
-  height: 40px;
-  line-height: 40px;
+  width: 30%;
+  height: 44px;
+  line-height: 50px;
   margin-left: 1em;
   span {
     position: absolute;
@@ -95,8 +95,9 @@ const Ratio = styled.div`
   left: 0;
   top: 0;
   border-radius: 12px;
-  width: ${(props: RatioProp) => `${props.width * 300}px`};
-  height: 40px;
+  width: ${(props: RatioProp) => `${props.width * 100}%`};
+  height: 44px;
   background-color: ${({ theme }) => theme.color.highlight};
+  opacity: 0.8;
 `;
 export default RankingItem;
