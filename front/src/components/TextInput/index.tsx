@@ -10,6 +10,7 @@ interface Props {
   value?: string | number;
   invalid?: boolean;
   disabled?: boolean;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 function TextInput({ name, onChange, width, defaultValue, ...props }: Props): JSX.Element {
