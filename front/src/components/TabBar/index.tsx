@@ -23,8 +23,8 @@ function TabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
 
 const TabBtn = styled.button<{ activated: boolean }>`
   width: 330px;
-  height: 63px;
-  line-height: 63px;
+  height: 74px;
+  line-height: 74px;
   text-align: center;
   ${({ theme }) => theme.fontStyle.h3Bold};
   border: 1px solid ${({ theme }) => theme.color.primary};

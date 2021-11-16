@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
-import { TabBar } from '../../components';
+import { TabBar, SearchBar } from '../../components';
 import { useTabBar } from '../../hooks';
 
 function RankingList(): JSX.Element {
   const tabTitle = ['연령별', '성별'];
   const [currentTab, onTabChange] = useTabBar();
+  const [inputWord, setInputWord] = useState('');
+  const [searchWord, setSearchWord] = useState('');
   const data = [
     {
       id: 1,
@@ -43,10 +45,19 @@ function RankingList(): JSX.Element {
       },
     },
   ];
+  const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
+    event.preventDefault();
+    setSearchWord(inputWord);
+    setInputWord('');
+  };
+  const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputWord(event.target.value);
+  };
   return (
     <>
       <Navigation>
         <TabBar tabTitle={tabTitle} currentTab={currentTab} onTabChange={onTabChange} />
+        <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
       </Navigation>
       <Caption>
         <LeftCaption>
@@ -84,7 +95,12 @@ function RankingList(): JSX.Element {
 }
 const Navigation = styled.nav`
   position: absolute;
-  top: -63px;
+  top: -74px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 4em;
 `;
 const Caption = styled.div`
   display: flex;
