@@ -50,6 +50,7 @@ function Edit(): JSX.Element {
   }, [currentTab, worldcupId]);
 
   useEffect(() => {
+    candidatesDispatcher({ type: 'RESET' });
     getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
   }, [currentPage, worldcupId]);
 
