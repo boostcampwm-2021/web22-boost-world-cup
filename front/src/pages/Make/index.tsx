@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar, StoreBtns } from '../../components';
+import { Header, MakeWorldcupForm, ImgTable, TabBar, StoreBtns } from '../../components';
 import { usePagination, useTabBar, useImgInfos, useWorldcupForm } from '../../hooks';
 
 function Make(): JSX.Element {
@@ -10,12 +10,13 @@ function Make(): JSX.Element {
   const [previewStartIdx, setPreviewStartIdx] = useState(0);
   const [currentTab, onTabChange] = useTabBar(() => setPreviewStartIdx(imgInfos.length));
   const [currentPage, offset, lastPage, onPageChange] = usePagination(imgInfos.length, PAGINATION_LIMIT);
+  const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
 
   return (
     <>
       <Header type="header" />
       <Content>
-        <MakePageTabBar currentTab={currentTab} onTabChange={onTabChange} />
+        <TabBar tabTitle={tabTitle} currentTab={currentTab} onTabChange={onTabChange} />
         {currentTab === 1 && (
           <MakeWorldcupForm
             previewStartIdx={previewStartIdx}
