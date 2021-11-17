@@ -42,7 +42,8 @@ function Edit(): JSX.Element {
     candidatesDispatcher({ type: 'SET_IMGS', payload: newCandidates });
   };
   const getCandidatesDispatcher = useApiRequest<Candidate[]>(getWorldcupCandidates, onGetCandidatesSuccess);
-  const [patchTitleResult, patchTitleDispatcher] = useApiRequest(patchWorldcupTitle);
+
+  const patchTitleDispatcher = useApiRequest(patchWorldcupTitle);
   const [patchDescResult, patchDescDispatcher] = useApiRequest(patchWorldcupDesc);
   const [createCandidatesResult, createCandidatesDispatcher] = useApiRequest(createCandidates);
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
