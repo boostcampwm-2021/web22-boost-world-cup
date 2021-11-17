@@ -59,6 +59,17 @@ const authController = {
       next(err);
     }
   },
+  update: async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      await authService.updateUser(request.body);
+      return response.json({
+        result: 'success',
+        message: null,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
   leave: async (request: Request, response: Response, next: NextFunction) => {
     try {
       await authService.removeUser(request.params.id);
