@@ -9,6 +9,7 @@ import {
   patchWorldcupTitle,
   patchWorldcupDesc,
 } from '../../utils/api/worldcups';
+import { createCandidates } from '../../utils/api/candidate';
 import { ImgInfo } from '../../types/Datas';
 
 function Edit(): JSX.Element {
@@ -23,10 +24,12 @@ function Edit(): JSX.Element {
   const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
   const [patchTitleResult, patchTitleDispatcher] = useApiRequest(patchWorldcupTitle);
   const [patchDescResult, patchDescDispatcher] = useApiRequest(patchWorldcupDesc);
-  const worldcupId = useMemo(() => window.location.pathname.split('/')[2], [window.location]);
+  const [createCandidatesResult, createCandidatesDispatcher] = useApiRequest(createCandidates);
+  const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
   const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
 
   const getSignedURLsSuccessEffect = (addedImgs: ImgInfo[]) => {
+    createCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, addedImgs] });
     addedImgsDispatcher({ type: 'ADD_IMGS', payload: addedImgs });
   };
   const onTitleBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
@@ -49,6 +52,23 @@ function Edit(): JSX.Element {
   useEffect(() => {
     getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
   }, [currentPage, worldcupId]);
+
+  useEffect(() => {
+    const { type } = createCandidatesResult;
+    switch (type) {
+      case NULL:
+      case REQUEST:
+        return;
+      case SUCCESS: {
+        getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
+        return;
+      }
+      case FAILURE:
+        return;
+      default:
+        throw new Error('Unexpected request type');
+    }
+  }, [createCandidatesResult]);
 
   useEffect(() => {
     const { type } = getMetadataResult;
@@ -78,7 +98,16 @@ function Edit(): JSX.Element {
       case REQUEST:
         return;
       case SUCCESS: {
-        const { data: candidates } = getCandidatesResult;
+        const { data } = getCandidatesResult;
+        const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.png).webp/;
+        const candidates = data.map(
+          (info: any): ImgInfo => ({
+            name: info.name,
+            id: info.id,
+            key: info.url.match(keyReg).groups.key,
+            isUploaded: true,
+          }),
+        );
         candidatesDispatcher({ type: 'SET_IMGS', payload: candidates });
         return;
       }
