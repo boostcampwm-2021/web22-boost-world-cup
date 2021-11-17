@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import '@fontsource/rancho';
-import { FaUserAlt } from 'react-icons/fa';
+import { FaUserAlt, FaUserAltSlash } from 'react-icons/fa';
 import { loginState } from '../../recoil/atom';
 import HeaderModal from './HeaderModal';
 import SearchBar from '../SearchBar';
@@ -59,9 +59,33 @@ function Header(props: Props): JSX.Element {
   );
 }
 
-const Login = styled.span`
+const Login = styled.div`
+  margin-right: 30px;
   cursor: pointer;
-  font: ${({ theme }) => theme.fontStyle.h3Bold};
+  font: ${({ theme }) => theme.fontStyle.body};
+  color: #bc8f8f;
+  border: 1px solid #bc8f8f;
+  background-color: transparent;
+  font-size: 15px;
+  width: 100px;
+  height: 35px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    color: white;
+    background-color: #bc8f8f;
+  }
+`;
+
+const UserIcon = styled(FaUserAlt)`
+  margin-right: 50px;
+  width: 30px;
+  height: 30px;
+  color: ${({ theme }) => theme.color.black};
+  cursor: pointer;
 `;
 
 const MainHeader = styled.header`
@@ -73,6 +97,7 @@ const MainHeader = styled.header`
   justify-content: space-between;
   background-color: ${({ theme }) => theme.color.primary};
 `;
+
 const Logo = styled.span`
   cursor: pointer;
   font-size: 40px;
@@ -87,16 +112,8 @@ const RightHeader = styled.span`
   justify-content: flex-end;
 `;
 
-const UserIcon = styled(FaUserAlt)`
-  width: 2em;
-  height: 2em;
-  color: ${({ theme }) => theme.color.black};
-  cursor: pointer;
-`;
-
 const Overlay = styled.div`
   position: fixed;
-  overflow-y: scroll;
   top: 0;
   left: 0;
   bottom: 0;

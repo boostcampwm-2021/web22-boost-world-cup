@@ -69,7 +69,7 @@ const MenuBox = styled.ul`
   justify-content: space-around;
   align-items: stretch;
   text-align: center;
-  width: 180px;
+  width: 160px;
   height: 220px;
   z-index: 1;
   border: 1px solid ${({ theme }) => theme.color.gray[0]};
