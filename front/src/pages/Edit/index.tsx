@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
-import { Header, MakeWorldcupForm, ImgTable, MakePageTabBar } from '../../components';
+import { Header, MakeWorldcupForm, ImgTable, TabBar } from '../../components';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { useTabBar, useWorldcupForm, useImgInfos, usePagination } from '../../hooks';
 import {
@@ -23,6 +23,7 @@ function Edit(): JSX.Element {
   const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
   const [patchTitleResult, patchTitleDispatcher] = useApiRequest(patchWorldcupTitle);
   const [patchDescResult, patchDescDispatcher] = useApiRequest(patchWorldcupDesc);
+  const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
   const worldcupId = useMemo(() => window.location.pathname.split('/')[2], [window.location]);
 
   const getSignedURLsSuccessEffect = (addedImgs: ImgInfo[]) => {
@@ -92,7 +93,7 @@ function Edit(): JSX.Element {
     <>
       <Header type="header" />
       <Content>
-        <MakePageTabBar currentTab={currentTab} onTabChange={onTabChange} />
+        <TabBar currentTab={currentTab} onTabChange={onTabChange} tabTitle={tabTitle} />
         {currentTab === 1 && (
           <MakeWorldcupForm
             imgInfos={addedImgs}
