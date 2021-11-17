@@ -63,8 +63,8 @@ export const patchCandidate = async (key: string, name: string, newKey?: string)
   const candidate = await findOneByKey(key);
   if (!candidate) return;
   candidate.name = name;
-  if (newKey) candidate.url = `${process.env.IMG_URL_END_POINT}/${key}.webp`;
-  candidateRepository.save(candidate);
+  if (newKey) candidate.url = `${process.env.IMG_URL_END_POINT}/${newKey}.webp`;
+  return candidateRepository.save(candidate);
 };
 
 export const getCandidates = async (worldcupId: number, offset: number, limit: number) => {
