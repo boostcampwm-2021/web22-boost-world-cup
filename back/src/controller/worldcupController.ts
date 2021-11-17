@@ -42,16 +42,18 @@ const worldcupController = {
     return await worldcupService.removeById(request.params.id);
   },
 
-  patchTitle: (request: Request, response: Response, next: NextFunction) => {
+  patchTitle: async (request: Request, response: Response, next: NextFunction) => {
     const { title } = request.body;
     const { id } = request.params;
-    return worldcupService.patchWorldcupTitle(Number(id), title);
+    await worldcupService.patchWorldcupTitle(Number(id), title);
+    response.end();
   },
 
-  patchDesc: (request: Request, response: Response, next: NextFunction) => {
+  patchDesc: async (request: Request, response: Response, next: NextFunction) => {
     const { desc } = request.body;
     const { id } = request.params;
-    return worldcupService.patchWorldcupDesc(Number(id), desc);
+    await worldcupService.patchWorldcupDesc(Number(id), desc);
+    response.end();
   },
 
   getCandidates: async (request: Request, response: Response, next: NextFunction) => {
