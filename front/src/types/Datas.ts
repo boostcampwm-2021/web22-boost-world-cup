@@ -39,3 +39,9 @@ export interface ErrorResponseData {
   result: 'fail';
   message: string;
 }
+
+export interface WorldcupMetaData {
+  totalCnt: number;
+  title: string;
+  description: string;
+}

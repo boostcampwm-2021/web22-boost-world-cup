@@ -10,7 +10,7 @@ import {
   patchWorldcupDesc,
 } from '../../utils/api/worldcups';
 import { createCandidates } from '../../utils/api/candidate';
-import { ImgInfo } from '../../types/Datas';
+import { ImgInfo, WorldcupMetaData } from '../../types/Datas';
 
 function Edit(): JSX.Element {
   const PAGINATION_LIMIT = 8;
@@ -20,7 +20,14 @@ function Edit(): JSX.Element {
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
   const [currentTab, onTabChange] = useTabBar();
   const [currentPage, offset, lastPage, onPageChange] = usePagination(totalCnt, PAGINATION_LIMIT);
-  const [getMetadataResult, getMetadataDispatcher] = useApiRequest(getWorldcupMetadata);
+
+  const onGetMetadataSuccess = (metadata: WorldcupMetaData) => {
+    const { totalCnt, title, description } = metadata;
+    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: title });
+    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: description });
+    setTotalCnt(totalCnt);
+  };
+  const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(getWorldcupMetadata, onGetMetadataSuccess);
   const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
   const [patchTitleResult, patchTitleDispatcher] = useApiRequest(patchWorldcupTitle);
   const [patchDescResult, patchDescDispatcher] = useApiRequest(patchWorldcupDesc);
@@ -70,27 +77,6 @@ function Edit(): JSX.Element {
         throw new Error('Unexpected request type');
     }
   }, [createCandidatesResult]);
-
-  useEffect(() => {
-    const { type } = getMetadataResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        const { data: metadata } = getMetadataResult;
-        const { totalCnt, title, description } = metadata;
-        worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: title });
-        worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: description });
-        setTotalCnt(totalCnt);
-        return;
-      }
-      case FAILURE:
-        return;
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [getMetadataResult]);
 
   useEffect(() => {
     const { type } = getCandidatesResult;
