@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, TabBar } from '../../components';
-import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { useTabBar, useWorldcupForm, useImgInfos, usePagination } from '../../hooks';
 import {
   getWorldcupMetadata,

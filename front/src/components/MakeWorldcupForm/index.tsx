@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { useUploadState } from '../../hooks';
 import { getSignedURLs } from '../../utils/api/image';
 import getUUID from '../../utils/getUUID';

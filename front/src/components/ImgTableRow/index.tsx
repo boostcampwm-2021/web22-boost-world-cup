@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ImgInfo } from '../../types/Datas';
+import { ImgInfo, PreSignedData } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import { getSignedURLs } from '../../utils/api/image';
 import { deleteCandidate, patchCandidate } from '../../utils/api/candidate';
-import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { ImgsAction } from '../../hooks/useImgInfos';
-import { PreSignedData } from '../../types/Datas';
 
 interface Props {
   imgInfo: ImgInfo;

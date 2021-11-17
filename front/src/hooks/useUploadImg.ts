@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from './useApiRequest';
+import useApiRequest, { REQUEST } from './useApiRequest';
 import { ImgsAction } from './useImgInfos';
 import { uploadImage } from '../utils/api/image';
 import { ImgInfo } from '../types/Datas';
