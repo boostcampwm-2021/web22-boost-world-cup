@@ -8,6 +8,7 @@ router.get('/:id', controller.one);
 router.post('/', controller.save);
 router.delete('/:id', controller.remove);
 router.patch('/:id/title', controller.patchTitle);
+router.patch('/:id/desc', controller.patchDesc);
 router.get('/:id/candidates', controller.getCandidates);
 
 export default router;
