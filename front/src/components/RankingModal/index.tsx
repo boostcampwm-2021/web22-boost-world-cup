@@ -3,9 +3,21 @@ import styled from 'styled-components';
 import { FaRegWindowClose } from 'react-icons/fa';
 
 interface ModalProps {
-  handleClick: () => void;
+  info: InfoType;
+  handleClick: (event: React.MouseEvent<Element>) => void;
 }
-function RankingModal({ handleClick }: ModalProps): JSX.Element {
+interface InfoType {
+  total: number;
+  male: number;
+  female: number;
+  teens: number;
+  twenties: number;
+  thirties: number;
+  forties: number;
+  etc: number;
+}
+function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
+  console.log(info);
   const data = [200, 150, 50, 30, 40, 50, 30, 50];
   const ageRatio = data.slice(3).map((value) => value / data[0]);
   const genderRatio = data.slice(1, 3).map((value) => value / data[0]);

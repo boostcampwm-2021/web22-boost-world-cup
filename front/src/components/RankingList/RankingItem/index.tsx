@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 interface ItemProps {
@@ -8,24 +8,13 @@ interface ItemProps {
   winCnt: number;
   showCnt: number;
   victoryCnt: number;
-  info: InfoType;
-  handleClick: () => void;
-}
-interface InfoType {
-  total: number;
-  male: number;
-  female: number;
-  teens: number;
-  twenties: number;
-  thirties: number;
-  forties: number;
-  etc: number;
+  handleClick: (event: React.MouseEvent<Element>) => void;
 }
 interface RatioProp {
   width: number;
 }
 
-function RankingItem({ id, url, name, winCnt, showCnt, victoryCnt, info, handleClick }: ItemProps): JSX.Element {
+function RankingItem({ id, url, name, winCnt, showCnt, victoryCnt, handleClick }: ItemProps): JSX.Element {
   return (
     <Section>
       <LeftSection onClick={handleClick}>

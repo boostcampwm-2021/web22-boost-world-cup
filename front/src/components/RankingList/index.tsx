@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { TabBar, SearchBar, RankingModal } from '../../components';
@@ -27,8 +27,11 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [data, setData] = useState<RankingData[]>([]);
   const [info, setInfo] = useState<InfoType[]>([]);
-  const handleClick = () => {
+  const candidateRef = useRef<number | null>(null);
+  const handleClick = (event: React.MouseEvent<Element>) => {
     setIsOpenModal(!isOpenModal);
+    const candidateName = event.currentTarget.children[2].innerHTML;
+    candidateRef.current = data.findIndex((v) => v.candidate_name === candidateName);
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -102,7 +105,6 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
                 winCnt={v.candidate_win_cnt}
                 showCnt={v.candidate_show_cnt}
                 victoryCnt={v.candidate_victory_cnt}
-                info={info[index]}
                 handleClick={handleClick}
               />
               {index + 1 < data.length ? <Divider /> : ''}
@@ -110,7 +112,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
           );
         })}
       </RankingItems>
-      {isOpenModal ? <RankingModal handleClick={handleClick} /> : ''}
+      {isOpenModal ? <RankingModal handleClick={handleClick} info={info[candidateRef.current as number]} /> : ''}
     </>
   );
 }
