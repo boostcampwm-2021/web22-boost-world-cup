@@ -21,8 +21,8 @@ const authController = {
   info: async (request: Request, response: Response, next: NextFunction) => {
     let data = {};
     if (request.user) {
-      const { nickname, gender, age } = request.user;
-      data = { nickname, gender, age };
+      const { id, nickname, gender, age } = request.user;
+      data = { id, nickname, gender, age };
     }
     response.json({
       result: 'success',
@@ -49,6 +49,19 @@ const authController = {
   },
   logout: async (request: Request, response: Response, next: NextFunction) => {
     try {
+      request.session.destroy(() => {});
+      response.clearCookie('sid');
+      response.json({
+        result: 'success',
+        message: null,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+  leave: async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      await authService.removeUser(request.params.id);
       request.session.destroy(() => {});
       response.clearCookie('sid');
       response.json({

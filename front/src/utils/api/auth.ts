@@ -33,3 +33,8 @@ export const logout = async (): Promise<ServerResponse> => {
   const response = await axios.get('/api/auth/logout');
   return response.data;
 };
+
+export const deleteUser = async (userId: number | undefined) => {
+  const response = await axios.delete(`/api/auth/user/${userId}`);
+  return response.data;
+};

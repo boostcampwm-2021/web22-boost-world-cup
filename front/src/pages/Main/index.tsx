@@ -1,14 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
-import { loginState } from '../../recoil/atom';
-import { getUser } from '../../utils/api/auth';
 import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
 import WorldCupList from '../../components/WorldcupList';
 
 function Main(): JSX.Element {
-  const setIsLoggedIn = useSetRecoilState(loginState);
   const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
@@ -26,12 +22,6 @@ function Main(): JSX.Element {
     setOffset(0);
     setSelectedTag(keyword);
   };
-  const getUserInfo = async () => {
-    const user = await getUser();
-    if (Object.keys(user).length !== 0) {
-      setIsLoggedIn(true);
-    }
-  };
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
@@ -41,9 +31,7 @@ function Main(): JSX.Element {
       document.body.removeChild(script);
     };
   }, []);
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+
   return (
     <Wrapper>
       <Header type="searchHeader" onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
