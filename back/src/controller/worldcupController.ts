@@ -23,7 +23,13 @@ const worldcupController = {
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
-    const worldcup = await worldcupService.findById(request.params.id);
+    const { metaonly } = request.query;
+    const { id } = request.params;
+    if (metaonly) {
+      const metadata = await worldcupService.getMetaData(Number(id));
+      return response.json(metadata);
+    }
+    const worldcup = await worldcupService.findById(id);
     response.json(worldcup);
   },
 
