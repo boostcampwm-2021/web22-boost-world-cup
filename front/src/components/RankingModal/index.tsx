@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { FaRegWindowClose } from 'react-icons/fa';
 
 function RankingModal(): JSX.Element {
   const data = [200, 150, 50, 30, 40, 50, 30, 50];
   const ageAcc = data.slice(3).map((value) => value / data[0]);
   const svgRef = useRef<SVGSVGElement>(null);
-  const color = ['#AED6F1 ', '#5DADE2', '#2E86C1', '#21618C', '#212F3C'];
+  const color = ['#ff0000 ', '#fbb034', '#ffdd00', '#c1d82f', '#00a4e4', '#8a7967', '#6a737b'];
   const getCoordCircle = (percent: number) => {
     const x = Math.cos(2 * Math.PI * percent);
     const y = Math.sin(2 * Math.PI * percent);
@@ -45,40 +46,72 @@ function RankingModal(): JSX.Element {
   }, []);
   return (
     <Modal>
-      <Doughnut>
-        <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />
-        <DoughnutLabel>
-          {ageAcc.map((value, index) => {
-            return (
-              <DescRow color={color[index]}>
-                <div />
-                <span>{(index + 1) * 10}대</span>
-                <span>{(value * 100).toFixed(0)}%</span>
-              </DescRow>
-            );
-          })}
-        </DoughnutLabel>
-      </Doughnut>
-      <Line />
+      <Header>
+        <span>이름</span>
+        <FaRegWindowClose />
+      </Header>
+      <Content>
+        <Doughnut>
+          <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />
+          <DoughnutLabel>
+            {ageAcc.map((value, index) => {
+              return (
+                <DescRow color={color[index]}>
+                  <div />
+                  <span>{(index + 1) * 10}대</span>
+                  <span>{(value * 100).toFixed(0)}%</span>
+                </DescRow>
+              );
+            })}
+          </DoughnutLabel>
+        </Doughnut>
+        <Bar>
+          <svg width="100%" height="65px">
+            <g className="bars">
+              <rect fill="#3d5599" width="100%" height="25" />
+              <rect fill="#cb4d3e" width="45%" height="25" />
+            </g>
+          </svg>
+        </Bar>
+      </Content>
     </Modal>
   );
 }
 const Modal = styled.div`
   position: absolute;
-  top: 10em;
-  left: 20vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  width: 800px;
+  height: 400px;
   display: flex;
-  width: 50vw;
-  height: 30vh;
+  flex-direction: column;
+  border-radius: 12px;
+  padding-bottom: 2em;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-  border-radius: 12px;
+`;
+const Header = styled.header`
+  width: 100%;
+  height: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px 30px 40px;
+  border-bottom: 1px solid gray;
+  span {
+    font-weight: bold;
+  }
+`;
+const Content = styled.section`
+  height: 100%;
+  display: flex;
 `;
 const Doughnut = styled.section`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: 100%;
+  height: 90%;
   width: 50%;
 `;
 const Svg = styled.svg`
@@ -96,14 +129,14 @@ const DoughnutLabel = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 40%;
-  height: 100%;
+  width: 60%;
+  height: 40%;
 `;
 const DescRow = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  margin: 0.6em;
+  margin: 0.2em;
   div {
     margin-right: -1em;
     background-color: ${(props) => props.color};
@@ -112,5 +145,5 @@ const DescRow = styled.div`
     border-radius: 50px;
   }
 `;
-const Line = styled.section``;
+const Bar = styled.section``;
 export default RankingModal;
