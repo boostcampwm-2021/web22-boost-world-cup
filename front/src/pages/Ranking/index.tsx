@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { Header, RankingList } from '../../components';
 
-function Ranking(): JSX.Element {
+interface Props {
+  location: any;
+}
+function Ranking({ location }: Props): JSX.Element {
+  const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
   return (
     <>
       <Header type="header" />
       <RankingContent>
-        <RankingList />
+        <RankingList worldcupId={worldcupId} />
       </RankingContent>
     </>
   );

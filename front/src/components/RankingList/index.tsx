@@ -4,7 +4,10 @@ import RankingItem from './RankingItem';
 import { TabBar, SearchBar, RankingModal } from '../../components';
 import { useTabBar } from '../../hooks';
 
-function RankingList(): JSX.Element {
+interface RankingProps {
+  worldcupId: string;
+}
+function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const tabTitle = ['연령별', '성별'];
   const [currentTab, onTabChange] = useTabBar();
   const [inputWord, setInputWord] = useState('');
