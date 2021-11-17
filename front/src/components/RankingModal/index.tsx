@@ -69,8 +69,8 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
               return (
                 <DoughnutDesc color={color[index]}>
                   <div />
-                  <span>{(index + 1) * 10}대</span>
-                  <span>{(value * 100).toFixed(0)}%</span>
+                  <span>{index < 4 ? `${(index + 1) * 10}대` : `기타`}</span>
+                  <p>{(value * 100).toFixed(0)}%</p>
                 </DoughnutDesc>
               );
             })}
@@ -94,12 +94,12 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
             <BarDesc color={color[5]}>
               <div />
               <span>Male</span>
-              <span>{(genderRatio[0] * 100).toFixed(0)}%</span>
+              <p>{(genderRatio[0] * 100).toFixed(0)}%</p>
             </BarDesc>
             <BarDesc color={color[6]}>
               <div />
               <span>Female</span>
-              <span>{(genderRatio[1] * 100).toFixed(0)}%</span>
+              <p>{(genderRatio[1] * 100).toFixed(0)}%</p>
             </BarDesc>
           </BarLabel>
         </Bar>
@@ -161,6 +161,9 @@ const DoughnutLabel = styled.div`
   justify-content: center;
   width: 60%;
   height: 40%;
+  span {
+    font-weight: bold;
+  }
 `;
 const DoughnutDesc = styled.div`
   display: flex;
@@ -194,6 +197,9 @@ const BarLabel = styled.div`
   display: flex;
   width: 90%;
   justify-content: space-between;
+  span {
+    font-weight: bold;
+  }
 `;
 const BarDesc = styled.div`
   display: flex;
