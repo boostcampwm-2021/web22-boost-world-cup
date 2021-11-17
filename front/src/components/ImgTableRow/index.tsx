@@ -18,7 +18,10 @@ interface Props {
 function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   const [willUploadFile, setWillUploadFile] = useState<File | null>(null);
   const [presignedURL, setPresignedURL] = useState<string | null>(null);
-  const [deleteCandidateResult, deleteCandidateDispatcher] = useApiRequest(deleteCandidate);
+
+  const onDeleteCandidateSuccess = () => imgInfosDispatcher({ type: 'DELETE_IMG', payload: imgInfo.key });
+  const deleteCandidateDispatcher = useApiRequest(deleteCandidate, onDeleteCandidateSuccess);
+
   const [patchCandidateResult, patchCandidateDispatcher] = useApiRequest(patchCandidate);
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
 
@@ -37,24 +40,6 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
     getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
     setWillUploadFile(file);
   };
-
-  useEffect(() => {
-    const { type } = deleteCandidateResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        imgInfosDispatcher({ type: 'DELETE_IMG', payload: imgInfo.key });
-        return;
-      }
-      case FAILURE: {
-        return;
-      }
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [deleteCandidateResult]);
 
   useEffect(() => {
     const { type } = getSignedURLsResult;
