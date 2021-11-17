@@ -35,7 +35,7 @@ const useApiRequest = <T>(
   apiRequest: (...args: any) => Promise<AxiosResponse<T>>,
   onSuccess?: (data: T) => void,
   onFailure?: (status: number) => void,
-) => {
+): React.Dispatch<RequestState<T>> => {
   const [requestState, requestDispatcher] = useReducer<RequestReducer<T>>(requestReducer, { type: NULL });
 
   useEffect(() => {
