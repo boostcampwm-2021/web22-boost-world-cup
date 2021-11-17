@@ -1,4 +1,5 @@
 import * as worldcupService from '../services/worldcupService';
+import { getCandidates } from '../services/candidateService';
 import { NextFunction, Request, Response } from 'express';
 
 const worldcupController = {
@@ -45,6 +46,13 @@ const worldcupController = {
     const { desc } = request.body;
     const { id } = request.params;
     return worldcupService.patchWorldcupDesc(Number(id), desc);
+  },
+
+  getCandidates: async (request: Request, response: Response, next: NextFunction) => {
+    const { offset, limit } = request.query;
+    const { id } = request.params;
+    const candidates = await getCandidates(Number(id), Number(offset), Number(limit));
+    response.json(candidates);
   },
 };
 
