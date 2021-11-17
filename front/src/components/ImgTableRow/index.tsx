@@ -22,8 +22,8 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   const onDeleteCandidateSuccess = () => imgInfosDispatcher({ type: 'DELETE_IMG', payload: imgInfo.key });
   const deleteCandidateDispatcher = useApiRequest(deleteCandidate, onDeleteCandidateSuccess);
 
-  const [patchCandidateResult, patchCandidateDispatcher] = useApiRequest(patchCandidate);
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
+  const patchCandidateDispatcher = useApiRequest(patchCandidate);
 
   const onDeleteImg = () => {
     deleteCandidateDispatcher({ type: REQUEST, requestProps: [imgInfo.key] });
