@@ -7,5 +7,3 @@ export const uploadImage = (presignedURL: string, file: ArrayBuffer, type: strin
   axios.put(presignedURL, file, {
     headers: { 'Content-Type': type, 'x-amz-acl': 'public-read' },
   });
-
-export const deleteImage = (key: string): Promise<AxiosResponse> => axios.delete(`/api/candidates/${key}`);

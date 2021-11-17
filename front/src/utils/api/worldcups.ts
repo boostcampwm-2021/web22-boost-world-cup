@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { Axios, AxiosResponse } from 'axios';
 import { ImgInfo } from '../../types/Datas';
 
 interface pagingQueryType {
@@ -39,3 +39,15 @@ export const createWorldcup = (
   keywords: string[],
   imgInfos: ImgInfo[],
 ): Promise<AxiosResponse> => axios.post('/api/worldcups', { title, desc, keywords, imgInfos });
+
+export const getWorldcupMetadata = (id: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/${id}?metaonly=true`);
+
+export const getWorldcupCandidates = (worldcupId: number, offset: number, limit: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/${worldcupId}/candidates?offset=${offset}&limit=${limit}`);
+
+export const patchWorldcupTitle = (worldcupId: number, title: string): Promise<AxiosResponse> =>
+  axios.patch(`/api/worldcups/${worldcupId}/title`, { title });
+
+export const patchWorldcupDesc = (worldcupId: number, desc: string): Promise<AxiosResponse> =>
+  axios.patch(`/api/worldcups/${worldcupId}/desc`, { desc });

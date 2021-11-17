@@ -2,36 +2,42 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { useUploadState } from '../../hooks';
-import { WorldcupState } from '../../hooks/useWorldcupForm';
 import { getSignedURLs } from '../../utils/api/image';
 import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
 import { ImgsAction } from '../../hooks/useImgInfos';
+import { WorldcupState } from '../../hooks/useWorldcupForm';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
 
 interface Props {
-  previewStartIdx: number;
   imgInfos: ImgInfo[];
-  onTitleChange: React.ChangeEventHandler<HTMLInputElement>;
-  onDescChange: React.ChangeEventHandler<HTMLInputElement>;
+  worldcupFormState: WorldcupState;
   onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
   imgInfosDispatcher: React.Dispatch<ImgsAction>;
+  getSignedURLsSuccessEffect: (newImgInfos: ImgInfo[]) => void;
+  onTitleChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onDescChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onTitleBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onDescBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 function MakeWorldcupForm({
-  previewStartIdx,
   imgInfos,
+  worldcupFormState,
   onTitleChange,
   onDescChange,
   onKeywordsChange,
   imgInfosDispatcher,
+  getSignedURLsSuccessEffect,
+  onTitleBlur,
+  onDescBlur,
 }: Props): JSX.Element {
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
   const [uploadState, uploadStateDispatcher] = useUploadState();
   const { willUploadFiles } = uploadState;
-  const previews = imgInfos.slice(previewStartIdx);
+  const { title, desc } = worldcupFormState;
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
     const { files } = target;
@@ -62,7 +68,7 @@ function MakeWorldcupForm({
           type: 'ADD_PRESIGNED_URL',
           payload: presignedDatas.map((data: PreSignedData) => data.presignedURL),
         });
-        imgInfosDispatcher({ type: 'ADD_IMGS', payload: newImgInfos });
+        if (getSignedURLsSuccessEffect) getSignedURLsSuccessEffect(newImgInfos);
         return;
       }
       case FAILURE: {
@@ -85,6 +91,8 @@ function MakeWorldcupForm({
             onChange={onTitleChange}
             width="1236px"
             placeholder="이상형월드컵의 제목을 입력하세요. ex) 여자 아이돌 이상형 월드컵, 남자 연예인 이상형월드컵"
+            defaultValue={title}
+            onBlur={onTitleBlur}
           />
         </HorizontalWrapper>
         <HorizontalWrapper>
@@ -94,6 +102,8 @@ function MakeWorldcupForm({
             onChange={onDescChange}
             width="1236px"
             placeholder="설명, 하고싶은 말 등을 자유롭게 입력하세요."
+            defaultValue={desc}
+            onBlur={onDescBlur}
           />
         </HorizontalWrapper>
         <HorizontalWrapper>
@@ -108,9 +118,9 @@ function MakeWorldcupForm({
       </InputsWrapper>
       <VerticalWrapper>
         <Label>이상형 월드컵 이미지 업로드</Label>
-        {previews.length ? (
+        {imgInfos.length ? (
           <ImgPreViewList
-            imgInfos={previews}
+            imgInfos={imgInfos}
             uploadState={uploadState}
             onAddImgs={onAddImgs}
             imgInfosDispatcher={imgInfosDispatcher}
