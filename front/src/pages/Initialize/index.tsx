@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { loginState } from '../../recoil/atom';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
@@ -10,14 +10,13 @@ import { getWorldcupById } from '../../utils/api/worldcups';
 import { getCandidatesList } from '../../utils/api/game';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import { objectEncryption } from '../../utils/crypto';
-import { getUser } from '../../utils/api/auth';
 
 interface Props {
   location: Location;
 }
 
 function Initialize({ location }: Props): JSX.Element {
-  const setIsLoggedIn = useSetRecoilState(loginState);
+  const isLoggedIn = useRecoilValue(loginState);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [ready, setReady] = useState(false);
@@ -43,17 +42,6 @@ function Initialize({ location }: Props): JSX.Element {
     }
     setPossibleRound([...possibleRound, ...tempRoundList]);
   }, [candidatesSize]);
-
-  const getUserInfo = async () => {
-    const user = await getUser();
-    if (Object.keys(user).length === 0) {
-      setIsLoggedIn(false);
-      return false;
-    }
-    setIsLoggedIn(true);
-    return true;
-  };
-  const isLoggedIn = useMemo(() => getUserInfo(), []);
 
   useEffect(() => {
     fetchWorldAndSetState();
@@ -94,6 +82,7 @@ function Initialize({ location }: Props): JSX.Element {
   };
 
   if (!isLoggedIn) {
+    console.log('here');
     return <Redirect to="/login" />;
   }
 
