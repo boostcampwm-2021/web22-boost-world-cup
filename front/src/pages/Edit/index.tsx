@@ -44,7 +44,7 @@ function Edit(): JSX.Element {
   const getCandidatesDispatcher = useApiRequest<Candidate[]>(getWorldcupCandidates, onGetCandidatesSuccess);
 
   const patchTitleDispatcher = useApiRequest(patchWorldcupTitle);
-  const [patchDescResult, patchDescDispatcher] = useApiRequest(patchWorldcupDesc);
+  const patchDescDispatcher = useApiRequest(patchWorldcupDesc);
   const [createCandidatesResult, createCandidatesDispatcher] = useApiRequest(createCandidates);
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
   const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
