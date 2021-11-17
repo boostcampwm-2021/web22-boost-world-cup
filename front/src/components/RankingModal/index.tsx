@@ -1,21 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { FaRegWindowClose } from 'react-icons/fa';
+import { InfoType } from '../../types/Datas';
 
 interface ModalProps {
   info: InfoType;
   handleClick: (event: React.MouseEvent<Element>) => void;
-}
-interface InfoType {
-  name: string;
-  total: number;
-  male: number;
-  female: number;
-  teens: number;
-  twenties: number;
-  thirties: number;
-  forties: number;
-  etc: number;
 }
 function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
   const ageRatio = [

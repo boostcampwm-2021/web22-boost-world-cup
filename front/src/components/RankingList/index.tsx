@@ -4,22 +4,12 @@ import RankingItem from './RankingItem';
 import { TabBar, SearchBar, RankingModal } from '../../components';
 import { getCandidateList } from '../../utils/api/ranking';
 import { useTabBar } from '../../hooks';
-import { RankingData } from '../../types/Datas';
+import { RankingData, InfoType } from '../../types/Datas';
 
 interface RankingProps {
   worldcupId: string;
 }
-interface InfoType {
-  name: string;
-  total: number;
-  male: number;
-  female: number;
-  teens: number;
-  twenties: number;
-  thirties: number;
-  forties: number;
-  etc: number;
-}
+
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const tabTitle = ['연령별', '성별'];
   const [currentTab, onTabChange] = useTabBar();

@@ -55,6 +55,17 @@ export interface RankingData {
   info_etc: number;
   info_candidate_id: number;
 }
+export interface InfoType {
+  name: string;
+  total: number;
+  male: number;
+  female: number;
+  teens: number;
+  twenties: number;
+  thirties: number;
+  forties: number;
+  etc: number;
+}
 export interface ErrorResponseData {
   result: 'fail';
   message: string;
