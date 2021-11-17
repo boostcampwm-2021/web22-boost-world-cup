@@ -78,3 +78,13 @@ export const getCandidates = async (worldcupId: number, offset: number, limit: n
     .limit(limit)
     .execute();
 };
+
+export const getTotalCount = (worldcupId: number) => {
+  const candidateRepository = getRepository(Candidate);
+  return candidateRepository
+    .createQueryBuilder('candidate')
+    .select(['candidate.id AS id', 'candidate.name AS name', 'candidate.url AS url'])
+    .leftJoin('candidate.worldcup', 'worldcup')
+    .where('worldcup.id = :id', { id: worldcupId })
+    .getCount();
+};
