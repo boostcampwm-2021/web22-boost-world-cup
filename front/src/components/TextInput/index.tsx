@@ -20,18 +20,28 @@ function TextInput({ name, width, defaultValue, ...props }: Props): JSX.Element 
     if (!defaultValue || !input) return;
     input.value = String(defaultValue);
   }, [defaultValue]);
-  return <Input ref={inputRef} style={{ width }} name={name} {...props} autoComplete="off" />;
+  return (
+    <Input
+      ref={inputRef}
+      style={{ width }}
+      name={name}
+      {...props}
+      autoComplete="off"
+      placeholder="검색어를 입력하세요"
+    />
+  );
 }
 
 const Input = styled.input`
-  padding: 10px 20px;
-  border-radius: 15px;
-  height: 60px;
+  height: 40px;
+  border-radius: 10px;
+  transition: border-color 0.3s;
+  padding: 10px 50px 10px 10px;
+  font: ${({ theme }) => theme.fontStyle.body};
+  font-size: 15px;
   color: ${({ theme }) => theme.color.black};
   background-color: ${({ theme }) => theme.color.white};
   border: 1px solid ${({ theme }) => theme.color.black};
-  ${({ theme }) => theme.fontStyle.h3};
-  transition: border-color 0.3s;
   &::placeholder {
     color: ${({ theme }) => theme.color.gray[1]};
   }

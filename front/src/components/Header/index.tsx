@@ -18,6 +18,7 @@ interface searchHeaderProps {
   searchWord: string;
 }
 type Props = headerProps | searchHeaderProps;
+
 function Header(props: Props): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
   const [modal, setModal] = useState(false);
@@ -42,52 +43,50 @@ function Header(props: Props): JSX.Element {
           ) : (
             ''
           )}
-          <LoginWrapper>
+          <>
             {isLoggedIn ? (
               <UserIcon onClick={toggleModal} />
             ) : (
-              <Login>
-                <Link to="/login">로그인</Link>
-              </Login>
+              <Link to="/login">
+                <Login>로그인</Login>
+              </Link>
             )}
-          </LoginWrapper>
+          </>
           {modal && <HeaderModal open={modal} setModal={setModal} />}
         </RightHeader>
       </MainHeader>
     </>
   );
 }
+
+const Login = styled.span`
+  cursor: pointer;
+  font: ${({ theme }) => theme.fontStyle.h3Bold};
+`;
+
 const MainHeader = styled.header`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
   height: 100px;
-  padding: 2rem 5rem;
+  padding: 2rem 2rem;
+  align-items: center;
+  justify-content: space-between;
   background-color: ${({ theme }) => theme.color.primary};
 `;
 const Logo = styled.span`
-  font-size: 3rem;
-  font-family: Rancho;
-  color: #b89068;
   cursor: pointer;
+  font-size: 40px;
+  font-family: Rancho;
+  color: ${({ theme }) => theme.color.logo};
 `;
 const RightHeader = styled.span`
-  width: 50%;
-  height: 5em;
   display: flex;
-  justify-content: flex-end;
+  width: 400px;
+  height: 70px;
   align-items: center;
+  justify-content: flex-end;
 `;
-const LoginWrapper = styled.div`
-  width: 10em;
-  text-align: center;
-  line-height: 1;
-`;
-const Login = styled.span`
-  font: ${({ theme }) => theme.fontStyle.h2Bold};
-  cursor: pointer;
-`;
+
 const UserIcon = styled(FaUserAlt)`
   width: 2em;
   height: 2em;
