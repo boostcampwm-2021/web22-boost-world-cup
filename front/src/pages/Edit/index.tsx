@@ -10,7 +10,7 @@ import {
   patchWorldcupDesc,
 } from '../../utils/api/worldcups';
 import { createCandidates } from '../../utils/api/candidate';
-import { ImgInfo, WorldcupMetaData } from '../../types/Datas';
+import { ImgInfo, WorldcupMetaData, Candidate } from '../../types/Datas';
 
 function Edit(): JSX.Element {
   const PAGINATION_LIMIT = 8;
@@ -28,7 +28,20 @@ function Edit(): JSX.Element {
     setTotalCnt(totalCnt);
   };
   const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(getWorldcupMetadata, onGetMetadataSuccess);
-  const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
+
+  const onGetCandidatesSuccess = (candidates: Candidate[]) => {
+    const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.png).webp/;
+    const newCandidates: ImgInfo[] = candidates.map(
+      (info: any): ImgInfo => ({
+        name: info.name,
+        id: info.id,
+        key: info.url.match(keyReg).groups.key,
+        isUploaded: true,
+      }),
+    );
+    candidatesDispatcher({ type: 'SET_IMGS', payload: newCandidates });
+  };
+  const getCandidatesDispatcher = useApiRequest<Candidate[]>(getWorldcupCandidates, onGetCandidatesSuccess);
   const [patchTitleResult, patchTitleDispatcher] = useApiRequest(patchWorldcupTitle);
   const [patchDescResult, patchDescDispatcher] = useApiRequest(patchWorldcupDesc);
   const [createCandidatesResult, createCandidatesDispatcher] = useApiRequest(createCandidates);
@@ -77,33 +90,6 @@ function Edit(): JSX.Element {
         throw new Error('Unexpected request type');
     }
   }, [createCandidatesResult]);
-
-  useEffect(() => {
-    const { type } = getCandidatesResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        const { data } = getCandidatesResult;
-        const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.png).webp/;
-        const candidates = data.map(
-          (info: any): ImgInfo => ({
-            name: info.name,
-            id: info.id,
-            key: info.url.match(keyReg).groups.key,
-            isUploaded: true,
-          }),
-        );
-        candidatesDispatcher({ type: 'SET_IMGS', payload: candidates });
-        return;
-      }
-      case FAILURE:
-        return;
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [getCandidatesResult]);
 
   return (
     <>

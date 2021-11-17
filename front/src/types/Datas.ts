@@ -45,3 +45,9 @@ export interface WorldcupMetaData {
   title: string;
   description: string;
 }
+
+export interface Candidate {
+  url: string;
+  name: string;
+  id: number;
+}
