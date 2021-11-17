@@ -17,12 +17,11 @@ interface InfoType {
   etc: number;
 }
 function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
-  console.log(info);
   const data = [200, 150, 50, 30, 40, 50, 30, 50];
   const ageRatio = data.slice(3).map((value) => value / data[0]);
   const genderRatio = data.slice(1, 3).map((value) => value / data[0]);
   const svgRef = useRef<SVGSVGElement>(null);
-  const color = ['#ff0000 ', '#fbb034', '#ffdd00', '#c1d82f', '#00a4e4', '#8a7967', '#6a737b'];
+  const color = ['#050f2c ', '#004b79', '#0091cd', '#56a0d3', '#c4dff6', '#84bd00', '#efdf00'];
   const getCoordCircle = (percent: number) => {
     const x = Math.cos(2 * Math.PI * percent);
     const y = Math.sin(2 * Math.PI * percent);
