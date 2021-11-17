@@ -1,13 +1,20 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 import { GoMarkGithub } from 'react-icons/go';
 import { SiKakaotalk } from 'react-icons/si';
 import { FcGoogle } from 'react-icons/fc';
+import { loginState } from '../../recoil/atom';
 import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 
 function Login(): JSX.Element {
-  return (
+  const isLoggedIn = useRecoilValue(loginState);
+
+  return isLoggedIn ? (
+    <Redirect to="/main" />
+  ) : (
     <Container>
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
