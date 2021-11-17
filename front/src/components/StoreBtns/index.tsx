@@ -13,7 +13,8 @@ interface Props {
 }
 
 function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
-  const [createWorldcupResult, createWorldcupDispatcher] = useApiRequest(createWorldcup);
+  const onCreateWorldcupSuccess = () => history.push(MAIN);
+  const createWorldcupDispatcher = useApiRequest(createWorldcup, onCreateWorldcupSuccess);
   const history = useHistory();
 
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
@@ -21,25 +22,6 @@ function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
     const { title, desc, keywords } = worldcupFormState;
     createWorldcupDispatcher({ type: REQUEST, requestProps: [title, desc, keywords, imgInfos] });
   };
-
-  useEffect(() => {
-    const { type } = createWorldcupResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        history.push(MAIN);
-        return;
-      }
-      case FAILURE: {
-        return;
-      }
-      default: {
-        throw new Error('Unexpected request type');
-      }
-    }
-  }, [createWorldcupResult]);
 
   return (
     <BtnsWrapper>
