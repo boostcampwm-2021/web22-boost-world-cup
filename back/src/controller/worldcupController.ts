@@ -40,6 +40,12 @@ const worldcupController = {
     const { id } = request.params;
     return worldcupService.patchWorldcupTitle(Number(id), title);
   },
+
+  patchDesc: (request: Request, response: Response, next: NextFunction) => {
+    const { desc } = request.body;
+    const { id } = request.params;
+    return worldcupService.patchWorldcupDesc(Number(id), desc);
+  },
 };
 
 export default worldcupController;
