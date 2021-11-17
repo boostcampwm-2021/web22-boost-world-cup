@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Header, RankingList } from '../../components';
 
 interface Props {
-  location: any;
+  location: Location;
 }
 function Ranking({ location }: Props): JSX.Element {
   const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);

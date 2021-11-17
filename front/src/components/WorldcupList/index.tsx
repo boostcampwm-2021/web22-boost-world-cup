@@ -5,10 +5,6 @@ import MyWorldCupItem from './MyWorldCupItem';
 import Loader from '../Loader';
 import { getWorldcupList } from '../../utils/api/worldcups';
 
-enum filtering {
-  tag,
-  search,
-}
 interface WorldcupType {
   id: number;
   thumbnail1: string;
