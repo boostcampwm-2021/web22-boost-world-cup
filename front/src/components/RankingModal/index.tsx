@@ -2,9 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { FaRegWindowClose } from 'react-icons/fa';
 
-function RankingModal(): JSX.Element {
+interface ModalProps {
+  handleClick: () => void;
+}
+function RankingModal({ handleClick }: ModalProps): JSX.Element {
   const data = [200, 150, 50, 30, 40, 50, 30, 50];
-  const ageAcc = data.slice(3).map((value) => value / data[0]);
+  const ageRatio = data.slice(3).map((value) => value / data[0]);
+  const genderRatio = data.slice(1, 3).map((value) => value / data[0]);
   const svgRef = useRef<SVGSVGElement>(null);
   const color = ['#ff0000 ', '#fbb034', '#ffdd00', '#c1d82f', '#00a4e4', '#8a7967', '#6a737b'];
   const getCoordCircle = (percent: number) => {
@@ -14,7 +18,7 @@ function RankingModal(): JSX.Element {
   };
   useEffect(() => {
     let acc = 0;
-    ageAcc.map((value, index) => {
+    ageRatio.map((value, index) => {
       const [startX, startY] = getCoordCircle(acc);
       acc += value;
       const [endX, endY] = getCoordCircle(acc);
@@ -48,30 +52,49 @@ function RankingModal(): JSX.Element {
     <Modal>
       <Header>
         <span>이름</span>
-        <FaRegWindowClose />
+        <FaRegWindowClose onClick={handleClick} />
       </Header>
       <Content>
         <Doughnut>
           <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />
           <DoughnutLabel>
-            {ageAcc.map((value, index) => {
+            {ageRatio.map((value, index) => {
               return (
-                <DescRow color={color[index]}>
+                <DoughnutDesc color={color[index]}>
                   <div />
                   <span>{(index + 1) * 10}대</span>
                   <span>{(value * 100).toFixed(0)}%</span>
-                </DescRow>
+                </DoughnutDesc>
               );
             })}
           </DoughnutLabel>
         </Doughnut>
         <Bar>
           <svg width="100%" height="65px">
-            <g className="bars">
-              <rect fill="#3d5599" width="100%" height="25" />
-              <rect fill="#cb4d3e" width="45%" height="25" />
-            </g>
+            <defs>
+              <linearGradient id="left-to-right">
+                <stop offset="0" stopColor={color[5]}>
+                  <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
+                </stop>
+                <stop offset="0" stopColor={color[6]}>
+                  <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
+                </stop>
+              </linearGradient>
+            </defs>
+            <rect id="Rectangle" x="0" y="0" width="300" height="30" rx="8" fill="url(#left-to-right)" />
           </svg>
+          <BarLabel>
+            <BarDesc color={color[5]}>
+              <div />
+              <span>Male</span>
+              <span>{(genderRatio[0] * 100).toFixed(0)}%</span>
+            </BarDesc>
+            <BarDesc color={color[6]}>
+              <div />
+              <span>Female</span>
+              <span>{(genderRatio[1] * 100).toFixed(0)}%</span>
+            </BarDesc>
+          </BarLabel>
         </Bar>
       </Content>
     </Modal>
@@ -132,7 +155,7 @@ const DoughnutLabel = styled.div`
   width: 60%;
   height: 40%;
 `;
-const DescRow = styled.div`
+const DoughnutDesc = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -145,5 +168,38 @@ const DescRow = styled.div`
     border-radius: 50px;
   }
 `;
-const Bar = styled.section``;
+const Bar = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
+  svg {
+    cursor: pointer;
+    transition: all 300ms ease-in;
+    &:hover {
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+  }
+`;
+const BarLabel = styled.div`
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+`;
+const BarDesc = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0.2em;
+  width: 50%;
+  div {
+    margin-right: -0.4em;
+    background-color: ${(props) => props.color};
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+  }
+`;
 export default RankingModal;

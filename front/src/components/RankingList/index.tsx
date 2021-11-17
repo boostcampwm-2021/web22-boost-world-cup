@@ -9,6 +9,10 @@ function RankingList(): JSX.Element {
   const [currentTab, onTabChange] = useTabBar();
   const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const handleClick = () => {
+    setIsOpenModal(!isOpenModal);
+  };
   const data = [
     {
       id: 1,
@@ -89,13 +93,14 @@ function RankingList(): JSX.Element {
                 winCnt={v.winCnt}
                 showCnt={v.showCnt}
                 info={v.info}
+                handleClick={handleClick}
               />
               {index + 1 < data.length ? <Divider /> : ''}
             </>
           );
         })}
       </RankingItems>
-      <RankingModal />
+      {isOpenModal ? <RankingModal handleClick={handleClick} /> : ''}
     </>
   );
 }

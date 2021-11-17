@@ -8,6 +8,7 @@ interface ItemProps {
   winCnt: number;
   showCnt: number;
   info: InfoType;
+  handleClick: () => void;
 }
 interface InfoType {
   infoTotal: number;
@@ -23,10 +24,10 @@ interface RatioProp {
   width: number;
 }
 
-function RankingItem({ id, url, name, winCnt, showCnt, info }: ItemProps): JSX.Element {
+function RankingItem({ id, url, name, winCnt, showCnt, info, handleClick }: ItemProps): JSX.Element {
   return (
     <Section>
-      <LeftSection>
+      <LeftSection onClick={handleClick}>
         <span>{id}</span>
         <img src={url} alt="월드컵 후보 사진" />
         <span>{name}</span>
