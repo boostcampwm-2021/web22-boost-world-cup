@@ -1,14 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { createComment, getComments } from '../../utils/api/comment';
+import { useRecoilValue } from 'recoil';
+import { createComment } from '../../utils/api/comment';
 import { CommentData } from '../../types/Datas';
 import CommentList from '../CommentList';
+import { loginState } from '../../recoil/atom';
 
 interface Props {
   worldcupId: string;
 }
 
 function Comment({ worldcupId }: Props): JSX.Element {
+  const isLoggedIn = useRecoilValue(loginState);
   const [message, setMessage] = useState('');
   const [comments, setComments] = useState<CommentData[]>([]);
   const [offset, setOffset] = useState(0);
@@ -40,7 +43,12 @@ function Comment({ worldcupId }: Props): JSX.Element {
     <Wrapper>
       <InputContainer>
         <Text>나의 한마디</Text>
-        <CommentInput placeholder="메시지를 입력하세요." onChange={commentChangeEvent} value={message} />
+        {isLoggedIn ? (
+          <CommentInput placeholder="메시지를 입력하세요." onChange={commentChangeEvent} value={message} />
+        ) : (
+          <CommentInput placeholder="로그인이 필요합니다." onChange={commentChangeEvent} value={message} disabled />
+        )}
+
         <SubmitButton onClick={onSubmit}>확인</SubmitButton>
       </InputContainer>
       <CommentList
