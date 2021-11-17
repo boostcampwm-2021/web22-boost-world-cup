@@ -36,22 +36,15 @@ function Keywords({ onClickTag }: Props): JSX.Element {
   }, []);
 
   return (
-    <Wrapper>
-      <TagContainer {...settings}>
-        {tagList.map((tag) => (
-          <div key={tagList.indexOf(tag)} onClick={onClickKeyword} onKeyDown={onClickKeyword} aria-hidden="true">
-            <TagName selected={selectedTag === tag}>{tag}</TagName>
-          </div>
-        ))}
-      </TagContainer>
-    </Wrapper>
+    <TagContainer {...settings}>
+      {tagList.map((tag) => (
+        <div key={tagList.indexOf(tag)} onClick={onClickKeyword} onKeyDown={onClickKeyword} aria-hidden="true">
+          <TagName selected={selectedTag === tag}>{tag}</TagName>
+        </div>
+      ))}
+    </TagContainer>
   );
 }
-
-const Wrapper = styled.div`
-  border-bottom: 1px solid #f5dcd8;
-  padding-bottom: 20px;
-`;
 
 const TagContainer = styled(Slider)`
   display: flex;
