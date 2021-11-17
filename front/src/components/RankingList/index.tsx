@@ -90,9 +90,8 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
       <RankingItems>
         {data.map((v, index) => {
           return (
-            <>
+            <Wrapper key={v.candidate_id}>
               <RankingItem
-                key={v.candidate_id}
                 id={index + 1}
                 url={v.candidate_url}
                 name={v.candidate_name}
@@ -102,7 +101,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
                 handleClick={handleClick}
               />
               {index + 1 < data.length ? <Divider /> : ''}
-            </>
+            </Wrapper>
           );
         })}
       </RankingItems>
@@ -146,6 +145,14 @@ const RightCaption = styled.div`
       font-size: 0.5em;
     }
   }
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const RankingItems = styled.section`
   display: flex;
