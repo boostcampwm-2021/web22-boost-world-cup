@@ -18,6 +18,7 @@ function Keywords({ onClickTag }: Props): JSX.Element {
     draggable: false,
     speed: 300,
   };
+
   const [tagList, setTagList] = useState<Array<string>>([]);
   const [selectedTag, setSelectedTag] = useState('');
   const getTagList = async () => {
@@ -33,6 +34,7 @@ function Keywords({ onClickTag }: Props): JSX.Element {
   useEffect(() => {
     getTagList();
   }, []);
+
   return (
     <TagContainer {...settings}>
       {tagList.map((tag) => (
@@ -45,15 +47,17 @@ function Keywords({ onClickTag }: Props): JSX.Element {
 }
 const TagContainer = styled(Slider)`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   margin: auto;
   margin-top: 20px;
-  width: 80em;
-  @media(max-width: 1200px){
-    width: 90vw;
-  }
+  width: 80%;
+
   .slick-slide {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 0 1em;
     background-color: ${({ theme }) => theme.color.pink};
     white-space: noWrap;
@@ -65,12 +69,6 @@ const TagContainer = styled(Slider)`
       background-color: ${({ theme }) => theme.color.pink};
     }
   }
-  .slick-prev:before {
-    color: ${({ theme }) => theme.color.pink};
-  }
-  .slick-next:before {
-    color: ${({ theme }) => theme.color.pink};
-  }
   .slick-prev {
     left: 3% 
     z-index: 10;
@@ -79,7 +77,14 @@ const TagContainer = styled(Slider)`
     right: 3% 
     z-index: 10;
   }
+  .slick-prev:before {
+    color: ${({ theme }) => theme.color.pink};
+  }
+  .slick-next:before {
+    color: ${({ theme }) => theme.color.pink};
+  }
 `;
+
 const TagName = styled.h3<{ selected: boolean }>`
   color: ${(props) => (props.selected ? '#524847' : 'white')};
   font-weight: ${(props) => (props.selected ? 'bold' : '400')};

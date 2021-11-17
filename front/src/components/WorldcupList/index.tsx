@@ -120,14 +120,17 @@ const Container = styled.div`
     grid-template-columns: repeat(2, 2fr);
   }
 `;
+
 const MoreButton = styled.div`
   width: 100%;
   height: 5em;
   line-height: 3em;
   text-align: center;
-  margin: 2em;
+  margin-top: 2em;
+  margin-bottom: 2em;
   padding-top: 1em;
 `;
+
 const Title = styled.p`
   margin: auto;
   background-color: ${({ theme }) => theme.color.lightpink};
