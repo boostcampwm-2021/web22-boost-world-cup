@@ -10,3 +10,4 @@ export { default as MyWorldcup } from './MyWorldcup';
 export { default as Ranking } from './Ranking';
 export { default as MyInfo } from './MyInfo';
 export { default as Leave } from './Leave';
+export { default as Edit } from './Edit';

@@ -62,8 +62,8 @@ const openModal = keyframes`
 `;
 const MenuBox = styled.ul`
   position: absolute;
-  right: 40px;
-  top: 120px;
+  right: 65px;
+  top: 75px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

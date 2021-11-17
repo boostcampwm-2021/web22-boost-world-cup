@@ -1,4 +1,5 @@
 import * as express from 'express';
+// import { NextFunction, Request, Response } from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
@@ -14,13 +15,17 @@ const expressLoader = (app) => {
   app.use(session(sessionConfig));
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(express.static('public'));
+  // app.use(express.static('public'));
 
   passportInit();
 
   app.use('/api', indexRouter);
-  app.use('*', (req, res) => {
-    res.sendFile(join(__dirname, '..', '..', '/public/index.html'));
+  // app.use('*', (req, res) => {
+  //   res.sendFile(join(__dirname, '..', '..', '/public/index.html'));
+  // });
+
+  app.use((error: Error, requset: express.Request, response: express.Response, next: express.NextFunction) => {
+    response.status(500).json({ result: 'fail', message: error.message });
   });
 };
 

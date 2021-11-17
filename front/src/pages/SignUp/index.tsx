@@ -16,18 +16,6 @@ function SignUp({ location }: Props): JSX.Element {
   const [age, setAge] = useState(0);
   const [authenticated, setAuthenticated] = useState(false);
 
-  const ageSelector = useCallback((newAge: number) => {
-    setAge(newAge);
-  }, []);
-
-  const genderSelector = useCallback((newGender: number) => {
-    setGender(newGender);
-  }, []);
-
-  const changeAuthenticated = useCallback((newAuthenticated: boolean) => {
-    setAuthenticated(newAuthenticated);
-  }, []);
-
   const nicknameOnchange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
@@ -43,14 +31,14 @@ function SignUp({ location }: Props): JSX.Element {
       <Title>Welcome to world cup</Title>
       <InputContainer>
         <NameInput type="text" placeholder="닉네임" onChange={nicknameOnchange} />
-        <GenderSelector gender={gender} genderSelector={genderSelector} />
-        <AgeSelector age={age} ageSelector={ageSelector} />
+        <GenderSelector gender={gender} setGender={setGender} />
+        <AgeSelector age={age} setAge={setAge} />
         <SignupButton
           location={location}
           nickname={nickname}
           gender={gender}
           age={age}
-          changeAuthenticated={changeAuthenticated}
+          setAuthenticated={setAuthenticated}
         />
       </InputContainer>
     </Container>

@@ -12,9 +12,9 @@ interface Props {
 function SearchBar({ onSubmit, onSearchWordChange, searchWord }: Props): JSX.Element {
   return (
     <Container>
-      <TextInput name="searchWord" value={searchWord} onChange={onSearchWordChange} width="25vw" />
+      <TextInput name="searchWord" value={searchWord} onChange={onSearchWordChange} width="400px" />
       <SubmitButton onClick={onSubmit}>
-        <FaSearch size={30} />
+        <FaSearch size={24} />
       </SubmitButton>
     </Container>
   );
@@ -22,7 +22,7 @@ function SearchBar({ onSubmit, onSearchWordChange, searchWord }: Props): JSX.Ele
 
 const Container = styled.div`
   position: relative;
-  width: 25vw;
+  width: 400px;
   @media (max-width: 768px) {
     display: none;
   }

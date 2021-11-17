@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Loading from 'react-loading';
+import { BsImage } from 'react-icons/bs';
 import { ImgInfo } from '../../types/Datas';
 import { useUploadImg } from '../../hooks';
 import { ImgsAction } from '../../hooks/useImgInfos';
@@ -35,7 +36,14 @@ function ImgPreView({
     imgInfosDispatcher,
     onUploadSuccess,
   );
-  const placeholder = <Loading type="spin" color="black" />;
+  const placeholder =
+    tab === 1 ? (
+      <Loading type="spin" color="black" />
+    ) : (
+      <div>
+        <BsImage size={40} />
+      </div>
+    );
 
   useEffect(() => {
     setImgURL(initialImgURL);
@@ -65,6 +73,8 @@ const Container = styled.li<{ isLoading: boolean; tab: number }>`
   border-radius: 13px;
   border: ${({ isLoading }) => (isLoading ? `1px solid black` : `none`)};
   div {
+    width: 40px;
+    height: 40px;
     position: absolute;
     top: 50%;
     left: 50%;

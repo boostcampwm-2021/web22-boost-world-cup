@@ -4,22 +4,16 @@ import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
 import WorldCupList from '../../components/WorldcupList';
 
-enum filtering {
-  tag,
-  search,
-}
 function Main(): JSX.Element {
   const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   const [offset, setOffset] = useState(0);
-  const filterStandard = useRef<filtering>(0);
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setSearchWord(inputWord);
     setOffset(0);
     setInputWord('');
-    filterStandard.current = 1;
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputWord(event.target.value);
@@ -27,7 +21,6 @@ function Main(): JSX.Element {
   const onClickTag = (keyword: string) => {
     setOffset(0);
     setSelectedTag(keyword);
-    filterStandard.current = 0;
   };
   useEffect(() => {
     const script = document.createElement('script');

@@ -138,44 +138,102 @@ function Worldcup(): JSX.Element {
   return !gameInfo?.isCompleted ? (
     <Wrapper>
       <Header type="header" />
-      <Container>
+      <InfoContainer>
         <Title>
           {gameInfo?.title} {gameInfo?.currentRound}/{gameInfo?.round}
         </Title>
         <Round>{makeRoundText(gameInfo?.round)}</Round>
-        <ImageContainer select={pick}>
-          <img src={versusImg} alt="versus" />
-          <LeftImage
-            imageUrl={leftCandidate ? leftCandidate.url : ''}
-            select={pick}
-            onClick={imageClickHandler}
-            data-value="1"
-          />
-          <RightImage
-            imageUrl={rightCandidate ? rightCandidate.url : ''}
-            select={pick}
-            onClick={imageClickHandler}
-            data-value="2"
-          />
-        </ImageContainer>
-        <NameContainer>
-          <LeftName select={pick}>{leftCandidate ? leftCandidate.name : ''}</LeftName>
-          <RightName select={pick}>{rightCandidate ? rightCandidate.name : ''}</RightName>
-        </NameContainer>
-      </Container>
+      </InfoContainer>
+      <ImageContainer select={pick}>
+        <img src={versusImg} alt="versus" />
+        <LeftImage
+          imageUrl={leftCandidate ? leftCandidate.url : ''}
+          select={pick}
+          onClick={imageClickHandler}
+          data-value="1"
+        />
+        <RightImage
+          imageUrl={rightCandidate ? rightCandidate.url : ''}
+          select={pick}
+          onClick={imageClickHandler}
+          data-value="2"
+        />
+      </ImageContainer>
+      <NameContainer>
+        <LeftName select={pick}>{leftCandidate ? leftCandidate.name : ''}</LeftName>
+        <RightName select={pick}>{rightCandidate ? rightCandidate.name : ''}</RightName>
+      </NameContainer>
     </Wrapper>
   ) : (
     <Gameover winCandidate={gameInfo?.winCandidate} title={gameInfo?.title} worldcupId={gameInfo?.worldcupId} />
   );
 }
 
+const InfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+`;
+
+const Wrapper = styled.div`
+  height: 100vh;
+  background-color: ${({ theme }) => theme.color.lightpink};
+`;
+
+const Title = styled.div`
+  ${({ theme }) => theme.fontStyle.h2Bold};
+`;
+
+const Round = styled.div`
+  width: 100px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  ${({ theme }) => theme.fontStyle.h3Bold};
+  background-color: ${({ theme }) => theme.color.primary};
+`;
+
+const NameContainer = styled.div`
+  position: absolute;
+  width: 300px;
+  top: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  left: 50%;
+  transform: translate(-50%);
+  ${({ theme }) => theme.fontStyle.bodyBold};
+  div {
+    width: 100px;
+    height: 40px;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: ${({ theme }) => theme.color.primary};
+  }
+`;
+
+const RightName = styled.div<{ select: number }>`
+  display: ${({ select }) => (select === 1 ? 'none' : 'flex')};
+`;
+
+const LeftName = styled.div<{ select: number }>`
+  display: ${({ select }) => (select === 2 ? 'none' : 'flex')};
+`;
+
 const ImageContainer = styled.div<{ select: number }>`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 65vh;
+  height: calc(100% - 100px);
   img {
-    width: 20%;
+    width: 15%;
     position: absolute;
     transform: translate(-50%, 0);
     left: 50%;
@@ -185,6 +243,13 @@ const ImageContainer = styled.div<{ select: number }>`
 `;
 
 const selected = keyframes`
+  from {}
+  to {
+    background-size: 100% 90%;
+  }
+`;
+
+const notSelected = keyframes`
   from {
     width:100%;
   }
@@ -196,13 +261,19 @@ const selected = keyframes`
 const LeftImage = styled.div<{ imageUrl: string; select: number }>`
   width: 100%;
   background: url(${({ imageUrl }) => imageUrl});
-  background-size: 100%;
+  background-size: 100% 60%;
   background-repeat: no-repeat;
   background-position: center;
   animation: ${({ select }) =>
+    select === 1
+      ? css`
+          ${selected} 1s ease forwards;
+        `
+      : css``};
+  animation: ${({ select }) =>
     select === 2
       ? css`
-          ${selected} 1s ease-in-out forwards; ;
+          ${notSelected} 1s ease forwards;
         `
       : css``};
 `;
@@ -210,79 +281,22 @@ const LeftImage = styled.div<{ imageUrl: string; select: number }>`
 const RightImage = styled.div<{ imageUrl: string; select: number }>`
   width: 100%;
   background: url(${(props) => props.imageUrl});
-  background-size: 100%;
+  background-size: 100% 60%;
   background-repeat: no-repeat;
   background-position: center;
+  animation: ${({ select }) => (select === 2 ? css`` : css``)};
   animation: ${({ select }) =>
     select === 1
       ? css`
-          ${selected} 1s ease forwards; ;
+          ${notSelected} 1s ease forwards;
         `
       : css``};
-`;
-
-const RightName = styled.div<{ select: number }>`
-  width: 150px;
-  height: 70px;
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  ${({ theme }) => theme.fontStyle.h2Bold};
-  background-color: ${({ theme }) => theme.color.primary};
-  display: ${({ select }) => (select === 1 ? 'none' : 'flex')};
-`;
-
-const LeftName = styled.div<{ select: number }>`
-  width: 150px;
-  height: 70px;
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  ${({ theme }) => theme.fontStyle.h2Bold};
-  background-color: ${({ theme }) => theme.color.primary};
-  display: ${({ select }) => (select === 2 ? 'none' : 'flex')};
-`;
-
-const NameContainer = styled.div`
-  width: 100%;
-  align-self: center;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  ${({ theme }) => theme.fontStyle.h2Bold};
-`;
-
-const Round = styled.div`
-  width: 150px;
-  height: 70px;
-  align-self: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  ${({ theme }) => theme.fontStyle.h2Bold};
-  background-color: ${({ theme }) => theme.color.primary};
-`;
-
-const Wrapper = styled.div`
-  height: 100vh;
-  background-color: ${({ theme }) => theme.color.lightpink};
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding-top: 2%;
-`;
-
-const Title = styled.div`
-  ${({ theme }) => theme.fontStyle.h1Bold}
-  align-self:center;
-  text-align: center;
-  width: 90%;
+  animation: ${({ select }) =>
+    select === 2
+      ? css`
+          ${selected} 1s ease forwards;
+        `
+      : css``};
 `;
 
 export default Worldcup;

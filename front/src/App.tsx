@@ -41,6 +41,7 @@ function App(): JSX.Element {
           <Route path={ROUTE.RANKING} component={PAGE.Ranking} />
           <Route path={ROUTE.MYINFO} component={PAGE.MyInfo} />
           <Route path={ROUTE.LEAVE} component={PAGE.Leave} />
+          <Route path={ROUTE.EDIT} component={PAGE.Edit} />
           <Route component={PAGE.NotFound} />
         </Switch>
       </Router>
