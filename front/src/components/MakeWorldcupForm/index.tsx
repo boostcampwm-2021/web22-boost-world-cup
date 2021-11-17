@@ -34,7 +34,20 @@ function MakeWorldcupForm({
   onTitleBlur,
   onDescBlur,
 }: Props): JSX.Element {
-  const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
+  const onGetSignedURLsSuccess = (presignedDatas: PreSignedData[]) => {
+    const newImgInfos = presignedDatas.map((presignedData: PreSignedData, idx: number) => {
+      const { key } = presignedData;
+      const file = willUploadFiles[idx];
+      return { name: file.name, isUploaded: false, id: getUUID(), key };
+    });
+    uploadStateDispatcher({
+      type: 'ADD_PRESIGNED_URL',
+      payload: presignedDatas.map((data: PreSignedData) => data.presignedURL),
+    });
+    if (getSignedURLsSuccessEffect) getSignedURLsSuccessEffect(newImgInfos);
+  };
+  const getSignedURLsDispatcher = useApiRequest<PreSignedData[]>(getSignedURLs, onGetSignedURLsSuccess);
+
   const [uploadState, uploadStateDispatcher] = useUploadState();
   const { willUploadFiles } = uploadState;
   const { title, desc } = worldcupFormState;
@@ -49,36 +62,6 @@ function MakeWorldcupForm({
     getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
     uploadStateDispatcher({ type: 'ADD_FILES', payload: newFiles });
   };
-
-  useEffect(() => {
-    const { type } = getSignedURLsResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        const { data: presignedDatas } = getSignedURLsResult;
-        if (!presignedDatas) return;
-        const newImgInfos = presignedDatas.map((presignedData: PreSignedData, idx: number) => {
-          const { key } = presignedData;
-          const file = willUploadFiles[idx];
-          return { name: file.name, isUploaded: false, id: getUUID(), key };
-        });
-        uploadStateDispatcher({
-          type: 'ADD_PRESIGNED_URL',
-          payload: presignedDatas.map((data: PreSignedData) => data.presignedURL),
-        });
-        if (getSignedURLsSuccessEffect) getSignedURLsSuccessEffect(newImgInfos);
-        return;
-      }
-      case FAILURE: {
-        return;
-      }
-      default: {
-        throw new Error('Unexpected request type');
-      }
-    }
-  }, [getSignedURLsResult]);
 
   return (
     <Container onSubmit={(e) => e.preventDefault()}>
