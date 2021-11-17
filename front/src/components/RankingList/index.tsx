@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { TabBar, SearchBar, RankingModal } from '../../components';
+import { getCandidateList } from '../../utils/api/ranking';
 import { useTabBar } from '../../hooks';
+import { RankingData } from '../../types/Datas';
 
 interface RankingProps {
   worldcupId: string;
@@ -16,6 +18,9 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const handleClick = () => {
     setIsOpenModal(!isOpenModal);
   };
+  useMemo(async () => {
+    const Data = await getCandidateList(worldcupId);
+  }, []);
   const data = [
     {
       id: 1,
