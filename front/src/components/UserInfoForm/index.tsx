@@ -1,11 +1,19 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Redirect } from 'react-router';
 import AgeSelector from './AgeSelector';
 import GenderSelector from './GenderSelector';
 import SignupButton from './SingupButton';
+import UpdateButton from './UpdateButton';
+import { userState } from '../../recoil/atom';
 
-const UserInfoForm = (): JSX.Element => {
+interface Props {
+  type: 'signup' | 'profile';
+}
+
+const UserInfoForm = ({ type }: Props): JSX.Element => {
+  const userInfo = useRecoilValue<any>(userState);
   const [nickname, setNickname] = useState('');
   const [gender, setGender] = useState(0);
   const [age, setAge] = useState(0);
@@ -18,14 +26,32 @@ const UserInfoForm = (): JSX.Element => {
     setNickname(value);
   }, []);
 
+  useEffect(() => {
+    if (type === 'profile') {
+      setNickname(userInfo.nickname);
+      setGender(userInfo.gender);
+      setAge(userInfo.age);
+    }
+  }, []);
+
   return authenticated ? (
     <Redirect to="/main" />
   ) : (
     <InputContainer>
-      <NameInput type="text" placeholder="닉네임" onChange={nicknameOnchange} />
+      <NameInput type="text" value={nickname} placeholder="닉네임" onChange={nicknameOnchange} />
       <GenderSelector gender={gender} setGender={setGender} />
       <AgeSelector age={age} setAge={setAge} />
-      <SignupButton nickname={nickname} gender={gender} age={age} setAuthenticated={setAuthenticated} />
+      {type === 'signup' ? (
+        <SignupButton nickname={nickname} gender={gender} age={age} setAuthenticated={setAuthenticated} />
+      ) : (
+        <UpdateButton
+          id={userInfo.id}
+          nickname={nickname}
+          gender={gender}
+          age={age}
+          setAuthenticated={setAuthenticated}
+        />
+      )}
     </InputContainer>
   );
 };

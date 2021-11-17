@@ -8,7 +8,7 @@ function SignUp(): JSX.Element {
     <Container>
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
-      <UserInfoForm />
+      <UserInfoForm type="signup" />
     </Container>
   );
 }

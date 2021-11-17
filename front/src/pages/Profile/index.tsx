@@ -1,21 +1,14 @@
-import React, { useCallback } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React from 'react';
+import { useRecoilValue } from 'recoil';
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import logo from '../../images/logo.png';
-import { userState, loginState } from '../../recoil/atom';
-
-interface UserInfo {
-  id?: number;
-  nickname?: string;
-  gender?: number;
-  age?: number;
-}
+import { loginState } from '../../recoil/atom';
+import UserInfoForm from '../../components/UserInfoForm';
 
 const Profile = (): JSX.Element => {
   const isLoggedIn = useRecoilValue(loginState);
-  const [userInfo, setUserInfo] = useRecoilState<UserInfo>(userState);
 
   return !isLoggedIn ? (
     <Redirect to="/main" />
@@ -25,6 +18,7 @@ const Profile = (): JSX.Element => {
       <Container>
         <img src={logo} alt="logo" width="220px" height="220px" />
         <Title>내 정보 수정하기</Title>
+        <UserInfoForm type="profile" />
       </Container>
     </>
   );
