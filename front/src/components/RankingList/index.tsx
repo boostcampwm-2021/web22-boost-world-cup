@@ -10,6 +10,7 @@ interface RankingProps {
   worldcupId: string;
 }
 interface InfoType {
+  name: string;
   total: number;
   male: number;
   female: number;
@@ -30,8 +31,10 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const candidateRef = useRef<number | null>(null);
   const handleClick = (event: React.MouseEvent<Element>) => {
     setIsOpenModal(!isOpenModal);
-    const candidateName = event.currentTarget.children[2].innerHTML;
-    candidateRef.current = data.findIndex((v) => v.candidate_name === candidateName);
+    if (event.currentTarget.children[2]) {
+      const candidateName = event.currentTarget.children[2].innerHTML;
+      candidateRef.current = data.findIndex((v) => v.candidate_name === candidateName);
+    }
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +52,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
 
   const getInfoAcc = () => {
     const infoAcc = data.map((v) => ({
+      name: v.candidate_name,
       total: v.info_total,
       male: v.info_male,
       female: v.info_female,

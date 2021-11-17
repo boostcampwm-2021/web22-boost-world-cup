@@ -7,6 +7,7 @@ interface ModalProps {
   handleClick: (event: React.MouseEvent<Element>) => void;
 }
 interface InfoType {
+  name: string;
   total: number;
   male: number;
   female: number;
@@ -17,9 +18,14 @@ interface InfoType {
   etc: number;
 }
 function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
-  const data = [200, 150, 50, 30, 40, 50, 30, 50];
-  const ageRatio = data.slice(3).map((value) => value / data[0]);
-  const genderRatio = data.slice(1, 3).map((value) => value / data[0]);
+  const ageRatio = [
+    info.teens / info.total,
+    info.twenties / info.total,
+    info.thirties / info.total,
+    info.forties / info.total,
+    info.etc / info.total,
+  ];
+  const genderRatio = [info.male / info.total, info.female / info.total];
   const svgRef = useRef<SVGSVGElement>(null);
   const color = ['#050f2c ', '#004b79', '#0091cd', '#56a0d3', '#c4dff6', '#84bd00', '#efdf00'];
   const getCoordCircle = (percent: number) => {
@@ -62,7 +68,7 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
   return (
     <Modal>
       <Header>
-        <span>이름</span>
+        <span>{info.name}</span>
         <FaRegWindowClose onClick={handleClick} />
       </Header>
       <Content>
