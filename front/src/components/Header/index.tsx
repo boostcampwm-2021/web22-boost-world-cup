@@ -62,12 +62,12 @@ const MainHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 13%;
+  height: 100px;
   padding: 2rem 5rem;
   background-color: ${({ theme }) => theme.color.primary};
 `;
 const Logo = styled.span`
-  font-size: 5rem;
+  font-size: 3rem;
   font-family: Rancho;
   color: #b89068;
   cursor: pointer;
@@ -85,15 +85,16 @@ const LoginWrapper = styled.div`
   line-height: 1;
 `;
 const Login = styled.span`
-  font:  ${({ theme }) => theme.fontStyle.h2Bold}
+  font: ${({ theme }) => theme.fontStyle.h2Bold};
   cursor: pointer;
 `;
 const UserIcon = styled(FaUserAlt)`
-  width: 3em;
-  height:3em;
-  color: ${({ theme }) => theme.color.gray[0]}
+  width: 2em;
+  height: 2em;
+  color: ${({ theme }) => theme.color.black};
   cursor: pointer;
 `;
+
 const Overlay = styled.div`
   position: fixed;
   overflow-y: scroll;

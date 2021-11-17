@@ -21,6 +21,7 @@ function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
         <img src={trophyImg} alt="trophy" />
         <Title>{title || ''} 우승!</Title>
         <Winner imageUrl={winCandidate ? winCandidate.url : ''} />
+        <Name>{winCandidate?.name}</Name>
         <ButtonContainer>
           <Link to={`/ranking/${worldcupId || ''}`}>
             <Button>
@@ -40,6 +41,22 @@ function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
     </Wrapper>
   );
 }
+
+const Name = styled.div`
+  position: absolute;
+  display: flex;
+  left: 50%;
+  transform: translate(-50%);
+  top: 160px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  border-radius: 5px;
+  height: 40px;
+  background-color: ${({ theme }) => theme.color.primary};
+  ${({ theme }) => theme.fontStyle.bodyBold};
+`;
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -65,12 +82,12 @@ const Button = styled.div`
 `;
 
 const Winner = styled.div<{ imageUrl: string }>`
-  width: 500px;
+  width: 600px;
   height: 500px;
   margin-top: 50px;
   margin-bottom: 100px;
   background: url(${({ imageUrl }) => imageUrl});
-  background-size: 500px 500px;
+  background-size: 600px 500px;
   background-repeat: no-repeat;
   background-position: center;
   align-self: center;
@@ -95,7 +112,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  ${({ theme }) => theme.fontStyle.h1Bold}
+  ${({ theme }) => theme.fontStyle.h2Bold}
   align-self:center;
   text-align: center;
   width: 90%;
