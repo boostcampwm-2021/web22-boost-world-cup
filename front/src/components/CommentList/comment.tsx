@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { CommentData } from '../../types/Datas';
+import { useRecoilValue } from 'recoil';
+import { loginState, userState } from '../../recoil/atom';
+import { CommentData, UserInfo } from '../../types/Datas';
 import { deleteComment } from '../../utils/api/comment';
 
 interface Props {
@@ -9,7 +11,16 @@ interface Props {
 }
 
 function Comment({ comment, setComments }: Props): JSX.Element {
-  const tempUserId = 48;
+  const isLoggedIn = useRecoilValue(loginState);
+  const currentUserState = useRecoilValue(userState);
+
+  const getUserId = (): number => {
+    if (isLoggedIn) {
+      const { id } = currentUserState as UserInfo;
+      return id as number;
+    }
+    return -1;
+  };
 
   const getDateString = useCallback((date: string) => {
     const yymmdd = date.split('T')[0];
@@ -34,7 +45,7 @@ function Comment({ comment, setComments }: Props): JSX.Element {
       <SubContainer>
         <Writer>{comment.nickname}</Writer>
         <Date>{getDateString(comment.createdAt)}</Date>
-        {tempUserId === comment.userId ? (
+        {getUserId() === comment.userId ? (
           <DeleteButton onClick={deleteButtonClickHandler} data-value={comment.commentId}>
             삭제
           </DeleteButton>
