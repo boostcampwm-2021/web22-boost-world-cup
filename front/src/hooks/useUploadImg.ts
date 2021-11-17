@@ -9,10 +9,11 @@ const useUploadImg = (
   file: File | null,
   presignedURL: string | null,
   imgInfosDispatcher: React.Dispatch<ImgsAction>,
-  onUploadSuccess?: (imgInfo: ImgInfo) => void,
 ): [boolean, React.Dispatch<React.SetStateAction<boolean>>] => {
   const [isLoading, setIsLoading] = useState(true);
-  const [uploadImageResult, uploadImageDispatcher] = useApiRequest(uploadImage);
+
+  const onUploadImgSuccess = () => imgInfosDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: imgInfo.key });
+  const uploadImageDispatcher = useApiRequest(uploadImage, onUploadImgSuccess);
 
   useEffect(() => {
     if (!file || !presignedURL) return;
@@ -26,25 +27,6 @@ const useUploadImg = (
     setIsLoading(true);
     upload();
   }, [file, presignedURL]);
-
-  useEffect(() => {
-    const { type } = uploadImageResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        imgInfosDispatcher({ type: 'FINISH_IMG_UPLOAD', payload: imgInfo.key });
-        if (onUploadSuccess) onUploadSuccess(imgInfo);
-        return;
-      }
-      case FAILURE: {
-        return;
-      }
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [uploadImageResult]);
 
   return [isLoading, setIsLoading];
 };
