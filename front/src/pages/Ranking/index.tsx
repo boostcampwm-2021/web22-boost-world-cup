@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { Header, RankingList } from '../../components';
 
-function Ranking(): JSX.Element {
+interface Props {
+  location: Location;
+}
+
+function Ranking({ location }: Props): JSX.Element {
+  const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
+
   return (
     <>
       <Header type="header" />
@@ -22,4 +28,5 @@ const RankingContent = styled.div`
   background: rgb(245, 220, 216);
   background: linear-gradient(0deg, rgba(245, 220, 216, 1) 37%, rgba(210, 128, 120, 1) 100%);
 `;
+
 export default Ranking;
