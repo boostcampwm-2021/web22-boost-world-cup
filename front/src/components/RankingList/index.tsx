@@ -14,9 +14,9 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const tabTitle = ['연령별', '성별'];
   const [currentTab, onTabChange] = useTabBar();
   const [inputWord, setInputWord] = useState('');
-  const [searchWord, setSearchWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [data, setData] = useState<RankingData[]>([]);
+  const [renderData, setRenderData] = useState<RankingData[]>([]);
   const [info, setInfo] = useState<InfoType[]>([]);
   const candidateRef = useRef<number | null>(null);
   const handleClick = (event: React.MouseEvent<Element>) => {
@@ -30,6 +30,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     const fetchData = async () => {
       const newData = await getCandidateList(worldcupId);
       setData(newData);
+      setRenderData(newData);
     };
     fetchData();
   }, []);
@@ -38,10 +39,10 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
       const newAcc = getInfoAcc();
       setInfo(newAcc);
     }
-  }, [data]);
+  }, [renderData]);
 
   const getInfoAcc = () => {
-    const infoAcc = data.map((v) => ({
+    const infoAcc = renderData.map((v) => ({
       name: v.candidate_name,
       total: v.info_total,
       male: v.info_male,
@@ -57,7 +58,9 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    setSearchWord(inputWord);
+    const filterData = data.filter((value) => value.candidate_name.indexOf(inputWord) !== -1);
+    setRenderData([...filterData]);
+    console.log(filterData);
     setInputWord('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +91,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
         </RightCaption>
       </Caption>
       <RankingItems>
-        {data.map((v, index) => {
+        {renderData.map((v, index) => {
           return (
             <Wrapper key={v.candidate_id}>
               <RankingItem
@@ -100,7 +103,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
                 victoryCnt={v.candidate_victory_cnt}
                 handleClick={handleClick}
               />
-              {index + 1 < data.length ? <Divider /> : ''}
+              {index + 1 < renderData.length ? <Divider /> : ''}
             </Wrapper>
           );
         })}
