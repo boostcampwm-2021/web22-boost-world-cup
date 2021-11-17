@@ -43,9 +43,13 @@ function Edit(): JSX.Element {
   };
   const getCandidatesDispatcher = useApiRequest<Candidate[]>(getWorldcupCandidates, onGetCandidatesSuccess);
 
+  const onCreateCandidatesSuccess = () =>
+    getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
+  const createCandidatesDispatcher = useApiRequest(createCandidates, onCreateCandidatesSuccess);
+
   const patchTitleDispatcher = useApiRequest(patchWorldcupTitle);
   const patchDescDispatcher = useApiRequest(patchWorldcupDesc);
-  const [createCandidatesResult, createCandidatesDispatcher] = useApiRequest(createCandidates);
+
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
   const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
 
@@ -74,23 +78,6 @@ function Edit(): JSX.Element {
     candidatesDispatcher({ type: 'RESET' });
     getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
   }, [currentPage, worldcupId]);
-
-  useEffect(() => {
-    const { type } = createCandidatesResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
-        return;
-      }
-      case FAILURE:
-        return;
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [createCandidatesResult]);
 
   return (
     <>
