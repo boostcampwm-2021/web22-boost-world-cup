@@ -7,24 +7,25 @@ interface ItemProps {
   name: string;
   winCnt: number;
   showCnt: number;
+  victoryCnt: number;
   info: InfoType;
   handleClick: () => void;
 }
 interface InfoType {
-  infoTotal: number;
-  infoMale: number;
-  infoFemale: number;
-  infoTeens: number;
-  infoTwenties: number;
-  infoThirties: number;
-  infoFourties: number;
-  infoEtc: number;
+  total: number;
+  male: number;
+  female: number;
+  teens: number;
+  twenties: number;
+  thirties: number;
+  forties: number;
+  etc: number;
 }
 interface RatioProp {
   width: number;
 }
 
-function RankingItem({ id, url, name, winCnt, showCnt, info, handleClick }: ItemProps): JSX.Element {
+function RankingItem({ id, url, name, winCnt, showCnt, victoryCnt, info, handleClick }: ItemProps): JSX.Element {
   return (
     <Section>
       <LeftSection onClick={handleClick}>
@@ -35,12 +36,12 @@ function RankingItem({ id, url, name, winCnt, showCnt, info, handleClick }: Item
       </LeftSection>
       <RightSection>
         <Bar>
-          <Ratio width={winCnt / showCnt} />
-          <span>{`${((winCnt / showCnt) * 100).toFixed(2)}%`}</span>
+          <Ratio width={victoryCnt / showCnt} />
+          <span>{`${((victoryCnt / showCnt) * 100).toFixed(2)}%`}</span>
         </Bar>
         <Bar>
-          <Ratio width={winCnt / info.infoTotal} />
-          <span>{`${((winCnt / info.infoTotal) * 100).toFixed(2)}%`}</span>
+          <Ratio width={winCnt / showCnt} />
+          <span>{`${((winCnt / showCnt) * 100).toFixed(2)}%`}</span>
         </Bar>
       </RightSection>
     </Section>

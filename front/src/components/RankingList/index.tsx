@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { TabBar, SearchBar, RankingModal } from '../../components';
@@ -9,54 +9,55 @@ import { RankingData } from '../../types/Datas';
 interface RankingProps {
   worldcupId: string;
 }
+interface InfoType {
+  total: number;
+  male: number;
+  female: number;
+  teens: number;
+  twenties: number;
+  thirties: number;
+  forties: number;
+  etc: number;
+}
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const tabTitle = ['연령별', '성별'];
   const [currentTab, onTabChange] = useTabBar();
   const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [data, setData] = useState<RankingData[]>([]);
+  const [info, setInfo] = useState<InfoType[]>([]);
   const handleClick = () => {
     setIsOpenModal(!isOpenModal);
   };
-  useMemo(async () => {
-    const Data = await getCandidateList(worldcupId);
+  useEffect(() => {
+    const fetchData = async () => {
+      const newData = await getCandidateList(worldcupId);
+      setData(newData);
+    };
+    fetchData();
   }, []);
-  const data = [
-    {
-      id: 1,
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi5-XdRNNOnCbp5VlefGMkAvwJ9QB1s8s-xg&usqp=CAU',
-      name: '수지',
-      winCnt: 100,
-      showCnt: 200,
-      info: {
-        infoTotal: 234,
-        infoMale: 143,
-        infoFemale: 152,
-        infoTeens: 24,
-        infoTwenties: 24,
-        infoThirties: 24,
-        infoFourties: 24,
-        infoEtc: 24,
-      },
-    },
-    {
-      id: 2,
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgM4tBBPl27cEIk5OjmAYbF7ialtFwLej46w&usqp=CAU',
-      name: '고윤정',
-      winCnt: 123,
-      showCnt: 178,
-      info: {
-        infoTotal: 210,
-        infoMale: 87,
-        infoFemale: 23,
-        infoTeens: 43,
-        infoTwenties: 43,
-        infoThirties: 43,
-        infoFourties: 43,
-        infoEtc: 43,
-      },
-    },
-  ];
+  useEffect(() => {
+    if (data) {
+      const newAcc = getInfoAcc();
+      setInfo(newAcc);
+    }
+  }, [data]);
+
+  const getInfoAcc = () => {
+    const infoAcc = data.map((v) => ({
+      total: v.info_total,
+      male: v.info_male,
+      female: v.info_female,
+      teens: v.info_teens,
+      twenties: v.info_twenties,
+      thirties: v.info_thirties,
+      forties: v.info_forties,
+      etc: v.info_etc,
+    }));
+    return infoAcc;
+  };
+
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setSearchWord(inputWord);
@@ -94,13 +95,14 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
           return (
             <>
               <RankingItem
-                key={v.id}
+                key={v.candidate_id}
                 id={index + 1}
-                url={v.url}
-                name={v.name}
-                winCnt={v.winCnt}
-                showCnt={v.showCnt}
-                info={v.info}
+                url={v.candidate_url}
+                name={v.candidate_name}
+                winCnt={v.candidate_win_cnt}
+                showCnt={v.candidate_show_cnt}
+                victoryCnt={v.candidate_victory_cnt}
+                info={info[index]}
                 handleClick={handleClick}
               />
               {index + 1 < data.length ? <Divider /> : ''}
