@@ -63,8 +63,8 @@ const Login = styled.div`
   margin-right: 30px;
   cursor: pointer;
   font: ${({ theme }) => theme.fontStyle.body};
-  color: #bc8f8f;
-  border: 1px solid #bc8f8f;
+  color: gray;
+  border: 1px solid gray;
   background-color: transparent;
   font-size: 15px;
   width: 100px;
@@ -77,6 +77,7 @@ const Login = styled.div`
   &:hover {
     color: white;
     background-color: #bc8f8f;
+    border: none;
   }
 `;
 
