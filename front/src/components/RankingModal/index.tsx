@@ -25,22 +25,24 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
     return [x, y];
   };
   useEffect(() => {
-    let acc = 0;
-    ageRatio.map((value, index) => {
-      const [startX, startY] = getCoordCircle(acc);
-      acc += value;
-      const [endX, endY] = getCoordCircle(acc);
-      const isLargeArc = value > 0.5 ? 1 : 0;
+    if (info.total > 1) {
+      let acc = 0;
+      ageRatio.map((value, index) => {
+        const [startX, startY] = getCoordCircle(acc);
+        acc += value;
+        const [endX, endY] = getCoordCircle(acc);
+        const isLargeArc = value > 0.5 ? 1 : 0;
 
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', `M ${startX} ${startY} A 1 1 0 ${isLargeArc} 1 ${endX} ${endY}`);
-      path.setAttribute('fill', 'none');
-      path.setAttribute('stroke-width', '0.4');
-      path.setAttribute('stroke', color[index]);
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M ${startX} ${startY} A 1 1 0 ${isLargeArc} 1 ${endX} ${endY}`);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke-width', '0.4');
+        path.setAttribute('stroke', color[index]);
 
-      (svgRef.current as SVGSVGElement).appendChild(path);
-      return path;
-    });
+        (svgRef.current as SVGSVGElement).appendChild(path);
+        return path;
+      });
+    }
   }, []);
   return (
     <Modal>
@@ -48,49 +50,55 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
         <span>{info.name}</span>
         <FaRegWindowClose onClick={handleClick} />
       </Header>
-      <Content>
-        <Doughnut>
-          <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />
-          <DoughnutLabel>
-            {ageRatio.map((value, index) => {
-              return (
-                <DoughnutDesc color={color[index]}>
-                  <div />
-                  <span>{index < 4 ? `${(index + 1) * 10}대` : `기타`}</span>
-                  <p>{(value * 100).toFixed(0)}%</p>
-                </DoughnutDesc>
-              );
-            })}
-          </DoughnutLabel>
-        </Doughnut>
-        <Bar>
-          <svg width="100%" height="65px">
-            <defs>
-              <linearGradient id="left-to-right">
-                <stop offset="0" stopColor={color[5]}>
-                  <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
-                </stop>
-                <stop offset="0" stopColor={color[6]}>
-                  <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
-                </stop>
-              </linearGradient>
-            </defs>
-            <rect id="Rectangle" x="0" y="0" width="300" height="30" rx="8" fill="url(#left-to-right)" />
-          </svg>
-          <BarLabel>
-            <BarDesc color={color[5]}>
-              <div />
-              <span>Male</span>
-              <p>{(genderRatio[0] * 100).toFixed(0)}%</p>
-            </BarDesc>
-            <BarDesc color={color[6]}>
-              <div />
-              <span>Female</span>
-              <p>{(genderRatio[1] * 100).toFixed(0)}%</p>
-            </BarDesc>
-          </BarLabel>
-        </Bar>
-      </Content>
+      {info.total > 0 ? (
+        <Content>
+          <Doughnut>
+            <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />
+            <DoughnutLabel>
+              {ageRatio.map((value, index) => {
+                return (
+                  <DoughnutDesc color={color[index]}>
+                    <div />
+                    <span>{index < 4 ? `${(index + 1) * 10}대` : `기타`}</span>
+                    <p>{(value * 100).toFixed(0)}%</p>
+                  </DoughnutDesc>
+                );
+              })}
+            </DoughnutLabel>
+          </Doughnut>
+          <Bar>
+            <svg width="100%" height="65px">
+              <defs>
+                <linearGradient id="left-to-right">
+                  <stop offset="0" stopColor={color[5]}>
+                    <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
+                  </stop>
+                  <stop offset="0" stopColor={color[6]}>
+                    <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
+                  </stop>
+                </linearGradient>
+              </defs>
+              <rect id="Rectangle" x="0" y="0" width="300" height="30" rx="8" fill="url(#left-to-right)" />
+            </svg>
+            <BarLabel>
+              <BarDesc color={color[5]}>
+                <div />
+                <span>Male</span>
+                <p>{(genderRatio[0] * 100).toFixed(0)}%</p>
+              </BarDesc>
+              <BarDesc color={color[6]}>
+                <div />
+                <span>Female</span>
+                <p>{(genderRatio[1] * 100).toFixed(0)}%</p>
+              </BarDesc>
+            </BarLabel>
+          </Bar>
+        </Content>
+      ) : (
+        <EmptyModal>
+          <p>기록된 랭킹 기록이 없습니다.</p>
+        </EmptyModal>
+      )}
     </Modal>
   );
 }
@@ -98,7 +106,7 @@ const Modal = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -20%);
+  transform: translate(-50%, -120%);
   width: 800px;
   height: 400px;
   display: flex;
@@ -152,6 +160,10 @@ const DoughnutLabel = styled.div`
   span {
     font-weight: bold;
   }
+  p {
+    width: 80px;
+    text-align: center;
+  }
 `;
 const DoughnutDesc = styled.div`
   display: flex;
@@ -202,5 +214,12 @@ const BarDesc = styled.div`
     height: 20px;
     border-radius: 50px;
   }
+`;
+const EmptyModal = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
 `;
 export default RankingModal;
