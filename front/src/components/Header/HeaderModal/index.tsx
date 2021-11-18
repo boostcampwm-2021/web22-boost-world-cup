@@ -62,14 +62,14 @@ const openModal = keyframes`
 `;
 const MenuBox = styled.ul`
   position: absolute;
-  right: 65px;
+  right: 18px;
   top: 75px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: stretch;
   text-align: center;
-  width: 180px;
+  width: 160px;
   height: 220px;
   z-index: 1;
   border: 1px solid ${({ theme }) => theme.color.gray[0]};

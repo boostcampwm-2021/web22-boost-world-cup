@@ -95,7 +95,7 @@ function RankingList(): JSX.Element {
           );
         })}
       </RankingItems>
-      <RankingModal />
+      {/* <RankingModal /> */}
     </>
   );
 }

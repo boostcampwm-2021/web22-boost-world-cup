@@ -37,7 +37,7 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
             <span>시작하기</span>
           </Start>
         </Link>
-        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
+        <Link to={`/ranking/${id}`}>
           <Ranking>
             <FaList />
             <span>랭킹보기</span>
