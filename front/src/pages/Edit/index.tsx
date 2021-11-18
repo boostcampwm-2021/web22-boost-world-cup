@@ -30,7 +30,7 @@ function Edit(): JSX.Element {
   const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(getWorldcupMetadata, onGetMetadataSuccess);
 
   const onGetCandidatesSuccess = (candidates: Candidate[]) => {
-    const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.png).webp/;
+    const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.[\w]+).webp/;
     const newCandidates: ImgInfo[] = candidates.map(
       (info: any): ImgInfo => ({
         name: info.name,
