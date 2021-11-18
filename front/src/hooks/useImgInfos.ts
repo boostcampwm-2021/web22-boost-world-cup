@@ -9,7 +9,8 @@ export type ImgsAction =
   | { type: 'ADD_IMGS'; payload: ImgInfo[] }
   | { type: 'DELETE_IMG'; payload: string }
   | { type: 'FINISH_IMG_UPLOAD'; payload: string }
-  | { type: 'SET_IMGS'; payload: ImgInfo[] };
+  | { type: 'SET_IMGS'; payload: ImgInfo[] }
+  | { type: 'RESET' };
 
 const initialImgsState: ImgsState = [];
 
@@ -63,6 +64,10 @@ const imgsReducer = (state: ImgsState, action: ImgsAction): ImgsState => {
     case 'SET_IMGS': {
       const { payload: newImgInfos } = action;
       return newImgInfos;
+    }
+
+    case 'RESET': {
+      return [];
     }
 
     default: {
