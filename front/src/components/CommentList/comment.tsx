@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { CommentData } from '../../types/Datas';
+import { useRecoilValue } from 'recoil';
+import { loginState, userState } from '../../recoil/atom';
+import { CommentData, UserInfo } from '../../types/Datas';
 import { deleteComment } from '../../utils/api/comment';
 
 interface Props {
@@ -9,7 +11,16 @@ interface Props {
 }
 
 function Comment({ comment, setComments }: Props): JSX.Element {
-  const tempUserId = 48;
+  const isLoggedIn = useRecoilValue(loginState);
+  const currentUserState = useRecoilValue(userState);
+
+  const getUserId = (): number => {
+    if (isLoggedIn) {
+      const { id } = currentUserState as UserInfo;
+      return id as number;
+    }
+    return -1;
+  };
 
   const getDateString = useCallback((date: string) => {
     const yymmdd = date.split('T')[0];
@@ -34,7 +45,7 @@ function Comment({ comment, setComments }: Props): JSX.Element {
       <SubContainer>
         <Writer>{comment.nickname}</Writer>
         <Date>{getDateString(comment.createdAt)}</Date>
-        {tempUserId === comment.userId ? (
+        {getUserId() === comment.userId ? (
           <DeleteButton onClick={deleteButtonClickHandler} data-value={comment.commentId}>
             삭제
           </DeleteButton>
@@ -47,36 +58,44 @@ function Comment({ comment, setComments }: Props): JSX.Element {
   );
 }
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 5px;
+`;
+
+const Writer = styled.div`
+  ${({ theme }) => theme.fontStyle.bodyBold};
+  margin-right: 15px;
+`;
+const Date = styled.div`
+  ${({ theme }) => theme.fontStyle.button};
+  margin-right: 10px;
+`;
+const Message = styled.div`
+  ${({ theme }) => theme.fontStyle.body};
+  width: 100%;
+  word-break: break-word;
+  margin: 3px 0 0 5px;
+`;
+
 const DeleteButton = styled.div`
-  width: 70px;
   border-radius: 5px;
   cursor: pointer;
-  ${({ theme }) => theme.fontStyle.body};
-  background-color: ${({ theme }) => theme.color.pink};
+  color: red;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${({ theme }) => theme.fontStyle.button};
 `;
 
 const SubContainer = styled.div`
   display: flex;
   flex-direction: row;
-`;
-
-const Writer = styled.div`
-  ${({ theme }) => theme.fontStyle.bodyBold};
-`;
-const Date = styled.div`
-  ${({ theme }) => theme.fontStyle.body};
-`;
-const Message = styled.div`
-  ${({ theme }) => theme.fontStyle.body};
+  width: 100%;
+  align-items: center;
 `;
 
 export default Comment;
