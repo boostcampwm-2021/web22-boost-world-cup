@@ -56,7 +56,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const getInfoAcc = (dataset: RankingData[]) => {
     return dataset.map((v) => ({
       name: v.name,
-      total: v.victoryCnt,
+      total: v.winCnt,
       male: v.male,
       female: v.female,
       teens: v.teens,
