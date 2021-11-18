@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { FaRegWindowClose } from 'react-icons/fa';
-import { InfoType } from '../../types/Datas';
+import { InfoData } from '../../types/Datas';
 
 interface ModalProps {
-  info: InfoType;
+  info: InfoData;
   handleClick: (event: React.MouseEvent<Element>) => void;
 }
 function RankingModal({ handleClick, info }: ModalProps): JSX.Element {

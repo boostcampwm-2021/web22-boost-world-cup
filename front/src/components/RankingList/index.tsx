@@ -4,7 +4,7 @@ import RankingItem from './RankingItem';
 import { TabBar, SearchBar, RankingModal } from '../../components';
 import { getCandidateList } from '../../utils/api/ranking';
 import { useTabBar } from '../../hooks';
-import { RankingData, InfoType } from '../../types/Datas';
+import { RankingData, RankingSummaryData, InfoData } from '../../types/Datas';
 
 interface RankingProps {
   worldcupId: string;
@@ -16,8 +16,8 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [data, setData] = useState<RankingData[]>([]);
-  const [renderData, setRenderData] = useState<RankingData[]>([]);
-  const [info, setInfo] = useState<InfoType[]>([]);
+  const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
+  const [info, setInfo] = useState<InfoData[]>([]);
   const candidateRef = useRef<number | null>(null);
   const handleClick = (event: React.MouseEvent<Element>) => {
     setIsOpenModal(!isOpenModal);
@@ -30,19 +30,31 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     const fetchData = async () => {
       const newData = await getCandidateList(worldcupId);
       setData(newData);
-      setRenderData(newData);
     };
     fetchData();
   }, []);
   useEffect(() => {
     if (data) {
-      const newAcc = getInfoAcc();
+      const newRatio = getInfoRatio(data);
+      setRenderData(newRatio);
+      const newAcc = getInfoAcc(data);
       setInfo(newAcc);
     }
   }, [renderData]);
 
-  const getInfoAcc = () => {
-    const infoAcc = renderData.map((v) => ({
+  const getInfoRatio = (dataset: RankingData[]) => {
+    return dataset
+      .map((v) => ({
+        id: v.id,
+        url: v.url,
+        name: v.name,
+        victoryRatio: v.victoryCnt / v.total,
+        winRatio: v.winCnt / v.showCnt,
+      }))
+      .sort((a, b) => b.victoryRatio - a.victoryRatio);
+  };
+  const getInfoAcc = (dataset: RankingData[]) => {
+    return dataset.map((v) => ({
       name: v.name,
       total: v.victoryCnt,
       male: v.male,
@@ -53,12 +65,11 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
       forties: v.forties,
       etc: v.etc,
     }));
-    return infoAcc;
   };
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    const filterData = data.filter((value) => value.name.indexOf(inputWord) !== -1);
+    const filterData = renderData.filter((value) => value.name.indexOf(inputWord) !== -1);
     setRenderData([...filterData]);
     console.log(filterData);
     setInputWord('');
@@ -98,9 +109,8 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
                 id={index + 1}
                 url={v.url}
                 name={v.name}
-                winCnt={v.winCnt}
-                showCnt={v.showCnt}
-                victoryCnt={v.victoryCnt}
+                victoryRatio={v.victoryRatio}
+                winRatio={v.winRatio}
                 handleClick={handleClick}
               />
               {index + 1 < renderData.length ? <Divider /> : ''}

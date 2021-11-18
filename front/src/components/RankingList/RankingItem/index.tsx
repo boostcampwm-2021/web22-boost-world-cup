@@ -5,16 +5,15 @@ interface ItemProps {
   id: number;
   url: string;
   name: string;
-  winCnt: number;
-  showCnt: number;
-  victoryCnt: number;
+  victoryRatio: number;
+  winRatio: number;
   handleClick: (event: React.MouseEvent<Element>) => void;
 }
 interface RatioProp {
   width: number;
 }
 
-function RankingItem({ id, url, name, winCnt, showCnt, victoryCnt, handleClick }: ItemProps): JSX.Element {
+function RankingItem({ id, url, name, victoryRatio, winRatio, handleClick }: ItemProps): JSX.Element {
   return (
     <Section>
       <LeftSection onClick={handleClick}>
@@ -25,12 +24,12 @@ function RankingItem({ id, url, name, winCnt, showCnt, victoryCnt, handleClick }
       </LeftSection>
       <RightSection>
         <Bar>
-          <Ratio width={victoryCnt / showCnt} />
-          <span>{`${((victoryCnt / showCnt) * 100).toFixed(2)}%`}</span>
+          <Ratio width={victoryRatio} />
+          <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
         </Bar>
         <Bar>
-          <Ratio width={winCnt / showCnt} />
-          <span>{`${((winCnt / showCnt) * 100).toFixed(2)}%`}</span>
+          <Ratio width={winRatio} />
+          <span>{`${(winRatio * 100).toFixed(2)}%`}</span>
         </Bar>
       </RightSection>
     </Section>

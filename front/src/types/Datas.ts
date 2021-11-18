@@ -51,7 +51,14 @@ export interface RankingData {
   forties: number;
   etc: number;
 }
-export interface InfoType {
+export interface RankingSummaryData {
+  id: number;
+  url: string;
+  name: string;
+  victoryRatio: number;
+  winRatio: number;
+}
+export interface InfoData {
   name: string;
   total: number;
   male: number;
