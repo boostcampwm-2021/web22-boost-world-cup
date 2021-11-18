@@ -8,12 +8,11 @@ interface Props {
 
 function Ranking({ location }: Props): JSX.Element {
   const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
-
   return (
     <Wrapper>
       <Header type="header" />
       <RankingContent>
-        <RankingList />
+        <RankingList worldcupId={worldcupId} />
       </RankingContent>
       <Comment worldcupId={worldcupId} />
     </Wrapper>

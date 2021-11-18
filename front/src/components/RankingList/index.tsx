@@ -1,53 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { TabBar, SearchBar, RankingModal } from '../../components';
+import { getCandidateList } from '../../utils/api/ranking';
 import { useTabBar } from '../../hooks';
+import { RankingData, InfoType } from '../../types/Datas';
 
-function RankingList(): JSX.Element {
+interface RankingProps {
+  worldcupId: string;
+}
+
+function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const tabTitle = ['연령별', '성별'];
   const [currentTab, onTabChange] = useTabBar();
   const [inputWord, setInputWord] = useState('');
-  const [searchWord, setSearchWord] = useState('');
-  const data = [
-    {
-      id: 1,
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi5-XdRNNOnCbp5VlefGMkAvwJ9QB1s8s-xg&usqp=CAU',
-      name: '수지',
-      winCnt: 100,
-      showCnt: 200,
-      info: {
-        infoTotal: 234,
-        infoMale: 143,
-        infoFemale: 152,
-        infoTeens: 24,
-        infoTwenties: 24,
-        infoThirties: 24,
-        infoFourties: 24,
-        infoEtc: 24,
-      },
-    },
-    {
-      id: 2,
-      url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgM4tBBPl27cEIk5OjmAYbF7ialtFwLej46w&usqp=CAU',
-      name: '고윤정',
-      winCnt: 123,
-      showCnt: 178,
-      info: {
-        infoTotal: 210,
-        infoMale: 87,
-        infoFemale: 23,
-        infoTeens: 43,
-        infoTwenties: 43,
-        infoThirties: 43,
-        infoFourties: 43,
-        infoEtc: 43,
-      },
-    },
-  ];
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [data, setData] = useState<RankingData[]>([]);
+  const [renderData, setRenderData] = useState<RankingData[]>([]);
+  const [info, setInfo] = useState<InfoType[]>([]);
+  const candidateRef = useRef<number | null>(null);
+  const handleClick = (event: React.MouseEvent<Element>) => {
+    setIsOpenModal(!isOpenModal);
+    if (event.currentTarget.children[2]) {
+      const candidateName = event.currentTarget.children[2].innerHTML;
+      candidateRef.current = data.findIndex((v) => v.candidate_name === candidateName);
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const newData = await getCandidateList(worldcupId);
+      setData(newData);
+      setRenderData(newData);
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    if (data) {
+      const newAcc = getInfoAcc();
+      setInfo(newAcc);
+    }
+  }, [renderData]);
+
+  const getInfoAcc = () => {
+    const infoAcc = renderData.map((v) => ({
+      name: v.candidate_name,
+      total: v.info_total,
+      male: v.info_male,
+      female: v.info_female,
+      teens: v.info_teens,
+      twenties: v.info_twenties,
+      thirties: v.info_thirties,
+      forties: v.info_forties,
+      etc: v.info_etc,
+    }));
+    return infoAcc;
+  };
+
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    setSearchWord(inputWord);
+    const filterData = data.filter((value) => value.candidate_name.indexOf(inputWord) !== -1);
+    setRenderData([...filterData]);
+    console.log(filterData);
     setInputWord('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,24 +91,24 @@ function RankingList(): JSX.Element {
         </RightCaption>
       </Caption>
       <RankingItems>
-        {data.map((v, index) => {
+        {renderData.map((v, index) => {
           return (
-            <>
+            <Wrapper key={v.candidate_id}>
               <RankingItem
-                key={v.id}
                 id={index + 1}
-                url={v.url}
-                name={v.name}
-                winCnt={v.winCnt}
-                showCnt={v.showCnt}
-                info={v.info}
+                url={v.candidate_url}
+                name={v.candidate_name}
+                winCnt={v.candidate_win_cnt}
+                showCnt={v.candidate_show_cnt}
+                victoryCnt={v.candidate_victory_cnt}
+                handleClick={handleClick}
               />
-              {index + 1 < data.length ? <Divider /> : ''}
-            </>
+              {index + 1 < renderData.length ? <Divider /> : ''}
+            </Wrapper>
           );
         })}
       </RankingItems>
-      {/* <RankingModal /> */}
+      {isOpenModal ? <RankingModal handleClick={handleClick} info={info[candidateRef.current as number]} /> : ''}
     </>
   );
 }
@@ -135,6 +148,14 @@ const RightCaption = styled.div`
       font-size: 0.5em;
     }
   }
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const RankingItems = styled.section`
   display: flex;
