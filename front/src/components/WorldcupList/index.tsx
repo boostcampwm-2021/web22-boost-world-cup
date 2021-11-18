@@ -76,6 +76,7 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
         {items.map((item) =>
           type === 'worldcup' ? (
             <WorldCupItem
+              key={item.id}
               id={item.id}
               thumbnail1={item.thumbnail1}
               thumbnail2={item.thumbnail2}

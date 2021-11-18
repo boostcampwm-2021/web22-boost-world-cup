@@ -27,6 +27,7 @@ export const findFromPage = async (offset, limit) => {
     take: Number(limit),
   });
 };
+
 export const findBySearchWord = async (offset, limit, searchWord) => {
   const worldcupRepository = getRepository(Worldcup);
   return await worldcupRepository.find({

@@ -26,14 +26,15 @@ const worldcupController = {
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
-    const { metaonly } = request.query;
-    const { id } = request.params;
+    const {
+      params: { id },
+      query: { metaonly },
+    } = request;
     if (metaonly) {
       const metadata = await worldcupService.getMetaData(Number(id));
       return response.json(metadata);
     }
-    const worldcup = await worldcupService.findById(id);
-    response.json(worldcup);
+    response.end();
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {

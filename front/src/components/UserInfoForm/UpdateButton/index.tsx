@@ -5,7 +5,7 @@ import { putUser } from '../../../utils/api/auth';
 import { userState } from '../../../recoil/atom';
 
 interface Props {
-  id: number | undefined;
+  id: number;
   nickname: string;
   gender: number;
   age: number;
@@ -17,6 +17,7 @@ function UpdateButton({ id, nickname, gender, age, setAuthenticated }: Props): J
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     if (nickname === '' || gender === 0 || age === 0) {
+      // eslint-disable-next-line no-alert
       alert('정보를 모두 입력해주세요.');
       return;
     }

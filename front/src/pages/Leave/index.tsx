@@ -11,8 +11,9 @@ import { UserInfo } from '../../types/Datas';
 const Leave = (): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
   const [userInfo, setUserInfo] = useRecoilState<UserInfo>(userState);
+
   const leaveHandler = useCallback(() => {
-    deleteUser(userInfo.id);
+    deleteUser(userInfo.id as number);
     setIsLoggedIn(false);
     setUserInfo({});
   }, []);
