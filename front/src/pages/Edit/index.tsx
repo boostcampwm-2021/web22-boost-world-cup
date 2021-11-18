@@ -79,6 +79,10 @@ function Edit(): JSX.Element {
     getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
   }, [currentPage, worldcupId]);
 
+  useEffect(() => {
+    addedImgsDispatcher({ type: 'RESET' });
+  }, [currentTab]);
+
   return (
     <>
       <Header type="header" />
