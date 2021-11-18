@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
-import { TabBar, SearchBar, RankingModal } from '../../components';
+import { SearchBar, RankingModal } from '../../components';
 import { getCandidateList } from '../../utils/api/ranking';
 import { useTabBar } from '../../hooks';
 import { RankingData, RankingSummaryData, InfoData } from '../../types/Datas';
@@ -11,7 +11,6 @@ interface RankingProps {
 }
 
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
-  const tabTitle = ['연령별', '성별'];
   const [currentTab, onTabChange] = useTabBar();
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -40,7 +39,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
       const newAcc = getInfoAcc(data);
       setInfo(newAcc);
     }
-  }, [renderData]);
+  }, [data]);
 
   const getInfoRatio = (dataset: RankingData[]) => {
     return dataset
@@ -79,10 +78,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   };
   return (
     <>
-      <Navigation>
-        <TabBar tabTitle={tabTitle} currentTab={currentTab} onTabChange={onTabChange} />
-        <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
-      </Navigation>
+      <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
       <Caption>
         <LeftCaption>
           <span>순위</span>
@@ -122,15 +118,6 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     </>
   );
 }
-const Navigation = styled.nav`
-  position: absolute;
-  top: -74px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 4em;
-`;
 const Caption = styled.div`
   display: flex;
   justify-content: space-between;
