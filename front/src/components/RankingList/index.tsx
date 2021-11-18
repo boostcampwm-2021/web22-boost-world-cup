@@ -34,7 +34,6 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     setRenderData(getRenderData(data));
     setInfo(getInfoAcc(data));
   }, [data]);
-  console.log(renderData);
   const getRenderData = useCallback((dataset: RankingData[]) => {
     return dataset
       .map((v) => ({

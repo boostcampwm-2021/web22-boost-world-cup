@@ -15,6 +15,7 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
     info.forties / info.total,
     info.etc / info.total,
   ];
+  console.log(ageRatio, info.total, info.teens, info.twenties, info.thirties, info.forties, info.etc);
   const genderRatio = [info.male / info.total, info.female / info.total];
   const svgRef = useRef<SVGSVGElement>(null);
   const color = ['#050f2c ', '#004b79', '#0091cd', '#56a0d3', '#c4dff6', '#84bd00', '#efdf00'];
