@@ -9,20 +9,20 @@ export const getCandidateList = async (worldcupId: String) => {
     .leftJoinAndSelect('candidate.info', 'info')
     .where('candidate.worldcup_id= :id', { id: worldcupId })
     .select([
-      'candidate_id AS id',
-      '"candidate_name" AS name',
-      '"candidate_url" AS url',
-      '"worldcup_total_cnt" AS total',
-      '"candidate_show_cnt" AS showCnt',
-      '"candidate_win_cnt" AS winCnt',
-      '"candidate_victory_cnt" AS victoryCnt',
-      '"info_male" AS male',
-      '"info_female" AS female',
-      '"info_teens" AS teens',
-      '"info_twenties" AS twenties',
-      '"info_thirties" AS thirties',
-      '"info_forties" AS forties',
-      '"info_etc" AS etc',
+      'candidate.id AS id',
+      'candidate.name AS name',
+      'candidate.url AS url',
+      'worldcup.total_cnt AS total',
+      'candidate.show_cnt AS showCnt',
+      'candidate.win_cnt AS winCnt',
+      'candidate.victory_cnt AS victoryCnt',
+      'info.male AS male',
+      'info.female AS female',
+      'info.teens AS teens',
+      'info.twenties AS twenties',
+      'info.thirties AS thirties',
+      'info.forties AS forties',
+      'info.etc AS etc',
     ])
     .execute();
   return candidateList;
