@@ -77,9 +77,9 @@ export const patchCandidate = async (key: string, name: string, newKey?: string)
   return candidateRepository.save(candidate);
 };
 
-export const getCandidates = async (worldcupId: number, offset: number, limit: number) => {
+export const getCandidates = (worldcupId: number, offset: number, limit: number) => {
   const candidateRepository = getRepository(Candidate);
-  return await candidateRepository
+  return candidateRepository
     .createQueryBuilder('candidate')
     .select(['candidate.id AS id', 'candidate.name AS name', 'candidate.url AS url'])
     .leftJoin('candidate.worldcup', 'worldcup')
