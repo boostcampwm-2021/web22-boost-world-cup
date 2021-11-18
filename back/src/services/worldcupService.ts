@@ -1,6 +1,6 @@
 import { Worldcup } from '../entity/Worldcup';
 import { findOrCreate as findOrCreateTag } from './tagService';
-import { save as saveCandidates } from './candidateService';
+import { save as saveCandidates, getTotalCount as getCandidateTotalCnt } from './candidateService';
 import { getRepository, Like } from 'typeorm';
 
 export const findAll = async () => {
@@ -95,4 +95,25 @@ export const plusTotalCnt = async (id: number) => {
   const worldcup = await worldcupRepository.findOne(id);
   worldcup.totalCnt += 1;
   return await worldcupRepository.save(worldcup);
+};
+
+export const patchWorldcupTitle = async (id: number, title: string) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcup = await worldcupRepository.findOne(id);
+  worldcup.title = title;
+  worldcupRepository.save(worldcup);
+};
+
+export const patchWorldcupDesc = async (id: number, desc: string) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcup = await worldcupRepository.findOne(id);
+  worldcup.description = desc;
+  worldcupRepository.save(worldcup);
+};
+
+export const getMetaData = async (id: number) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const [worldcup, totalCnt] = await Promise.all([worldcupRepository.findOne(id), getCandidateTotalCnt(id)]);
+  const { title, description } = worldcup;
+  return { totalCnt, title, description };
 };
