@@ -38,7 +38,9 @@ function AgeSelector({ age, setAge }: Props): JSX.Element {
         <span>{selectedAgeText()}</span>
         <AgeList isOpen={isOpen}>
           {ages.map((age, idx) => (
-            <Item onClick={() => ageSelectHandler(idx + 1)}>{age}</Item>
+            <Item key={age} onClick={() => ageSelectHandler(idx + 1)}>
+              {age}
+            </Item>
           ))}
         </AgeList>
       </AgeInput>

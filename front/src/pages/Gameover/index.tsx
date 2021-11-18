@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHome, FaList } from 'react-icons/fa';
 import { Header } from '../../components';
-import Comment from '../../components/Comment';
 import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
 
@@ -37,7 +36,6 @@ function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
           </Link>
         </ButtonContainer>
       </Container>
-      <Comment worldcupId={worldcupId as string} />
     </Wrapper>
   );
 }

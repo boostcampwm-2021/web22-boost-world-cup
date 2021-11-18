@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import '@fontsource/rancho';
-import { FaUserAlt } from 'react-icons/fa';
+import { FaUserAlt, FaUserAltSlash } from 'react-icons/fa';
 import { loginState } from '../../recoil/atom';
 import HeaderModal from './HeaderModal';
 import SearchBar from '../SearchBar';
@@ -18,6 +18,7 @@ interface searchHeaderProps {
   searchWord: string;
 }
 type Props = headerProps | searchHeaderProps;
+
 function Header(props: Props): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
   const [modal, setModal] = useState(false);
@@ -42,62 +43,78 @@ function Header(props: Props): JSX.Element {
           ) : (
             ''
           )}
-          <LoginWrapper>
+          <>
             {isLoggedIn ? (
               <UserIcon onClick={toggleModal} />
             ) : (
-              <Login>
-                <Link to="/login">로그인</Link>
-              </Login>
+              <Link to="/login">
+                <Login>로그인</Login>
+              </Link>
             )}
-          </LoginWrapper>
+          </>
           {modal && <HeaderModal open={modal} setModal={setModal} />}
         </RightHeader>
       </MainHeader>
     </>
   );
 }
-const MainHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 100px;
-  padding: 2rem 5rem;
-  background-color: ${({ theme }) => theme.color.primary};
-`;
-const Logo = styled.span`
-  font-size: 3rem;
-  font-family: Rancho;
-  color: #b89068;
+
+const Login = styled.div`
+  margin-right: 30px;
   cursor: pointer;
-`;
-const RightHeader = styled.span`
-  width: 50%;
-  height: 5em;
+  font: ${({ theme }) => theme.fontStyle.body};
+  color: gray;
+  border: 1px solid gray;
+  background-color: transparent;
+  font-size: 15px;
+  width: 100px;
+  height: 35px;
+  border-radius: 5px;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  &:hover {
+    color: white;
+    background-color: #bc8f8f;
+    border: none;
+  }
 `;
-const LoginWrapper = styled.div`
-  width: 10em;
-  text-align: center;
-  line-height: 1;
-`;
-const Login = styled.span`
-  font: ${({ theme }) => theme.fontStyle.h2Bold};
-  cursor: pointer;
-`;
+
 const UserIcon = styled(FaUserAlt)`
-  width: 2em;
-  height: 2em;
+  margin-right: 50px;
+  width: 30px;
+  height: 30px;
   color: ${({ theme }) => theme.color.black};
   cursor: pointer;
 `;
 
+const MainHeader = styled.header`
+  display: flex;
+  width: 100%;
+  height: 100px;
+  padding: 2rem 2rem;
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${({ theme }) => theme.color.primary};
+`;
+
+const Logo = styled.span`
+  cursor: pointer;
+  font-size: 40px;
+  font-family: Rancho;
+  color: ${({ theme }) => theme.color.logo};
+`;
+const RightHeader = styled.span`
+  display: flex;
+  width: 400px;
+  height: 70px;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
 const Overlay = styled.div`
   position: fixed;
-  overflow-y: scroll;
   top: 0;
   left: 0;
   bottom: 0;

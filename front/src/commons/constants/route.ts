@@ -10,3 +10,4 @@ export const RANKING = '/ranking';
 export const MYINFO = '/myinfo';
 export const LEAVE = '/leave';
 export const EDIT = '/edit';
+export const PROFILE = '/profile';

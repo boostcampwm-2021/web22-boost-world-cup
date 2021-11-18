@@ -2,6 +2,14 @@ import { Candidate } from '../entity/Candidate';
 import { Info } from '../entity/Info';
 import { getRepository } from 'typeorm';
 
+export const getCandidateList = async (worldcupId: String) => {
+  const candidateList = await getRepository(Candidate)
+    .createQueryBuilder('candidate')
+    .where('candidate.worldcup_id= :id', { id: worldcupId })
+    .leftJoinAndSelect('candidate.info', 'info')
+    .execute();
+  return candidateList;
+};
 export const getRandomCandidateList = async (worldcupId: number, round: number) => {
   const randomCandidateList = await getRepository(Candidate)
     .createQueryBuilder('candidate')
