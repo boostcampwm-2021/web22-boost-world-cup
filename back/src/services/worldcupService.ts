@@ -1,6 +1,7 @@
 import { Worldcup } from '../entity/Worldcup';
 import { findOrCreate as findOrCreateTag } from './tagService';
 import { save as saveCandidates, getTotalCount as getCandidateTotalCnt } from './candidateService';
+import { findById as findUserById } from './userService';
 import { getRepository, Like } from 'typeorm';
 
 export const findAll = async () => {
@@ -27,6 +28,7 @@ export const findFromPage = async (offset, limit) => {
     take: Number(limit),
   });
 };
+
 export const findBySearchWord = async (offset, limit, searchWord) => {
   const worldcupRepository = getRepository(Worldcup);
   return await worldcupRepository.find({
@@ -59,10 +61,12 @@ export const findById = async (id) => {
   return await worldcupRepository.findOne(id, { relations: ['candidates'] });
 };
 
-export const save = async (worldcup) => {
+export const save = async (title: string, description: string, keywordNames: string[], imgInfos, userId: number) => {
   const worldcupRepository = getRepository(Worldcup);
-  const { title, desc: description, keywords: keywordNames, imgInfos } = worldcup;
-  const keywords = await Promise.all(keywordNames.map((name: string) => findOrCreateTag(name)));
+  const [keywords, user] = await Promise.all([
+    Promise.all(keywordNames.map((name: string) => findOrCreateTag(name))),
+    findUserById(userId),
+  ]);
   const [thumbnail1, thumbnail2] = imgInfos
     .slice(0, 2)
     .map(({ key }) => `${process.env.IMG_URL_END_POINT}/${key}.webp`);
@@ -72,9 +76,9 @@ export const save = async (worldcup) => {
     thumbnail2,
     description,
     keywords,
+    user,
   });
-  await worldcupRepository.save(newWorldcup);
-  await saveCandidates(imgInfos, newWorldcup);
+  return Promise.all([worldcupRepository.save(newWorldcup), saveCandidates(imgInfos, newWorldcup)]);
 };
 
 export const removeById = async (id) => {

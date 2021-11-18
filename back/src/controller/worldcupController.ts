@@ -26,18 +26,25 @@ const worldcupController = {
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
-    const { metaonly } = request.query;
-    const { id } = request.params;
+    const {
+      params: { id },
+      query: { metaonly },
+    } = request;
     if (metaonly) {
       const metadata = await worldcupService.getMetaData(Number(id));
       return response.json(metadata);
     }
-    const worldcup = await worldcupService.findById(id);
-    response.json(worldcup);
+    response.end();
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {
-    await worldcupService.save(request.body);
+    const {
+      body: { title, desc, keywords, imgInfos },
+      session: {
+        passport: { user },
+      },
+    } = request;
+    await worldcupService.save(title, desc, keywords, imgInfos, user);
     response.json({ result: 'success', message: null });
   },
 
@@ -49,14 +56,14 @@ const worldcupController = {
     const { title } = request.body;
     const { id } = request.params;
     await worldcupService.patchWorldcupTitle(Number(id), title);
-    response.end();
+    response.json({ result: 'success', message: null });
   },
 
   patchDesc: async (request: Request, response: Response, next: NextFunction) => {
     const { desc } = request.body;
     const { id } = request.params;
     await worldcupService.patchWorldcupDesc(Number(id), desc);
-    response.end();
+    response.json({ result: 'success', message: null });
   },
 
   getCandidates: async (request: Request, response: Response, next: NextFunction) => {

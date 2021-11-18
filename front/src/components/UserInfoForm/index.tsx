@@ -45,7 +45,7 @@ const UserInfoForm = ({ type }: Props): JSX.Element => {
         <SignupButton nickname={nickname} gender={gender} age={age} setAuthenticated={setAuthenticated} />
       ) : (
         <UpdateButton
-          id={userInfo.id}
+          id={userInfo.id as number}
           nickname={nickname}
           gender={gender}
           age={age}

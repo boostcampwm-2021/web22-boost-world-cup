@@ -4,7 +4,7 @@ export { default as Main } from './Main';
 export { default as Make } from './Make';
 export { default as SignUp } from './SignUp';
 export { default as Initialize } from './Initialize';
-export { default as Worldcup } from './Worldcup';
+export { default as Game } from './Game';
 export { default as NotFound } from './NotFound';
 export { default as MyWorldcup } from './MyWorldcup';
 export { default as Ranking } from './Ranking';

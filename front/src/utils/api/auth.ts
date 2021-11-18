@@ -3,12 +3,6 @@ import axios from 'axios';
 interface ServerResponse {
   result: string;
   message: string | null;
-  data: null | UserData;
-}
-interface UserData {
-  nickname: string;
-  gender: number;
-  age: number;
 }
 
 export const getUser = async (): Promise<ServerResponse> => {
@@ -19,7 +13,12 @@ export const getUser = async (): Promise<ServerResponse> => {
   return userInfo;
 };
 
-export const signup = async (clientId: any, nickname: string, gender: number, age: number): Promise<ServerResponse> => {
+export const signup = async (
+  clientId: string,
+  nickname: string,
+  gender: number,
+  age: number,
+): Promise<ServerResponse> => {
   const response = await axios.post('/api/auth/signup', {
     clientId,
     nickname,
@@ -34,12 +33,12 @@ export const logout = async (): Promise<ServerResponse> => {
   return response.data;
 };
 
-export const deleteUser = async (userId: number | undefined) => {
+export const deleteUser = async (userId: number): Promise<ServerResponse> => {
   const response = await axios.delete(`/api/auth/user/${userId}`);
   return response.data;
 };
 
-export const putUser = async (id: number | undefined, nickname: string, gender: number, age: number) => {
+export const putUser = async (id: number, nickname: string, gender: number, age: number): Promise<ServerResponse> => {
   const response = await axios.put(`/api/auth/user/${id}`, {
     id,
     nickname,
