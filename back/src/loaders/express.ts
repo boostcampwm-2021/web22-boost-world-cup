@@ -8,6 +8,12 @@ import indexRouter from '../api';
 import passportInit from './passport';
 import { join } from 'path';
 
+declare module 'express-session' {
+  export interface SessionData {
+    passport: any;
+  }
+}
+
 const expressLoader = (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));

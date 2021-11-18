@@ -37,7 +37,13 @@ const worldcupController = {
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {
-    await worldcupService.save(request.body);
+    const {
+      body: { title, desc, keywords, imgInfos },
+      session: {
+        passport: { user },
+      },
+    } = request;
+    await worldcupService.save(title, desc, keywords, imgInfos, user);
     response.json({ result: 'success', message: null });
   },
 
