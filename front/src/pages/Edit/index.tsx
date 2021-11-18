@@ -72,7 +72,7 @@ function Edit(): JSX.Element {
 
   useEffect(() => {
     getMetadataDispatcher({ type: REQUEST, requestProps: [worldcupId] });
-  }, [currentTab, worldcupId]);
+  }, [currentTab, worldcupId, candidates.length]);
 
   useEffect(() => {
     candidatesDispatcher({ type: 'RESET' });
