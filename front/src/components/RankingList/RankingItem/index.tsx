@@ -11,6 +11,7 @@ interface ItemProps {
 }
 interface RatioProp {
   width: number;
+  color: string;
 }
 
 function RankingItem({ id, url, name, victoryRatio, winRatio, handleClick }: ItemProps): JSX.Element {
@@ -24,11 +25,11 @@ function RankingItem({ id, url, name, victoryRatio, winRatio, handleClick }: Ite
       </LeftSection>
       <RightSection>
         <Bar>
-          <Ratio width={victoryRatio} />
+          <Ratio width={victoryRatio} color="#e53238" />
           <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
         </Bar>
         <Bar>
-          <Ratio width={victoryRatio} />
+          <Ratio width={victoryRatio} color="#0064d2" />
           <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
         </Bar>
       </RightSection>
@@ -72,7 +73,7 @@ const Bar = styled.div`
   border-radius: 12px;
   width: 30%;
   height: 36px;
-  line-height: 50px;
+  line-height: 36px;
   margin-left: 1em;
   span {
     position: absolute;
@@ -87,7 +88,7 @@ const Ratio = styled.div`
   border-radius: 12px 0 0 12px;
   width: ${(props: RatioProp) => `${props.width * 100}%`};
   height: 36px;
-  background-color: ${({ theme }) => theme.color.highlight};
+  background-color: ${(props: RatioProp) => `${props.color}`};
   opacity: 0.8;
 `;
 export default RankingItem;

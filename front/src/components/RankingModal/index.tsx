@@ -30,26 +30,12 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
       acc += value;
       const [endX, endY] = getCoordCircle(acc);
       const isLargeArc = value > 0.5 ? 1 : 0;
-      const targetRad = 2 * Math.PI * value;
-      const targetRestRad = 2 * Math.PI * (1 - value);
-      const animationDuration = 0.2;
 
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', `M ${startX} ${startY} A 1 1 0 ${isLargeArc} 1 ${endX} ${endY} L 0 0`);
+      path.setAttribute('d', `M ${startX} ${startY} A 1 1 0 ${isLargeArc} 1 ${endX} ${endY}`);
       path.setAttribute('fill', 'none');
       path.setAttribute('stroke-width', '0.4');
       path.setAttribute('stroke', color[index]);
-      path.setAttribute('stroke-dasharray', `${targetRad} ${targetRestRad}`);
-      path.setAttribute('stroke-dashoffset', `${targetRad}`);
-
-      const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-      animate.setAttribute('attributeName', 'stroke-dashoffset');
-      animate.setAttribute('begin', `${animationDuration * index}`);
-      animate.setAttribute('from', `${targetRad}`);
-      animate.setAttribute('to', '0.015');
-      animate.setAttribute('dur', `${animationDuration}`);
-      animate.setAttribute('fill', 'freeze');
-      path.appendChild(animate);
 
       (svgRef.current as SVGSVGElement).appendChild(path);
       return path;
@@ -155,6 +141,7 @@ const Svg = styled.svg`
     }
   }
 `;
+
 const DoughnutLabel = styled.div`
   display: flex;
   flex-direction: column;
