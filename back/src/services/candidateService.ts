@@ -5,8 +5,25 @@ import { getRepository } from 'typeorm';
 export const getCandidateList = async (worldcupId: String) => {
   const candidateList = await getRepository(Candidate)
     .createQueryBuilder('candidate')
-    .where('candidate.worldcup_id= :id', { id: worldcupId })
+    .leftJoinAndSelect('candidate.worldcup', 'worldcup')
     .leftJoinAndSelect('candidate.info', 'info')
+    .where('candidate.worldcup_id= :id', { id: worldcupId })
+    .select([
+      'candidate_id AS id',
+      '"candidate_name" AS name',
+      '"candidate_url" AS url',
+      '"worldcup_total_cnt" AS total',
+      '"candidate_show_cnt" AS showCnt',
+      '"candidate_win_cnt" AS winCnt',
+      '"candidate_victory_cnt" AS victoryCnt',
+      '"info_male" AS male',
+      '"info_female" AS female',
+      '"info_teens" AS teens',
+      '"info_twenties" AS twenties',
+      '"info_thirties" AS thirties',
+      '"info_forties" AS forties',
+      '"info_etc" AS etc',
+    ])
     .execute();
   return candidateList;
 };
