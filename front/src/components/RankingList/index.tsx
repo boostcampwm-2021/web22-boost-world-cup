@@ -1,65 +1,69 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
-import { TabBar, SearchBar, RankingModal } from '../../components';
+import { SearchBar, RankingModal } from '../../components';
 import { getCandidateList } from '../../utils/api/ranking';
-import { useTabBar } from '../../hooks';
-import { RankingData, InfoType } from '../../types/Datas';
+import { RankingData, RankingSummaryData, InfoData } from '../../types/Datas';
 
 interface RankingProps {
   worldcupId: string;
 }
-
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
-  const tabTitle = ['연령별', '성별'];
-  const [currentTab, onTabChange] = useTabBar();
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [data, setData] = useState<RankingData[]>([]);
-  const [renderData, setRenderData] = useState<RankingData[]>([]);
-  const [info, setInfo] = useState<InfoType[]>([]);
+  const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
+  const [info, setInfo] = useState<InfoData[]>([]);
   const candidateRef = useRef<number | null>(null);
   const handleClick = (event: React.MouseEvent<Element>) => {
     setIsOpenModal(!isOpenModal);
     if (event.currentTarget.children[2]) {
       const candidateName = event.currentTarget.children[2].innerHTML;
-      candidateRef.current = data.findIndex((v) => v.candidate_name === candidateName);
+      candidateRef.current = data.findIndex((v) => v.name === candidateName);
     }
   };
   useEffect(() => {
     const fetchData = async () => {
       const newData = await getCandidateList(worldcupId);
       setData(newData);
-      setRenderData(newData);
     };
     fetchData();
   }, []);
-  useEffect(() => {
-    if (data) {
-      const newAcc = getInfoAcc();
-      setInfo(newAcc);
-    }
-  }, [renderData]);
 
-  const getInfoAcc = () => {
-    const infoAcc = renderData.map((v) => ({
-      name: v.candidate_name,
-      total: v.info_total,
-      male: v.info_male,
-      female: v.info_female,
-      teens: v.info_teens,
-      twenties: v.info_twenties,
-      thirties: v.info_thirties,
-      forties: v.info_forties,
-      etc: v.info_etc,
+  useEffect(() => {
+    setRenderData(getRenderData(data));
+    setInfo(getInfoAcc(data));
+  }, [data]);
+  const getRenderData = useCallback((dataset: RankingData[]) => {
+    return dataset
+      .map((v) => ({
+        id: v.id,
+        url: v.url,
+        name: v.name,
+        victoryRatio: v.total > 0 ? v.victoryCnt / v.total : 0,
+        winRatio: v.total > 0 ? v.winCnt / v.showCnt : 0,
+      }))
+      .sort((a, b) => b.victoryRatio - a.victoryRatio);
+  }, []);
+
+  const getInfoAcc = useCallback((dataset: RankingData[]) => {
+    return dataset.map((v) => ({
+      name: v.name,
+      total: v.winCnt,
+      male: v.male,
+      female: v.female,
+      teens: v.teens,
+      twenties: v.twenties,
+      thirties: v.thirties,
+      forties: v.forties,
+      etc: v.etc,
     }));
-    return infoAcc;
-  };
+  }, []);
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    const filterData = data.filter((value) => value.candidate_name.indexOf(inputWord) !== -1);
-    setRenderData([...filterData]);
+    const filteredData = getRenderData(data.filter((value) => value.name.indexOf(inputWord) !== -1));
+    setRenderData([...filteredData]);
     setInputWord('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,14 +72,13 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   return (
     <>
       <Navigation>
-        <TabBar tabTitle={tabTitle} currentTab={currentTab} onTabChange={onTabChange} />
         <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
       </Navigation>
       <Caption>
         <LeftCaption>
           <span>순위</span>
           <span>이미지</span>
-          <span>이름</span>
+          <p>이름</p>
           <div />
         </LeftCaption>
         <RightCaption>
@@ -92,14 +95,13 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
       <RankingItems>
         {renderData.map((v, index) => {
           return (
-            <Wrapper key={v.candidate_id}>
+            <Wrapper key={v.id}>
               <RankingItem
                 id={index + 1}
-                url={v.candidate_url}
-                name={v.candidate_name}
-                winCnt={v.candidate_win_cnt}
-                showCnt={v.candidate_show_cnt}
-                victoryCnt={v.candidate_victory_cnt}
+                url={v.url}
+                name={v.name}
+                victoryRatio={v.victoryRatio}
+                winRatio={v.winRatio}
                 handleClick={handleClick}
               />
               {index + 1 < renderData.length ? <Divider /> : ''}
@@ -111,14 +113,12 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     </>
   );
 }
-const Navigation = styled.nav`
+const Navigation = styled.div`
   position: absolute;
-  top: -74px;
-  width: 100%;
+  right: 3vw;
+  top: -80px;
+  width: 230px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 4em;
 `;
 const Caption = styled.div`
   display: flex;
@@ -127,12 +127,16 @@ const Caption = styled.div`
   margin: 0 auto;
   font-size: 1.8em;
   font-weight: bold;
-  margin-bottom: 2em;
+  padding: 10px 0 30px 0;
 `;
 const LeftCaption = styled.div`
   width: 40%;
   display: flex;
   justify-content: space-evenly;
+  p {
+    width: 150px;
+    padding-left: 30px;
+  }
 `;
 const RightCaption = styled.div`
   width: 60%;
@@ -143,12 +147,12 @@ const RightCaption = styled.div`
     flex-direction: column;
     align-items: center;
     span {
+      padding-top: 10px;
       font-weight: 400;
       font-size: 0.5em;
     }
   }
 `;
-
 const Wrapper = styled.div`
   width: 100%;
   margin: 0;
@@ -165,7 +169,7 @@ const RankingItems = styled.section`
 const Divider = styled.hr`
   height: 1px;
   width: 90%;
-  background-color: ${({ theme }) => theme.color.gray[0]};
+  background-color: gray;
   margin-bottom: 1em;
 `;
 

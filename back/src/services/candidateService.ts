@@ -6,8 +6,25 @@ import { removeByCandidateId as removeInfoByCandidateId } from './infoService';
 export const getCandidateList = async (worldcupId: String) => {
   const candidateList = await getRepository(Candidate)
     .createQueryBuilder('candidate')
-    .where('candidate.worldcup_id= :id', { id: worldcupId })
+    .leftJoinAndSelect('candidate.worldcup', 'worldcup')
     .leftJoinAndSelect('candidate.info', 'info')
+    .where('candidate.worldcup_id= :id', { id: worldcupId })
+    .select([
+      'candidate.id AS id',
+      'candidate.name AS name',
+      'candidate.url AS url',
+      'worldcup.total_cnt AS total',
+      'candidate.show_cnt AS showCnt',
+      'candidate.win_cnt AS winCnt',
+      'candidate.victory_cnt AS victoryCnt',
+      'info.male AS male',
+      'info.female AS female',
+      'info.teens AS teens',
+      'info.twenties AS twenties',
+      'info.thirties AS thirties',
+      'info.forties AS forties',
+      'info.etc AS etc',
+    ])
     .execute();
   return candidateList;
 };

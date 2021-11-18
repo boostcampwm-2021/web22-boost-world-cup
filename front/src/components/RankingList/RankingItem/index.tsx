@@ -5,32 +5,32 @@ interface ItemProps {
   id: number;
   url: string;
   name: string;
-  winCnt: number;
-  showCnt: number;
-  victoryCnt: number;
+  victoryRatio: number;
+  winRatio: number;
   handleClick: (event: React.MouseEvent<Element>) => void;
 }
 interface RatioProp {
   width: number;
+  color: string;
 }
 
-function RankingItem({ id, url, name, winCnt, showCnt, victoryCnt, handleClick }: ItemProps): JSX.Element {
+function RankingItem({ id, url, name, victoryRatio, winRatio, handleClick }: ItemProps): JSX.Element {
   return (
     <Section>
       <LeftSection onClick={handleClick}>
         <span>{id}</span>
         <img src={url} alt="월드컵 후보 사진" />
-        <span>{name}</span>
+        <p>{name}</p>
         <div />
       </LeftSection>
       <RightSection>
         <Bar>
-          <Ratio width={victoryCnt / showCnt} />
-          <span>{`${((victoryCnt / showCnt) * 100).toFixed(2)}%`}</span>
+          <Ratio width={victoryRatio} color="#e53238" />
+          <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
         </Bar>
         <Bar>
-          <Ratio width={winCnt / showCnt} />
-          <span>{`${((winCnt / showCnt) * 100).toFixed(2)}%`}</span>
+          <Ratio width={winRatio} color="#0064d2" />
+          <span>{`${(winRatio * 100).toFixed(2)}%`}</span>
         </Bar>
       </RightSection>
     </Section>
@@ -42,8 +42,8 @@ const Section = styled.div`
   justify-content: space-between;
   width: 100%;
   margin: 0 auto;
-  font-size: 1.3em;
-  margin-bottom: 1em;
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
 `;
 const LeftSection = styled.div`
   width: 40%;
@@ -52,8 +52,14 @@ const LeftSection = styled.div`
   align-items: center;
   cursor: pointer;
   img {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
+  }
+  p {
+    width: 150px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 const RightSection = styled.div`
@@ -72,8 +78,8 @@ const Bar = styled.div`
   background-color: ${({ theme }) => theme.color.lightpink};
   border-radius: 12px;
   width: 30%;
-  height: 44px;
-  line-height: 50px;
+  height: 36px;
+  line-height: 36px;
   margin-left: 1em;
   span {
     position: absolute;
@@ -87,8 +93,8 @@ const Ratio = styled.div`
   top: 0;
   border-radius: 12px;
   width: ${(props: RatioProp) => `${props.width * 100}%`};
-  height: 44px;
-  background-color: ${({ theme }) => theme.color.highlight};
+  height: 36px;
+  background-color: ${(props: RatioProp) => `${props.color}`};
   opacity: 0.8;
 `;
 export default RankingItem;
