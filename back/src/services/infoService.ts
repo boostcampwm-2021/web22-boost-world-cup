@@ -71,3 +71,12 @@ export const setInfoData = (info: Info, gender: number, age: number): Info => {
   info.total += 1;
   return info;
 };
+
+export const removeByCandidateId = (id: number) => {
+  const InfoRepository = getRepository(Info);
+  return InfoRepository.createQueryBuilder('info')
+    .leftJoin('info.candidate', 'candidate')
+    .where('candidate.id = :id', { id })
+    .delete()
+    .execute();
+};
