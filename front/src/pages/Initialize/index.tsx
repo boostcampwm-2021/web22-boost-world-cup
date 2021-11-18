@@ -26,11 +26,11 @@ function Initialize({ location }: Props): JSX.Element {
   const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
 
   const fetchWorldAndSetState = useCallback(async () => {
-    const worldcup = await getWorldcupById(parseInt(worldcupId, 10));
-    const { candidates, title, description } = worldcup;
+    const worldcup = await getWorldcupById(Number(worldcupId));
+    const { totalCnt, title, description } = worldcup;
     setTitle(title);
     setDescription(description);
-    setCandidatesSize(candidates.length);
+    setCandidatesSize(totalCnt);
   }, [worldcupId]);
 
   const initializePossibleRound = useCallback(() => {

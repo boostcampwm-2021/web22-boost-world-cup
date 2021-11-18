@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { ImgInfo } from '../../types/Datas';
+import { ImgInfo, WorldcupMetaData } from '../../types/Datas';
 
 interface pagingQueryType {
   offset: number;
@@ -28,8 +28,8 @@ export const getWorldcupList = async (query: pagingQueryType): Promise<Array<wor
   return response.data.data.worldcup;
 };
 
-export const getWorldcupById = async (id: number) => {
-  const response = await axios.get(`/api/worldcups/${id}`);
+export const getWorldcupById = async (id: number): Promise<WorldcupMetaData> => {
+  const response = await axios.get(`/api/worldcups/${id}?metaonly=true`);
   const { data: worldcup } = response;
   return worldcup;
 };
