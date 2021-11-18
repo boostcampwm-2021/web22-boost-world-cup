@@ -82,7 +82,6 @@ function Initialize({ location }: Props): JSX.Element {
   };
 
   if (!isLoggedIn) {
-    console.log('here');
     return <Redirect to="/login" />;
   }
 

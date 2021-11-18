@@ -7,6 +7,7 @@ interface pagingQueryType {
   search?: string;
   keyword?: string;
 }
+
 interface worldcups {
   id: number;
   thumbnail1: string;

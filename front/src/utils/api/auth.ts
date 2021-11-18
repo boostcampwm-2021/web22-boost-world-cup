@@ -5,6 +5,7 @@ interface ServerResponse {
   message: string | null;
   data: null | UserData;
 }
+
 interface UserData {
   nickname: string;
   gender: number;

@@ -40,7 +40,7 @@ function CommentList({ worldcupId, comments, offset, setOffset, setComments }: P
     [offset, comments.length],
   );
 
-  useEffect((): any => {
+  useEffect((): VoidFunction => {
     if (target) {
       (observer.current as IntersectionObserver) = new IntersectionObserver(onIntersect, {
         threshold,

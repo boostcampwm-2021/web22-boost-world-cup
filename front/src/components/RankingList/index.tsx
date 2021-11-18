@@ -60,7 +60,6 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     event.preventDefault();
     const filterData = data.filter((value) => value.candidate_name.indexOf(inputWord) !== -1);
     setRenderData([...filterData]);
-    console.log(filterData);
     setInputWord('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {

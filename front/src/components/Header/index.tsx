@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import '@fontsource/rancho';
-import { FaUserAlt, FaUserAltSlash } from 'react-icons/fa';
+import { FaUserAlt } from 'react-icons/fa';
 import { loginState } from '../../recoil/atom';
 import HeaderModal from './HeaderModal';
 import SearchBar from '../SearchBar';
