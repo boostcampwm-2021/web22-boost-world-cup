@@ -11,3 +11,4 @@ export { default as Ranking } from './Ranking';
 export { default as MyInfo } from './MyInfo';
 export { default as Leave } from './Leave';
 export { default as Edit } from './Edit';
+export { default as Profile } from './Profile';

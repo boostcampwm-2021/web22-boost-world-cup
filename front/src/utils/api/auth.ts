@@ -38,3 +38,13 @@ export const deleteUser = async (userId: number | undefined) => {
   const response = await axios.delete(`/api/auth/user/${userId}`);
   return response.data;
 };
+
+export const putUser = async (id: number | undefined, nickname: string, gender: number, age: number) => {
+  const response = await axios.put(`/api/auth/user/${id}`, {
+    id,
+    nickname,
+    gender,
+    age,
+  });
+  return response.data;
+};

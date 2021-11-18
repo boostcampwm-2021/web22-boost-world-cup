@@ -1,20 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import qs from 'qs';
-
 import { signup } from '../../../utils/api/auth';
 
 interface Props {
-  location: Location;
   nickname: string;
   gender: number;
   age: number;
   setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SignupButton({ location, nickname, gender, age, setAuthenticated }: Props): JSX.Element {
-  const query = qs.parse(location.search, { ignoreQueryPrefix: true });
-  const { client_id: clientId } = query;
+function SignupButton({ nickname, gender, age, setAuthenticated }: Props): JSX.Element {
+  const url = new URL(window.location.href);
+  const clientId = url.searchParams.get('client_id');
 
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
