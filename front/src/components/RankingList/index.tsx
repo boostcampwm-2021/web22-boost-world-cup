@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { SearchBar, RankingModal } from '../../components';
@@ -29,16 +29,13 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     };
     fetchData();
   }, []);
-  useEffect(() => {
-    if (data) {
-      const newRatio = getInfoRatio(data);
-      setRenderData(newRatio);
-      const newAcc = getInfoAcc(data);
-      setInfo(newAcc);
-    }
-  }, [data]);
 
-  const getInfoRatio = (dataset: RankingData[]) => {
+  useEffect(() => {
+    setRenderData(getRenderData(data));
+    setInfo(getInfoAcc(data));
+  }, [data]);
+  console.log(renderData);
+  const getRenderData = useCallback((dataset: RankingData[]) => {
     return dataset
       .map((v) => ({
         id: v.id,
@@ -48,8 +45,9 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
         winRatio: v.winCnt / v.showCnt,
       }))
       .sort((a, b) => b.victoryRatio - a.victoryRatio);
-  };
-  const getInfoAcc = (dataset: RankingData[]) => {
+  }, []);
+
+  const getInfoAcc = useCallback((dataset: RankingData[]) => {
     return dataset.map((v) => ({
       name: v.name,
       total: v.winCnt,
@@ -61,11 +59,11 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
       forties: v.forties,
       etc: v.etc,
     }));
-  };
+  }, []);
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    const filteredData = getInfoRatio(data.filter((value) => value.name.indexOf(inputWord) !== -1));
+    const filteredData = getRenderData(data.filter((value) => value.name.indexOf(inputWord) !== -1));
     setRenderData([...filteredData]);
     setInputWord('');
   };
@@ -81,7 +79,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
         <LeftCaption>
           <span>순위</span>
           <span>이미지</span>
-          <span>이름</span>
+          <p>이름</p>
           <div />
         </LeftCaption>
         <RightCaption>
@@ -136,6 +134,10 @@ const LeftCaption = styled.div`
   width: 40%;
   display: flex;
   justify-content: space-evenly;
+  p {
+    width: 150px;
+    padding-left: 30px;
+  }
 `;
 const RightCaption = styled.div`
   width: 60%;

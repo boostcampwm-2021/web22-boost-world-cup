@@ -20,7 +20,7 @@ function RankingItem({ id, url, name, victoryRatio, winRatio, handleClick }: Ite
       <LeftSection onClick={handleClick}>
         <span>{id}</span>
         <img src={url} alt="월드컵 후보 사진" />
-        <span>{name}</span>
+        <p>{name}</p>
         <div />
       </LeftSection>
       <RightSection>
@@ -29,8 +29,8 @@ function RankingItem({ id, url, name, victoryRatio, winRatio, handleClick }: Ite
           <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
         </Bar>
         <Bar>
-          <Ratio width={victoryRatio} color="#0064d2" />
-          <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
+          <Ratio width={winRatio} color="#0064d2" />
+          <span>{`${(winRatio * 100).toFixed(2)}%`}</span>
         </Bar>
       </RightSection>
     </Section>
@@ -54,6 +54,12 @@ const LeftSection = styled.div`
   img {
     width: 50px;
     height: 50px;
+  }
+  p {
+    width: 150px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 const RightSection = styled.div`
@@ -85,7 +91,7 @@ const Ratio = styled.div`
   position: absolute;
   left: 0;
   top: 0;
-  border-radius: 12px 0 0 12px;
+  border-radius: 12px;
   width: ${(props: RatioProp) => `${props.width * 100}%`};
   height: 36px;
   background-color: ${(props: RatioProp) => `${props.color}`};
