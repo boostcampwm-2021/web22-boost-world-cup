@@ -40,8 +40,8 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
         id: v.id,
         url: v.url,
         name: v.name,
-        victoryRatio: v.victoryCnt / v.total,
-        winRatio: v.winCnt / v.showCnt,
+        victoryRatio: v.total > 0 ? v.victoryCnt / v.total : 0,
+        winRatio: v.total > 0 ? v.winCnt / v.showCnt : 0,
       }))
       .sort((a, b) => b.victoryRatio - a.victoryRatio);
   }, []);
