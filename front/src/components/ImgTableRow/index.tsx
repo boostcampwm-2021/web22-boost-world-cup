@@ -5,7 +5,7 @@ import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import { getSignedURLs } from '../../utils/api/image';
-import { deleteCandidate, patchCandidateName, patchCandidate } from '../../utils/api/candidate';
+import { deleteCandidate, patchCandidate } from '../../utils/api/candidate';
 import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
 import { ImgsAction } from '../../hooks/useImgInfos';
 
@@ -19,7 +19,6 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   const [willUploadFile, setWillUploadFile] = useState<File | null>(null);
   const [presignedURL, setPresignedURL] = useState<string | null>(null);
   const [deleteCandidateResult, deleteCandidateDispatcher] = useApiRequest(deleteCandidate);
-  const [patchCandidateNameResult, patchCandidateNameDispatcher] = useApiRequest(patchCandidateName);
   const [patchCandidateResult, patchCandidateDispatcher] = useApiRequest(patchCandidate);
   const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
 
@@ -28,7 +27,7 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   };
   const onImgNameBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
     if (imgInfo.name === target.value) return;
-    patchCandidateNameDispatcher({ type: REQUEST, requestProps: [imgInfo.key, target.value] });
+    patchCandidateDispatcher({ type: REQUEST, requestProps: [imgInfo.key, target.value] });
     imgInfosDispatcher({ type: 'CHANGE_IMG_NAME', payload: { key: imgInfo.key, name: target.value } });
   };
   const onImgChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -70,7 +69,7 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
         const { key: preKey } = imgInfo;
         const { name } = willUploadFile;
         setPresignedURL(presignedURL);
-        patchCandidateDispatcher({ type: REQUEST, requestProps: [preKey, newKey, name] });
+        patchCandidateDispatcher({ type: REQUEST, requestProps: [preKey, name, newKey] });
         imgInfosDispatcher({
           type: 'CHANGE_IMG',
           payload: { newKey, name, preKey },

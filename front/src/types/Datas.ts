@@ -70,3 +70,10 @@ export interface ErrorResponseData {
   result: 'fail';
   message: string;
 }
+
+export interface UserInfo {
+  id?: number;
+  nickname?: string;
+  gender?: number;
+  age?: number;
+}
