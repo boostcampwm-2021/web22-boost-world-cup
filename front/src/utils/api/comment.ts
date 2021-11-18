@@ -2,7 +2,7 @@ import axios from 'axios';
 import { CommentData } from '../../types/Datas';
 
 export const getComments = async (worldcupId: string, offset: number, limit: number): Promise<CommentData[]> => {
-  const response = await axios.get(`/api/comments/${worldcupId}`, { params: { offset, limit } });
+  const response = await axios.get(`/api/worldcups/${worldcupId}/comments`, { params: { offset, limit } });
   const {
     data: { comments },
   } = response;
@@ -10,8 +10,7 @@ export const getComments = async (worldcupId: string, offset: number, limit: num
 };
 
 export const createComment = async (worldcupId: string, message: string): Promise<CommentData> => {
-  const response = await axios.post('/api/comments', {
-    worldcupId,
+  const response = await axios.post(`/api/worldcups/${worldcupId}/comments`, {
     message,
   });
   return response.data;
@@ -22,7 +21,7 @@ interface commonResponse {
 }
 
 export const deleteComment = async (commentId: string): Promise<commonResponse> => {
-  const response = await axios.delete(`/api/comments/${commentId}`);
+  const response = await axios.delete(`/api/worldcups/comments/${commentId}`);
   return response.data;
 };
 
@@ -31,6 +30,10 @@ interface lengthResponse {
 }
 
 export const getCommentsCount = async (worldcupId: string): Promise<lengthResponse> => {
-  const response = await axios.get(`/api/comments/count/${worldcupId}`);
+  const response = await axios.get(`/api/worldcups/${worldcupId}/comments`, {
+    params: {
+      length: true,
+    },
+  });
   return response.data;
 };

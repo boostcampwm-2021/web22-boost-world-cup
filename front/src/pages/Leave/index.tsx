@@ -6,13 +6,7 @@ import Header from '../../components/Header';
 import logo from '../../images/logo.png';
 import { userState, loginState } from '../../recoil/atom';
 import { deleteUser } from '../../utils/api/auth';
-
-interface UserInfo {
-  id?: number;
-  nickname?: string;
-  gender?: number;
-  age?: number;
-}
+import { UserInfo } from '../../types/Datas';
 
 const Leave = (): JSX.Element => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);

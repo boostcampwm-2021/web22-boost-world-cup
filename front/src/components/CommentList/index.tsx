@@ -75,19 +75,23 @@ function CommentList({ worldcupId, comments, offset, setOffset, setComments }: P
 }
 
 const Wrapper = styled.div`
+  width: 60%;
   display: flex;
   flex-direction: column;
-  width: 80%;
 `;
 
 const Text = styled.div`
   ${({ theme }) => theme.fontStyle.bodyBold};
+  margin-bottom: 10px;
 `;
 
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.color.white};
+  border-radius: 10px;
+  padding: 7px 13px 7px 10px;
+  width: 100%;
 `;
 
 export default CommentList;

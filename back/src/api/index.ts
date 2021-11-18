@@ -6,7 +6,6 @@ import gameRouter from './gameRouter';
 import bucketRouter from './bucketRouter';
 import candidateRouter from './candidateRouter';
 import rankingRouter from './rankingRouter';
-import commentRouter from './commentRouter';
 
 const router = Router();
 
@@ -17,6 +16,5 @@ router.use('/game', gameRouter);
 router.use('/bucket', bucketRouter);
 router.use('/candidates', candidateRouter);
 router.use('/ranking', rankingRouter);
-router.use('/comments', commentRouter);
 
 export default router;

@@ -12,7 +12,11 @@ function TabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
     <BtnsWrapper>
       {tabTitle.map((title, index) => {
         return (
-          <TabBtn activated={currentTab === index + 1} onClick={() => onTabChange(index + 1)}>
+          <TabBtn
+            key={tabTitle.indexOf(title)}
+            activated={currentTab === index + 1}
+            onClick={() => onTabChange(index + 1)}
+          >
             {title}
           </TabBtn>
         );

@@ -7,6 +7,7 @@ export default {
     white: '#FFFFFF',
     gray: ['#6A6E71', '#CECFD1', '#524847'],
     highlight: '#27131B',
+    logo: '#b89068',
   },
   fontStyle: {
     h1: `
