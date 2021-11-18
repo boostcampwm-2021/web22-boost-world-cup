@@ -147,7 +147,7 @@ function Worldcup(): JSX.Element {
           data-value="2"
         />
       </ImageContainer>
-      <NameContainer>
+      <NameContainer select={pick}>
         <LeftName select={pick}>{leftCandidate ? leftCandidate.name : ''}</LeftName>
         <RightName select={pick}>{rightCandidate ? rightCandidate.name : ''}</RightName>
       </NameContainer>
@@ -186,13 +186,13 @@ const Round = styled.div`
   background-color: ${({ theme }) => theme.color.primary};
 `;
 
-const NameContainer = styled.div`
+const NameContainer = styled.div<{ select: number }>`
   position: absolute;
   width: 40%;
   top: 70%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: ${({ select }) => (select === 0 ? 'space-between' : 'center')};
   left: 50%;
   transform: translate(-50%);
   ${({ theme }) => theme.fontStyle.bodyBold};
