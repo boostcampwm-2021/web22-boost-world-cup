@@ -55,14 +55,14 @@ const worldcupController = {
     const { title } = request.body;
     const { id } = request.params;
     await worldcupService.patchWorldcupTitle(Number(id), title);
-    response.end();
+    response.json({ result: 'success', message: null });
   },
 
   patchDesc: async (request: Request, response: Response, next: NextFunction) => {
     const { desc } = request.body;
     const { id } = request.params;
     await worldcupService.patchWorldcupDesc(Number(id), desc);
-    response.end();
+    response.json({ result: 'success', message: null });
   },
 
   getCandidates: async (request: Request, response: Response, next: NextFunction) => {
