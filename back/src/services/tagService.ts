@@ -22,5 +22,5 @@ export const findOrCreate = async (tagName) => {
   const savedTag = await tagRepository.findOne({ where: { name: tagName } });
   if (savedTag) return savedTag;
   const newTag = tagRepository.create({ name: tagName });
-  return await tagRepository.save(newTag);
+  return tagRepository.save(newTag);
 };

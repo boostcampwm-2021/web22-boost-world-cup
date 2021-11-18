@@ -1,6 +1,7 @@
 import { Candidate } from '../entity/Candidate';
 import { Info } from '../entity/Info';
 import { getRepository } from 'typeorm';
+import { removeByCandidateId as removeInfoByCandidateId } from './infoService';
 
 export const getCandidateList = async (worldcupId: String) => {
   const candidateList = await getRepository(Candidate)
@@ -36,16 +37,17 @@ export const saveCandidate = async (candidate: Candidate) => {
   return await candidateRepository.save(candidate);
 };
 
-export const findOneByKey = async (candidateKey: string) => {
+export const findOneByKey = (candidateKey: string) => {
   const candidateRepository = getRepository(Candidate);
-  return await candidateRepository.findOne({ url: `${process.env.IMG_URL_END_POINT}/${candidateKey}.webp` });
+  return candidateRepository.findOne({ url: `${process.env.IMG_URL_END_POINT}/${candidateKey}.webp` });
 };
 
 export const removeByKey = async (key: string) => {
   const candidateRepository = getRepository(Candidate);
   const candidateToRemove = await findOneByKey(key);
   if (!candidateToRemove) return;
-  candidateRepository.remove(candidateToRemove);
+  await removeInfoByCandidateId(candidateToRemove.id);
+  return candidateRepository.remove(candidateToRemove);
 };
 
 export const save = async (imgInfos, worldcup) => {
@@ -75,9 +77,9 @@ export const patchCandidate = async (key: string, name: string, newKey?: string)
   return candidateRepository.save(candidate);
 };
 
-export const getCandidates = async (worldcupId: number, offset: number, limit: number) => {
+export const getCandidates = (worldcupId: number, offset: number, limit: number) => {
   const candidateRepository = getRepository(Candidate);
-  return await candidateRepository
+  return candidateRepository
     .createQueryBuilder('candidate')
     .select(['candidate.id AS id', 'candidate.name AS name', 'candidate.url AS url'])
     .leftJoin('candidate.worldcup', 'worldcup')
