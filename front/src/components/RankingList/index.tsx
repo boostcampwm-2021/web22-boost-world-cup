@@ -77,7 +77,9 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   };
   return (
     <>
-      <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
+      <Navigation>
+        <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
+      </Navigation>
       <Caption>
         <LeftCaption>
           <span>순위</span>
@@ -117,6 +119,13 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     </>
   );
 }
+const Navigation = styled.div`
+  position: fixed;
+  right: 10em;
+  top: 120px;
+  width: 230px;
+  display: flex;
+`;
 const Caption = styled.div`
   display: flex;
   justify-content: space-between;
