@@ -1,6 +1,7 @@
 import { Candidate } from '../entity/Candidate';
 import { Info } from '../entity/Info';
 import { getRepository } from 'typeorm';
+import { removeByCandidateId as removeInfoByCandidateId } from './infoService';
 
 export const getCandidateList = async (worldcupId: String) => {
   const candidateList = await getRepository(Candidate)
@@ -45,7 +46,8 @@ export const removeByKey = async (key: string) => {
   const candidateRepository = getRepository(Candidate);
   const candidateToRemove = await findOneByKey(key);
   if (!candidateToRemove) return;
-  candidateRepository.remove(candidateToRemove);
+  await removeInfoByCandidateId(candidateToRemove.id);
+  return candidateRepository.remove(candidateToRemove);
 };
 
 export const save = async (imgInfos, worldcup) => {
