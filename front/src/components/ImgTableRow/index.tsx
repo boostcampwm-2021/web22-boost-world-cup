@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ImgInfo } from '../../types/Datas';
+import { ImgInfo, PreSignedData } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import { getSignedURLs } from '../../utils/api/image';
 import { deleteCandidate, patchCandidate } from '../../utils/api/candidate';
-import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { ImgsAction } from '../../hooks/useImgInfos';
 
 interface Props {
@@ -18,9 +18,25 @@ interface Props {
 function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   const [willUploadFile, setWillUploadFile] = useState<File | null>(null);
   const [presignedURL, setPresignedURL] = useState<string | null>(null);
-  const [deleteCandidateResult, deleteCandidateDispatcher] = useApiRequest(deleteCandidate);
-  const [patchCandidateResult, patchCandidateDispatcher] = useApiRequest(patchCandidate);
-  const [getSignedURLsResult, getSignedURLsDispatcher] = useApiRequest(getSignedURLs);
+
+  const onDeleteCandidateSuccess = () => imgInfosDispatcher({ type: 'DELETE_IMG', payload: imgInfo.key });
+  const deleteCandidateDispatcher = useApiRequest(deleteCandidate, onDeleteCandidateSuccess);
+
+  const onGetSignedURLsSuccess = (presignedDatas: PreSignedData[]) => {
+    if (!willUploadFile) return;
+    const { key: newKey, presignedURL } = presignedDatas[0];
+    const { key: preKey } = imgInfo;
+    const { name } = willUploadFile;
+    setPresignedURL(presignedURL);
+    patchCandidateDispatcher({ type: REQUEST, requestProps: [preKey, name, newKey] });
+    imgInfosDispatcher({
+      type: 'CHANGE_IMG',
+      payload: { newKey, name, preKey },
+    });
+  };
+  const getSignedURLsDispatcher = useApiRequest<PreSignedData[]>(getSignedURLs, onGetSignedURLsSuccess);
+
+  const patchCandidateDispatcher = useApiRequest(patchCandidate);
 
   const onDeleteImg = () => {
     deleteCandidateDispatcher({ type: REQUEST, requestProps: [imgInfo.key] });
@@ -37,52 +53,6 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
     getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
     setWillUploadFile(file);
   };
-
-  useEffect(() => {
-    const { type } = deleteCandidateResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        imgInfosDispatcher({ type: 'DELETE_IMG', payload: imgInfo.key });
-        return;
-      }
-      case FAILURE: {
-        return;
-      }
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [deleteCandidateResult]);
-
-  useEffect(() => {
-    const { type } = getSignedURLsResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        if (!willUploadFile) return;
-        const { data } = getSignedURLsResult;
-        const { key: newKey, presignedURL } = data[0];
-        const { key: preKey } = imgInfo;
-        const { name } = willUploadFile;
-        setPresignedURL(presignedURL);
-        patchCandidateDispatcher({ type: REQUEST, requestProps: [preKey, name, newKey] });
-        imgInfosDispatcher({
-          type: 'CHANGE_IMG',
-          payload: { newKey, name, preKey },
-        });
-        return;
-      }
-      case FAILURE: {
-        return;
-      }
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [getSignedURLsResult]);
 
   useEffect(() => {
     setPresignedURL(null);

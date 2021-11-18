@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, TabBar } from '../../components';
-import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { useTabBar, useWorldcupForm, useImgInfos, usePagination } from '../../hooks';
 import {
   getWorldcupMetadata,
@@ -10,7 +10,7 @@ import {
   patchWorldcupDesc,
 } from '../../utils/api/worldcups';
 import { createCandidates } from '../../utils/api/candidate';
-import { ImgInfo } from '../../types/Datas';
+import { ImgInfo, WorldcupMetaData, Candidate } from '../../types/Datas';
 
 function Edit(): JSX.Element {
   const PAGINATION_LIMIT = 8;
@@ -20,11 +20,36 @@ function Edit(): JSX.Element {
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
   const [currentTab, onTabChange] = useTabBar();
   const [currentPage, offset, lastPage, onPageChange] = usePagination(totalCnt, PAGINATION_LIMIT);
-  const [getMetadataResult, getMetadataDispatcher] = useApiRequest(getWorldcupMetadata);
-  const [getCandidatesResult, getCandidatesDispatcher] = useApiRequest(getWorldcupCandidates);
-  const [patchTitleResult, patchTitleDispatcher] = useApiRequest(patchWorldcupTitle);
-  const [patchDescResult, patchDescDispatcher] = useApiRequest(patchWorldcupDesc);
-  const [createCandidatesResult, createCandidatesDispatcher] = useApiRequest(createCandidates);
+
+  const onGetMetadataSuccess = (metadata: WorldcupMetaData) => {
+    const { totalCnt, title, description } = metadata;
+    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: title });
+    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: description });
+    setTotalCnt(totalCnt);
+  };
+  const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(getWorldcupMetadata, onGetMetadataSuccess);
+
+  const onGetCandidatesSuccess = (candidates: Candidate[]) => {
+    const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.png).webp/;
+    const newCandidates: ImgInfo[] = candidates.map(
+      (info: any): ImgInfo => ({
+        name: info.name,
+        id: info.id,
+        key: info.url.match(keyReg).groups.key,
+        isUploaded: true,
+      }),
+    );
+    candidatesDispatcher({ type: 'SET_IMGS', payload: newCandidates });
+  };
+  const getCandidatesDispatcher = useApiRequest<Candidate[]>(getWorldcupCandidates, onGetCandidatesSuccess);
+
+  const onCreateCandidatesSuccess = () =>
+    getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
+  const createCandidatesDispatcher = useApiRequest(createCandidates, onCreateCandidatesSuccess);
+
+  const patchTitleDispatcher = useApiRequest(patchWorldcupTitle);
+  const patchDescDispatcher = useApiRequest(patchWorldcupDesc);
+
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
   const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
 
@@ -53,71 +78,6 @@ function Edit(): JSX.Element {
     candidatesDispatcher({ type: 'RESET' });
     getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
   }, [currentPage, worldcupId]);
-
-  useEffect(() => {
-    const { type } = createCandidatesResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
-        return;
-      }
-      case FAILURE:
-        return;
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [createCandidatesResult]);
-
-  useEffect(() => {
-    const { type } = getMetadataResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        const { data: metadata } = getMetadataResult;
-        const { totalCnt, title, description } = metadata;
-        worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: title });
-        worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: description });
-        setTotalCnt(totalCnt);
-        return;
-      }
-      case FAILURE:
-        return;
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [getMetadataResult]);
-
-  useEffect(() => {
-    const { type } = getCandidatesResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        const { data } = getCandidatesResult;
-        const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.png).webp/;
-        const candidates = data.map(
-          (info: any): ImgInfo => ({
-            name: info.name,
-            id: info.id,
-            key: info.url.match(keyReg).groups.key,
-            isUploaded: true,
-          }),
-        );
-        candidatesDispatcher({ type: 'SET_IMGS', payload: candidates });
-        return;
-      }
-      case FAILURE:
-        return;
-      default:
-        throw new Error('Unexpected request type');
-    }
-  }, [getCandidatesResult]);
 
   return (
     <>

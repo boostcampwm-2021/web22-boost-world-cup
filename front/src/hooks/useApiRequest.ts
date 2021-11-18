@@ -1,68 +1,70 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { AxiosResponse, AxiosError } from 'axios';
+
+export const NULL = 'NULL';
+export const REQUEST = 'REQUEST';
+export const FAILURE = 'FAILURE';
+export const SUCCESS = 'SUCCESS';
 
 interface RequestState<T> {
   type: 'NULL' | 'REQUEST' | 'SUCCESS' | 'FAILURE';
   requestProps?: any[];
-  data?: T;
-  status?: number;
+  response?: T;
+  statusCode?: number;
 }
 
-export const NULL = 'NULL';
-export const REQUEST = 'REQUEST';
-export const SUCCESS = 'SUCCESS';
-export const FAILURE = 'FAILURE';
+type RequestReducer<T> = (state: RequestState<T>, action: RequestState<T>) => RequestState<T>;
 
-type RequestReducer<T> = (action: RequestState<T>, state: RequestState<T>) => RequestState<T>;
-
-const requestReducer = <T>(state: RequestState<T>, action: RequestState<T>): RequestState<T> => {
-  const { type } = action;
-  switch (type) {
-    case 'NULL': {
-      return { type };
-    }
-    case 'REQUEST': {
-      const { requestProps } = action;
-      return { type, requestProps };
-    }
-    case 'SUCCESS': {
-      const { data } = action;
-      return { type, data };
-    }
-    case 'FAILURE': {
-      const { status } = action;
-      return { type, status };
-    }
-    default: {
-      throw new Error('Unexpected action type');
-    }
-  }
-};
+const requestReducer = <T>(state: RequestState<T>, action: RequestState<T>) => action;
 
 const fetchData = async <T>(
   apiRequest: (...args: any) => Promise<AxiosResponse<T>>,
-  dispatcher: React.Dispatch<RequestState<T>>,
+  requestDispatcher: React.Dispatch<RequestState<T>>,
   requestProps?: any[],
 ) => {
   try {
-    const { data } = requestProps ? await apiRequest(...requestProps) : await apiRequest();
-    dispatcher({ type: 'SUCCESS', data });
-  } catch (error) {
-    const err = error as AxiosError;
-    dispatcher({ type: 'FAILURE', status: err.response?.status });
+    const { data: response } = requestProps ? await apiRequest(...requestProps) : await apiRequest();
+    requestDispatcher({ type: SUCCESS, response });
+  } catch (err) {
+    const error = err as AxiosError;
+    requestDispatcher({ type: FAILURE, statusCode: error.response?.status });
   }
 };
 
 const useApiRequest = <T>(
   apiRequest: (...args: any) => Promise<AxiosResponse<T>>,
-): [RequestState<T>, React.Dispatch<RequestState<T>>] => {
-  const initialState: RequestState<T> = { type: 'NULL' };
-  const [requestState, requestDispatcher] = useReducer<RequestReducer<T>>(requestReducer, initialState);
+  onSuccess?: (data: T) => void,
+  onFailure?: (status: number) => void,
+): React.Dispatch<RequestState<T>> => {
+  const [requestState, requestDispatcher] = useReducer<RequestReducer<T>>(requestReducer, { type: NULL });
+
   useEffect(() => {
-    if (requestState.type !== 'REQUEST') return;
-    fetchData(apiRequest, requestDispatcher, requestState.requestProps);
+    switch (requestState.type) {
+      case NULL:
+        return;
+      case REQUEST: {
+        const { requestProps } = requestState;
+        fetchData(apiRequest, requestDispatcher, requestProps);
+        return;
+      }
+      case SUCCESS: {
+        const { response } = requestState;
+        if (onSuccess) onSuccess(response as T);
+        requestDispatcher({ type: NULL });
+        return;
+      }
+      case FAILURE: {
+        const { statusCode } = requestState;
+        if (onFailure && statusCode) onFailure(statusCode);
+        requestDispatcher({ type: NULL });
+        return;
+      }
+      default:
+        throw new Error('Unexpected request typee');
+    }
   }, [requestState]);
-  return [requestState, requestDispatcher];
+
+  return requestDispatcher;
 };
 
 export default useApiRequest;

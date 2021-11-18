@@ -71,6 +71,18 @@ export interface ErrorResponseData {
   message: string;
 }
 
+export interface WorldcupMetaData {
+  totalCnt: number;
+  title: string;
+  description: string;
+}
+
+export interface Candidate {
+  url: string;
+  name: string;
+  id: number;
+}
+
 export interface UserInfo {
   id?: number;
   nickname?: string;

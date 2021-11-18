@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { createWorldcup } from '../../utils/api/worldcups';
 import { MAIN } from '../../commons/constants/route';
-import useApiRequest, { NULL, REQUEST, SUCCESS, FAILURE } from '../../hooks/useApiRequest';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { WorldcupState } from '../../hooks/useWorldcupForm';
 import { ImgInfo } from '../../types/Datas';
 
@@ -13,7 +13,8 @@ interface Props {
 }
 
 function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
-  const [createWorldcupResult, createWorldcupDispatcher] = useApiRequest(createWorldcup);
+  const onCreateWorldcupSuccess = () => history.push(MAIN);
+  const createWorldcupDispatcher = useApiRequest(createWorldcup, onCreateWorldcupSuccess);
   const history = useHistory();
 
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
@@ -21,25 +22,6 @@ function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
     const { title, desc, keywords } = worldcupFormState;
     createWorldcupDispatcher({ type: REQUEST, requestProps: [title, desc, keywords, imgInfos] });
   };
-
-  useEffect(() => {
-    const { type } = createWorldcupResult;
-    switch (type) {
-      case NULL:
-      case REQUEST:
-        return;
-      case SUCCESS: {
-        history.push(MAIN);
-        return;
-      }
-      case FAILURE: {
-        return;
-      }
-      default: {
-        throw new Error('Unexpected request type');
-      }
-    }
-  }, [createWorldcupResult]);
 
   return (
     <BtnsWrapper>

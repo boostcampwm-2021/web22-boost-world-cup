@@ -12,30 +12,16 @@ interface Props {
   willUploadFile: File | null;
   presignedURL: string | null;
   imgInfosDispatcher: React.Dispatch<ImgsAction>;
-  onUploadSuccess?: (info: ImgInfo) => void;
 }
 
-function ImgPreView({
-  info,
-  tab,
-  willUploadFile,
-  presignedURL,
-  imgInfosDispatcher,
-  onUploadSuccess,
-}: Props): JSX.Element {
+function ImgPreView({ info, tab, willUploadFile, presignedURL, imgInfosDispatcher }: Props): JSX.Element {
   const IMG_URL_END_POINT = 'https://kr.object.ncloudstorage.com';
   const resizedImgURL = `${IMG_URL_END_POINT}/image-w120h120/${info.key}.webp`;
   const originImgURL = `${IMG_URL_END_POINT}/wiziboost-image-raw/${info.key}`;
   const initialImgURL = tab === 1 ? originImgURL : resizedImgURL;
 
   const [imgURL, setImgURL] = useState(initialImgURL);
-  const [isLoading, setIsLoading] = useUploadImg(
-    info,
-    willUploadFile,
-    presignedURL,
-    imgInfosDispatcher,
-    onUploadSuccess,
-  );
+  const [isLoading, setIsLoading] = useUploadImg(info, willUploadFile, presignedURL, imgInfosDispatcher);
   const placeholder =
     tab === 1 ? (
       <Loading type="spin" color="black" />
