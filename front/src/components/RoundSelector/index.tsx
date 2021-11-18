@@ -27,7 +27,9 @@ function RoundSelector({ round, possibleRound, roundSelector }: Props): JSX.Elem
         <img src={selectImg} alt="select" width="20px" height="20px" />
         <RoundList isOpen={isOpen}>
           {possibleRound.map((round, idx) => (
-            <Item onClick={() => roundSelector(idx)}>{round}강</Item>
+            <Item key={round} onClick={() => roundSelector(idx)}>
+              {round}강
+            </Item>
           ))}
         </RoundList>
       </RoundInput>
