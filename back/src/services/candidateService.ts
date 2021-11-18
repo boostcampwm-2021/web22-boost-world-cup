@@ -37,9 +37,9 @@ export const saveCandidate = async (candidate: Candidate) => {
   return await candidateRepository.save(candidate);
 };
 
-export const findOneByKey = async (candidateKey: string) => {
+export const findOneByKey = (candidateKey: string) => {
   const candidateRepository = getRepository(Candidate);
-  return await candidateRepository.findOne({ url: `${process.env.IMG_URL_END_POINT}/${candidateKey}.webp` });
+  return candidateRepository.findOne({ url: `${process.env.IMG_URL_END_POINT}/${candidateKey}.webp` });
 };
 
 export const removeByKey = async (key: string) => {
