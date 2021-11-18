@@ -17,6 +17,8 @@ function App(): JSX.Element {
     if (Object.keys(user).length !== 0) {
       setIsLoggedIn(true);
       setUserInfo(user);
+    } else {
+      setIsLoggedIn(false);
     }
   };
 
@@ -36,7 +38,7 @@ function App(): JSX.Element {
           <Route path={ROUTE.SIGNUP} component={PAGE.SignUp} />
           <Route path={ROUTE.MAKE} component={PAGE.Make} />
           <Route path={ROUTE.INITIALIZE} component={PAGE.Initialize} />
-          <Route path={ROUTE.WORLDCUP} component={PAGE.Worldcup} />
+          <Route path={ROUTE.WORLDCUP} component={PAGE.Game} />
           <Route path={ROUTE.MYWORLDCUP} component={PAGE.MyWorldcup} />
           <Route path={ROUTE.RANKING} component={PAGE.Ranking} />
           <Route path={ROUTE.MYINFO} component={PAGE.MyInfo} />
