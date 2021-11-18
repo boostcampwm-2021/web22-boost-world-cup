@@ -188,16 +188,17 @@ const Round = styled.div`
 
 const NameContainer = styled.div`
   position: absolute;
-  width: 300px;
+  width: 40%;
   top: 70%;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   left: 50%;
   transform: translate(-50%);
   ${({ theme }) => theme.fontStyle.bodyBold};
   div {
-    width: 100px;
+    padding-left: 10px;
+    padding-right: 10px;
     height: 40px;
     align-self: center;
     align-items: center;
