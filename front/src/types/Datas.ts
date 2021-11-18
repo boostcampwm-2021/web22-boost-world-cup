@@ -36,24 +36,20 @@ export interface CommentData {
 }
 
 export interface RankingData {
-  candidate_id: number;
-  candidate_url: string;
-  candidate_show_cnt: number;
-  candidate_win_cnt: number;
-  candidate_victory_cnt: number;
-  candidate_name: string;
-  candidate_created_at: Date;
-  candidate_worldcup_id: number;
-  info_id: number;
-  info_total: number;
-  info_male: number;
-  info_female: number;
-  info_teens: number;
-  info_twenties: number;
-  info_thirties: number;
-  info_forties: number;
-  info_etc: number;
-  info_candidate_id: number;
+  id: number;
+  name: string;
+  url: string;
+  total: number;
+  showCnt: number;
+  winCnt: number;
+  victoryCnt: number;
+  male: number;
+  female: number;
+  teens: number;
+  twenties: number;
+  thirties: number;
+  forties: number;
+  etc: number;
 }
 export interface InfoType {
   name: string;

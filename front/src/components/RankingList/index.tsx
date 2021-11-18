@@ -23,7 +23,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     setIsOpenModal(!isOpenModal);
     if (event.currentTarget.children[2]) {
       const candidateName = event.currentTarget.children[2].innerHTML;
-      candidateRef.current = data.findIndex((v) => v.candidate_name === candidateName);
+      candidateRef.current = data.findIndex((v) => v.name === candidateName);
     }
   };
   useEffect(() => {
@@ -43,22 +43,22 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
 
   const getInfoAcc = () => {
     const infoAcc = renderData.map((v) => ({
-      name: v.candidate_name,
-      total: v.info_total,
-      male: v.info_male,
-      female: v.info_female,
-      teens: v.info_teens,
-      twenties: v.info_twenties,
-      thirties: v.info_thirties,
-      forties: v.info_forties,
-      etc: v.info_etc,
+      name: v.name,
+      total: v.victoryCnt,
+      male: v.male,
+      female: v.female,
+      teens: v.teens,
+      twenties: v.twenties,
+      thirties: v.thirties,
+      forties: v.forties,
+      etc: v.etc,
     }));
     return infoAcc;
   };
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    const filterData = data.filter((value) => value.candidate_name.indexOf(inputWord) !== -1);
+    const filterData = data.filter((value) => value.name.indexOf(inputWord) !== -1);
     setRenderData([...filterData]);
     console.log(filterData);
     setInputWord('');
@@ -93,14 +93,14 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
       <RankingItems>
         {renderData.map((v, index) => {
           return (
-            <Wrapper key={v.candidate_id}>
+            <Wrapper key={v.id}>
               <RankingItem
                 id={index + 1}
-                url={v.candidate_url}
-                name={v.candidate_name}
-                winCnt={v.candidate_win_cnt}
-                showCnt={v.candidate_show_cnt}
-                victoryCnt={v.candidate_victory_cnt}
+                url={v.url}
+                name={v.name}
+                winCnt={v.winCnt}
+                showCnt={v.showCnt}
+                victoryCnt={v.victoryCnt}
                 handleClick={handleClick}
               />
               {index + 1 < renderData.length ? <Divider /> : ''}
