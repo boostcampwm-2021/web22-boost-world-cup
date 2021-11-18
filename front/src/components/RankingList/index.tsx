@@ -3,15 +3,12 @@ import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { SearchBar, RankingModal } from '../../components';
 import { getCandidateList } from '../../utils/api/ranking';
-import { useTabBar } from '../../hooks';
 import { RankingData, RankingSummaryData, InfoData } from '../../types/Datas';
 
 interface RankingProps {
   worldcupId: string;
 }
-
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
-  const [currentTab, onTabChange] = useTabBar();
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [data, setData] = useState<RankingData[]>([]);
