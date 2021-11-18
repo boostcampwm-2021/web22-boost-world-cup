@@ -117,9 +117,9 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   );
 }
 const Navigation = styled.div`
-  position: fixed;
-  right: 10em;
-  top: 120px;
+  position: absolute;
+  right: 3vw;
+  top: -80px;
   width: 230px;
   display: flex;
 `;
@@ -130,7 +130,7 @@ const Caption = styled.div`
   margin: 0 auto;
   font-size: 1.8em;
   font-weight: bold;
-  margin-bottom: 2em;
+  padding: 10px 0 30px 0;
 `;
 const LeftCaption = styled.div`
   width: 40%;
@@ -146,12 +146,12 @@ const RightCaption = styled.div`
     flex-direction: column;
     align-items: center;
     span {
+      padding-top: 10px;
       font-weight: 400;
       font-size: 0.5em;
     }
   }
 `;
-
 const Wrapper = styled.div`
   width: 100%;
   margin: 0;
@@ -168,7 +168,7 @@ const RankingItems = styled.section`
 const Divider = styled.hr`
   height: 1px;
   width: 90%;
-  background-color: ${({ theme }) => theme.color.gray[0]};
+  background-color: gray;
   margin-bottom: 1em;
 `;
 

@@ -28,8 +28,8 @@ function RankingItem({ id, url, name, victoryRatio, winRatio, handleClick }: Ite
           <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
         </Bar>
         <Bar>
-          <Ratio width={winRatio} />
-          <span>{`${(winRatio * 100).toFixed(2)}%`}</span>
+          <Ratio width={victoryRatio} />
+          <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
         </Bar>
       </RightSection>
     </Section>
@@ -41,8 +41,8 @@ const Section = styled.div`
   justify-content: space-between;
   width: 100%;
   margin: 0 auto;
-  font-size: 1.3em;
-  margin-bottom: 1em;
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
 `;
 const LeftSection = styled.div`
   width: 40%;
@@ -51,8 +51,8 @@ const LeftSection = styled.div`
   align-items: center;
   cursor: pointer;
   img {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
   }
 `;
 const RightSection = styled.div`
@@ -71,7 +71,7 @@ const Bar = styled.div`
   background-color: ${({ theme }) => theme.color.lightpink};
   border-radius: 12px;
   width: 30%;
-  height: 44px;
+  height: 36px;
   line-height: 50px;
   margin-left: 1em;
   span {
@@ -84,9 +84,9 @@ const Ratio = styled.div`
   position: absolute;
   left: 0;
   top: 0;
-  border-radius: 12px;
+  border-radius: 12px 0 0 12px;
   width: ${(props: RatioProp) => `${props.width * 100}%`};
-  height: 44px;
+  height: 36px;
   background-color: ${({ theme }) => theme.color.highlight};
   opacity: 0.8;
 `;
