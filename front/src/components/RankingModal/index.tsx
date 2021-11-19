@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { FaRegWindowClose } from 'react-icons/fa';
 import { InfoData } from '../../types/Datas';
@@ -9,8 +9,7 @@ interface ModalProps {
 }
 function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
   const [doughnutInfo, setDoughnutInfo] = useState<any[]>([]);
-  const color = ['#050f2c ', '#004b79', '#0091cd', '#56a0d3', '#c4dff6', '#84bd00', '#efdf00'];
-  const svgRef = useRef<SVGSVGElement>(null);
+  const COLORS = ['#050f2c ', '#004b79', '#0091cd', '#56a0d3', '#c4dff6', '#84bd00', '#efdf00'];
   const ageRatio = [
     info.teens / info.total,
     info.twenties / info.total,
@@ -24,7 +23,7 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
     const y = Math.sin(2 * Math.PI * percent);
     return [x, y];
   };
-  const makeDoughnutInfo = (dataSet: any[]) => {
+  const makeDoughnutInfo = useCallback((dataSet: any[]) => {
     let acc = 0;
     return dataSet.map((value, index) => {
       const [startX, startY] = getCoordCircle(acc);
@@ -33,7 +32,7 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
       const isLargeArc = value > 0.5 ? 1 : 0;
       return { startX, startY, endX, endY, isLargeArc };
     });
-  };
+  }, []);
   useEffect(() => {
     if (info.total > 0) {
       setDoughnutInfo(makeDoughnutInfo(ageRatio));
@@ -55,7 +54,7 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
                     d={`M ${doughnutInfo[index].startX} ${doughnutInfo[index].startY} A 1 1 0 ${doughnutInfo[index].isLargeArc} 1 ${doughnutInfo[index].endX} ${doughnutInfo[index].endY}`}
                     fill="none"
                     strokeWidth="0.4"
-                    stroke={color[index]}
+                    stroke={COLORS[index]}
                   />
                 );
               })}
@@ -64,7 +63,7 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
             <DoughnutLabel>
               {ageRatio.map((value, index) => {
                 return (
-                  <DoughnutDesc color={color[index]}>
+                  <DoughnutDesc color={COLORS[index]}>
                     <div />
                     <span>{index < 4 ? `${(index + 1) * 10}대` : `기타`}</span>
                     <p>{(value * 100).toFixed(0)}%</p>
@@ -77,10 +76,10 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
             <svg width="100%" height="65px">
               <defs>
                 <linearGradient id="barChart">
-                  <stop offset="0" stopColor={color[5]}>
+                  <stop offset="0" stopColor={COLORS[5]}>
                     <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
                   </stop>
-                  <stop offset="0" stopColor={color[6]}>
+                  <stop offset="0" stopColor={COLORS[6]}>
                     <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
                   </stop>
                 </linearGradient>
@@ -88,12 +87,12 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
               <rect id="Rectangle" x="0" y="0" width="300" height="30" rx="8" fill="url(#barChart)" />
             </svg>
             <BarLabel>
-              <BarDesc color={color[5]}>
+              <BarDesc color={COLORS[5]}>
                 <div />
                 <span>Male</span>
                 <p>{(genderRatio[0] * 100).toFixed(0)}%</p>
               </BarDesc>
-              <BarDesc color={color[6]}>
+              <BarDesc color={COLORS[6]}>
                 <div />
                 <span>Female</span>
                 <p>{(genderRatio[1] * 100).toFixed(0)}%</p>
