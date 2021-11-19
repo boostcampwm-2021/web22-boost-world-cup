@@ -1,13 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { FaRegWindowClose } from 'react-icons/fa';
-import { InfoData } from '../../types/Datas';
+import { InfoData, DoughnutChartData } from '../../types/Datas';
 
 interface ModalProps {
   info: InfoData;
   handleClick: (event: React.MouseEvent<Element>) => void;
 }
 function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
+  const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
+  const COLORS = ['#050f2c ', '#004b79', '#0091cd', '#56a0d3', '#c4dff6', '#84bd00', '#efdf00'];
   const ageRatio = [
     info.teens / info.total,
     info.twenties / info.total,
@@ -15,33 +17,25 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
     info.forties / info.total,
     info.etc / info.total,
   ];
-  console.log(ageRatio, info.total, info.teens, info.twenties, info.thirties, info.forties, info.etc);
   const genderRatio = [info.male / info.total, info.female / info.total];
-  const svgRef = useRef<SVGSVGElement>(null);
-  const color = ['#050f2c ', '#004b79', '#0091cd', '#56a0d3', '#c4dff6', '#84bd00', '#efdf00'];
   const getCoordCircle = (percent: number) => {
     const x = Math.cos(2 * Math.PI * percent);
     const y = Math.sin(2 * Math.PI * percent);
     return [x, y];
   };
+  const makeDoughnutInfo = useCallback((dataSet: number[]) => {
+    let acc = 0;
+    return dataSet.map((value) => {
+      const [startX, startY] = getCoordCircle(acc);
+      acc += value;
+      const [endX, endY] = getCoordCircle(acc);
+      const isLargeArc = value > 0.5 ? 1 : 0;
+      return { startX, startY, endX, endY, isLargeArc };
+    });
+  }, []);
   useEffect(() => {
-    if (info.total > 1) {
-      let acc = 0;
-      ageRatio.map((value, index) => {
-        const [startX, startY] = getCoordCircle(acc);
-        acc += value;
-        const [endX, endY] = getCoordCircle(acc);
-        const isLargeArc = value > 0.5 ? 1 : 0;
-
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', `M ${startX} ${startY} A 1 1 0 ${isLargeArc} 1 ${endX} ${endY}`);
-        path.setAttribute('fill', 'none');
-        path.setAttribute('stroke-width', '0.4');
-        path.setAttribute('stroke', color[index]);
-
-        (svgRef.current as SVGSVGElement).appendChild(path);
-        return path;
-      });
+    if (info.total > 0) {
+      setDoughnutInfo(makeDoughnutInfo(ageRatio));
     }
   }, []);
   return (
@@ -50,14 +44,26 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
         <span>{info.name}</span>
         <FaRegWindowClose onClick={handleClick} />
       </Header>
-      {info.total > 0 ? (
+      {doughnutInfo.length ? (
         <Content>
           <Doughnut>
-            <Svg width="300" height="300" viewBox="-1.5 -1.5 3 3" ref={svgRef} />
+            <DoughnutSvg width="300" height="300" viewBox="-1.5 -1.5 3 3">
+              {ageRatio.map((value, index) => {
+                return (
+                  <path
+                    d={`M ${doughnutInfo[index].startX} ${doughnutInfo[index].startY} A 1 1 0 ${doughnutInfo[index].isLargeArc} 1 ${doughnutInfo[index].endX} ${doughnutInfo[index].endY}`}
+                    fill="none"
+                    strokeWidth="0.4"
+                    stroke={COLORS[index]}
+                  />
+                );
+              })}
+              )
+            </DoughnutSvg>
             <DoughnutLabel>
               {ageRatio.map((value, index) => {
                 return (
-                  <DoughnutDesc color={color[index]}>
+                  <DoughnutDesc color={COLORS[index]}>
                     <div />
                     <span>{index < 4 ? `${(index + 1) * 10}대` : `기타`}</span>
                     <p>{(value * 100).toFixed(0)}%</p>
@@ -69,24 +75,24 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
           <Bar>
             <svg width="100%" height="65px">
               <defs>
-                <linearGradient id="left-to-right">
-                  <stop offset="0" stopColor={color[5]}>
+                <linearGradient id="barChart">
+                  <stop offset="0" stopColor={COLORS[5]}>
                     <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
                   </stop>
-                  <stop offset="0" stopColor={color[6]}>
+                  <stop offset="0" stopColor={COLORS[6]}>
                     <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
                   </stop>
                 </linearGradient>
               </defs>
-              <rect id="Rectangle" x="0" y="0" width="300" height="30" rx="8" fill="url(#left-to-right)" />
+              <rect id="Rectangle" x="0" y="0" width="300" height="30" rx="8" fill="url(#barChart)" />
             </svg>
             <BarLabel>
-              <BarDesc color={color[5]}>
+              <BarDesc color={COLORS[5]}>
                 <div />
                 <span>Male</span>
                 <p>{(genderRatio[0] * 100).toFixed(0)}%</p>
               </BarDesc>
-              <BarDesc color={color[6]}>
+              <BarDesc color={COLORS[6]}>
                 <div />
                 <span>Female</span>
                 <p>{(genderRatio[1] * 100).toFixed(0)}%</p>
@@ -139,7 +145,7 @@ const Doughnut = styled.section`
   height: 90%;
   width: 50%;
 `;
-const Svg = styled.svg`
+const DoughnutSvg = styled.svg`
   background-color: white;
   path {
     cursor: pointer;

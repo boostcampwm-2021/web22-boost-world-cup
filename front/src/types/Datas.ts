@@ -69,6 +69,13 @@ export interface InfoData {
   forties: number;
   etc: number;
 }
+export interface DoughnutChartData {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  isLargeArc: number;
+}
 export interface ErrorResponseData {
   result: 'fail';
   message: string;

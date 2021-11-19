@@ -34,6 +34,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     setRenderData(getRenderData(data));
     setInfo(getInfoAcc(data));
   }, [data]);
+
   const getRenderData = useCallback((dataset: RankingData[]) => {
     return dataset
       .map((v) => ({
@@ -41,9 +42,14 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
         url: v.url,
         name: v.name,
         victoryRatio: v.total > 0 ? v.victoryCnt / v.total : 0,
-        winRatio: v.total > 0 ? v.winCnt / v.showCnt : 0,
+        winRatio: v.showCnt > 0 ? v.winCnt / v.showCnt : 0,
       }))
-      .sort((a, b) => b.victoryRatio - a.victoryRatio);
+      .sort((a, b) => {
+        if (a.victoryRatio === b.victoryRatio) {
+          return b.winRatio - a.winRatio;
+        }
+        return b.victoryRatio - a.victoryRatio;
+      });
   }, []);
 
   const getInfoAcc = useCallback((dataset: RankingData[]) => {
