@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { FaRegWindowClose } from 'react-icons/fa';
-import { InfoData } from '../../types/Datas';
+import { InfoData, DoughnutChartData } from '../../types/Datas';
 
 interface ModalProps {
   info: InfoData;
   handleClick: (event: React.MouseEvent<Element>) => void;
 }
 function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
-  const [doughnutInfo, setDoughnutInfo] = useState<any[]>([]);
+  const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
   const COLORS = ['#050f2c ', '#004b79', '#0091cd', '#56a0d3', '#c4dff6', '#84bd00', '#efdf00'];
   const ageRatio = [
     info.teens / info.total,
@@ -23,9 +23,9 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
     const y = Math.sin(2 * Math.PI * percent);
     return [x, y];
   };
-  const makeDoughnutInfo = useCallback((dataSet: any[]) => {
+  const makeDoughnutInfo = useCallback((dataSet: number[]) => {
     let acc = 0;
-    return dataSet.map((value, index) => {
+    return dataSet.map((value) => {
       const [startX, startY] = getCoordCircle(acc);
       acc += value;
       const [endX, endY] = getCoordCircle(acc);
