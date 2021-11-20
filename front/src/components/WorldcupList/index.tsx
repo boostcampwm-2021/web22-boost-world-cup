@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import WorldCupItem from './WorldCupItem';
 import MyWorldCupItem from './MyWorldCupItem';
 import Loader from '../Loader';
-import { getWorldcupList } from '../../utils/api/worldcups';
+import { getWorldcupList, getMyWorldcupList } from '../../utils/api/worldcups';
+import { userState } from '../../recoil/atom';
 
 interface WorldcupType {
   id: number;
@@ -24,6 +26,7 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
   const [isClickMore, setIsClickMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<WorldcupType[]>([]);
+  const userInfo: any = useRecoilValue(userState);
   const observer = useRef<IntersectionObserver | null>(null);
   const target = useRef<HTMLDivElement | null>(null);
   const isMounted = useRef(false);
@@ -33,7 +36,12 @@ function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Prop
     setIsClickMore(!isClickMore);
   };
   const fetchData = async () => {
-    const newItems = await getWorldcupList({ offset, limit, search: searchWord, keyword: selectedTag });
+    let newItems;
+    if (type === 'worldcup') {
+      newItems = await getWorldcupList({ offset, limit, search: searchWord, keyword: selectedTag });
+    } else {
+      newItems = await getMyWorldcupList({ id: userInfo.id, offset, limit });
+    }
     if (!newItems.length) {
       (observer.current as IntersectionObserver).disconnect();
       setLoading(false);
