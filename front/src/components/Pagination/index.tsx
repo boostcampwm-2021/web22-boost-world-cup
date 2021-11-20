@@ -3,45 +3,42 @@ import styled from 'styled-components';
 import { BiChevronLeftCircle, BiChevronRightCircle } from 'react-icons/bi';
 
 interface Props {
-  pageCnt: number;
+  lastPage: number;
   currentPage: number;
-  onSpecificPageBtnClick: React.MouseEventHandler<HTMLButtonElement>;
-  onPreBtnClick: React.MouseEventHandler<HTMLButtonElement>;
-  onNextBtnClick: React.MouseEventHandler<HTMLButtonElement>;
+  onPageChange: (nextPage: number) => void;
 }
 
-function Pagination({
-  pageCnt,
-  currentPage,
-  onSpecificPageBtnClick,
-  onPreBtnClick,
-  onNextBtnClick,
-}: Props): JSX.Element {
+function Pagination({ lastPage, currentPage, onPageChange }: Props): JSX.Element {
   const SHOW_PAGE_CNT = 9;
   const preCycleCnt = SHOW_PAGE_CNT * Math.floor((currentPage - 1) / SHOW_PAGE_CNT);
   const pageBtns = Array.from(
-    { length: preCycleCnt + SHOW_PAGE_CNT > pageCnt ? pageCnt - preCycleCnt : SHOW_PAGE_CNT },
+    { length: preCycleCnt + SHOW_PAGE_CNT > lastPage ? lastPage - preCycleCnt : SHOW_PAGE_CNT },
     (_, idx) => idx + 1 + preCycleCnt,
   ).map((page) => (
     <PageBtn
       activated={page === currentPage}
       disabled={page === currentPage}
-      onClick={onSpecificPageBtnClick}
+      onClick={() => onPageChange(page)}
       key={page}
     >
       {page}
     </PageBtn>
   ));
 
-  if (!pageCnt) return <div />;
+  if (!lastPage) return <div />;
 
   return (
     <Container>
-      <ArrowBtn type="button" position="left" onClick={onPreBtnClick} disabled={currentPage <= 1}>
+      <ArrowBtn type="button" position="left" onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1}>
         <BiChevronLeftCircle size={40} />
       </ArrowBtn>
       {pageBtns}
-      <ArrowBtn type="button" position="right" onClick={onNextBtnClick} disabled={currentPage >= pageCnt}>
+      <ArrowBtn
+        type="button"
+        position="right"
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage >= lastPage}
+      >
         <BiChevronRightCircle size={40} />
       </ArrowBtn>
     </Container>
