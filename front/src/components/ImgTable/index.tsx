@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ImgTableRow from '../ImgTableRow';
-import Pagination from '../ImgTablePagination';
+import Pagination from '../Pagination';
 import { ImgInfo } from '../../types/Datas';
 import { ImgsAction } from '../../hooks/useImgInfos';
 

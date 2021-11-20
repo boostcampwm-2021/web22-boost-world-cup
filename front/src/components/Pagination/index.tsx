@@ -10,7 +10,7 @@ interface Props {
   onNextBtnClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function ImgTablePagination({
+function Pagination({
   pageCnt,
   currentPage,
   onSpecificPageBtnClick,
@@ -81,4 +81,4 @@ const ArrowBtn = styled.button<{ position: 'left' | 'right' }>`
   }
 `;
 
-export default ImgTablePagination;
+export default Pagination;
