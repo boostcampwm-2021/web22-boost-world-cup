@@ -4,6 +4,7 @@ import { Router } from 'express';
 const router = Router();
 
 router.get('/', controller.all);
+router.get('/user', controller.getMyWorldcup);
 router.get('/:id', controller.one);
 router.get('/:id/comments', controller.getComments);
 router.post('/', controller.save);
