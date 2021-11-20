@@ -23,6 +23,7 @@ const Container = styled.div`
   width: 145px;
   height: 45px;
   border-radius: 10px;
+  cursor: pointer;
 `;
 
 export default Button;
