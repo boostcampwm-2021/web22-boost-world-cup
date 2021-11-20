@@ -5,6 +5,7 @@ import { FaTrash, FaPen, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { loginState } from '../../../recoil/atom';
 import ShareModal from '../../ShareModal';
+import DeleteModal from '../../DeleteModal';
 
 interface Props {
   id: number;
@@ -16,11 +17,20 @@ interface Props {
 interface ModalProps {
   isOpenModal: boolean;
 }
+interface DeleteModalProps {
+  isDeleteModalOpen: boolean;
+}
 function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
   const [isOpenModal, setIsOpenMpdal] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const deleteModalHandler = () => {
+    setIsDeleteModalOpen((isDeleteModalOpen) => !isDeleteModalOpen);
+  };
+
   const openModal = () => {
-    setIsOpenMpdal(!isOpenModal);
+    setIsOpenMpdal((isOpenModal) => !isOpenModal);
   };
   return (
     <Item>
@@ -31,17 +41,15 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
       <Title>{title}</Title>
       <Desc>{desc}</Desc>
       <Buttons>
-        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
-          <Start>
-            <FaTrash />
-            <span>삭제하기</span>
-          </Start>
-        </Link>
-        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
-          <Ranking>
+        <Delete onClick={deleteModalHandler}>
+          <FaTrash />
+          <span>삭제하기</span>
+        </Delete>
+        <Link to={isLoggedIn ? `/edit/${id}` : '/login'}>
+          <Edit>
             <FaPen />
             <span>수정하기</span>
-          </Ranking>
+          </Edit>
         </Link>
         <Share onClick={openModal}>
           <FaShare />
@@ -51,6 +59,9 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
       <ModalBox isOpenModal={isOpenModal}>
         <ShareModal id={id} />
       </ModalBox>
+      <DeleteModalContainer isDeleteModalOpen={isDeleteModalOpen}>
+        <DeleteModal id={id} />
+      </DeleteModalContainer>
     </Item>
   );
 }
@@ -96,7 +107,7 @@ const Buttons = styled.div`
   display: flex;
   padding-top: 1em;
 `;
-const Start = styled.div`
+const Delete = styled.div`
   display: flex;
   padding: 0.5em;
   color: red;
@@ -114,7 +125,7 @@ const Start = styled.div`
     background-color: red;
   }
 `;
-const Ranking = styled.div`
+const Edit = styled.div`
   display: flex;
   padding: 0.5em;
   color: orange;
@@ -155,6 +166,18 @@ const ModalBox = styled.div`
   visibility: ${(props: ModalProps) => {
     return props.isOpenModal ? 'visible' : 'hidden';
   }};
+`;
+
+const DeleteModalContainer = styled.div`
+  display: ${(props: DeleteModalProps) => {
+    return props.isDeleteModalOpen ? 'block' : 'none';
+  }};
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 
 export default MyWorldCupItem;
