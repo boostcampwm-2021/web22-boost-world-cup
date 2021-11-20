@@ -60,7 +60,7 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
         <ShareModal id={id} />
       </ModalBox>
       <DeleteModalContainer isDeleteModalOpen={isDeleteModalOpen}>
-        <DeleteModal id={id} />
+        <DeleteModal id={id} setIsDeleteModalOpen={setIsDeleteModalOpen} />
       </DeleteModalContainer>
     </Item>
   );

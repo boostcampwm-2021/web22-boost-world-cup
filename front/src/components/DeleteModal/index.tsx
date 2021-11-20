@@ -5,13 +5,18 @@ import Logo from '../../images/logo.png';
 
 interface DeleteModalProps {
   id: number;
+  setIsDeleteModalOpen: any;
 }
 
-const DeleteModal = ({ id }: DeleteModalProps): JSX.Element => {
+const DeleteModal = ({ id, setIsDeleteModalOpen }: DeleteModalProps): JSX.Element => {
   const theme: any = useTheme();
 
-  const onClickHandler = (): void => {
+  const onDeleteButtonHandler = (): void => {
     console.log('test');
+  };
+
+  const onCancelButtonHandler = (): void => {
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -20,8 +25,8 @@ const DeleteModal = ({ id }: DeleteModalProps): JSX.Element => {
       <Title>삭제하시겠습니까?</Title>
       <Desc>삭제하시면 복구할 수 없어요!</Desc>
       <ButtonContainer>
-        <Button name="삭제" onClickHandler={onClickHandler} color={theme.color.pink} />
-        <Button name="취소" onClickHandler={onClickHandler} color={theme.color.lightpink} />
+        <Button name="삭제" onClickHandler={onDeleteButtonHandler} color={theme.color.pink} />
+        <Button name="취소" onClickHandler={onCancelButtonHandler} color={theme.color.lightpink} />
       </ButtonContainer>
     </Container>
   );
