@@ -114,6 +114,18 @@ const worldcupController = {
       next(err);
     }
   },
+
+  getMyWorldcup: async (request: Request, response: Response, next: NextFunction) => {
+    const { id, offset, limit } = request.query;
+    const data = await worldcupService.findMyWorldcup(id, offset, limit);
+    response.json({
+      result: 'success',
+      message: null,
+      data: {
+        worldcup: data,
+      },
+    });
+  },
 };
 
 export default worldcupController;
