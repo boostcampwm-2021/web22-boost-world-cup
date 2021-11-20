@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, TabBar } from '../../components';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { useTabBar, useWorldcupForm, useImgInfos, usePagination } from '../../hooks';
+import { useTabBar, useWorldcupForm, useImgInfos, usePaginationAsync } from '../../hooks';
 import {
   getWorldcupMetadata,
   getWorldcupCandidates,
@@ -14,12 +14,20 @@ import { ImgInfo, WorldcupMetaData, Candidate } from '../../types/Datas';
 
 function Edit(): JSX.Element {
   const PAGINATION_LIMIT = 8;
+  const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
+  const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
   const [addedImgs, addedImgsDispatcher] = useImgInfos();
   const [candidates, candidatesDispatcher] = useImgInfos();
   const [totalCnt, setTotalCnt] = useState(0);
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
   const [currentTab, onTabChange] = useTabBar();
-  const [currentPage, offset, lastPage, onPageChange] = usePagination(totalCnt, PAGINATION_LIMIT);
+  const [pageItems, currentPage, offset, lastPage, onPageChange] = usePaginationAsync<Candidate>(
+    totalCnt,
+    PAGINATION_LIMIT,
+    getWorldcupCandidates,
+    [worldcupId],
+    [currentTab, candidates.length],
+  );
 
   const onGetMetadataSuccess = (metadata: WorldcupMetaData) => {
     const { totalCnt, title, description } = metadata;
@@ -29,29 +37,10 @@ function Edit(): JSX.Element {
   };
   const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(getWorldcupMetadata, onGetMetadataSuccess);
 
-  const onGetCandidatesSuccess = (candidates: Candidate[]) => {
-    const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.[\w]+).webp/;
-    const newCandidates: ImgInfo[] = candidates.map(
-      (info: any): ImgInfo => ({
-        name: info.name,
-        id: info.id,
-        key: info.url.match(keyReg).groups.key,
-        isUploaded: true,
-      }),
-    );
-    candidatesDispatcher({ type: 'SET_IMGS', payload: newCandidates });
-  };
-  const getCandidatesDispatcher = useApiRequest<Candidate[]>(getWorldcupCandidates, onGetCandidatesSuccess);
-
-  const onCreateCandidatesSuccess = () =>
-    getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
-  const createCandidatesDispatcher = useApiRequest(createCandidates, onCreateCandidatesSuccess);
+  const createCandidatesDispatcher = useApiRequest(createCandidates);
 
   const patchTitleDispatcher = useApiRequest(patchWorldcupTitle);
   const patchDescDispatcher = useApiRequest(patchWorldcupDesc);
-
-  const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
-  const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
 
   const getSignedURLsSuccessEffect = (addedImgs: ImgInfo[]) => {
     createCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, addedImgs] });
@@ -75,9 +64,17 @@ function Edit(): JSX.Element {
   }, [currentTab, worldcupId, candidates.length]);
 
   useEffect(() => {
-    candidatesDispatcher({ type: 'RESET' });
-    getCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, offset, PAGINATION_LIMIT] });
-  }, [currentPage, worldcupId]);
+    const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.[\w]+).webp/;
+    const newCandidates: ImgInfo[] = pageItems.map(
+      (info: any): ImgInfo => ({
+        name: info.name,
+        id: info.id,
+        key: info.url.match(keyReg).groups.key,
+        isUploaded: true,
+      }),
+    );
+    candidatesDispatcher({ type: 'SET_IMGS', payload: newCandidates });
+  }, [pageItems]);
 
   useEffect(() => {
     addedImgsDispatcher({ type: 'RESET' });
