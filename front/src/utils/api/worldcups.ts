@@ -44,7 +44,7 @@ export const createWorldcup = (
 export const getWorldcupMetadata = (id: number): Promise<AxiosResponse> =>
   axios.get(`/api/worldcups/${id}?metaonly=true`);
 
-export const getWorldcupCandidates = (worldcupId: number, offset: number, limit: number): Promise<AxiosResponse> =>
+export const getWorldcupCandidates = (offset: number, limit: number, worldcupId: number): Promise<AxiosResponse> =>
   axios.get(`/api/worldcups/${worldcupId}/candidates?offset=${offset}&limit=${limit}`);
 
 export const patchWorldcupTitle = (worldcupId: number, title: string): Promise<AxiosResponse> =>

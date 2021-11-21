@@ -1,25 +1,57 @@
 import { useState, useEffect } from 'react';
+import { AxiosResponse } from 'axios';
+import useApiRequest, { REQUEST } from './useApiRequest';
 
-const usePagination = (
+const usePagination = <T>(
   totalCnt: number,
   limit: number,
-  changeEffect?: () => void,
-): [number, number, number, (nextPage: number) => void] => {
+): [T[], number, number, number, (nextPage: number) => void, React.Dispatch<React.SetStateAction<T[]>>] => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageItems, setItems] = useState<T[]>([]);
   const offset = limit * (currentPage - 1);
   const lastPage = Math.ceil(totalCnt / limit);
-  const onPageChange = (nextPage: number) => setCurrentPage(nextPage);
-
-  useEffect(() => {
-    if (!changeEffect) return;
-    changeEffect();
-  }, [currentPage]);
+  const onPageChange = (nextPage: number) => {
+    if (nextPage === currentPage) return;
+    if (nextPage < 1 || nextPage > lastPage) return;
+    setCurrentPage(nextPage);
+  };
 
   useEffect(() => {
     if (currentPage > lastPage && lastPage >= 1) setCurrentPage(lastPage);
   }, [totalCnt]);
 
-  return [currentPage, offset, lastPage, onPageChange];
+  return [pageItems, currentPage, offset, lastPage, onPageChange, setItems];
 };
 
-export default usePagination;
+export const usePaginationAsync = <T>(
+  totalCnt: number,
+  limit: number,
+  getItems: (offset: number, limit: number, ...args: any[]) => Promise<AxiosResponse>,
+  requestProps: any[],
+  dependencies: any[] = [],
+): [T[], number, number, number, (nextPage: number) => void] => {
+  const [pageItems, currentPage, offset, lastPage, onPageChange, setItems] = usePagination<T>(totalCnt, limit);
+  const onGetItemsSuccess = (newItems: T[]) => setItems(newItems);
+  const getItemsDispatcher = useApiRequest(getItems, onGetItemsSuccess);
+
+  useEffect(() => {
+    getItemsDispatcher({ type: REQUEST, requestProps: [offset, limit, ...requestProps] });
+  }, [currentPage, ...dependencies]);
+
+  return [pageItems, currentPage, offset, lastPage, onPageChange];
+};
+
+export const usePaginationSync = <T>(
+  totalCnt: number,
+  limit: number,
+  items: T[],
+  dependencies: any[] = [],
+): [T[], number, number, number, (nextPage: number) => void] => {
+  const [pageItems, currentPage, offset, lastPage, onPageChange, setItems] = usePagination<T>(totalCnt, limit);
+
+  useEffect(() => {
+    setItems(items.slice(offset, offset + limit));
+  }, [currentPage, ...dependencies]);
+
+  return [pageItems, currentPage, offset, lastPage, onPageChange];
+};
