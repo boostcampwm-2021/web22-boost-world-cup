@@ -7,9 +7,6 @@ export class Info {
   id: number;
 
   @Column({ default: '0' })
-  total: number;
-
-  @Column({ default: '0' })
   male: number;
 
   @Column({ default: '0' })
