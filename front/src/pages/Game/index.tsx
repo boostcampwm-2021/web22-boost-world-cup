@@ -231,13 +231,6 @@ const ImageContainer = styled.div<{ select: number }>`
   }
 `;
 
-const selected = keyframes`
-  from {}
-  to {
-    background-size: 100% 90%;
-  }
-`;
-
 const notSelected = keyframes`
   from {
     width:100%;
@@ -250,15 +243,9 @@ const notSelected = keyframes`
 const LeftImage = styled.div<{ imageUrl: string; select: number }>`
   width: 100%;
   background: url(${({ imageUrl }) => imageUrl});
-  background-size: 100% 60%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  animation: ${({ select }) =>
-    select === 1
-      ? css`
-          ${selected} 1s ease forwards;
-        `
-      : css``};
   animation: ${({ select }) =>
     select === 2
       ? css`
@@ -270,20 +257,13 @@ const LeftImage = styled.div<{ imageUrl: string; select: number }>`
 const RightImage = styled.div<{ imageUrl: string; select: number }>`
   width: 100%;
   background: url(${(props) => props.imageUrl});
-  background-size: 100% 60%;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  animation: ${({ select }) => (select === 2 ? css`` : css``)};
   animation: ${({ select }) =>
     select === 1
       ? css`
           ${notSelected} 1s ease forwards;
-        `
-      : css``};
-  animation: ${({ select }) =>
-    select === 2
-      ? css`
-          ${selected} 1s ease forwards;
         `
       : css``};
 `;
