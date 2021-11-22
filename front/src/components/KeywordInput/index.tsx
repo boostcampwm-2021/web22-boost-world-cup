@@ -16,7 +16,7 @@ function KeywordInput(): JSX.Element {
     } = event;
     setText(value);
   };
-
+  let debouncer: undefined | ReturnType<typeof setTimeout>;
   const keydownEventHander = (event: React.KeyboardEvent<HTMLElement>) => {
     const { code } = event;
     if (code === 'Space' || code === 'Enter') {
@@ -25,8 +25,10 @@ function KeywordInput(): JSX.Element {
         setText('');
         return;
       }
-
-      setTimeout(() => {
+      if (debouncer) {
+        return;
+      }
+      debouncer = setTimeout(() => {
         setKeywords((prev) => [...prev, tempText]);
         setText('');
       }, 0);
