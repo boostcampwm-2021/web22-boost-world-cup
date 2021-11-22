@@ -115,7 +115,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
           </div>
         </RightCaption>
       </Caption>
-      <RankingItems>
+      <RankingItemContainer>
         {renderData.map((v, index) => {
           return (
             <Wrapper key={v.id}>
@@ -131,7 +131,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
             </Wrapper>
           );
         })}
-      </RankingItems>
+      </RankingItemContainer>
       {isOpenModal && (
         <RankingModal openModal={openModal} closeModal={closeModal} info={info[candidateRef.current as number]} />
       )}
@@ -185,7 +185,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const RankingItems = styled.section`
+const RankingItemContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
