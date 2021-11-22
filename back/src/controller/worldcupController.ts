@@ -49,7 +49,9 @@ const worldcupController = {
   },
 
   remove: async (request: Request, response: Response, next: NextFunction) => {
-    return await worldcupService.removeById(request.params.id);
+    const { id } = request.params;
+    await worldcupService.removeWorldcupById(Number(id));
+    response.json({ result: 'success', message: null });
   },
 
   patchTitle: async (request: Request, response: Response, next: NextFunction) => {
@@ -113,6 +115,18 @@ const worldcupController = {
     } catch (err) {
       next(err);
     }
+  },
+
+  getMyWorldcup: async (request: Request, response: Response, next: NextFunction) => {
+    const { id, offset, limit } = request.query;
+    const data = await worldcupService.findMyWorldcup(id, offset, limit);
+    response.json({
+      result: 'success',
+      message: null,
+      data: {
+        worldcup: data,
+      },
+    });
   },
 };
 

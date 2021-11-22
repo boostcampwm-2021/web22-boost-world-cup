@@ -13,7 +13,7 @@ export class Comment {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @ManyToOne((type) => Worldcup, (worldcup) => worldcup.comments)
+  @ManyToOne((type) => Worldcup, (worldcup) => worldcup.comments, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'worldcup_id' })
   worldcup: Worldcup;
 
