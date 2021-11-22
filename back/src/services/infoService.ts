@@ -28,6 +28,9 @@ export const makeInfoData = (gender: number, age: number): Info => {
     case AGE.FORTIES:
       info.forties = 1;
       break;
+    case AGE.Fifties:
+      info.fifties = 1;
+      break;
     case AGE.ETC:
       info.etc = 1;
       break;
@@ -61,6 +64,9 @@ export const setInfoData = (info: Info, gender: number, age: number): Info => {
       break;
     case AGE.FORTIES:
       info.forties += 1;
+      break;
+    case AGE.Fifties:
+      info.fifties += 1;
       break;
     case AGE.ETC:
       info.etc += 1;
