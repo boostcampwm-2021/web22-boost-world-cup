@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { InfoData, DoughnutChartData } from '../../types/Datas';
 import DoughnutChart from './DoughnutChart';
+import BarChart from './BarChart';
 
 interface ModalProps {
   info: InfoData;
@@ -9,7 +10,6 @@ interface ModalProps {
 }
 function RankingModal({ closeModal, info }: ModalProps): JSX.Element {
   const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
-  const COLORS = ['#212F3C', '#21618C', '#2E86C1', '#5DADE2 ', '#AED6F1 ', '#F0FFFF', '#84bd00', '#efdf00'];
   const { name, male, female, ...age } = info;
   const getCoordCircle = (percent: number) => {
     const x = Math.cos(2 * Math.PI * percent);
@@ -29,9 +29,7 @@ function RankingModal({ closeModal, info }: ModalProps): JSX.Element {
     });
   }, []);
   useEffect(() => {
-    if (male + female > 0) {
-      setDoughnutInfo(makeDoughnutInfo(Object.values(age)));
-    }
+    setDoughnutInfo(makeDoughnutInfo(Object.values(age)));
   }, []);
   return (
     <Modaloverlay onClick={closeModal}>
@@ -45,31 +43,7 @@ function RankingModal({ closeModal, info }: ModalProps): JSX.Element {
               <DoughnutChart data={doughnutInfo} />
             </Doughnut>
             <Bar>
-              <svg width="100%" height="65px">
-                <defs>
-                  <linearGradient id="barChart">
-                    <stop offset="0" stopColor={COLORS[6]}>
-                      <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={male} />
-                    </stop>
-                    <stop offset="0" stopColor={COLORS[7]}>
-                      <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={male} />
-                    </stop>
-                  </linearGradient>
-                </defs>
-                <rect id="Rectangle" x="0" y="0" width="300" height="30" rx="8" fill="url(#barChart)" />
-              </svg>
-              <BarLabel>
-                <BarDesc color={COLORS[6]}>
-                  <div />
-                  <span>Male</span>
-                  <p>{(male * 100).toFixed(0)}%</p>
-                </BarDesc>
-                <BarDesc color={COLORS[7]}>
-                  <div />
-                  <span>Female</span>
-                  <p>{(female * 100).toFixed(0)}%</p>
-                </BarDesc>
-              </BarLabel>
+              <BarChart data={{ male, female }} />
             </Bar>
           </Content>
         ) : (
@@ -139,28 +113,6 @@ const Bar = styled.section`
       transform: scale(1.1);
       opacity: 0.7;
     }
-  }
-`;
-const BarLabel = styled.div`
-  display: flex;
-  width: 90%;
-  justify-content: space-between;
-  span {
-    font-weight: bold;
-  }
-`;
-const BarDesc = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0.2em;
-  width: 50%;
-  div {
-    margin-right: -0.4em;
-    background-color: ${(props) => props.color};
-    width: 20px;
-    height: 20px;
-    border-radius: 50px;
   }
 `;
 const EmptyModal = styled.div`
