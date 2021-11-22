@@ -30,7 +30,7 @@ export class Info {
   @Column({ default: '0' })
   etc: number;
 
-  @OneToOne((type) => Candidate, (candidate) => candidate.info)
+  @OneToOne((type) => Candidate, (candidate) => candidate.info, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'candidate_id' })
   candidate: Candidate;
 }
