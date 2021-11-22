@@ -17,7 +17,7 @@ function KeywordInput(): JSX.Element {
     setText(value);
   };
 
-  const keydownEventHander = (event: React.KeyboardEvent<HTMLElement>) => {
+  const keyupEventHander = (event: React.KeyboardEvent<HTMLElement>) => {
     const { code } = event;
     if (code === 'Space' || code === 'Enter') {
       const tempText = text.trim();
@@ -41,7 +41,7 @@ function KeywordInput(): JSX.Element {
       {keywords.map((keyword) => (
         <Keyword>#{keyword}</Keyword>
       ))}
-      <Input value={text} onChange={onChangeEventHandler} onKeyUp={keydownEventHander} />
+      <Input value={text} onChange={onChangeEventHandler} onKeyUp={keyupEventHander} />
     </KeywordContainer>
   );
 }
