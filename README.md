@@ -47,12 +47,4 @@
 
 ## 👁‍🗨 기술스택
 
-|    division     |                                                                                                                    stack                                                                                                                    |
-| :-------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|       Web       |                                                      ![Babel](https://img.shields.io/badge/babel-yellow?logo=babel) ![Webpack](https://img.shields.io/badge/webpack-blue?logo=webpack)                                                      |
-|    Front-end    | ![react](https://img.shields.io/badge/React-blue?logo=react) ![styled-components](https://img.shields.io/badge/StyledComponents-pink?logo=styled-components) ![TypeScript](https://img.shields.io/badge/TypeScript-skyblue?logo=TypeScript) |
-|    Back-end     |             ![NodeJS](https://img.shields.io/badge/node.js-green?logo=node.js) ![Express](https://img.shields.io/badge/Express-632?logo=express) ![TypeScript](https://img.shields.io/badge/TypeScript-skyblue?logo=TypeScript)             |
-|    Database     |                                                     ![Mysql](https://img.shields.io/badge/Mysql-yellow?logo=mysql) ![typeorm](https://img.shields.io/badge/TypeORM-white?logo=typeorm)                                                      |
-|   Production    |     ![NginX](https://img.shields.io/badge/NginX-green?logo=NginX) ![Naver Cloud Platform](https://img.shields.io/badge/NCP-compact_server-9cf&color=brightgreen) ![Git](https://img.shields.io/badge/GitHub_Actions-purple?logo=github)     |
-| Code Management |                                                           ![Git](https://img.shields.io/badge/Git-white?logo=Git) ![github](https://img.shields.io/badge/GitHub-gray?logo=github)                                                           |
-|   Formatting    |                                                  ![eslint](https://img.shields.io/badge/eslint-purple?logo=eslint) ![prettier](https://img.shields.io/badge/prettier-yellow?logo=prettier)                                                  |
+![기술스택](https://user-images.githubusercontent.com/55246584/142793659-e6e9daeb-cb7a-402e-9802-9dd06db6ea09.png)
