@@ -43,8 +43,8 @@ function KeywordInput(): JSX.Element {
 
   return (
     <KeywordContainer>
-      {keywords.map((keyword) => (
-        <Keyword>#{keyword}</Keyword>
+      {keywords.map((keyword, idx) => (
+        <Keyword key={keyword + idx.toString()}>#{keyword}</Keyword>
       ))}
       <Input value={text} onChange={onChangeEventHandler} onKeyDown={keydownEventHander} />
     </KeywordContainer>
