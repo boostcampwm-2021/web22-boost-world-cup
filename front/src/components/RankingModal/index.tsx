@@ -85,6 +85,7 @@ const Header = styled.header`
   padding: 20px 40px 30px 40px;
   border-bottom: 1px solid gray;
   span {
+    font-size: 1.2em;
     font-weight: bold;
   }
 `;
@@ -106,14 +107,6 @@ const Bar = styled.section`
   align-items: center;
   justify-content: center;
   height: 90%;
-  svg {
-    cursor: pointer;
-    transition: all 300ms ease-in;
-    &:hover {
-      transform: scale(1.1);
-      opacity: 0.7;
-    }
-  }
 `;
 const EmptyModal = styled.div`
   height: 100%;
