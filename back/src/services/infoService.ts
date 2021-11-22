@@ -34,7 +34,6 @@ export const makeInfoData = (gender: number, age: number): Info => {
     default:
       break;
   }
-  info.total = 1;
   return info;
 };
 
@@ -68,7 +67,6 @@ export const setInfoData = (info: Info, gender: number, age: number): Info => {
     default:
       break;
   }
-  info.total += 1;
   return info;
 };
 

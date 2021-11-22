@@ -16,13 +16,16 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const [info, setInfo] = useState<InfoData[]>([]);
   const candidateRef = useRef<number | null>(null);
 
-  const handleClick = (event: React.MouseEvent<Element>) => {
-    setIsOpenModal(!isOpenModal);
-    if (event.currentTarget.children[2]) {
-      const candidateName = event.currentTarget.children[2].innerHTML;
-      candidateRef.current = initialData.findIndex((v) => v.name === candidateName);
-    }
+  const openModal = (event: React.MouseEvent<Element>) => {
+    setIsOpenModal(true);
+    const candidateName = event.currentTarget.children[2].innerHTML;
+    candidateRef.current = initialData.findIndex((v) => v.name === candidateName);
   };
+  const closeModal = (event: React.MouseEvent<Element>) => {
+    event.stopPropagation();
+    if (event.target === event.currentTarget) setIsOpenModal(false);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const newData = await getCandidateList(worldcupId);
@@ -122,14 +125,16 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
                 name={v.name}
                 victoryRatio={v.victoryRatio}
                 winRatio={v.winRatio}
-                handleClick={handleClick}
+                handleClick={openModal}
               />
               {index + 1 < renderData.length ? <Divider /> : ''}
             </Wrapper>
           );
         })}
       </RankingItems>
-      {isOpenModal ? <RankingModal handleClick={handleClick} info={info[candidateRef.current as number]} /> : ''}
+      {isOpenModal && (
+        <RankingModal openModal={openModal} closeModal={closeModal} info={info[candidateRef.current as number]} />
+      )}
     </>
   );
 }
