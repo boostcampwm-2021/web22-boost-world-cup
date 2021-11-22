@@ -1,7 +1,9 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import Button from './Button';
 import Logo from '../../images/logo.png';
+import { deleteWorldcup } from '../../utils/api/worldcups';
 
 interface DeleteModalProps {
   id: number;
@@ -9,10 +11,13 @@ interface DeleteModalProps {
 }
 
 const DeleteModal = ({ id, setIsDeleteModalOpen }: DeleteModalProps): JSX.Element => {
+  const history = useHistory();
   const theme: any = useTheme();
 
   const onDeleteButtonHandler = (): void => {
-    console.log('test');
+    deleteWorldcup(id);
+    setIsDeleteModalOpen(false);
+    history.push('/main');
   };
 
   const onCancelButtonHandler = (): void => {
