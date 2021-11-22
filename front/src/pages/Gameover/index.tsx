@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHome, FaList } from 'react-icons/fa';
 import { Header } from '../../components';
 import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
+import KeywordInput from '../../components/KeywordInput';
 
 interface Props {
   winCandidate: candidateData | undefined;
@@ -13,34 +14,6 @@ interface Props {
 }
 
 function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
-  const [text, setText] = useState<string>('');
-  const [keywords, setKeywords] = useState<string[]>([]);
-
-  const tempOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setText(value);
-  };
-
-  const keydownEventHander = (event: React.KeyboardEvent<HTMLElement>) => {
-    const { code } = event;
-    if (code === 'Space' || code === 'Enter') {
-      const tempText = text.trim();
-      if (tempText.length === 0) {
-        setText('');
-        return;
-      }
-      setKeywords((prev) => [...prev, tempText]);
-      setText('');
-      event.preventDefault();
-    } else if (code === 'Backspace') {
-      if (text === '') {
-        setText(keywords[keywords.length - 1]);
-        setKeywords((prev) => prev.slice(0, -1));
-      }
-    }
-  };
   return (
     <Wrapper>
       <Header type="header" />
@@ -64,40 +37,10 @@ function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
           </Link>
         </ButtonContainer>
       </Container>
-      <KeywordContainer>
-        {keywords.map((keyword) => (
-          <Keyword>#{keyword}</Keyword>
-        ))}
-        <KeywordInput value={text} onChange={tempOnChange} onKeyUp={keydownEventHander} />
-      </KeywordContainer>
+      <KeywordInput />
     </Wrapper>
   );
 }
-
-const KeywordContainer = styled.div`
-  margin-top: 30px;
-  margin-left: 30px;
-  display: flex;
-  flex-direction: row;
-  width: 700px;
-  border: 1px solid;
-  flex-wrap: wrap;
-  ${({ theme }) => theme.fontStyle.body};
-`;
-
-const Keyword = styled.div`
-  margin-right: 10px;
-  background-color: #e1e1e1;
-  padding-right: 10px;
-  padding-left: 10px;
-  ${({ theme }) => theme.fontStyle.body};
-`;
-
-const KeywordInput = styled.input`
-  padding-left: 3px;
-  border: 1px solid;
-  background-color: #e1e1e1;
-`;
 
 const Name = styled.div`
   position: absolute;
