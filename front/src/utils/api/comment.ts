@@ -1,13 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { CommentData } from '../../types/Datas';
 
-export const getComments = async (worldcupId: string, offset: number, limit: number): Promise<CommentData[]> => {
-  const response = await axios.get(`/api/worldcups/${worldcupId}/comments`, { params: { offset, limit } });
-  const {
-    data: { comments },
-  } = response;
-  return comments;
-};
+export const getComments = (offset: number, limit: number, worldcupId: string): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/${worldcupId}/comments`, { params: { offset, limit } });
 
 export const createComment = async (worldcupId: string, message: string): Promise<CommentData> => {
   const response = await axios.post(`/api/worldcups/${worldcupId}/comments`, {
