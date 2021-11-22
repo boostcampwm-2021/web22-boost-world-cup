@@ -42,16 +42,16 @@ function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
 
 const Name = styled.div`
   position: absolute;
-  display: flex;
   left: 50%;
-  transform: translate(-50%);
   top: 160px;
+  height: 40px;
+  transform: translate(-50%);
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 100px;
   border-radius: 5px;
-  height: 40px;
+  padding: 0px 10px 0px 10px;
   background-color: ${({ theme }) => theme.color.primary};
   ${({ theme }) => theme.fontStyle.bodyBold};
 `;
