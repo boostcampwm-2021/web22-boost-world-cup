@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { Header, RankingList, Comment } from '../../components';
 
@@ -8,6 +8,7 @@ interface Props {
 
 function Ranking({ location }: Props): JSX.Element {
   const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
+
   return (
     <Wrapper>
       <Header type="header" />
