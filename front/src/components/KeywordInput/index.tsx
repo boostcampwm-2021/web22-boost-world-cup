@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 function KeywordInput(): JSX.Element {
+  const possibleKeywordCnt = 5;
   const [text, setText] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
 
-  const tempOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeEventHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (keywords.length === possibleKeywordCnt) {
+      alert('키워드 초과');
+      return;
+    }
     const {
       target: { value },
     } = event;
@@ -36,7 +41,7 @@ function KeywordInput(): JSX.Element {
       {keywords.map((keyword) => (
         <Keyword>#{keyword}</Keyword>
       ))}
-      <Input value={text} onChange={tempOnChange} onKeyUp={keydownEventHander} />
+      <Input value={text} onChange={onChangeEventHandler} onKeyUp={keydownEventHander} />
     </KeywordContainer>
   );
 }
