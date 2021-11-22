@@ -80,12 +80,12 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
               <rect id="Rectangle" x="0" y="0" width="300" height="30" rx="8" fill="url(#barChart)" />
             </svg>
             <BarLabel>
-              <BarDesc color={COLORS[5]}>
+              <BarDesc color={COLORS[6]}>
                 <div />
                 <span>Male</span>
                 <p>{(male * 100).toFixed(0)}%</p>
               </BarDesc>
-              <BarDesc color={COLORS[6]}>
+              <BarDesc color={COLORS[7]}>
                 <div />
                 <span>Female</span>
                 <p>{(female * 100).toFixed(0)}%</p>
