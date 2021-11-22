@@ -131,3 +131,8 @@ export const getMetaData = async (id: number) => {
   const { title, description } = worldcup;
   return { totalCnt, title, description };
 };
+
+export const removeWorldcupById = async (id: number) => {
+  const worldcupRepository = getRepository(Worldcup);
+  worldcupRepository.delete(id);
+};

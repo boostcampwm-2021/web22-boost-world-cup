@@ -40,10 +40,10 @@ export class Worldcup {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @OneToMany((type) => Candidate, (candidate) => candidate.worldcup)
+  @OneToMany((type) => Candidate, (candidate) => candidate.worldcup, { cascade: true })
   candidates: Candidate[];
 
-  @ManyToMany((type) => Keyword, (keyword) => keyword)
+  @ManyToMany((type) => Keyword, (keyword) => keyword, { onDelete: 'CASCADE' })
   @JoinTable({
     name: 'worldcup_keyword',
     joinColumn: { name: 'worldcup_id' },
@@ -51,7 +51,7 @@ export class Worldcup {
   })
   keywords: Keyword[];
 
-  @OneToMany((type) => Comment, (comment) => comment.worldcup)
+  @OneToMany((type) => Comment, (comment) => comment.worldcup, { cascade: true })
   comments: Comment[];
 
   @ManyToOne((type) => User, (user) => user.worldcups)
