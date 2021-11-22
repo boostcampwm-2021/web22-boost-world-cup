@@ -16,17 +16,12 @@ interface worldcups {
   description: string;
 }
 
-export const getWorldcupList = async (query: pagingQueryType): Promise<Array<worldcups>> => {
-  const response = await axios.get('/api/worldcups', {
-    params: {
-      offset: query.offset,
-      limit: query.limit,
-      search: query.search,
-      keyword: query.keyword,
-    },
-  });
-  return response.data.data.worldcup;
-};
+export const getWorldcupList = (
+  offset: number,
+  limit: number,
+  search: string,
+  keyword: string,
+): Promise<AxiosResponse> => axios.get('/api/worldcups', { params: { offset, limit, search, keyword } });
 
 export const getWorldcupById = async (id: number): Promise<WorldcupMetaData> => {
   const response = await axios.get(`/api/worldcups/${id}?metaonly=true`);
