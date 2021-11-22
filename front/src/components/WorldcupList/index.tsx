@@ -1,108 +1,47 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import WorldCupItem from './WorldCupItem';
 import MyWorldCupItem from './MyWorldCupItem';
 import Loader from '../Loader';
-import { getWorldcupList } from '../../utils/api/worldcups';
+import { Worldcup } from '../../types/Datas';
 
-interface WorldcupType {
-  id: number;
-  thumbnail1: string;
-  thumbnail2: string;
-  title: string;
-  description: string;
-}
 interface Props {
   type: 'worldcup' | 'myWorldcup';
-  offset: number;
-  setOffset: React.Dispatch<React.SetStateAction<number>>;
-  searchWord?: string;
-  selectedTag?: string;
+  worldcups: Worldcup[];
+  observeTarget: React.MutableRefObject<HTMLDivElement | null>;
+  isLoading: boolean;
+  isClickMore: boolean;
+  onClickMoreBtn: React.MouseEventHandler;
 }
 
-function WorldcupList({ type, offset, setOffset, selectedTag, searchWord }: Props): JSX.Element {
-  const [isClickMore, setIsClickMore] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState<WorldcupType[]>([]);
-  const observer = useRef<IntersectionObserver | null>(null);
-  const target = useRef<HTMLDivElement | null>(null);
-  const isMounted = useRef(false);
-  const threshold = 0.4;
-  const limit = 8;
-  const onClickMoreButton = () => {
-    setIsClickMore(!isClickMore);
-  };
-  const fetchData = async () => {
-    const newItems = await getWorldcupList({ offset, limit, search: searchWord, keyword: selectedTag });
-    if (!newItems.length) {
-      (observer.current as IntersectionObserver).disconnect();
-      setLoading(false);
-      return;
-    }
-    if (!offset) setItems([...newItems]);
-    else setItems([...items, ...newItems]);
-  };
-  useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-    } else {
-      setOffset(offset + 8);
-    }
-    setLoading(false);
-  }, [items.length, searchWord, selectedTag]);
-
-  const onIntersect = ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
-    if (entry.isIntersecting && !loading) {
-      setLoading(true);
-      fetchData();
-      observer.unobserve(entry.target);
-    }
-  };
-  useEffect(() => {
-    if (isClickMore) {
-      (observer.current as IntersectionObserver) = new IntersectionObserver(onIntersect, { threshold });
-      (observer.current as IntersectionObserver).observe(target.current as HTMLDivElement);
-    }
-  }, [offset, isClickMore]);
-  useEffect(() => {
-    if (offset === 0) {
-      fetchData();
-      observer.current = new IntersectionObserver(onIntersect, { threshold });
-    }
-  }, [offset]);
+function WorldcupList({ type, worldcups, observeTarget, isLoading, isClickMore, onClickMoreBtn }: Props): JSX.Element {
   return (
     <>
       <Container>
-        {items.map((item) =>
+        {worldcups.map(({ id, thumbnail1, thumbnail2, title, description }) =>
           type === 'worldcup' ? (
             <WorldCupItem
-              key={item.id}
-              id={item.id}
-              thumbnail1={item.thumbnail1}
-              thumbnail2={item.thumbnail2}
-              title={item.title}
-              desc={item.description}
+              key={id}
+              id={id}
+              thumbnail1={thumbnail1}
+              thumbnail2={thumbnail2}
+              title={title}
+              desc={description}
             />
           ) : (
-            <MyWorldCupItem
-              id={item.id}
-              thumbnail1={item.thumbnail1}
-              thumbnail2={item.thumbnail2}
-              title={item.title}
-              desc={item.description}
-            />
+            <MyWorldCupItem id={id} thumbnail1={thumbnail1} thumbnail2={thumbnail2} title={title} desc={description} />
           ),
         )}
       </Container>
       {!isClickMore ? (
-        <MoreButton onClick={onClickMoreButton}>
+        <MoreButton onClick={onClickMoreBtn}>
           <Title>더보기</Title>
         </MoreButton>
       ) : (
         ''
       )}
-      <div ref={target} style={{ width: '10px', height: '10px' }}>
-        {loading && <Loader />}
+      <div ref={observeTarget} style={{ width: '10px', height: '10px' }}>
+        {isLoading && <Loader />}
       </div>
     </>
   );

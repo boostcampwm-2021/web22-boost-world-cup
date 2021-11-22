@@ -51,6 +51,7 @@ export interface RankingData {
   forties: number;
   etc: number;
 }
+
 export interface RankingSummaryData {
   id: number;
   url: string;
@@ -58,6 +59,7 @@ export interface RankingSummaryData {
   victoryRatio: number;
   winRatio: number;
 }
+
 export interface InfoData {
   name: string;
   total: number;
@@ -69,6 +71,7 @@ export interface InfoData {
   forties: number;
   etc: number;
 }
+
 export interface DoughnutChartData {
   startX: number;
   startY: number;
@@ -76,6 +79,7 @@ export interface DoughnutChartData {
   endY: number;
   isLargeArc: number;
 }
+
 export interface ErrorResponseData {
   result: 'fail';
   message: string;
@@ -98,4 +102,12 @@ export interface UserInfo {
   nickname?: string;
   gender?: number;
   age?: number;
+}
+
+export interface Worldcup {
+  id: number;
+  thumbnail1: string;
+  thumbnail2: string;
+  title: string;
+  description: string;
 }
