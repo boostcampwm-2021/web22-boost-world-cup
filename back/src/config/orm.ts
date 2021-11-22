@@ -14,7 +14,7 @@ const ormConfig: ConnectionOptions = {
   migrations: [__dirname + '/../migration/**/*{.ts,.js}'],
   subscribers: [__dirname + '/../subscriber/**/*{.ts,.js}'],
   cli: {
-    entitiesDir: __dirname +'/../entity',
+    entitiesDir: __dirname + '/../entity',
     migrationsDir: __dirname + '/../migration',
     subscribersDir: __dirname + '/../subscriber',
   },

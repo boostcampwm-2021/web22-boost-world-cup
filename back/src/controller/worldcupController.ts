@@ -8,21 +8,13 @@ import { getCandidates } from '../services/candidateService';
 const worldcupController = {
   all: async (request: Request, response: Response, next: NextFunction) => {
     const { offset, limit, search, keyword } = request.query;
-    let worldcups;
     if (!search && !keyword) {
-      worldcups = await worldcupService.findFromPage(offset, limit);
+      return response.json(await worldcupService.findFromPage(Number(offset), Number(limit)));
     } else if (!keyword) {
-      worldcups = await worldcupService.findBySearchWord(offset, limit, search);
+      return response.json(await worldcupService.findBySearchWord(Number(offset), Number(limit), search));
     } else {
-      worldcups = await worldcupService.findByKeyword(offset, limit, keyword);
+      return response.json(await worldcupService.findByKeyword(Number(offset), Number(limit), keyword));
     }
-    response.json({
-      result: 'success',
-      message: null,
-      data: {
-        worldcup: worldcups,
-      },
-    });
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
