@@ -8,7 +8,6 @@ interface DoughnutProps {
 function DoughnutChart({ data }: DoughnutProps): JSX.Element {
   const COLORS = ['#212F3C', '#21618C', '#2E86C1', '#5DADE2 ', '#AED6F1 ', '#F0FFFF', '#84bd00', '#efdf00'];
   const DURATION = 0.3;
-  console.log(data);
 
   return (
     <>
