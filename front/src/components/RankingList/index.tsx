@@ -53,17 +53,22 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   }, []);
 
   const getInfoAcc = useCallback((dataset: RankingData[]) => {
-    return dataset.map((v) => ({
-      name: v.name,
-      total: v.winCnt,
-      male: v.male,
-      female: v.female,
-      teens: v.teens,
-      twenties: v.twenties,
-      thirties: v.thirties,
-      forties: v.forties,
-      etc: v.etc,
-    }));
+    return dataset.map((v) => {
+      const ageTotal = Object.values(v)
+        .slice(9)
+        .reduce((pre, cur) => pre + cur, 0);
+      return {
+        name: v.name,
+        male: v.male / (v.male + v.female),
+        female: v.female / (v.male + v.female),
+        teens: v.teens / ageTotal,
+        twenties: v.twenties / ageTotal,
+        thirties: v.thirties / ageTotal,
+        forties: v.forties / ageTotal,
+        fifties: v.fifties / ageTotal,
+        etc: v.etc / ageTotal,
+      };
+    });
   }, []);
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
