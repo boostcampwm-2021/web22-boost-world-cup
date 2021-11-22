@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { InfoData, DoughnutChartData } from '../../types/Datas';
+import DoughnutChart from './DoughnutChart';
 
 interface ModalProps {
   info: InfoData;
@@ -23,7 +24,9 @@ function RankingModal({ openModal, closeModal, info }: ModalProps): JSX.Element 
       acc += value;
       const [endX, endY] = getCoordCircle(acc);
       const isLargeArc = value > 0.5 ? 1 : 0;
-      return { startX, startY, endX, endY, isLargeArc };
+      const targetRadius = 2 * Math.PI * value;
+      const restRadius = 2 * Math.PI * (1 - value);
+      return { value, startX, startY, endX, endY, isLargeArc, targetRadius, restRadius };
     });
   }, []);
   useEffect(() => {
@@ -40,30 +43,7 @@ function RankingModal({ openModal, closeModal, info }: ModalProps): JSX.Element 
         {doughnutInfo.length ? (
           <Content>
             <Doughnut>
-              <DoughnutSvg width="300" height="300" viewBox="-1.5 -1.5 3 3">
-                {Object.values(age).map((value, index) => {
-                  return (
-                    <path
-                      d={`M ${doughnutInfo[index].startX} ${doughnutInfo[index].startY} A 1 1 0 ${doughnutInfo[index].isLargeArc} 1 ${doughnutInfo[index].endX} ${doughnutInfo[index].endY}`}
-                      fill="none"
-                      strokeWidth="0.4"
-                      stroke={COLORS[index]}
-                    />
-                  );
-                })}
-                )
-              </DoughnutSvg>
-              <DoughnutLabel>
-                {Object.values(age).map((value, index) => {
-                  return (
-                    <DoughnutDesc color={COLORS[index]}>
-                      <div />
-                      <span>{index < 5 ? `${(index + 1) * 10}대` : `기타`}</span>
-                      <p>{(value * 100).toFixed(0)}%</p>
-                    </DoughnutDesc>
-                  );
-                })}
-              </DoughnutLabel>
+              <DoughnutChart data={doughnutInfo} />
             </Doughnut>
             <Bar>
               <svg width="100%" height="65px">
@@ -146,45 +126,6 @@ const Doughnut = styled.section`
   justify-content: space-around;
   height: 90%;
   width: 50%;
-`;
-const DoughnutSvg = styled.svg`
-  background-color: white;
-  path {
-    cursor: pointer;
-    transition: all 300ms ease-in;
-    &:hover {
-      transform: scale(1.1);
-      opacity: 0.6;
-    }
-  }
-`;
-
-const DoughnutLabel = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 60%;
-  height: 40%;
-  span {
-    font-weight: bold;
-  }
-  p {
-    width: 80px;
-    text-align: center;
-  }
-`;
-const DoughnutDesc = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 0.2em;
-  div {
-    margin-right: -1em;
-    background-color: ${(props) => props.color};
-    width: 20px;
-    height: 20px;
-    border-radius: 50px;
-  }
 `;
 const Bar = styled.section`
   display: flex;

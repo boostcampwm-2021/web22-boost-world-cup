@@ -71,11 +71,14 @@ export interface InfoData {
   etc: number;
 }
 export interface DoughnutChartData {
+  value: number;
   startX: number;
   startY: number;
   endX: number;
   endY: number;
   isLargeArc: number;
+  targetRadius: number;
+  restRadius: number;
 }
 export interface ErrorResponseData {
   result: 'fail';
