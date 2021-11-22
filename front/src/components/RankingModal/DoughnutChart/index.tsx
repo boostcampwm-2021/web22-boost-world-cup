@@ -8,11 +8,13 @@ interface DoughnutProps {
 function DoughnutChart({ data }: DoughnutProps): JSX.Element {
   const COLORS = ['#212F3C', '#21618C', '#2E86C1', '#5DADE2 ', '#AED6F1 ', '#F0FFFF', '#84bd00', '#efdf00'];
   const DURATION = 0.3;
+  let count = -1;
 
   return (
     <>
       <DoughnutSvg id="gender" width="300" height="300" viewBox="-1.5 -1.5 3 3">
         {data.map((value, index) => {
+          count += 1;
           return (
             value.value > 0 && (
               <path
@@ -20,13 +22,13 @@ function DoughnutChart({ data }: DoughnutProps): JSX.Element {
                 fill="none"
                 strokeWidth="0.4"
                 stroke={COLORS[index]}
-                strokeDasharray={`${value.targetRadius} ${value.restRadius}`}
-                strokeDashoffset={value.targetRadius}
+                strokeDasharray={`${value.targetArc} ${value.restArc}`}
+                strokeDashoffset={value.targetArc}
               >
                 <animate
                   attributeName="stroke-dashoffset"
-                  begin={DURATION * index}
-                  from={value.targetRadius}
+                  begin={DURATION * count}
+                  from={value.targetArc}
                   to="0.02"
                   dur={DURATION}
                   fill="freeze"

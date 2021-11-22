@@ -77,8 +77,8 @@ export interface DoughnutChartData {
   endX: number;
   endY: number;
   isLargeArc: number;
-  targetRadius: number;
-  restRadius: number;
+  targetArc: number;
+  restArc: number;
 }
 export interface ErrorResponseData {
   result: 'fail';

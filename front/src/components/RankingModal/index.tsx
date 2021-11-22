@@ -24,9 +24,9 @@ function RankingModal({ openModal, closeModal, info }: ModalProps): JSX.Element 
       acc += value;
       const [endX, endY] = getCoordCircle(acc);
       const isLargeArc = value > 0.5 ? 1 : 0;
-      const targetRadius = 2 * Math.PI * value;
-      const restRadius = 2 * Math.PI * (1 - value);
-      return { value, startX, startY, endX, endY, isLargeArc, targetRadius, restRadius };
+      const targetArc = 2 * Math.PI * value;
+      const restArc = 2 * Math.PI * (1 - value);
+      return { value, startX, startY, endX, endY, isLargeArc, targetArc, restArc };
     });
   }, []);
   useEffect(() => {
