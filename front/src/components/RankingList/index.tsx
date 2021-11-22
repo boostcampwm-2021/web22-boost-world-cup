@@ -132,9 +132,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
           );
         })}
       </RankingItemContainer>
-      {isOpenModal && (
-        <RankingModal openModal={openModal} closeModal={closeModal} info={info[candidateRef.current as number]} />
-      )}
+      {isOpenModal && <RankingModal closeModal={closeModal} info={info[candidateRef.current as number]} />}
     </>
   );
 }

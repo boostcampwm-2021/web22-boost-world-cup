@@ -5,10 +5,9 @@ import DoughnutChart from './DoughnutChart';
 
 interface ModalProps {
   info: InfoData;
-  openModal: (event: React.MouseEvent<Element>) => void;
   closeModal: (event: React.MouseEvent<Element>) => void;
 }
-function RankingModal({ openModal, closeModal, info }: ModalProps): JSX.Element {
+function RankingModal({ closeModal, info }: ModalProps): JSX.Element {
   const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
   const COLORS = ['#212F3C', '#21618C', '#2E86C1', '#5DADE2 ', '#AED6F1 ', '#F0FFFF', '#84bd00', '#efdf00'];
   const { name, male, female, ...age } = info;

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { DoughnutChartData } from '../../../types/Datas';
 
@@ -6,7 +6,7 @@ interface DoughnutProps {
   data: DoughnutChartData[];
 }
 function DoughnutChart({ data }: DoughnutProps): JSX.Element {
-  const COLORS = ['#212F3C', '#21618C', '#2E86C1', '#5DADE2 ', '#AED6F1 ', '#F0FFFF', '#84bd00', '#efdf00'];
+  const COLORS = ['#212F3C', '#21618C', '#2E86C1', '#5DADE2 ', '#AED6F1 ', '#F0FFFF'];
   const DURATION = 0.3;
   let count = -1;
 
@@ -29,7 +29,7 @@ function DoughnutChart({ data }: DoughnutProps): JSX.Element {
                   attributeName="stroke-dashoffset"
                   begin={DURATION * count}
                   from={value.targetArc}
-                  to="0.02"
+                  to="0"
                   dur={DURATION}
                   fill="freeze"
                 />
@@ -38,6 +38,9 @@ function DoughnutChart({ data }: DoughnutProps): JSX.Element {
           );
         })}
         )
+        <text textAnchor="middle" fontSize="0.35">
+          gender
+        </text>
       </DoughnutSvg>
       <DoughnutLabel>
         {data.map((value, index) => {
@@ -65,6 +68,11 @@ const DoughnutSvg = styled.svg`
       transform: scale(1.1);
       opacity: 0.6;
     }
+  }
+  text {
+    font-family: cursive;
+    font-weight: bold;
+    fill: ${({ theme }) => theme.color.gray[0]};
   }
 `;
 const DoughnutLabel = styled.div`
