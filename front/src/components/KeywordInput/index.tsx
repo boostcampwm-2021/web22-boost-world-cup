@@ -17,7 +17,7 @@ function KeywordInput(): JSX.Element {
     setText(value);
   };
 
-  const keyupEventHander = (event: React.KeyboardEvent<HTMLElement>) => {
+  const keydownEventHander = (event: React.KeyboardEvent<HTMLElement>) => {
     const { code } = event;
     if (code === 'Space' || code === 'Enter') {
       const tempText = text.trim();
@@ -25,11 +25,14 @@ function KeywordInput(): JSX.Element {
         setText('');
         return;
       }
-      setKeywords((prev) => [...prev, tempText]);
-      setText('');
+
+      setTimeout(() => {
+        setKeywords((prev) => [...prev, tempText]);
+        setText('');
+      }, 0);
       event.preventDefault();
     } else if (code === 'Backspace') {
-      if (text === '') {
+      if (text.length === 0) {
         setText(keywords[keywords.length - 1]);
         setKeywords((prev) => prev.slice(0, -1));
       }
@@ -41,7 +44,7 @@ function KeywordInput(): JSX.Element {
       {keywords.map((keyword) => (
         <Keyword>#{keyword}</Keyword>
       ))}
-      <Input value={text} onChange={onChangeEventHandler} onKeyUp={keyupEventHander} />
+      <Input value={text} onChange={onChangeEventHandler} onKeyDown={keydownEventHander} />
     </KeywordContainer>
   );
 }
