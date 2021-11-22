@@ -27,7 +27,7 @@ export const makeInfoData = (gender: number, age: number): Info => {
     case AGE.FORTIES:
       info.forties = 1;
       break;
-    case AGE.Fifties:
+    case AGE.FIFTIES:
       info.fifties = 1;
       break;
     case AGE.ETC:
@@ -36,7 +36,6 @@ export const makeInfoData = (gender: number, age: number): Info => {
     default:
       break;
   }
-  info.total = 1;
   return info;
 };
 
@@ -64,7 +63,7 @@ export const setInfoData = (info: Info, gender: number, age: number): Info => {
     case AGE.FORTIES:
       info.forties += 1;
       break;
-    case AGE.Fifties:
+    case AGE.FIFTIES:
       info.fifties += 1;
       break;
     case AGE.ETC:
@@ -73,7 +72,6 @@ export const setInfoData = (info: Info, gender: number, age: number): Info => {
     default:
       break;
   }
-  info.total += 1;
   return info;
 };
 
