@@ -245,11 +245,11 @@ const LeftImage = styled.div<{ imageUrl: string; select: number }>`
   background: url(${({ imageUrl }) => imageUrl});
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: ${({ select }) => (select === 1 ? `center` : `right`)};
   animation: ${({ select }) =>
     select === 2
       ? css`
-          ${notSelected} 1s ease forwards;
+          ${notSelected} 1s ease forwards
         `
       : css``};
 `;
@@ -259,11 +259,11 @@ const RightImage = styled.div<{ imageUrl: string; select: number }>`
   background: url(${(props) => props.imageUrl});
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: ${({ select }) => (select === 2 ? `center` : `left`)};
   animation: ${({ select }) =>
     select === 1
       ? css`
-          ${notSelected} 1s ease forwards;
+          ${notSelected} 1s ease forwards
         `
       : css``};
 `;
