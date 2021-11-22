@@ -85,7 +85,7 @@ const Winner = styled.div<{ imageUrl: string }>`
   margin-top: 50px;
   margin-bottom: 100px;
   background: url(${({ imageUrl }) => imageUrl});
-  background-size: 600px 500px;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   align-self: center;
@@ -104,7 +104,7 @@ const Container = styled.div`
   img {
     position: absolute;
     align-self: center;
-    top: 170px;
+    top: 160px;
     width: 650px;
   }
 `;
