@@ -28,6 +28,9 @@ export class Info {
   forties: number;
 
   @Column({ default: '0' })
+  fifties: number;
+
+  @Column({ default: '0' })
   etc: number;
 
   @OneToOne((type) => Candidate, (candidate) => candidate.info)
