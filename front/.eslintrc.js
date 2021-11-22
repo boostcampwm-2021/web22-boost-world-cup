@@ -24,5 +24,6 @@ module.exports = {
     'react/require-default-props': 0,
     'no-param-reassign': 0,
     '@typescript-eslint/no-empty-function': 0,
+    'consistent-return': 0,
   },
 };
