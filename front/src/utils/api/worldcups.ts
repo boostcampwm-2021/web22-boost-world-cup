@@ -18,6 +18,7 @@ interface worldcups {
 }
 
 export const getWorldcupList = async (query: pagingQueryType): Promise<Array<worldcups>> => {
+  console.log('test');
   const response = await axios.get('/api/worldcups', {
     params: {
       offset: query.offset,
@@ -26,7 +27,7 @@ export const getWorldcupList = async (query: pagingQueryType): Promise<Array<wor
       keyword: query.keyword,
     },
   });
-  return response.data.data.worldcup;
+  return response.data.data;
 };
 
 export const getMyWorldcupList = async (query: pagingQueryType): Promise<Array<worldcups>> => {
