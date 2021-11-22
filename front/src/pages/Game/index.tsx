@@ -4,7 +4,7 @@ import styled, { keyframes, css } from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { loginState } from '../../recoil/atom';
 import { Header } from '../../components';
-import versusImg from '../../images/versus.png';
+import vsImg from '../../images/vs.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from '../Gameover';
 import { objectDecryption, objectEncryption } from '../../utils/crypto';
@@ -133,7 +133,7 @@ function Worldcup(): JSX.Element {
         <Round>{makeRoundText(gameInfo?.round)}</Round>
       </InfoContainer>
       <ImageContainer select={pick}>
-        <img src={versusImg} alt="versus" />
+        <img src={vsImg} alt="versus" />
         <LeftImage
           imageUrl={leftCandidate ? leftCandidate.url : ''}
           select={pick}
@@ -222,7 +222,7 @@ const ImageContainer = styled.div<{ select: number }>`
   width: 100%;
   height: calc(100% - 100px);
   img {
-    width: 15%;
+    width: 8%;
     position: absolute;
     transform: translate(-50%, 0);
     left: 50%;
