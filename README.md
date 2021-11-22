@@ -4,9 +4,9 @@
 
 ## 🌈 Members
 
-|                       김용진(J042)                        |                     위지원(J128)                     |                       정유환(J189)                       | 최유진(J207)                                            |
-| :-------------------------------------------------------: | :--------------------------------------------------: | :------------------------------------------------------: | ------------------------------------------------------- |
-|       [Yongjin9660](https://github.com/Yongjin9660)       |         [wiizii](https://github.com/wiizii)          |       [giljung456](https://github.com/giljung456)        | [yujin0719](https://github.com/yujin0719)               |
+|                       김용진(J042)                        |                     위지원(J128)                     |                       정유환(J189)                       |                      최유진(J207)                       |
+| :-------------------------------------------------------: | :--------------------------------------------------: | :------------------------------------------------------: | :-----------------------------------------------------: |
+|       [Yongjin9660](https://github.com/Yongjin9660)       |         [wiizii](https://github.com/wiizii)          |       [giljung456](https://github.com/giljung456)        |        [yujin0719](https://github.com/yujin0719)        |
 | <img src="https://github.com/Yongjin9660.png" width="80"> | <img src="https://github.com/wiizii.png" width="80"> | <img src="https://github.com/giljung456.png" width="80"> | <img src="https://github.com/yujin0719.png" width="80"> |
 
 ## 👩‍💻 배포 URL
