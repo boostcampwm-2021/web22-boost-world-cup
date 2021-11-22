@@ -17,6 +17,7 @@ function Worldcup(): JSX.Element {
   const [gameInfo, setGameInfo] = useState<gameInfoData>();
   const [leftCandidate, setLeftCandidate] = useState<candidateData>();
   const [rightCandidate, setRightCandidate] = useState<candidateData>();
+  let debouncer: undefined | ReturnType<typeof setTimeout>;
 
   const setCandidates = useCallback((candidatesList: candidateData[]) => {
     candidatesList.sort(() => Math.random() - 0.5);
@@ -48,14 +49,14 @@ function Worldcup(): JSX.Element {
 
   const imageClickHandler = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
+      if (debouncer) {
+        return;
+      }
       const {
         dataset: { value },
       } = event.target as HTMLElement;
-      if (value) {
-        setPick(Number(value));
-      }
-
-      setTimeout(() => {
+      setPick(Number(value as string));
+      debouncer = setTimeout(() => {
         let winId: number | undefined;
         let loseId: number | undefined;
 
