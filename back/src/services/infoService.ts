@@ -1,6 +1,5 @@
 import { Info } from '../entity/Info';
 import { getRepository } from 'typeorm';
-import { Candidate } from '../entity/Candidate';
 import { GENDER, AGE } from '../types/common';
 
 export const makeInfoData = (gender: number, age: number): Info => {
