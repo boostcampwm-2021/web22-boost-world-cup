@@ -9,31 +9,32 @@ interface RankingProps {
   worldcupId: string;
 }
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
+  const [initialData, setInitialData] = useState<RankingData[]>([]);
+  const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [data, setData] = useState<RankingData[]>([]);
-  const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
   const [info, setInfo] = useState<InfoData[]>([]);
   const candidateRef = useRef<number | null>(null);
+
   const handleClick = (event: React.MouseEvent<Element>) => {
     setIsOpenModal(!isOpenModal);
     if (event.currentTarget.children[2]) {
       const candidateName = event.currentTarget.children[2].innerHTML;
-      candidateRef.current = data.findIndex((v) => v.name === candidateName);
+      candidateRef.current = initialData.findIndex((v) => v.name === candidateName);
     }
   };
   useEffect(() => {
     const fetchData = async () => {
       const newData = await getCandidateList(worldcupId);
-      setData(newData);
+      setInitialData(() => newData);
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    setRenderData(getRenderData(data));
-    setInfo(getInfoAcc(data));
-  }, [data]);
+    setRenderData(getRenderData(initialData));
+    setInfo(getInfoAcc(initialData));
+  }, [initialData]);
 
   const getRenderData = useCallback((dataset: RankingData[]) => {
     return dataset
@@ -73,12 +74,20 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    const filteredData = getRenderData(data.filter((value) => value.name.indexOf(inputWord) !== -1));
+    const filteredData = getRenderData(
+      initialData.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputWord.replace(/(\s*)/g, '')) !== -1),
+    );
     setRenderData([...filteredData]);
     setInputWord('');
   };
+
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputWord(event.target.value);
+    const inputValue = event.target.value;
+    setInputWord(inputValue);
+    const filteredData = getRenderData(
+      initialData.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputValue.replace(/(\s*)/g, '')) !== -1),
+    );
+    setRenderData([...filteredData]);
   };
   return (
     <>
