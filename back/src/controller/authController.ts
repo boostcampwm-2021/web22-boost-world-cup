@@ -13,6 +13,7 @@ const authController = {
     const {
       cookies: { redirectUrl },
     } = request;
+    response.clearCookie('redirectUrl');
     request.user.nickname
       ? redirectUrl
         ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
@@ -23,6 +24,7 @@ const authController = {
     const {
       cookies: { redirectUrl },
     } = request;
+    response.clearCookie('redirectUrl');
     request.user.nickname
       ? redirectUrl
         ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
@@ -33,6 +35,7 @@ const authController = {
     const {
       cookies: { redirectUrl },
     } = request;
+    response.clearCookie('redirectUrl');
     request.user.nickname
       ? redirectUrl
         ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
