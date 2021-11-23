@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -21,10 +21,11 @@ function Keywords({ onClickTag, selectedTag }: Props): JSX.Element {
   };
 
   const [tagList, setTagList] = useState<Array<string>>([]);
-  const getTagList = async () => {
+  const getTagList = useCallback(async () => {
     const data = await getWorldcupList();
-    setTagList(data);
-  };
+    const tagList = data.map((value) => value.name);
+    setTagList(tagList);
+  }, []);
   const onToggleKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
     const element = event.target as HTMLElement;
     if (element.innerText === selectedTag) {
