@@ -36,14 +36,14 @@ export const findByKeyword = async (offset: number, limit: number, keyword): Pro
     .getMany();
 };
 
-export const findMyWorldcup = async (id, offset, limit) => {
-  const worldcupRepository = getRepository(Worldcup);
-  return await worldcupRepository.find({
-    select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
-    where: { user: id },
-    skip: Number(offset),
-    take: Number(limit),
-  });
+export const findMyWorldcup = async (offset: number, limit: number, id: number): Promise<Worldcup[]> => {
+  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
+  return await worldcupRepository
+    .createQueryBuilder('worldcup')
+    .where('worldcup.user_id = :id', { id: id })
+    .skip(offset)
+    .take(limit)
+    .getMany();
 };
 
 export const findById = async (id) => {
