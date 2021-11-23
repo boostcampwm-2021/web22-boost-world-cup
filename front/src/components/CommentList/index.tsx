@@ -1,54 +1,30 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Comment from './comment';
 import { CommentData } from '../../types/Datas';
 import Loader from '../Loader';
-import { getComments, getCommentsCount } from '../../utils/api/comment';
+import { getCommentsCount } from '../../utils/api/comment';
 
 interface Props {
   worldcupId: string;
   comments: CommentData[];
-  offset: number;
-  setOffset: React.Dispatch<React.SetStateAction<number>>;
+  isLoading: boolean;
+  observeTarget: React.MutableRefObject<HTMLDivElement | null>;
+  isClickMore: boolean;
   setComments: React.Dispatch<React.SetStateAction<CommentData[]>>;
+  onClickMoreBtn: React.MouseEventHandler;
 }
 
-function CommentList({ worldcupId, comments, offset, setOffset, setComments }: Props): JSX.Element {
-  const [loading, setLoading] = useState(false);
+function CommentList({
+  worldcupId,
+  comments,
+  isLoading,
+  observeTarget,
+  isClickMore,
+  setComments,
+  onClickMoreBtn,
+}: Props): JSX.Element {
   const [commentCount, setCommentCount] = useState(0);
-  const target = useRef<HTMLDivElement | null>(null);
-  const observer = useRef<IntersectionObserver | null>(null);
-  const threshold = 0.4;
-  const limit = 5;
-
-  const getCommentsAndSetComments = useCallback(async () => {
-    const newComments = await getComments(worldcupId, offset, limit);
-    setComments((comments) => [...comments, ...newComments]);
-  }, [offset, comments.length]);
-
-  const onIntersect = useCallback(
-    async ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
-      if (entry.isIntersecting && !loading) {
-        setLoading((prev) => !prev);
-        observer.unobserve(entry.target);
-        setOffset((prev) => prev + 5);
-        getCommentsAndSetComments();
-        observer.observe(entry.target);
-        setLoading((prev) => !prev);
-      }
-    },
-    [offset, comments.length],
-  );
-
-  useEffect((): VoidFunction => {
-    if (target) {
-      (observer.current as IntersectionObserver) = new IntersectionObserver(onIntersect, {
-        threshold,
-      });
-      (observer.current as IntersectionObserver).observe(target.current as HTMLDivElement);
-    }
-    return () => observer.current && (observer.current as IntersectionObserver).disconnect();
-  }, [onIntersect]);
 
   const getCount = async () => {
     const { commentCount: fetchData } = await getCommentsCount(worldcupId);
@@ -67,8 +43,15 @@ function CommentList({ worldcupId, comments, offset, setOffset, setComments }: P
           <Comment key={comment.commentId} comment={comment} setComments={setComments} />
         ))}
       </CommentContainer>
-      <div ref={target} style={{ width: '100px', height: '100px', alignSelf: 'center' }}>
-        {loading && <Loader />}
+      {!isClickMore ? (
+        <MoreButton onClick={onClickMoreBtn}>
+          <Title>더보기</Title>
+        </MoreButton>
+      ) : (
+        ''
+      )}
+      <div ref={observeTarget} style={{ width: '10px', height: '10px' }}>
+        {isLoading && <Loader />}
       </div>
     </Wrapper>
   );
@@ -92,6 +75,31 @@ const CommentContainer = styled.div`
   border-radius: 10px;
   padding: 7px 13px 7px 10px;
   width: 100%;
+`;
+
+const MoreButton = styled.div`
+  width: 100%;
+  height: 5em;
+  line-height: 3em;
+  text-align: center;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding-top: 1em;
+`;
+
+const Title = styled.p`
+  margin: auto;
+  background-color: ${({ theme }) => theme.color.lightpink};
+  color: ${({ theme }) => theme.color.gray[0]};
+  width: 30em;
+  height: 3em;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 300ms ease-in;
+  &:hover {
+    background-color: ${({ theme }) => theme.color.pink};
+    color: ${({ theme }) => theme.color.gray[2]};
+  }
 `;
 
 export default CommentList;

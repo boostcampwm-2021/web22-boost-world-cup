@@ -16,13 +16,7 @@ const worldcupController = {
     } else {
       worldcups = await worldcupService.findByKeyword(offset, limit, keyword);
     }
-    response.json({
-      result: 'success',
-      message: null,
-      data: {
-        worldcup: worldcups,
-      },
-    });
+    response.json(worldcups);
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
@@ -85,7 +79,7 @@ const worldcupController = {
       response.json(await commentService.getCountByWorldcupId(worldcup));
     } else {
       const comments = await commentService.findByWorldcupId(id, offset as string, limit as string);
-      response.json({ comments });
+      response.json(comments);
     }
   },
 
