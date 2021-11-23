@@ -7,5 +7,5 @@ export const loginState = atom({
 
 export const userState = atom({
   key: 'userState',
-  default: {},
+  default: { id: -1, nickname: '', gender: -1, age: -1 },
 });

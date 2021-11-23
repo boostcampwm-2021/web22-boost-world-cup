@@ -15,7 +15,7 @@ const Leave = (): JSX.Element => {
   const leaveHandler = useCallback(() => {
     deleteUser(userInfo.id as number);
     setIsLoggedIn(false);
-    setUserInfo({});
+    setUserInfo({ id: -1, nickname: '', gender: -1, age: -1 });
   }, []);
 
   return !isLoggedIn ? (
