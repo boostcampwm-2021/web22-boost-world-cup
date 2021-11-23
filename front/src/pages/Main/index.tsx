@@ -3,12 +3,23 @@ import styled from 'styled-components';
 import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
 import WorldCupList from '../../components/WorldcupList';
+import { useInfiniteScroll } from '../../hooks';
+import { getWorldcupList } from '../../utils/api/worldcups';
+import { Worldcup } from '../../types/Datas';
 
 function Main(): JSX.Element {
   const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
-  const [offset, setOffset] = useState(0);
+  const {
+    items: worldcups,
+    target,
+    isLoading,
+    isClickMore,
+    onClickMoreBtn,
+    setOffset,
+  } = useInfiniteScroll<Worldcup>(8, getWorldcupList, [searchWord, selectedTag]);
+
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setSearchWord(inputWord);
@@ -22,6 +33,7 @@ function Main(): JSX.Element {
     setOffset(0);
     setSelectedTag(keyword);
   };
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
@@ -38,10 +50,11 @@ function Main(): JSX.Element {
       <Keywords onClickTag={onClickTag} />
       <WorldCupList
         type="worldcup"
-        offset={offset}
-        setOffset={setOffset}
-        selectedTag={selectedTag}
-        searchWord={searchWord}
+        worldcups={worldcups}
+        observeTarget={target}
+        isLoading={isLoading}
+        isClickMore={isClickMore}
+        onClickMoreBtn={onClickMoreBtn}
       />
     </Wrapper>
   );

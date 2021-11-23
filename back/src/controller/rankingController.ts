@@ -4,11 +4,11 @@ import { makeInfoData, setInfoData } from '../services/infoService';
 import { plusTotalCnt } from '../services/worldcupService';
 
 const rankingController = {
-  get: async (request: Request, response: Response, next: NextFunction) => {
+  getRankingInfo: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { id },
     } = request;
-    const candidateLists = await candidateService.getCandidateList(id);
+    const candidateLists = await candidateService.getCandidatesByWorldcup(id);
     response.json({ candidateLists });
   },
   saveCurrentResult: async (request: Request, response: Response, next: NextFunction) => {

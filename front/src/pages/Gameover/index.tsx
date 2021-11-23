@@ -5,6 +5,7 @@ import { FaHome, FaList } from 'react-icons/fa';
 import { Header } from '../../components';
 import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
+import KeywordInput from '../../components/KeywordInput';
 
 interface Props {
   winCandidate: candidateData | undefined;
@@ -36,22 +37,23 @@ function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
           </Link>
         </ButtonContainer>
       </Container>
+      <KeywordInput />
     </Wrapper>
   );
 }
 
 const Name = styled.div`
   position: absolute;
-  display: flex;
   left: 50%;
-  transform: translate(-50%);
   top: 160px;
+  height: 40px;
+  transform: translate(-50%);
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 100px;
   border-radius: 5px;
-  height: 40px;
+  padding: 0px 10px 0px 10px;
   background-color: ${({ theme }) => theme.color.primary};
   ${({ theme }) => theme.fontStyle.bodyBold};
 `;
@@ -85,7 +87,7 @@ const Winner = styled.div<{ imageUrl: string }>`
   margin-top: 50px;
   margin-bottom: 100px;
   background: url(${({ imageUrl }) => imageUrl});
-  background-size: 600px 500px;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   align-self: center;
@@ -104,7 +106,7 @@ const Container = styled.div`
   img {
     position: absolute;
     align-self: center;
-    top: 170px;
+    top: 160px;
     width: 650px;
   }
 `;

@@ -77,7 +77,7 @@ const worldcupController = {
       response.json(await commentService.getCountByWorldcupId(worldcup));
     } else {
       const comments = await commentService.findByWorldcupId(id, offset as string, limit as string);
-      response.json({ comments });
+      response.json(comments);
     }
   },
 

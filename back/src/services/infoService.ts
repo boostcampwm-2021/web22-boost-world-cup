@@ -1,6 +1,5 @@
 import { Info } from '../entity/Info';
 import { getRepository } from 'typeorm';
-import { Candidate } from '../entity/Candidate';
 import { GENDER, AGE } from '../types/common';
 
 export const makeInfoData = (gender: number, age: number): Info => {
@@ -28,13 +27,15 @@ export const makeInfoData = (gender: number, age: number): Info => {
     case AGE.FORTIES:
       info.forties = 1;
       break;
+    case AGE.FIFTIES:
+      info.fifties = 1;
+      break;
     case AGE.ETC:
       info.etc = 1;
       break;
     default:
       break;
   }
-  info.total = 1;
   return info;
 };
 
@@ -62,13 +63,15 @@ export const setInfoData = (info: Info, gender: number, age: number): Info => {
     case AGE.FORTIES:
       info.forties += 1;
       break;
+    case AGE.FIFTIES:
+      info.fifties += 1;
+      break;
     case AGE.ETC:
       info.etc += 1;
       break;
     default:
       break;
   }
-  info.total += 1;
   return info;
 };
 

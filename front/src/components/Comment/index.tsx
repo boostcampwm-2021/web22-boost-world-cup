@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { createComment } from '../../utils/api/comment';
+import { createComment, getComments } from '../../utils/api/comment';
 import { CommentData } from '../../types/Datas';
 import CommentList from '../CommentList';
 import { loginState } from '../../recoil/atom';
+import { useInfiniteScroll } from '../../hooks';
 
 interface Props {
   worldcupId: string;
@@ -13,17 +14,31 @@ interface Props {
 function Comment({ worldcupId }: Props): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
   const [message, setMessage] = useState('');
-  const [comments, setComments] = useState<CommentData[]>([]);
-  const [offset, setOffset] = useState(0);
+  const {
+    items: comments,
+    target,
+    isLoading,
+    isClickMore,
+    onClickMoreBtn,
+    setItems: setComments,
+  } = useInfiniteScroll<CommentData>(10, getComments, [worldcupId]);
 
   const onSubmit = useCallback(
     async (event: React.MouseEvent<HTMLElement>) => {
       event.preventDefault();
-      if (message === '') {
+      const trimMessage = message.trim();
+      if (trimMessage === '') {
+        setMessage('');
         return;
       }
       setMessage('');
-      const { commentId, userId, nickname, createdAt, message: newMessage } = await createComment(worldcupId, message);
+      const {
+        commentId,
+        userId,
+        nickname,
+        createdAt,
+        message: newMessage,
+      } = await createComment(worldcupId, trimMessage);
       setComments([{ commentId, userId, nickname, createdAt, message: newMessage }, ...comments]);
     },
     [comments, message],
@@ -54,9 +69,11 @@ function Comment({ worldcupId }: Props): JSX.Element {
       <CommentList
         worldcupId={worldcupId}
         comments={comments}
-        offset={offset}
-        setOffset={setOffset}
+        isLoading={isLoading}
+        observeTarget={target}
         setComments={setComments}
+        isClickMore={isClickMore}
+        onClickMoreBtn={onClickMoreBtn}
       />
     </Wrapper>
   );
