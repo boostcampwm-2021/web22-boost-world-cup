@@ -22,9 +22,10 @@ function Main(): JSX.Element {
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    setSearchWord(inputWord);
     setOffset(0);
+    setSearchWord(inputWord);
     setInputWord('');
+    setSelectedTag('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputWord(event.target.value);
@@ -32,6 +33,7 @@ function Main(): JSX.Element {
   const onClickTag = (keyword: string) => {
     setOffset(0);
     setSelectedTag(keyword);
+    setSearchWord('');
   };
 
   useEffect(() => {
