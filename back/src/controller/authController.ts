@@ -9,7 +9,7 @@ const authController = {
     next();
   },
 
-  githubCallback: async (request: Request, response: Response, next: NextFunction) => {
+  githubCallback: async (request: Request, response: Response) => {
     const {
       cookies: { redirectUrl },
     } = request;
@@ -20,7 +20,7 @@ const authController = {
         : response.redirect(`${process.env.REDIRECT_URL}/main`)
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
-  kakaoCallback: async (request: Request, response: Response, next: NextFunction) => {
+  kakaoCallback: async (request: Request, response: Response) => {
     const {
       cookies: { redirectUrl },
     } = request;
@@ -31,7 +31,7 @@ const authController = {
         : response.redirect(`${process.env.REDIRECT_URL}/main`)
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
-  googleCallback: async (request: Request, response: Response, next: NextFunction) => {
+  googleCallback: async (request: Request, response: Response) => {
     const {
       cookies: { redirectUrl },
     } = request;
