@@ -19,16 +19,16 @@ const authController = {
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
   info: async (request: Request, response: Response, next: NextFunction) => {
-    let data = {};
     if (request.user) {
       const { id, nickname, gender, age } = request.user;
-      data = { id, nickname, gender, age };
+      const data = { id, nickname, gender, age };
+      response.json({
+        result: 'success',
+        message: null,
+        data,
+      });
     }
-    response.json({
-      result: 'success',
-      message: null,
-      data,
-    });
+    response.status(401).end();
   },
   signup: async (request: Request, response: Response, next: NextFunction) => {
     const { clientId: providerId, nickname, gender, age } = request.body;

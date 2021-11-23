@@ -1,17 +1,11 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 interface ServerResponse {
   result: string;
   message: string | null;
 }
 
-export const getUser = async (): Promise<ServerResponse> => {
-  const response = await axios.get('/api/auth/info');
-  const {
-    data: { data: userInfo },
-  } = response;
-  return userInfo;
-};
+export const getUser = (): Promise<AxiosResponse> => axios.get('/api/auth/info');
 
 export const signup = async (
   clientId: string,
