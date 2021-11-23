@@ -3,7 +3,7 @@ import * as authService from '../services/authService';
 import { NextFunction, Request, Response } from 'express';
 
 const authController = {
-  temp: async (request: Request, response: Response, next: NextFunction) => {
+  setCookie: async (request: Request, response: Response, next: NextFunction) => {
     const { redirect_url: redirectUrl } = request.query;
     redirectUrl && response.cookie('redirectUrl', redirectUrl);
     next();
