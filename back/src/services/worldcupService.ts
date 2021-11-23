@@ -2,58 +2,44 @@ import { Worldcup } from '../entity/Worldcup';
 import { findOrCreate as findOrCreateTag } from './tagService';
 import { save as saveCandidates, getTotalCount as getCandidateTotalCnt } from './candidateService';
 import { findById as findUserById } from './userService';
-import { getRepository, Like } from 'typeorm';
+import { Repository, getRepository, Like } from 'typeorm';
+import ApiResult from '../utils/ApiResult';
 
-export const findAll = async () => {
-  const worldcupRepository = getRepository(Worldcup);
-  const worldcups = await worldcupRepository.find({
-    select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
-    where: { isTemp: false },
-  });
-  return {
-    result: 'success',
-    message: null,
-    data: {
-      worldcup: worldcups,
-    },
-  };
-};
+const { succeed, failed } = ApiResult;
 
-export const findFromPage = async (offset, limit) => {
-  const worldcupRepository = getRepository(Worldcup);
-  return await worldcupRepository.find({
-    select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
-    where: { isTemp: false },
-    skip: Number(offset),
-    take: Number(limit),
-  });
-};
-
-export const findBySearchWord = async (offset, limit, searchWord) => {
-  const worldcupRepository = getRepository(Worldcup);
-  return await worldcupRepository.find({
-    select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
-    where: { isTemp: false, title: Like(`%${searchWord}%`) },
-    skip: Number(offset),
-    take: Number(limit),
-  });
-};
-
-export const findByKeyword = async (offset, limit, keyword) => {
-  return await getRepository(Worldcup)
+export const findFromPage = async (offset: number, limit: number): Promise<ApiResult<Worldcup[]>> => {
+  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
+  const worldcups = await worldcupRepository
     .createQueryBuilder('worldcup')
-    .select([
-      'worldcup.id AS id',
-      'worldcup.title AS title',
-      'worldcup.thumbnail1 AS thumbnail1',
-      'worldcup.thumbnail2 AS thumbnail2',
-      'worldcup.description AS description',
-    ])
+    .where('worldcup.is_temp = :isTemp', { isTemp: false })
+    .skip(offset)
+    .take(limit)
+    .getMany();
+  return succeed(worldcups);
+};
+
+export const findBySearchWord = async (offset: number, limit: number, searchWord): Promise<ApiResult<Worldcup[]>> => {
+  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
+  const worldcups = await worldcupRepository
+    .createQueryBuilder('worldcup')
+    .where('worldcup.is_temp = :isTemp', { isTemp: false })
+    .andWhere('worldcup.title like :title', { title: `%${searchWord}%` })
+    .skip(offset)
+    .take(limit)
+    .getMany();
+  return succeed(worldcups);
+};
+
+export const findByKeyword = async (offset: number, limit: number, keyword): Promise<ApiResult<Worldcup[]>> => {
+  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
+  const worldcups = await worldcupRepository
+    .createQueryBuilder('worldcup')
     .innerJoin('worldcup.keywords', 'keywords')
     .where('keywords.name= :name', { name: keyword })
-    .offset(Number(offset))
-    .limit(Number(limit))
-    .execute();
+    .offset(offset)
+    .limit(limit)
+    .getMany();
+  return succeed(worldcups);
 };
 
 export const findMyWorldcup = async (id, offset, limit) => {
