@@ -1,12 +1,11 @@
 import React, { useMemo } from 'react';
+import { useLocation } from 'react-router';
+
 import styled from 'styled-components';
 import { Header, RankingList, Comment } from '../../components';
 
-interface Props {
-  location: Location;
-}
-
-function Ranking({ location }: Props): JSX.Element {
+function Ranking(): JSX.Element {
+  const location = useLocation();
   const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
 
   return (
