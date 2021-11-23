@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
-import { loginState } from '../../recoil/atom';
-import { getUser } from '../../utils/api/auth';
 import Header from '../../components/Header';
 import WorldCupList from '../../components/WorldcupList';
 import { getWorldcupList } from '../../utils/api/worldcups';
@@ -10,7 +7,6 @@ import { useInfiniteScroll } from '../../hooks';
 import { Worldcup } from '../../types/Datas';
 
 const MyWorldcup = (): JSX.Element => {
-  const setIsLoggedIn = useSetRecoilState(loginState);
   const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
 
@@ -32,16 +28,6 @@ const MyWorldcup = (): JSX.Element => {
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputWord(event.target.value);
   };
-  const getUserInfo = async () => {
-    const user = await getUser();
-    if (Object.keys(user).length !== 0) {
-      setIsLoggedIn(true);
-    }
-  };
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
 
   return (
     <Container>
