@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
-import { loginState } from '../../recoil/atom';
 import HeaderModal from './HeaderModal';
 import SearchBar from '../SearchBar';
+import { UserStateContext } from '../../stores/userStore';
 
 interface headerProps {
   type: 'header';
@@ -20,7 +19,7 @@ interface searchHeaderProps {
 type Props = headerProps | searchHeaderProps;
 
 function Header(props: Props): JSX.Element {
-  const isLoggedIn = useRecoilValue(loginState);
+  const { isLoggedIn } = useContext(UserStateContext);
   const [modal, setModal] = useState(false);
   const prop = { ...props };
   const toggleModal = () => {
