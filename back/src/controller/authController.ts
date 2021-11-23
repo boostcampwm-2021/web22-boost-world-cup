@@ -8,26 +8,7 @@ const authController = {
     response.cookie('redirectUrl', redirectUrl);
     next();
   },
-
-  githubCallback: async (request: Request, response: Response) => {
-    const {
-      cookies: { redirectUrl },
-    } = request;
-    response.clearCookie('redirectUrl');
-    request.user.nickname
-      ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
-      : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
-  },
-  kakaoCallback: async (request: Request, response: Response) => {
-    const {
-      cookies: { redirectUrl },
-    } = request;
-    response.clearCookie('redirectUrl');
-    request.user.nickname
-      ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
-      : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
-  },
-  googleCallback: async (request: Request, response: Response) => {
+  oauthCallback: async (request: Request, response: Response) => {
     const {
       cookies: { redirectUrl },
     } = request;
