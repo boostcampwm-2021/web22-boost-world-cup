@@ -50,6 +50,7 @@ const useInfiniteScroll = <T>(
   useEffect(() => {
     if (offset !== 0) return;
     setIsLoading(true);
+    observer.current = new IntersectionObserver(onIntersect, { threshold: THRESHOLD });
     getItemsDispatcher({ type: REQUEST, requestProps: [offset, limit, ...requestProps] });
   }, [offset]);
 

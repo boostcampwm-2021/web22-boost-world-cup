@@ -24,16 +24,8 @@ export const getWorldcupList = (
   keyword: string,
 ): Promise<AxiosResponse> => axios.get('/api/worldcups', { params: { offset, limit, search, keyword } });
 
-export const getMyWorldcupList = async (query: pagingQueryType): Promise<Array<worldcups>> => {
-  const response = await axios.get(`/api/worldcups/user`, {
-    params: {
-      id: query.id,
-      offset: query.offset,
-      limit: query.limit,
-    },
-  });
-  return response.data.data.worldcup;
-};
+export const getMyWorldcupList = (offset: number, limit: number, id: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/user`, { params: { offset, limit, id } });
 
 export const getWorldcupById = async (id: number): Promise<WorldcupMetaData> => {
   const response = await axios.get(`/api/worldcups/${id}?metaonly=true`);

@@ -5,7 +5,7 @@ import { loginState } from '../../recoil/atom';
 import { getUser } from '../../utils/api/auth';
 import Header from '../../components/Header';
 import WorldCupList from '../../components/WorldcupList';
-import { getWorldcupList } from '../../utils/api/worldcups';
+import { getMyWorldcupList } from '../../utils/api/worldcups';
 import { useInfiniteScroll } from '../../hooks';
 import { Worldcup } from '../../types/Datas';
 
@@ -21,7 +21,7 @@ const MyWorldcup = (): JSX.Element => {
     isClickMore,
     onClickMoreBtn,
     setOffset,
-  } = useInfiniteScroll<Worldcup>(8, getWorldcupList, [searchWord]);
+  } = useInfiniteScroll<Worldcup>(8, getMyWorldcupList, [searchWord]);
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
