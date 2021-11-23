@@ -25,10 +25,15 @@ function Keywords({ onClickTag }: Props): JSX.Element {
     const data = await getWorldcupList();
     setTagList(data);
   };
-  const onClickKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
+  const onToggleKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
     const element = event.target as HTMLElement;
-    setSelectedTag(element.innerText);
-    onClickTag(element.innerText);
+    if (element.innerText === selectedTag) {
+      setSelectedTag('');
+      onClickTag('');
+    } else {
+      setSelectedTag(element.innerText);
+      onClickTag(element.innerText);
+    }
   };
 
   useEffect(() => {
@@ -38,7 +43,7 @@ function Keywords({ onClickTag }: Props): JSX.Element {
   return (
     <TagContainer {...settings}>
       {tagList.map((tag) => (
-        <div key={tagList.indexOf(tag)} onClick={onClickKeyword} onKeyDown={onClickKeyword} aria-hidden="true">
+        <div key={tagList.indexOf(tag)} onClick={onToggleKeyword} aria-hidden="true">
           <TagName selected={selectedTag === tag}>{tag}</TagName>
         </div>
       ))}
