@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 function KeywordInput(): JSX.Element {
   const possibleKeywordCnt = 5;
   const [text, setText] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
+  const hideSpanRef = useRef<HTMLSpanElement | null>(null);
 
   const onChangeEventHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (keywords.length === possibleKeywordCnt) {
@@ -15,7 +16,12 @@ function KeywordInput(): JSX.Element {
       target: { value },
     } = event;
     setText(value);
+    if (hideSpanRef.current) {
+      hideSpanRef.current.innerText = value;
+      event.target.style.width = `${hideSpanRef.current.clientWidth}px`;
+    }
   };
+
   let debouncer: undefined | ReturnType<typeof setTimeout>;
   const keydownEventHander = (event: React.KeyboardEvent<HTMLElement>) => {
     const { code } = event;
@@ -49,7 +55,8 @@ function KeywordInput(): JSX.Element {
       {keywords.map((keyword, idx) => (
         <Keyword key={keyword + idx.toString()}>#{keyword}</Keyword>
       ))}
-      <Input value={text} onChange={onChangeEventHandler} onKeyDown={keydownEventHander} size={3} />
+      <Input value={text} onChange={onChangeEventHandler} onKeyDown={keydownEventHander} />
+      <HideText ref={hideSpanRef} />
     </KeywordContainer>
   );
 }
@@ -74,9 +81,19 @@ const Keyword = styled.div`
 `;
 
 const Input = styled.input`
+  width: 30px;
   padding-left: 3px;
+  padding-right: 3px;
   border: 1px solid;
   background-color: #e1e1e1;
+  ${({ theme }) => theme.fontStyle.body};
+`;
+
+const HideText = styled.span`
+  position: absolute;
+  padding-left: 3px;
+  padding-right: 3px;
+  top: -9999px;
   ${({ theme }) => theme.fontStyle.body};
 `;
 
