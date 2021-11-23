@@ -1,5 +1,8 @@
 import { User } from '../entity/User';
 import { getRepository } from 'typeorm';
+import ApiResult from '../utils/ApiResult';
+
+const { succeed, failed } = ApiResult;
 
 export const findById = async (id) => {
   const userRepository = getRepository(User);
@@ -30,5 +33,6 @@ export const updateUser = async (user) => {
 
 export const removeUser = async (userId) => {
   const userRepository = getRepository(User);
-  return await userRepository.delete({ id: userId });
+  await userRepository.delete({ id: userId });
+  return succeed(null);
 };
