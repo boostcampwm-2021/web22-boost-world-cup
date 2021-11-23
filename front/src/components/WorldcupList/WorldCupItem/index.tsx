@@ -14,14 +14,11 @@ interface Props {
   desc: string;
 }
 interface ModalProps {
-  isOpenModal: boolean;
+  visibility: string;
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const openModal = () => {
-    setIsOpenModal(!isOpenModal);
-  };
+  const [modalStyle, setModalStyle] = useState({ visibility: 'hidden' });
   return (
     <Item>
       <Thumbnail>
@@ -43,12 +40,15 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
             <span>랭킹보기</span>
           </Ranking>
         </Link>
-        <Share onClick={openModal}>
+        <Share
+          onMouseEnter={() => setModalStyle({ visibility: 'visible' })}
+          onMouseLeave={() => setModalStyle({ visibility: 'hidden' })}
+        >
           <FaShare />
           <span>공유하기</span>
         </Share>
       </Buttons>
-      <ModalBox isOpenModal={isOpenModal}>
+      <ModalBox visibility={modalStyle.visibility}>
         <ShareModal id={id} />
       </ModalBox>
     </Item>
@@ -153,7 +153,7 @@ const Share = styled.div`
 const ModalBox = styled.div`
   margin: 1em;
   visibility: ${(props: ModalProps) => {
-    return props.isOpenModal ? 'visible' : 'hidden';
+    return props.visibility;
   }};
 `;
 
