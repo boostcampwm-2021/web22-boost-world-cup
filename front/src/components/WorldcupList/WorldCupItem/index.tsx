@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { loginState } from '../../../recoil/atom';
 import ShareModal from '../../ShareModal';
+import { UserStateContext } from '../../../stores/userStore';
 
 interface Props {
   id: number;
@@ -17,7 +16,7 @@ interface ModalProps {
   isOpenModal: boolean;
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const isLoggedIn = useRecoilValue(loginState);
+  const { isLoggedIn } = useContext(UserStateContext);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
