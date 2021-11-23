@@ -18,7 +18,7 @@ function KeywordInput(): JSX.Element {
     setText(value);
     if (hideSpanRef.current) {
       hideSpanRef.current.innerText = value;
-      event.target.style.width = `${hideSpanRef.current.clientWidth}px`;
+      event.target.style.width = `${hideSpanRef.current.clientWidth + 10}px`;
     }
   };
 
@@ -82,8 +82,8 @@ const Keyword = styled.div`
 
 const Input = styled.input`
   width: 30px;
-  padding-left: 3px;
-  padding-right: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
   border: 1px solid;
   background-color: #e1e1e1;
   ${({ theme }) => theme.fontStyle.body};
