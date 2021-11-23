@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { ImgInfo, WorldcupMetaData } from '../../types/Datas';
 
 interface pagingQueryType {
+  id?: number;
   offset: number;
   limit: number;
   search?: string;
@@ -22,6 +23,17 @@ export const getWorldcupList = (
   search: string,
   keyword: string,
 ): Promise<AxiosResponse> => axios.get('/api/worldcups', { params: { offset, limit, search, keyword } });
+
+export const getMyWorldcupList = async (query: pagingQueryType): Promise<Array<worldcups>> => {
+  const response = await axios.get(`/api/worldcups/user`, {
+    params: {
+      id: query.id,
+      offset: query.offset,
+      limit: query.limit,
+    },
+  });
+  return response.data.data.worldcup;
+};
 
 export const getWorldcupById = async (id: number): Promise<WorldcupMetaData> => {
   const response = await axios.get(`/api/worldcups/${id}?metaonly=true`);
@@ -47,3 +59,7 @@ export const patchWorldcupTitle = (worldcupId: number, title: string): Promise<A
 
 export const patchWorldcupDesc = (worldcupId: number, desc: string): Promise<AxiosResponse> =>
   axios.patch(`/api/worldcups/${worldcupId}/desc`, { desc });
+
+export const deleteWorldcup = (worldcupId: number): void => {
+  axios.delete(`/api/worldcups/${worldcupId}`);
+};

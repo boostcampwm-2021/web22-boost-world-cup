@@ -28,7 +28,7 @@ export class Candidate {
   @OneToOne((type) => Info, (info) => info.candidate, { cascade: true })
   info: Info;
 
-  @ManyToOne((type) => Worldcup, (worldcup) => worldcup.candidates)
+  @ManyToOne((type) => Worldcup, (worldcup) => worldcup.candidates, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'worldcup_id' })
   worldcup: Worldcup;
 }

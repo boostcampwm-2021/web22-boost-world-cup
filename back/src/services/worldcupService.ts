@@ -56,6 +56,16 @@ export const findByKeyword = async (offset, limit, keyword) => {
     .execute();
 };
 
+export const findMyWorldcup = async (id, offset, limit) => {
+  const worldcupRepository = getRepository(Worldcup);
+  return await worldcupRepository.find({
+    select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
+    where: { user: id },
+    skip: Number(offset),
+    take: Number(limit),
+  });
+};
+
 export const findById = async (id) => {
   const worldcupRepository = getRepository(Worldcup);
   return await worldcupRepository.findOne(id, { relations: ['candidates'] });
@@ -120,4 +130,9 @@ export const getMetaData = async (id: number) => {
   const [worldcup, totalCnt] = await Promise.all([worldcupRepository.findOne(id), getCandidateTotalCnt(id)]);
   const { title, description } = worldcup;
   return { totalCnt, title, description };
+};
+
+export const removeWorldcupById = async (id: number) => {
+  const worldcupRepository = getRepository(Worldcup);
+  worldcupRepository.delete(id);
 };
