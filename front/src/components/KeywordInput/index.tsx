@@ -40,10 +40,10 @@ function KeywordInput(): JSX.Element {
       }, 0);
       event.preventDefault();
     } else if (code === 'Backspace') {
-      if (!text) {
-        return;
-      }
       if (text.length === 0) {
+        if (keywords.length === 0) {
+          return;
+        }
         setText(keywords[keywords.length - 1]);
         setKeywords((prev) => prev.slice(0, -1));
       }
