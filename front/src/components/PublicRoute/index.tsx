@@ -1,10 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
-import { UserDispatcherContext } from '../../stores/userStore/index';
 import Loading from '../../pages/Loading';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { getUser } from '../../utils/api/auth';
-import { UserInfo } from '../../types/Datas';
+import { useLoginCheck } from '../../hooks';
 
 interface Props {
   component: (props: any) => JSX.Element;
@@ -13,22 +10,7 @@ interface Props {
 }
 
 function PublicRoute({ component: TargetPage, exact, path }: Props): JSX.Element {
-  const [isLoginChecked, setIsLoginChecked] = useState(false);
-  const userDispatcher = useContext(UserDispatcherContext);
-
-  const onGetUserSuccess = ({ data: userInfo }: { data: UserInfo }) => {
-    userDispatcher({ type: 'LOGIN', payload: { ...userInfo, isLoggedIn: true } });
-    setIsLoginChecked(true);
-  };
-  const onGetUserFailure = () => {
-    userDispatcher({ type: 'LOGOUT' });
-    setIsLoginChecked(true);
-  };
-  const getUserDispatcher = useApiRequest(getUser, onGetUserSuccess, onGetUserFailure);
-
-  useEffect(() => {
-    getUserDispatcher({ type: REQUEST });
-  }, []);
+  const isLoginChecked = useLoginCheck();
 
   return (
     <Route
