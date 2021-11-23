@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
 import WorldCupList from '../../components/WorldcupList';
-import { useInfiniteScroll } from '../../hooks';
+import { useInfiniteScroll, useSearchBar } from '../../hooks';
 import { getWorldcupList } from '../../utils/api/worldcups';
 import { Worldcup } from '../../types/Datas';
 
 function Main(): JSX.Element {
-  const [inputWord, setInputWord] = useState('');
-  const [searchWord, setSearchWord] = useState('');
+  const setOffsetRef = useRef<React.Dispatch<React.SetStateAction<number>> | null>(null);
   const [selectedTag, setSelectedTag] = useState('');
+
+  const [searchWord, inputWord, onSubmit, onSearchWordChange] = useSearchBar(setOffsetRef.current);
   const {
     items: worldcups,
     target,
@@ -20,21 +21,13 @@ function Main(): JSX.Element {
     setOffset,
   } = useInfiniteScroll<Worldcup>(8, getWorldcupList, [searchWord, selectedTag]);
 
-  const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
-    event.preventDefault();
-    setSearchWord(inputWord);
-    setOffset(0);
-    setInputWord('');
-  };
-  const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputWord(event.target.value);
-  };
   const onClickTag = (keyword: string) => {
     setOffset(0);
     setSelectedTag(keyword);
   };
 
   useEffect(() => {
+    setOffsetRef.current = setOffset;
     const script = document.createElement('script');
     script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
     script.async = true;
