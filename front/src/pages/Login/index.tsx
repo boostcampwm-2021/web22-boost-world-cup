@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { GoMarkGithub } from 'react-icons/go';
@@ -9,9 +10,19 @@ import { loginState } from '../../recoil/atom';
 import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 
+interface locationState {
+  from: string;
+}
+
 function Login(): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
-
+  const location = useLocation();
+  let prevPage = '';
+  if (location.state) {
+    const { from } = location.state as locationState;
+    prevPage = from;
+  }
+  const githubURL = prevPage && `${process.env.REACT_APP_GITHUB_CALLBACK_URL}?redirect_url=${prevPage}`;
   return isLoggedIn ? (
     <Redirect to="/main" />
   ) : (
@@ -19,7 +30,7 @@ function Login(): JSX.Element {
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
       <ButtonContainer>
-        <a href={process.env.REACT_APP_GITHUB_CALLBACK_URL}>
+        <a href={githubURL || process.env.REACT_APP_GITHUB_CALLBACK_URL}>
           <SocialLoginButton mark={<GoMarkGithub />} contents="Continue with Github" />
         </a>
         <a href={process.env.REACT_APP_KAKAO_CALLBACK_URL}>

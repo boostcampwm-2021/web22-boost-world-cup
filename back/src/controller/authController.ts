@@ -3,9 +3,20 @@ import * as authService from '../services/authService';
 import { NextFunction, Request, Response } from 'express';
 
 const authController = {
+  temp: async (request: Request, response: Response, next: NextFunction) => {
+    const { redirect_url: redirectUrl } = request.query;
+    redirectUrl && response.cookie('redirectUrl', redirectUrl);
+    next();
+  },
+
   githubCallback: async (request: Request, response: Response, next: NextFunction) => {
+    const {
+      cookies: { redirectUrl },
+    } = request;
     request.user.nickname
-      ? response.redirect(`${process.env.REDIRECT_URL}/main`)
+      ? redirectUrl
+        ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
+        : response.redirect(`${process.env.REDIRECT_URL}/main`)
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
   kakaoCallback: async (request: Request, response: Response, next: NextFunction) => {

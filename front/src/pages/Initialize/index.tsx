@@ -82,7 +82,14 @@ function Initialize({ location }: Props): JSX.Element {
   };
 
   if (!isLoggedIn) {
-    return <Redirect to="/login" />;
+    return (
+      <Redirect
+        to={{
+          pathname: '/login',
+          state: { from: location.pathname },
+        }}
+      />
+    );
   }
 
   return ready ? (
