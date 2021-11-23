@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express';
 const authController = {
   setCookie: async (request: Request, response: Response, next: NextFunction) => {
     const { redirect_url: redirectUrl } = request.query;
-    redirectUrl && response.cookie('redirectUrl', redirectUrl);
+    response.cookie('redirectUrl', redirectUrl);
     next();
   },
 
@@ -15,9 +15,7 @@ const authController = {
     } = request;
     response.clearCookie('redirectUrl');
     request.user.nickname
-      ? redirectUrl
-        ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
-        : response.redirect(`${process.env.REDIRECT_URL}/main`)
+      ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
   kakaoCallback: async (request: Request, response: Response) => {
@@ -26,9 +24,7 @@ const authController = {
     } = request;
     response.clearCookie('redirectUrl');
     request.user.nickname
-      ? redirectUrl
-        ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
-        : response.redirect(`${process.env.REDIRECT_URL}/main`)
+      ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
   googleCallback: async (request: Request, response: Response) => {
@@ -37,9 +33,7 @@ const authController = {
     } = request;
     response.clearCookie('redirectUrl');
     request.user.nickname
-      ? redirectUrl
-        ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
-        : response.redirect(`${process.env.REDIRECT_URL}/main`)
+      ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
   info: async (request: Request, response: Response, next: NextFunction) => {

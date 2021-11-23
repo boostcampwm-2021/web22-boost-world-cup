@@ -17,20 +17,15 @@ interface locationState {
 function Login(): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
   const location = useLocation();
-  let prevPage;
+  let prevPage = '/main';
   if (location.state) {
     const { from } = location.state as locationState;
     prevPage = from;
   }
-  const githubCallbackUrl = prevPage
-    ? `${process.env.REACT_APP_GITHUB_CALLBACK_URL}?redirect_url=${prevPage}`
-    : `${process.env.REACT_APP_GITHUB_CALLBACK_URL}`;
-  const kakaoCallbackUrl = prevPage
-    ? `${process.env.REACT_APP_KAKAO_CALLBACK_URL}?redirect_url=${prevPage}`
-    : `${process.env.REACT_APP_KAKAO_CALLBACK_URL}`;
-  const googleCallbackUrl = prevPage
-    ? `${process.env.REACT_APP_GOOGLE_CALLBACK_URL}?redirect_url=${prevPage}`
-    : `${process.env.REACT_APP_GOOGLE_CALLBACK_URL}`;
+
+  const githubCallbackUrl = `${process.env.REACT_APP_GITHUB_CALLBACK_URL}?redirect_url=${prevPage}`;
+  const kakaoCallbackUrl = `${process.env.REACT_APP_KAKAO_CALLBACK_URL}?redirect_url=${prevPage}`;
+  const googleCallbackUrl = `${process.env.REACT_APP_GOOGLE_CALLBACK_URL}?redirect_url=${prevPage}`;
 
   return isLoggedIn ? (
     <Redirect to="/main" />
