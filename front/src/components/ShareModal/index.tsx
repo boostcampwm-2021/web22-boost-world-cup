@@ -14,29 +14,61 @@ const ShareModal = ({ id }: ShareModalProps): JSX.Element => {
     setClipBoardModal(true);
     setTimeout(() => {
       setClipBoardModal(false);
-    }, 1000);
+    }, 2000);
   };
   return (
     <ModalBox>
-      <KakaoButton url={url} />
-      <Facebookbutton url={url}>
-        <FacebookIcon size={48} borderRadius={24} />
-      </Facebookbutton>
-      <CopyToClipboard text={url}>
-        <URLButton onClick={clipBoardHandler} type="button">
-          URL
-        </URLButton>
-      </CopyToClipboard>
-      {clipBoardModal ? <ClipBordModal>링크를 복사했습니다.</ClipBordModal> : ''}
+      <Header>
+        <h1>공유하기</h1>
+        <span>월드컵을 SNS에 공유해보세요.</span>
+      </Header>
+      <Content>
+        <KakaoButton url={url} />
+        <Facebookbutton url={url}>
+          <FacebookIcon size={48} borderRadius={24} />
+        </Facebookbutton>
+        <CopyToClipboard text={url}>
+          <URLButton onClick={clipBoardHandler} type="button">
+            URL
+          </URLButton>
+        </CopyToClipboard>
+        {clipBoardModal ? <ClipBordModal>클립보드에 복사되었습니다.</ClipBordModal> : ''}
+      </Content>
     </ModalBox>
   );
 };
 const ModalBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 350px;
+  height: 500px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
   margin: auto;
   padding; 0px;
+`;
+const Header = styled.header`
+  text-align: center;
+  h1 {
+    font-size: 2em;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  span {
+    font-size: 1.1em;
+  }
+`;
+const Content = styled.div`
+  width: 260px;
   display: flex;
-  width: 200px;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 const Facebookbutton = styled(FacebookShareButton).attrs((props) => ({
   url: props.url,
@@ -62,13 +94,12 @@ const URLButton = styled.button`
   }
 `;
 const ClipBordModal = styled.p`
-  position: absolute;
-  top: 40vh;
-  left: 40vw;
-  background-color: black;
+  position: fixed;
+  bottom: 20px;
+  background-color: ${({ theme }) => theme.color.highlight};
   color: white;
   border-radius: 12px;
-  font-size: 2em;
-  padding: 6vh 6vw;
+  font-size: 1em;
+  padding: 2em 4em;
 `;
 export default ShareModal;
