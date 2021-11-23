@@ -12,3 +12,4 @@ export { default as RankingList } from './RankingList';
 export { default as RankingModal } from './RankingModal';
 export { default as Comment } from './Comment';
 export { default as PrivateRoute } from './PrivateRoute';
+export { default as PublicRoute } from './PublicRoute';
