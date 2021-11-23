@@ -19,8 +19,10 @@ interface ModalProps {
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const openModal = () => {
-    setIsOpenModal(!isOpenModal);
+  const onToggleModal = (event: React.SyntheticEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    if (isOpenModal && event.target === event.currentTarget) setIsOpenModal(false);
+    else setIsOpenModal(true);
   };
   return (
     <Item>
@@ -43,12 +45,12 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
             <span>랭킹보기</span>
           </Ranking>
         </Link>
-        <Share onClick={openModal}>
+        <Share onClick={onToggleModal}>
           <FaShare />
           <span>공유하기</span>
         </Share>
       </Buttons>
-      <ModalBox isOpenModal={isOpenModal}>
+      <ModalBox onClick={onToggleModal} isOpenModal={isOpenModal}>
         <ShareModal id={id} />
       </ModalBox>
     </Item>
@@ -95,6 +97,7 @@ const Desc = styled.p`
 const Buttons = styled.div`
   display: flex;
   padding-top: 1em;
+  margin-bottom: 1.6em;
 `;
 const Start = styled.div`
   display: flex;
