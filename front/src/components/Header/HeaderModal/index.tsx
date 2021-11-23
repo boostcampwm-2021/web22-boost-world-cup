@@ -1,22 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
-import { loginState } from '../../../recoil/atom';
 import { logout } from '../../../utils/api/auth';
+import { UserDispatcherContext } from '../../../stores/userStore';
 
 interface Props {
   open: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 function HeaderModal({ open, setModal }: Props): JSX.Element {
-  const setIsLoggedIn = useSetRecoilState(loginState);
+  const userDispatcher = useContext(UserDispatcherContext);
   const history = useHistory();
   const setLogout = async () => {
     setModal(false);
     const response = await logout();
     if (response.result) {
-      setIsLoggedIn(false);
+      userDispatcher({ type: 'LOGOUT' });
       history.push('/main');
     }
   };
