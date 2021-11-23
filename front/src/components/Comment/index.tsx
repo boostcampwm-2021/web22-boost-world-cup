@@ -19,11 +19,19 @@ function Comment({ worldcupId }: Props): JSX.Element {
   const onSubmit = useCallback(
     async (event: React.MouseEvent<HTMLElement>) => {
       event.preventDefault();
-      if (message === '') {
+      const trimMessage = message.trim();
+      if (trimMessage === '') {
+        setMessage('');
         return;
       }
       setMessage('');
-      const { commentId, userId, nickname, createdAt, message: newMessage } = await createComment(worldcupId, message);
+      const {
+        commentId,
+        userId,
+        nickname,
+        createdAt,
+        message: newMessage,
+      } = await createComment(worldcupId, trimMessage);
       setComments([{ commentId, userId, nickname, createdAt, message: newMessage }, ...comments]);
     },
     [comments, message],

@@ -4,7 +4,7 @@ import styled, { keyframes, css } from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { loginState } from '../../recoil/atom';
 import { Header } from '../../components';
-import versusImg from '../../images/versus.png';
+import vsImg from '../../images/vs.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from '../Gameover';
 import { objectDecryption, objectEncryption } from '../../utils/crypto';
@@ -17,6 +17,7 @@ function Worldcup(): JSX.Element {
   const [gameInfo, setGameInfo] = useState<gameInfoData>();
   const [leftCandidate, setLeftCandidate] = useState<candidateData>();
   const [rightCandidate, setRightCandidate] = useState<candidateData>();
+  let debouncer: undefined | ReturnType<typeof setTimeout>;
 
   const setCandidates = useCallback((candidatesList: candidateData[]) => {
     candidatesList.sort(() => Math.random() - 0.5);
@@ -48,14 +49,14 @@ function Worldcup(): JSX.Element {
 
   const imageClickHandler = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
+      if (debouncer) {
+        return;
+      }
       const {
         dataset: { value },
       } = event.target as HTMLElement;
-      if (value) {
-        setPick(Number(value));
-      }
-
-      setTimeout(() => {
+      setPick(Number(value as string));
+      debouncer = setTimeout(() => {
         let winId: number | undefined;
         let loseId: number | undefined;
 
@@ -133,7 +134,7 @@ function Worldcup(): JSX.Element {
         <Round>{makeRoundText(gameInfo?.round)}</Round>
       </InfoContainer>
       <ImageContainer select={pick}>
-        <img src={versusImg} alt="versus" />
+        <img src={vsImg} alt="versus" />
         <LeftImage
           imageUrl={leftCandidate ? leftCandidate.url : ''}
           select={pick}
@@ -222,19 +223,12 @@ const ImageContainer = styled.div<{ select: number }>`
   width: 100%;
   height: calc(100% - 100px);
   img {
-    width: 15%;
+    width: 8%;
     position: absolute;
     transform: translate(-50%, 0);
     left: 50%;
     align-self: center;
     display: ${({ select }) => (select === 0 ? 'block' : 'none')};
-  }
-`;
-
-const selected = keyframes`
-  from {}
-  to {
-    background-size: 100% 90%;
   }
 `;
 
@@ -250,19 +244,13 @@ const notSelected = keyframes`
 const LeftImage = styled.div<{ imageUrl: string; select: number }>`
   width: 100%;
   background: url(${({ imageUrl }) => imageUrl});
-  background-size: 100% 60%;
+  background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
-  animation: ${({ select }) =>
-    select === 1
-      ? css`
-          ${selected} 1s ease forwards;
-        `
-      : css``};
+  background-position: ${({ select }) => (select === 1 ? `center` : `right`)};
   animation: ${({ select }) =>
     select === 2
       ? css`
-          ${notSelected} 1s ease forwards;
+          ${notSelected} 1s ease forwards
         `
       : css``};
 `;
@@ -270,20 +258,13 @@ const LeftImage = styled.div<{ imageUrl: string; select: number }>`
 const RightImage = styled.div<{ imageUrl: string; select: number }>`
   width: 100%;
   background: url(${(props) => props.imageUrl});
-  background-size: 100% 60%;
+  background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
-  animation: ${({ select }) => (select === 2 ? css`` : css``)};
+  background-position: ${({ select }) => (select === 2 ? `center` : `left`)};
   animation: ${({ select }) =>
     select === 1
       ? css`
-          ${notSelected} 1s ease forwards;
-        `
-      : css``};
-  animation: ${({ select }) =>
-    select === 2
-      ? css`
-          ${selected} 1s ease forwards;
+          ${notSelected} 1s ease forwards
         `
       : css``};
 `;

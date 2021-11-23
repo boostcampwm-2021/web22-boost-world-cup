@@ -8,6 +8,7 @@
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.25.2",
@@ -34,7 +35,7 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "dev": "ts-node-dev --files src/index.ts",
+    "dev": "cross-env NODE_ENV=development ts-node-dev --files src/index.ts",
     "start": "ts-node --files src/index.ts"
   }
 }

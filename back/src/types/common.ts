@@ -8,5 +8,6 @@ export enum AGE {
   TWENTIES,
   THIRTIES,
   FORTIES,
+  FIFTIES,
   ETC,
 }
