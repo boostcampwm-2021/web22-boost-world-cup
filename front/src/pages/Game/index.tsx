@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Redirect } from 'react-router';
 import styled, { keyframes, css } from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { loginState } from '../../recoil/atom';
 import { Header } from '../../components';
 import vsImg from '../../images/vs.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
@@ -11,7 +9,6 @@ import { objectDecryption, objectEncryption } from '../../utils/crypto';
 import { sendCurrentResult, sendFinalResult } from '../../utils/api/ranking';
 
 function Worldcup(): JSX.Element {
-  const isLoggedIn = useRecoilValue(loginState);
   const [isInitialized, setIsInitialized] = useState(true);
   const [pick, setPick] = useState(0);
   const [gameInfo, setGameInfo] = useState<gameInfoData>();
@@ -115,10 +112,6 @@ function Worldcup(): JSX.Element {
       return `${round * 2}강`;
     }
   };
-
-  if (!isLoggedIn) {
-    return <Redirect to="/login" />;
-  }
 
   if (!isInitialized) {
     return <Redirect to="/main" />;
