@@ -35,6 +35,11 @@ function Main(): JSX.Element {
     setSelectedTag(keyword);
     setSearchWord('');
   };
+  const onResetData = () => {
+    setSearchWord('');
+    setSelectedTag('');
+    setOffset(0);
+  };
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -48,7 +53,13 @@ function Main(): JSX.Element {
 
   return (
     <Wrapper>
-      <Header type="searchHeader" onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
+      <Header
+        type="searchHeader"
+        onSubmit={onSubmit}
+        onSearchWordChange={onSearchWordChange}
+        searchWord={inputWord}
+        onResetData={onResetData}
+      />
       <Keywords onClickTag={onClickTag} selectedTag={selectedTag} />
       <WorldCupList
         type="worldcup"
