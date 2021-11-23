@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { RankingData } from '../../types/Datas';
 
 export const getCandidateList = (offset: number, limit: number, worldcupId: string): Promise<AxiosResponse> => {
   return axios.get(`/api/ranking/${worldcupId}?offset=${offset}&limit=${limit}`);

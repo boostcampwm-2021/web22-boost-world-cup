@@ -32,7 +32,6 @@ function Header(props: Props): JSX.Element {
   };
   const onMoveMainPage = () => {
     if (url === 'main' && props.type === 'searchHeader' && props.onResetData) {
-      console.log('여기');
       props.onResetData();
     } else history.push('/main');
   };
