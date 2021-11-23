@@ -20,13 +20,23 @@ const authController = {
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
   kakaoCallback: async (request: Request, response: Response, next: NextFunction) => {
+    const {
+      cookies: { redirectUrl },
+    } = request;
     request.user.nickname
-      ? response.redirect(`${process.env.REDIRECT_URL}/main`)
+      ? redirectUrl
+        ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
+        : response.redirect(`${process.env.REDIRECT_URL}/main`)
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
   googleCallback: async (request: Request, response: Response, next: NextFunction) => {
+    const {
+      cookies: { redirectUrl },
+    } = request;
     request.user.nickname
-      ? response.redirect(`${process.env.REDIRECT_URL}/main`)
+      ? redirectUrl
+        ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
+        : response.redirect(`${process.env.REDIRECT_URL}/main`)
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
   info: async (request: Request, response: Response, next: NextFunction) => {

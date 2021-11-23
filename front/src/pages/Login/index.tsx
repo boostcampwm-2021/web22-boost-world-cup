@@ -17,12 +17,21 @@ interface locationState {
 function Login(): JSX.Element {
   const isLoggedIn = useRecoilValue(loginState);
   const location = useLocation();
-  let prevPage = '';
+  let prevPage;
   if (location.state) {
     const { from } = location.state as locationState;
     prevPage = from;
   }
-  const githubURL = prevPage && `${process.env.REACT_APP_GITHUB_CALLBACK_URL}?redirect_url=${prevPage}`;
+  const githubCallbackUrl = prevPage
+    ? `${process.env.REACT_APP_GITHUB_CALLBACK_URL}?redirect_url=${prevPage}`
+    : `${process.env.REACT_APP_GITHUB_CALLBACK_URL}`;
+  const kakaoCallbackUrl = prevPage
+    ? `${process.env.REACT_APP_KAKAO_CALLBACK_URL}?redirect_url=${prevPage}`
+    : `${process.env.REACT_APP_KAKAO_CALLBACK_URL}`;
+  const googleCallbackUrl = prevPage
+    ? `${process.env.REACT_APP_GOOGLE_CALLBACK_URL}?redirect_url=${prevPage}`
+    : `${process.env.REACT_APP_GOOGLE_CALLBACK_URL}`;
+
   return isLoggedIn ? (
     <Redirect to="/main" />
   ) : (
@@ -30,13 +39,13 @@ function Login(): JSX.Element {
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
       <ButtonContainer>
-        <a href={githubURL || process.env.REACT_APP_GITHUB_CALLBACK_URL}>
+        <a href={githubCallbackUrl}>
           <SocialLoginButton mark={<GoMarkGithub />} contents="Continue with Github" />
         </a>
-        <a href={process.env.REACT_APP_KAKAO_CALLBACK_URL}>
+        <a href={kakaoCallbackUrl}>
           <SocialLoginButton mark={<SiKakaotalk />} contents="Continue with Kakao" />
         </a>
-        <a href={process.env.REACT_APP_GOOGLE_CALLBACK_URL}>
+        <a href={googleCallbackUrl}>
           <SocialLoginButton mark={<FcGoogle />} contents="Continue with Google" />
         </a>
       </ButtonContainer>
