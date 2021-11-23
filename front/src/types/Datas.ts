@@ -49,6 +49,7 @@ export interface RankingData {
   twenties: number;
   thirties: number;
   forties: number;
+  fifties: number;
   etc: number;
 }
 export interface RankingSummaryData {
@@ -60,21 +61,24 @@ export interface RankingSummaryData {
 }
 export interface InfoData {
   name: string;
-  total: number;
   male: number;
   female: number;
   teens: number;
   twenties: number;
   thirties: number;
   forties: number;
+  fifties: number;
   etc: number;
 }
 export interface DoughnutChartData {
+  value: number;
   startX: number;
   startY: number;
   endX: number;
   endY: number;
   isLargeArc: number;
+  targetArc: number;
+  restArc: number;
 }
 export interface ErrorResponseData {
   result: 'fail';

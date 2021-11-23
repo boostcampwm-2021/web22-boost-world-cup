@@ -9,31 +9,35 @@ interface RankingProps {
   worldcupId: string;
 }
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
+  const [initialData, setInitialData] = useState<RankingData[]>([]);
+  const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [data, setData] = useState<RankingData[]>([]);
-  const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
   const [info, setInfo] = useState<InfoData[]>([]);
   const candidateRef = useRef<number | null>(null);
-  const handleClick = (event: React.MouseEvent<Element>) => {
-    setIsOpenModal(!isOpenModal);
-    if (event.currentTarget.children[2]) {
-      const candidateName = event.currentTarget.children[2].innerHTML;
-      candidateRef.current = data.findIndex((v) => v.name === candidateName);
-    }
+
+  const openModal = (event: React.MouseEvent<Element>) => {
+    setIsOpenModal(true);
+    const candidateName = event.currentTarget.children[2].innerHTML;
+    candidateRef.current = initialData.findIndex((v) => v.name === candidateName);
   };
+  const closeModal = (event: React.MouseEvent<Element>) => {
+    event.stopPropagation();
+    if (event.target === event.currentTarget) setIsOpenModal(false);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const newData = await getCandidateList(worldcupId);
-      setData(newData);
+      setInitialData(() => newData);
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    setRenderData(getRenderData(data));
-    setInfo(getInfoAcc(data));
-  }, [data]);
+    setRenderData(getRenderData(initialData));
+    setInfo(getInfoAcc(initialData));
+  }, [initialData]);
 
   const getRenderData = useCallback((dataset: RankingData[]) => {
     return dataset
@@ -53,27 +57,40 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   }, []);
 
   const getInfoAcc = useCallback((dataset: RankingData[]) => {
-    return dataset.map((v) => ({
-      name: v.name,
-      total: v.winCnt,
-      male: v.male,
-      female: v.female,
-      teens: v.teens,
-      twenties: v.twenties,
-      thirties: v.thirties,
-      forties: v.forties,
-      etc: v.etc,
-    }));
+    return dataset.map((v) => {
+      const ageTotal = Object.values(v)
+        .slice(9)
+        .reduce((pre, cur) => pre + cur, 0);
+      return {
+        name: v.name,
+        male: v.male / (v.male + v.female),
+        female: v.female / (v.male + v.female),
+        teens: v.teens / ageTotal,
+        twenties: v.twenties / ageTotal,
+        thirties: v.thirties / ageTotal,
+        forties: v.forties / ageTotal,
+        fifties: v.fifties / ageTotal,
+        etc: v.etc / ageTotal,
+      };
+    });
   }, []);
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    const filteredData = getRenderData(data.filter((value) => value.name.indexOf(inputWord) !== -1));
+    const filteredData = getRenderData(
+      initialData.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputWord.replace(/(\s*)/g, '')) !== -1),
+    );
     setRenderData([...filteredData]);
     setInputWord('');
   };
+
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputWord(event.target.value);
+    const inputValue = event.target.value;
+    setInputWord(inputValue);
+    const filteredData = getRenderData(
+      initialData.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputValue.replace(/(\s*)/g, '')) !== -1),
+    );
+    setRenderData([...filteredData]);
   };
   return (
     <>
@@ -98,7 +115,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
           </div>
         </RightCaption>
       </Caption>
-      <RankingItems>
+      <RankingItemContainer>
         {renderData.map((v, index) => {
           return (
             <Wrapper key={v.id}>
@@ -108,14 +125,14 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
                 name={v.name}
                 victoryRatio={v.victoryRatio}
                 winRatio={v.winRatio}
-                handleClick={handleClick}
+                handleClick={openModal}
               />
               {index + 1 < renderData.length ? <Divider /> : ''}
             </Wrapper>
           );
         })}
-      </RankingItems>
-      {isOpenModal ? <RankingModal handleClick={handleClick} info={info[candidateRef.current as number]} /> : ''}
+      </RankingItemContainer>
+      {isOpenModal && <RankingModal closeModal={closeModal} info={info[candidateRef.current as number]} />}
     </>
   );
 }
@@ -166,7 +183,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const RankingItems = styled.section`
+const RankingItemContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;

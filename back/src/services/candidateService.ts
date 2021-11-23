@@ -3,7 +3,7 @@ import { Info } from '../entity/Info';
 import { getRepository } from 'typeorm';
 import { removeByCandidateId as removeInfoByCandidateId } from './infoService';
 
-export const getCandidateList = async (worldcupId: String) => {
+export const getCandidatesByWorldcup = async (worldcupId: String) => {
   const candidateList = await getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoinAndSelect('candidate.worldcup', 'worldcup')
@@ -23,6 +23,7 @@ export const getCandidateList = async (worldcupId: String) => {
       'info.twenties AS twenties',
       'info.thirties AS thirties',
       'info.forties AS forties',
+      'info.fifties AS fifties',
       'info.etc AS etc',
     ])
     .execute();

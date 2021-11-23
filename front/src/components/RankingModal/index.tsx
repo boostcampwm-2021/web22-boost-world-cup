@@ -1,23 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { FaRegWindowClose } from 'react-icons/fa';
 import { InfoData, DoughnutChartData } from '../../types/Datas';
+import DoughnutChart from './DoughnutChart';
+import BarChart from './BarChart';
 
 interface ModalProps {
   info: InfoData;
-  handleClick: (event: React.MouseEvent<Element>) => void;
+  closeModal: (event: React.MouseEvent<Element>) => void;
 }
-function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
+function RankingModal({ closeModal, info }: ModalProps): JSX.Element {
   const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
-  const COLORS = ['#050f2c ', '#004b79', '#0091cd', '#56a0d3', '#c4dff6', '#84bd00', '#efdf00'];
-  const ageRatio = [
-    info.teens / info.total,
-    info.twenties / info.total,
-    info.thirties / info.total,
-    info.forties / info.total,
-    info.etc / info.total,
-  ];
-  const genderRatio = [info.male / info.total, info.female / info.total];
+  const { name, male, female, ...age } = info;
   const getCoordCircle = (percent: number) => {
     const x = Math.cos(2 * Math.PI * percent);
     const y = Math.sin(2 * Math.PI * percent);
@@ -30,89 +23,52 @@ function RankingModal({ handleClick, info }: ModalProps): JSX.Element {
       acc += value;
       const [endX, endY] = getCoordCircle(acc);
       const isLargeArc = value > 0.5 ? 1 : 0;
-      return { startX, startY, endX, endY, isLargeArc };
+      const targetArc = 2 * Math.PI * value;
+      const restArc = 2 * Math.PI * (1 - value);
+      return { value, startX, startY, endX, endY, isLargeArc, targetArc, restArc };
     });
   }, []);
   useEffect(() => {
-    if (info.total > 0) {
-      setDoughnutInfo(makeDoughnutInfo(ageRatio));
-    }
+    setDoughnutInfo(makeDoughnutInfo(Object.values(age)));
   }, []);
   return (
-    <Modal>
-      <Header>
-        <span>{info.name}</span>
-        <FaRegWindowClose onClick={handleClick} />
-      </Header>
-      {doughnutInfo.length ? (
-        <Content>
-          <Doughnut>
-            <DoughnutSvg width="300" height="300" viewBox="-1.5 -1.5 3 3">
-              {ageRatio.map((value, index) => {
-                return (
-                  <path
-                    d={`M ${doughnutInfo[index].startX} ${doughnutInfo[index].startY} A 1 1 0 ${doughnutInfo[index].isLargeArc} 1 ${doughnutInfo[index].endX} ${doughnutInfo[index].endY}`}
-                    fill="none"
-                    strokeWidth="0.4"
-                    stroke={COLORS[index]}
-                  />
-                );
-              })}
-              )
-            </DoughnutSvg>
-            <DoughnutLabel>
-              {ageRatio.map((value, index) => {
-                return (
-                  <DoughnutDesc color={COLORS[index]}>
-                    <div />
-                    <span>{index < 4 ? `${(index + 1) * 10}대` : `기타`}</span>
-                    <p>{(value * 100).toFixed(0)}%</p>
-                  </DoughnutDesc>
-                );
-              })}
-            </DoughnutLabel>
-          </Doughnut>
-          <Bar>
-            <svg width="100%" height="65px">
-              <defs>
-                <linearGradient id="barChart">
-                  <stop offset="0" stopColor={COLORS[5]}>
-                    <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
-                  </stop>
-                  <stop offset="0" stopColor={COLORS[6]}>
-                    <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={genderRatio[0]} />
-                  </stop>
-                </linearGradient>
-              </defs>
-              <rect id="Rectangle" x="0" y="0" width="300" height="30" rx="8" fill="url(#barChart)" />
-            </svg>
-            <BarLabel>
-              <BarDesc color={COLORS[5]}>
-                <div />
-                <span>Male</span>
-                <p>{(genderRatio[0] * 100).toFixed(0)}%</p>
-              </BarDesc>
-              <BarDesc color={COLORS[6]}>
-                <div />
-                <span>Female</span>
-                <p>{(genderRatio[1] * 100).toFixed(0)}%</p>
-              </BarDesc>
-            </BarLabel>
-          </Bar>
-        </Content>
-      ) : (
-        <EmptyModal>
-          <p>기록된 랭킹 기록이 없습니다.</p>
-        </EmptyModal>
-      )}
-    </Modal>
+    <Modaloverlay onClick={closeModal}>
+      <Modal>
+        <Header>
+          <span>{info.name}</span>
+        </Header>
+        {doughnutInfo.length ? (
+          <Content>
+            <Doughnut>
+              <DoughnutChart data={doughnutInfo} />
+            </Doughnut>
+            <Bar>
+              <BarChart data={{ male, female }} />
+            </Bar>
+          </Content>
+        ) : (
+          <EmptyModal>
+            <p>기록된 랭킹 기록이 없습니다.</p>
+          </EmptyModal>
+        )}
+      </Modal>
+    </Modaloverlay>
   );
 }
+const Modaloverlay = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
 const Modal = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -120%);
+  transform: translate(-50%, -30%);
   width: 800px;
   height: 400px;
   display: flex;
@@ -126,10 +82,10 @@ const Header = styled.header`
   width: 100%;
   height: 20px;
   display: flex;
-  justify-content: space-between;
   padding: 20px 40px 30px 40px;
   border-bottom: 1px solid gray;
   span {
+    font-size: 1.2em;
     font-weight: bold;
   }
 `;
@@ -145,81 +101,12 @@ const Doughnut = styled.section`
   height: 90%;
   width: 50%;
 `;
-const DoughnutSvg = styled.svg`
-  background-color: white;
-  path {
-    cursor: pointer;
-    transition: all 300ms ease-in;
-    &:hover {
-      transform: scale(1.1);
-      opacity: 0.6;
-    }
-  }
-`;
-
-const DoughnutLabel = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 60%;
-  height: 40%;
-  span {
-    font-weight: bold;
-  }
-  p {
-    width: 80px;
-    text-align: center;
-  }
-`;
-const DoughnutDesc = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 0.2em;
-  div {
-    margin-right: -1em;
-    background-color: ${(props) => props.color};
-    width: 20px;
-    height: 20px;
-    border-radius: 50px;
-  }
-`;
 const Bar = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 90%;
-  svg {
-    cursor: pointer;
-    transition: all 300ms ease-in;
-    &:hover {
-      transform: scale(1.1);
-      opacity: 0.7;
-    }
-  }
-`;
-const BarLabel = styled.div`
-  display: flex;
-  width: 90%;
-  justify-content: space-between;
-  span {
-    font-weight: bold;
-  }
-`;
-const BarDesc = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0.2em;
-  width: 50%;
-  div {
-    margin-right: -0.4em;
-    background-color: ${(props) => props.color};
-    width: 20px;
-    height: 20px;
-    border-radius: 50px;
-  }
 `;
 const EmptyModal = styled.div`
   height: 100%;

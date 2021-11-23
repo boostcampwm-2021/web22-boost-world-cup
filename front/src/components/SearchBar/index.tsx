@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import TextInput from '../TextInput';
 
 interface Props {
-  onSubmit: React.MouseEventHandler<HTMLButtonElement>;
+  onSubmit?: React.MouseEventHandler<HTMLButtonElement>;
   onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
   searchWord: string;
 }
