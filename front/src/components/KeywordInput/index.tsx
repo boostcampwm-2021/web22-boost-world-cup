@@ -34,6 +34,9 @@ function KeywordInput(): JSX.Element {
       }, 0);
       event.preventDefault();
     } else if (code === 'Backspace') {
+      if (!text) {
+        return;
+      }
       if (text.length === 0) {
         setText(keywords[keywords.length - 1]);
         setKeywords((prev) => prev.slice(0, -1));
@@ -46,7 +49,7 @@ function KeywordInput(): JSX.Element {
       {keywords.map((keyword, idx) => (
         <Keyword key={keyword + idx.toString()}>#{keyword}</Keyword>
       ))}
-      <Input value={text} onChange={onChangeEventHandler} onKeyDown={keydownEventHander} />
+      <Input value={text} onChange={onChangeEventHandler} onKeyDown={keydownEventHander} size={3} />
     </KeywordContainer>
   );
 }
@@ -74,6 +77,7 @@ const Input = styled.input`
   padding-left: 3px;
   border: 1px solid;
   background-color: #e1e1e1;
+  ${({ theme }) => theme.fontStyle.body};
 `;
 
 export default KeywordInput;
