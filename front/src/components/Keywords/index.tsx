@@ -7,8 +7,9 @@ import { getWorldcupList } from '../../utils/api/keywords';
 
 interface Props {
   onClickTag: (keyword: string) => void;
+  selectedTag: string;
 }
-function Keywords({ onClickTag }: Props): JSX.Element {
+function Keywords({ onClickTag, selectedTag }: Props): JSX.Element {
   const settings = {
     dots: false,
     slidesToShow: 1,
@@ -20,7 +21,6 @@ function Keywords({ onClickTag }: Props): JSX.Element {
   };
 
   const [tagList, setTagList] = useState<Array<string>>([]);
-  const [selectedTag, setSelectedTag] = useState('');
   const getTagList = async () => {
     const data = await getWorldcupList();
     setTagList(data);
@@ -28,10 +28,8 @@ function Keywords({ onClickTag }: Props): JSX.Element {
   const onToggleKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
     const element = event.target as HTMLElement;
     if (element.innerText === selectedTag) {
-      setSelectedTag('');
       onClickTag('');
     } else {
-      setSelectedTag(element.innerText);
       onClickTag(element.innerText);
     }
   };

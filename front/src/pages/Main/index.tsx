@@ -49,7 +49,7 @@ function Main(): JSX.Element {
   return (
     <Wrapper>
       <Header type="searchHeader" onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
-      <Keywords onClickTag={onClickTag} />
+      <Keywords onClickTag={onClickTag} selectedTag={selectedTag} />
       <WorldCupList
         type="worldcup"
         worldcups={worldcups}
