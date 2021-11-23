@@ -15,7 +15,8 @@ const useInfiniteScroll = <T>(
   const [items, setItems] = useState<T[]>([]);
   const observer = useRef<IntersectionObserver | null>(null);
   const target = useRef<HTMLDivElement | null>(null);
-  const onGetItemsSuccess = (newItems: T[]) => {
+  const onGetItemsSuccess = (data: any) => {
+    const newItems = data.data;
     setIsLoading(false);
     if (!newItems.length) {
       (observer.current as IntersectionObserver).disconnect();

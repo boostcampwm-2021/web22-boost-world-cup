@@ -5,12 +5,24 @@ import { loginState } from '../../recoil/atom';
 import { getUser } from '../../utils/api/auth';
 import Header from '../../components/Header';
 import WorldCupList from '../../components/WorldcupList';
+import { getWorldcupList } from '../../utils/api/worldcups';
+import { useInfiniteScroll } from '../../hooks';
+import { Worldcup } from '../../types/Datas';
 
 const MyWorldcup = (): JSX.Element => {
   const setIsLoggedIn = useSetRecoilState(loginState);
   const [inputWord, setInputWord] = useState('');
   const [searchWord, setSearchWord] = useState('');
-  const [offset, setOffset] = useState(0);
+
+  const {
+    items: worldcups,
+    target,
+    isLoading,
+    isClickMore,
+    onClickMoreBtn,
+    setOffset,
+  } = useInfiniteScroll<Worldcup>(8, getWorldcupList, [searchWord]);
+
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setSearchWord(inputWord);
@@ -34,7 +46,14 @@ const MyWorldcup = (): JSX.Element => {
   return (
     <Container>
       <Header type="searchHeader" onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
-      <WorldCupList type="myWorldcup" offset={offset} setOffset={setOffset} searchWord={searchWord} />
+      <WorldCupList
+        type="worldcup"
+        worldcups={worldcups}
+        observeTarget={target}
+        isLoading={isLoading}
+        isClickMore={isClickMore}
+        onClickMoreBtn={onClickMoreBtn}
+      />
     </Container>
   );
 };
