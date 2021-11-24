@@ -26,11 +26,11 @@ function TabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
 }
 
 const TabBtn = styled.button<{ activated: boolean }>`
-  width: 330px;
-  height: 74px;
+  width: 280px;
+  height: 60px;
   line-height: 74px;
   text-align: center;
-  ${({ theme }) => theme.fontStyle.h3Bold};
+  ${({ theme }) => theme.fontStyle.bodyBold};
   border: 1px solid ${({ theme }) => theme.color.primary};
   border-radius: 12px 12px 0 0;
   color: #959595;
