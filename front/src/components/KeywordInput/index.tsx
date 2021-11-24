@@ -88,22 +88,25 @@ const KeywordContainer = styled.div`
 `;
 
 const Keyword = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-right: 10px;
   background-color: #e1e1e1;
   padding: 0px 10px 0px 10px;
   border-radius: 8px;
-  ${({ theme }) => theme.fontStyle.body};
+  ${({ theme }) => theme.fontStyle.caption};
   color: ${({ theme }) => theme.color.gray[3]};
   background-color: ${({ theme }) => theme.color.primary};
 `;
 
 const Input = styled.input<{ keywordLen: number }>`
-  width: ${({ keywordLen }) => (keywordLen === 0 ? '220px' : '50px')};
+  width: ${({ keywordLen }) => (keywordLen === 0 ? '200px' : '50px')};
   padding-left: 5px;
   padding-right: 5px;
   border: none;
   border-radius: 8px;
-  ${({ theme }) => theme.fontStyle.body};
+  ${({ theme }) => theme.fontStyle.caption};
   color: ${({ theme }) => theme.color.gray[3]};
   background-color: ${({ theme }) => theme.color.primary};
 `;
