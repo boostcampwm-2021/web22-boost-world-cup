@@ -53,7 +53,7 @@ const AddImgsContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.color.black};
   border-radius: 10px;
   position: relative;
-  width: 1312px;
+  width: 100%;
   height: 260px;
   display: flex;
   flex-direction: column;

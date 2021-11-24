@@ -61,9 +61,8 @@ function Make(): JSX.Element {
 }
 
 const Content = styled.main`
-  width: 1844px;
-  margin: 0 auto;
-  margin-top: 22px;
+  width: 90%;
+  margin: auto;
 `;
 
 export default Make;
