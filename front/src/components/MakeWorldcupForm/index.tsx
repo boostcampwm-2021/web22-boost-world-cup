@@ -125,6 +125,7 @@ const Container = styled.form`
 `;
 
 const Title = styled.div`
+  margin-bottom: 20px;
   ${({ theme }) => theme.fontStyle.h3};
 `;
 
@@ -146,6 +147,7 @@ const HorizontalWrapper = styled.div`
 `;
 
 const Label = styled.label`
+  flex: none;
   font-size: 20px;
   font-weight: bold;
 `;

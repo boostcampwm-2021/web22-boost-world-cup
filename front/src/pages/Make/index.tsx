@@ -63,6 +63,7 @@ function Make(): JSX.Element {
 const Content = styled.main`
   width: 90%;
   margin: auto;
+  margin-top: 20px;
 `;
 
 export default Make;

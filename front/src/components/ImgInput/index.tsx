@@ -49,12 +49,10 @@ function ImgInput({ onChange, type }: Props): JSX.Element {
 }
 
 const AddImgsContainer = styled.div`
-  background-color: ${({ theme }) => theme.color.white};
-  border: 1px solid ${({ theme }) => theme.color.black};
   border-radius: 10px;
   position: relative;
   width: 100%;
-  height: 260px;
+  height: 190px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -64,11 +62,14 @@ const AddImgsContainer = styled.div`
     background-color: #f5f5f5;
   }
   ${({ theme }) => theme.fontStyle.h3};
+  background-color: ${({ theme }) => theme.color.white};
+  border: 1px solid ${({ theme }) => theme.color.black};
 `;
 
 const AddAdditionalImgsContainer = styled.div`
-  width: 143px;
-  height: 160px;
+  flex: none;
+  width: 150px;
+  height: 150px;
   background-color: ${({ theme }) => theme.color.white};
   border: 1px solid ${({ theme }) => theme.color.black};
   border-radius: 20px;

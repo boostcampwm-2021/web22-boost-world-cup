@@ -34,13 +34,13 @@ function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
 }
 
 const Btn = styled.button`
-  background-color: ${({ theme }) => theme.color.primary};
-  ${({ theme }) => theme.fontStyle.h3};
-  width: 124px;
-  height: 57px;
+  width: 110px;
+  height: 45px;
   border-radius: 10px;
-  margin-left: 30px;
+  margin-left: 20px;
   transition: background-color 0.3s;
+  background-color: ${({ theme }) => theme.color.primary};
+  ${({ theme }) => theme.fontStyle.bodyBold};
   &:hover {
     background-color: ${({ theme }) => theme.color.pink};
   }
