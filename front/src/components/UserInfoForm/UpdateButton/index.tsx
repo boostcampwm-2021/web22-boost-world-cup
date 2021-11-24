@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
 import { putUser } from '../../../utils/api/auth';
-import { userState } from '../../../recoil/atom';
+import { UserDispatcherContext } from '../../../stores/userStore';
 
 interface Props {
   id: number;
@@ -13,7 +12,7 @@ interface Props {
 }
 
 function UpdateButton({ id, nickname, gender, age, setAuthenticated }: Props): JSX.Element {
-  const setUserInfo = useSetRecoilState(userState);
+  const userDispatcher = useContext(UserDispatcherContext);
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     if (nickname === '' || gender === 0 || age === 0) {
@@ -25,12 +24,7 @@ function UpdateButton({ id, nickname, gender, age, setAuthenticated }: Props): J
     const { result } = await putUser(id, nickname, gender, age);
 
     if (result === 'success') {
-      setUserInfo({
-        id,
-        nickname,
-        gender,
-        age,
-      });
+      userDispatcher({ type: 'LOGIN', payload: { id, nickname, gender, age, isLoggedIn: true } });
       setAuthenticated(true);
     }
   };

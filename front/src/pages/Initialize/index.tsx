@@ -1,8 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { loginState } from '../../recoil/atom';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from '../../components/RoundSelector';
@@ -13,7 +11,6 @@ import { objectEncryption } from '../../utils/crypto';
 
 function Initialize(): JSX.Element {
   const location = useLocation();
-  const isLoggedIn = useRecoilValue(loginState);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [ready, setReady] = useState(false);
@@ -77,17 +74,6 @@ function Initialize(): JSX.Element {
       setReady(true);
     }
   };
-
-  if (!isLoggedIn) {
-    return (
-      <Redirect
-        to={{
-          pathname: '/login',
-          state: { from: location.pathname },
-        }}
-      />
-    );
-  }
 
   return ready ? (
     <Redirect to="/worldcup" />

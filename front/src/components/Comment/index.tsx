@@ -1,18 +1,17 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useContext } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
 import { createComment, getComments } from '../../utils/api/comment';
 import { CommentData } from '../../types/Datas';
 import CommentList from '../CommentList';
-import { loginState } from '../../recoil/atom';
 import { useInfiniteScroll } from '../../hooks';
+import { UserStateContext } from '../../stores/userStore';
 
 interface Props {
   worldcupId: string;
 }
 
 function Comment({ worldcupId }: Props): JSX.Element {
-  const isLoggedIn = useRecoilValue(loginState);
+  const { isLoggedIn } = useContext(UserStateContext);
   const [message, setMessage] = useState('');
   const {
     items: comments,

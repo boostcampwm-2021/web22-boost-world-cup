@@ -1,18 +1,11 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import logo from '../../images/logo.png';
-import { loginState } from '../../recoil/atom';
 import UserInfoForm from '../../components/UserInfoForm';
 
 const Profile = (): JSX.Element => {
-  const isLoggedIn = useRecoilValue(loginState);
-
-  return !isLoggedIn ? (
-    <Redirect to="/main" />
-  ) : (
+  return (
     <>
       <Header type="header" />
       <Container>

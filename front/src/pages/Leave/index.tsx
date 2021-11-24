@@ -1,21 +1,18 @@
-import React, { useCallback } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useCallback, useContext } from 'react';
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import logo from '../../images/logo.png';
-import { userState, loginState } from '../../recoil/atom';
 import { deleteUser } from '../../utils/api/auth';
-import { UserInfo } from '../../types/Datas';
+import { UserStateContext, UserDispatcherContext } from '../../stores/userStore';
 
 const Leave = (): JSX.Element => {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const [userInfo, setUserInfo] = useRecoilState<UserInfo>(userState);
+  const { isLoggedIn, id: userId } = useContext(UserStateContext);
+  const userDispatcher = useContext(UserDispatcherContext);
 
   const leaveHandler = useCallback(() => {
-    deleteUser(userInfo.id as number);
-    setIsLoggedIn(false);
-    setUserInfo({});
+    deleteUser(userId as number);
+    userDispatcher({ type: 'LOGOUT' });
   }, []);
 
   return !isLoggedIn ? (

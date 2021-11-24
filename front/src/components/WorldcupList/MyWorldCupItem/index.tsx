@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
 import { FaTrash, FaPen, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { loginState } from '../../../recoil/atom';
 import ShareModal from '../../ShareModal';
 import DeleteModal from '../../DeleteModal';
 
@@ -21,7 +19,6 @@ interface DeleteModalProps {
   isDeleteModalOpen: boolean;
 }
 function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const isLoggedIn = useRecoilValue(loginState);
   const [isOpenModal, setIsOpenMpdal] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -45,7 +42,7 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
           <FaTrash />
           <span>삭제하기</span>
         </Delete>
-        <Link to={isLoggedIn ? `/edit/${id}` : '/login'}>
+        <Link to={`/edit/${id}`}>
           <Edit>
             <FaPen />
             <span>수정하기</span>

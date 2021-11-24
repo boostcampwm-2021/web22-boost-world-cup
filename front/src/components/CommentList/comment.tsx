@@ -1,9 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { loginState, userState } from '../../recoil/atom';
-import { CommentData, UserInfo } from '../../types/Datas';
+import { CommentData } from '../../types/Datas';
 import { deleteComment } from '../../utils/api/comment';
+import { UserStateContext } from '../../stores/userStore';
 
 interface Props {
   comment: CommentData;
@@ -11,16 +10,7 @@ interface Props {
 }
 
 function Comment({ comment, setComments }: Props): JSX.Element {
-  const isLoggedIn = useRecoilValue(loginState);
-  const currentUserState = useRecoilValue(userState);
-
-  const getUserId = (): number => {
-    if (isLoggedIn) {
-      const { id } = currentUserState as UserInfo;
-      return id as number;
-    }
-    return -1;
-  };
+  const { isLoggedIn, id: userId } = useContext(UserStateContext);
 
   const getDateString = useCallback((date: string) => {
     const yymmdd = date.split('T')[0];
@@ -45,7 +35,7 @@ function Comment({ comment, setComments }: Props): JSX.Element {
       <SubContainer>
         <Writer>{comment.nickname}</Writer>
         <Date>{getDateString(comment.createdAt)}</Date>
-        {getUserId() === comment.userId ? (
+        {userId === comment.userId ? (
           <DeleteButton onClick={deleteButtonClickHandler} data-value={comment.commentId}>
             삭제
           </DeleteButton>

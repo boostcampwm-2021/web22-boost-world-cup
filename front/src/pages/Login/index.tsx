@@ -1,21 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Redirect } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
 import { GoMarkGithub } from 'react-icons/go';
 import { SiKakaotalk } from 'react-icons/si';
 import { FcGoogle } from 'react-icons/fc';
-import { loginState } from '../../recoil/atom';
 import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
+import { UserStateContext } from '../../stores/userStore';
 
 interface locationState {
   from: string;
 }
 
 function Login(): JSX.Element {
-  const isLoggedIn = useRecoilValue(loginState);
+  const { isLoggedIn } = useContext(UserStateContext);
   const location = useLocation();
   let prevPage = '/main';
   if (location.state) {

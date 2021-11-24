@@ -101,10 +101,10 @@ export interface Candidate {
 }
 
 export interface UserInfo {
-  id?: number;
-  nickname?: string;
-  gender?: number;
-  age?: number;
+  id: number;
+  nickname: string;
+  gender: number;
+  age: number;
 }
 
 export interface Worldcup {
