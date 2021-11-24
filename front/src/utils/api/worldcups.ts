@@ -1,22 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { ImgInfo, WorldcupMetaData } from '../../types/Datas';
 
-interface pagingQueryType {
-  id?: number;
-  offset: number;
-  limit: number;
-  search?: string;
-  keyword?: string;
-}
-
-interface worldcups {
-  id: number;
-  thumbnail1: string;
-  thumbnail2: string;
-  title: string;
-  description: string;
-}
-
 export const getWorldcupList = (
   offset: number,
   limit: number,

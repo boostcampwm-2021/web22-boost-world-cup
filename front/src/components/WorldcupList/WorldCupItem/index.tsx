@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ShareModal from '../../ShareModal';
-import { UserStateContext } from '../../../stores/userStore';
 
 interface Props {
   id: number;
@@ -16,7 +15,6 @@ interface ModalProps {
   isOpenModal: boolean;
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const { isLoggedIn } = useContext(UserStateContext);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const onToggleModal = (event: React.SyntheticEvent<HTMLDivElement>) => {
     event.stopPropagation();
