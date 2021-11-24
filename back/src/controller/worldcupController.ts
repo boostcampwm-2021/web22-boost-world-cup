@@ -15,15 +15,13 @@ const worldcupController = {
       response.status(400).json(failed('offset or limit is undefined'));
       return;
     }
-    let data;
     if (!search && !keyword) {
-      data = await worldcupService.findFromPage(Number(offset), Number(limit));
+      response.json(succeed(await worldcupService.findFromPage(Number(offset), Number(limit))));
     } else if (!keyword) {
-      data = await worldcupService.findBySearchWord(Number(offset), Number(limit), search);
+      response.json(succeed(await worldcupService.findBySearchWord(Number(offset), Number(limit), search)));
     } else {
-      data = await worldcupService.findByKeyword(Number(offset), Number(limit), keyword);
+      response.json(succeed(await worldcupService.findByKeyword(Number(offset), Number(limit), keyword)));
     }
-    response.json(succeed(data));
   },
 
   one: async (request: Request, response: Response, next: NextFunction) => {
