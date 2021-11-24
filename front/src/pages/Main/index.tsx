@@ -11,7 +11,7 @@ function Main(): JSX.Element {
   const setOffsetRef = useRef<React.Dispatch<React.SetStateAction<number>> | null>(null);
   const [selectedTag, setSelectedTag] = useState('');
 
-  const [searchWord, inputWord, onSubmit, onSearchWordChange] = useSearchBar(setOffsetRef.current);
+  const [searchWord, inputWord, onSubmit, onSearchWordChange, setSearchWord] = useSearchBar(setOffsetRef.current);
   const {
     items: worldcups,
     target,

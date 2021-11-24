@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import WorldCupList from '../../components/WorldcupList';
-import { getWorldcupList } from '../../utils/api/worldcups';
+import { getMyWorldcupList } from '../../utils/api/worldcups';
 import { useInfiniteScroll, useSearchBar } from '../../hooks';
 import { Worldcup } from '../../types/Datas';
 
@@ -16,7 +16,7 @@ const MyWorldcup = (): JSX.Element => {
     isClickMore,
     onClickMoreBtn,
     setOffset,
-  } = useInfiniteScroll<Worldcup>(8, getWorldcupList, [searchWord]);
+  } = useInfiniteScroll<Worldcup>(8, getMyWorldcupList, []);
 
   useEffect(() => {
     setOffsetRef.current = setOffset;

@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 
 export const useSearchBar = (
   setOffset: React.Dispatch<React.SetStateAction<number>> | null,
-): [string, string, React.MouseEventHandler, React.ChangeEventHandler<HTMLInputElement>] => {
+): [
+  string,
+  string,
+  React.MouseEventHandler,
+  React.ChangeEventHandler<HTMLInputElement>,
+  React.Dispatch<React.SetStateAction<string>>,
+] => {
   const [searchWord, setSearchWord] = useState('');
   const [inputWord, setInputWord] = useState('');
 
@@ -17,5 +23,5 @@ export const useSearchBar = (
     setInputWord(target.value);
   };
 
-  return [searchWord, inputWord, onSubmit, onSearchWordChange];
+  return [searchWord, inputWord, onSubmit, onSearchWordChange, setSearchWord];
 };
