@@ -160,8 +160,8 @@ const ModalBox = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-  visibility: ${(props: ModalProps) => {
-    return props.isOpenModal ? 'visible' : 'hidden';
+  display: ${(props: ModalProps) => {
+    return props.isOpenModal ? 'block' : 'none';
   }};
 `;
 

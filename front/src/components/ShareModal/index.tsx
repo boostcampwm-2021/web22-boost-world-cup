@@ -29,9 +29,7 @@ const ShareModal = ({ id }: ShareModalProps): JSX.Element => {
           <FacebookIcon size={48} borderRadius={24} />
         </Facebookbutton>
         <CopyToClipboard text={url}>
-          <URLButton onClick={clipBoardHandler} type="button">
-            URL
-          </URLButton>
+          <URLButton onClick={clipBoardHandler}>URL</URLButton>
         </CopyToClipboard>
         {clipBoardModal ? <ClipBordModal>클립보드에 복사되었습니다.</ClipBordModal> : ''}
       </Content>
