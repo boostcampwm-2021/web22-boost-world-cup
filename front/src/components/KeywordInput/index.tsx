@@ -21,32 +21,31 @@ function KeywordInput(): JSX.Element {
       event.target.style.width = `${hideSpanRef.current.clientWidth + 10}px`;
     }
   };
-
-  let debouncer: undefined | ReturnType<typeof setTimeout>;
-  const keydownEventHander = (event: React.KeyboardEvent<HTMLElement>) => {
+  const keypressEventHandler = (event: React.KeyboardEvent<HTMLElement>) => {
     const { code } = event;
-    if (code === 'Space' || code === 'Enter') {
-      const tempText = text.trim();
-      if (tempText.length === 0) {
-        setText('');
+    if (code !== 'Space' && code !== 'Enter') {
+      return;
+    }
+    const tempText = text.trim();
+    if (tempText.length === 0) {
+      setText('');
+      return;
+    }
+    setKeywords((prev) => [...prev, tempText]);
+    setText('');
+    event.preventDefault();
+  };
+  const keydownEventHandler = (event: React.KeyboardEvent<HTMLElement>) => {
+    const { code } = event;
+    if (code !== 'Backspace') {
+      return;
+    }
+    if (text.length === 0) {
+      if (keywords.length === 0) {
         return;
       }
-      if (debouncer) {
-        return;
-      }
-      debouncer = setTimeout(() => {
-        setKeywords((prev) => [...prev, tempText]);
-        setText('');
-      }, 0);
-      event.preventDefault();
-    } else if (code === 'Backspace') {
-      if (text.length === 0) {
-        if (keywords.length === 0) {
-          return;
-        }
-        setText(keywords[keywords.length - 1]);
-        setKeywords((prev) => prev.slice(0, -1));
-      }
+      setText(keywords[keywords.length - 1]);
+      setKeywords((prev) => prev.slice(0, -1));
     }
   };
 
@@ -55,7 +54,12 @@ function KeywordInput(): JSX.Element {
       {keywords.map((keyword, idx) => (
         <Keyword key={keyword + idx.toString()}>#{keyword}</Keyword>
       ))}
-      <Input value={text} onChange={onChangeEventHandler} onKeyDown={keydownEventHander} />
+      <Input
+        value={text}
+        onChange={onChangeEventHandler}
+        onKeyPress={keypressEventHandler}
+        onKeyDown={keydownEventHandler}
+      />
       <HideText ref={hideSpanRef} />
     </KeywordContainer>
   );
