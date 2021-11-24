@@ -18,7 +18,7 @@ function Ranking({ location }: Props): JSX.Element {
     </Wrapper>
   );
 }
-
+// <Comment worldcupId={worldcupId} />
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

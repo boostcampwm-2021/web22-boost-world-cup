@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
@@ -22,9 +22,10 @@ function Main(): JSX.Element {
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    setSearchWord(inputWord);
     setOffset(0);
+    setSearchWord(inputWord);
     setInputWord('');
+    setSelectedTag('');
   };
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputWord(event.target.value);
@@ -32,22 +33,24 @@ function Main(): JSX.Element {
   const onClickTag = (keyword: string) => {
     setOffset(0);
     setSelectedTag(keyword);
+    setSearchWord('');
   };
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  const onResetData = () => {
+    setSearchWord('');
+    setSelectedTag('');
+    setOffset(0);
+  };
 
   return (
     <Wrapper>
-      <Header type="searchHeader" onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
-      <Keywords onClickTag={onClickTag} />
+      <Header
+        type="searchHeader"
+        onSubmit={onSubmit}
+        onSearchWordChange={onSearchWordChange}
+        searchWord={inputWord}
+        onResetData={onResetData}
+      />
+      <Keywords onClickTag={onClickTag} selectedTag={selectedTag} />
       <WorldCupList
         type="worldcup"
         worldcups={worldcups}
