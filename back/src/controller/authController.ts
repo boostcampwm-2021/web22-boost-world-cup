@@ -70,17 +70,9 @@ const authController = {
     }
   },
   leave: async (request: Request, response: Response, next: NextFunction) => {
-    try {
-      await authService.removeUser(request.params.id);
-      request.session.destroy(() => {});
-      response.clearCookie('sid');
-      response.json({
-        result: 'success',
-        message: null,
-      });
-    } catch (err) {
-      next(err);
-    }
+    request.session.destroy(() => {});
+    response.clearCookie('sid');
+    return response.json(await authService.removeUser(request.params.id));
   },
 };
 

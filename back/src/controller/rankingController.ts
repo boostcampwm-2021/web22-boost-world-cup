@@ -7,9 +7,10 @@ const rankingController = {
   getRankingInfo: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { id },
+      query: { offset, limit },
     } = request;
-    const candidateLists = await candidateService.getCandidatesByWorldcup(id);
-    response.json({ candidateLists });
+    const candidateLists = await candidateService.getCandidatesByWorldcup(Number(offset), Number(limit), id);
+    response.json(candidateLists);
   },
   saveCurrentResult: async (request: Request, response: Response, next: NextFunction) => {
     const {
