@@ -18,8 +18,11 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
   const [isOpenModal, setIsOpenModal] = useState(false);
   const onToggleModal = (event: React.SyntheticEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    if (isOpenModal && event.target === event.currentTarget) setIsOpenModal(false);
-    else setIsOpenModal(true);
+    if (isOpenModal && event.target === event.currentTarget) {
+      setIsOpenModal(false);
+      return;
+    }
+    setIsOpenModal(true);
   };
   return (
     <Item>

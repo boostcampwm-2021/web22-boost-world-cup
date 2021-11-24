@@ -7,6 +7,7 @@ import KakaoButton from './KakaoButton';
 interface ShareModalProps {
   id: number;
 }
+
 const ShareModal = ({ id }: ShareModalProps): JSX.Element => {
   const [clipBoardModal, setClipBoardModal] = useState(false);
   const url = `${window.location.origin}/initialize/${id}`;
@@ -14,7 +15,7 @@ const ShareModal = ({ id }: ShareModalProps): JSX.Element => {
     setClipBoardModal(true);
     setTimeout(() => {
       setClipBoardModal(false);
-    }, 2000);
+    }, 1000);
   };
   return (
     <ModalBox>
@@ -47,7 +48,7 @@ const ModalBox = styled.div`
   left: 50%;
   transform: translate(-50%,-50%);
   width: 350px;
-  height: 500px;
+  height: 300px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
@@ -95,8 +96,8 @@ const URLButton = styled.button`
 `;
 const ClipBordModal = styled.p`
   position: fixed;
-  bottom: 20px;
-  background-color: ${({ theme }) => theme.color.highlight};
+  top: 53px;
+  background-color: ${({ theme }) => theme.color.pink};
   color: white;
   border-radius: 12px;
   font-size: 1em;
