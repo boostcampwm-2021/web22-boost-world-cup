@@ -14,8 +14,9 @@ function TabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
         return (
           <TabBtn
             key={tabTitle.indexOf(title)}
-            activated={currentTab === index + 1}
             onClick={() => onTabChange(index + 1)}
+            activated={currentTab === index + 1}
+            index={index}
           >
             {title}
           </TabBtn>
@@ -25,8 +26,8 @@ function TabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
   );
 }
 
-const TabBtn = styled.button<{ activated: boolean }>`
-  width: 280px;
+const TabBtn = styled.button<{ activated: boolean; index: number }>`
+  width: ${({ index }) => (index === 0 ? '300px' : '240px')};
   height: 60px;
   line-height: 74px;
   text-align: center;
