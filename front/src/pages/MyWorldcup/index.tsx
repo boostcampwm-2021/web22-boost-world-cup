@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
-import { loginState } from '../../recoil/atom';
-import { getUser } from '../../utils/api/auth';
 import Header from '../../components/Header';
 import WorldCupList from '../../components/WorldcupList';
-import { getMyWorldcupList } from '../../utils/api/worldcups';
-import { useInfiniteScroll } from '../../hooks';
+import { getWorldcupList } from '../../utils/api/worldcups';
+import { useInfiniteScroll, useSearchBar } from '../../hooks';
 import { Worldcup } from '../../types/Datas';
 
 const MyWorldcup = (): JSX.Element => {
-  const setIsLoggedIn = useSetRecoilState(loginState);
-  const [inputWord, setInputWord] = useState('');
-  const [searchWord, setSearchWord] = useState('');
-
+  const setOffsetRef = useRef<React.Dispatch<React.SetStateAction<number>> | null>(null);
+  const [searchWord, inputWord, onSubmit, onSearchWordChange] = useSearchBar(setOffsetRef.current);
   const {
     items: worldcups,
     target,
@@ -23,24 +18,8 @@ const MyWorldcup = (): JSX.Element => {
     setOffset,
   } = useInfiniteScroll<Worldcup>(8, getMyWorldcupList, [searchWord]);
 
-  const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
-    event.preventDefault();
-    setSearchWord(inputWord);
-    setOffset(0);
-    setInputWord('');
-  };
-  const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputWord(event.target.value);
-  };
-  const getUserInfo = async () => {
-    const user = await getUser();
-    if (Object.keys(user).length !== 0) {
-      setIsLoggedIn(true);
-    }
-  };
-
   useEffect(() => {
-    getUserInfo();
+    setOffsetRef.current = setOffset;
   }, []);
 
   return (
