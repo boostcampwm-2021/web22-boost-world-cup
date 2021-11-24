@@ -103,7 +103,6 @@ const Keyword = styled.div`
 const Input = styled.input<{ keywordLen: number }>`
   width: ${({ keywordLen }) => (keywordLen === 0 ? '200px' : '50px')};
   padding-left: 5px;
-  padding-right: 5px;
   border: none;
   border-radius: 8px;
   ${({ theme }) => theme.fontStyle.caption};
@@ -113,10 +112,9 @@ const Input = styled.input<{ keywordLen: number }>`
 
 const HideText = styled.span`
   position: absolute;
-  padding-left: 3px;
-  padding-right: 3px;
+  padding-left: 5px;
   top: -9999px;
-  ${({ theme }) => theme.fontStyle.body};
+  ${({ theme }) => theme.fontStyle.caption};
 `;
 
 export default KeywordInput;
