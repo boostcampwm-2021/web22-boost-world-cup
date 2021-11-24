@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import '@fontsource/rancho';
@@ -17,7 +18,7 @@ const NotFound = (): JSX.Element => {
         </h1>
         <p>We couldn&#39;t find that page.</p>
         <p>
-          Go to <a href="/">Home page</a>
+          Go to <Link to="/main">Home page</Link>
         </p>
       </Content>
     </Container>

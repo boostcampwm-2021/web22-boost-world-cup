@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -7,8 +7,9 @@ import { getWorldcupList } from '../../utils/api/keywords';
 
 interface Props {
   onClickTag: (keyword: string) => void;
+  selectedTag: string;
 }
-function Keywords({ onClickTag }: Props): JSX.Element {
+function Keywords({ onClickTag, selectedTag }: Props): JSX.Element {
   const settings = {
     dots: false,
     slidesToShow: 1,
@@ -20,15 +21,18 @@ function Keywords({ onClickTag }: Props): JSX.Element {
   };
 
   const [tagList, setTagList] = useState<Array<string>>([]);
-  const [selectedTag, setSelectedTag] = useState('');
-  const getTagList = async () => {
+  const getTagList = useCallback(async () => {
     const data = await getWorldcupList();
-    setTagList(data);
-  };
-  const onClickKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
+    const tagList = data.map((value) => value.name);
+    setTagList(tagList);
+  }, []);
+  const onToggleKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
     const element = event.target as HTMLElement;
-    setSelectedTag(element.innerText);
-    onClickTag(element.innerText);
+    if (element.innerText === selectedTag) {
+      onClickTag('');
+    } else {
+      onClickTag(element.innerText);
+    }
   };
 
   useEffect(() => {
@@ -38,7 +42,7 @@ function Keywords({ onClickTag }: Props): JSX.Element {
   return (
     <TagContainer {...settings}>
       {tagList.map((tag) => (
-        <div key={tagList.indexOf(tag)} onClick={onClickKeyword} onKeyDown={onClickKeyword} aria-hidden="true">
+        <div key={tagList.indexOf(tag)} onClick={onToggleKeyword} aria-hidden="true">
           <TagName selected={selectedTag === tag}>{tag}</TagName>
         </div>
       ))}

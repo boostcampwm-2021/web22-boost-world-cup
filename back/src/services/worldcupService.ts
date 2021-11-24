@@ -3,53 +3,47 @@ import { findOrCreate as findOrCreateTag } from './tagService';
 import { save as saveCandidates, getTotalCount as getCandidateTotalCnt } from './candidateService';
 import { findById as findUserById } from './userService';
 import { Repository, getRepository, Like } from 'typeorm';
-import ApiResult from '../utils/ApiResult';
 
-const { succeed, failed } = ApiResult;
-
-export const findFromPage = async (offset: number, limit: number): Promise<ApiResult<Worldcup[]>> => {
+export const findFromPage = async (offset: number, limit: number): Promise<Worldcup[]> => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  const worldcups = await worldcupRepository
+  return await worldcupRepository
     .createQueryBuilder('worldcup')
     .where('worldcup.is_temp = :isTemp', { isTemp: false })
     .skip(offset)
     .take(limit)
     .getMany();
-  return succeed(worldcups);
 };
 
-export const findBySearchWord = async (offset: number, limit: number, searchWord): Promise<ApiResult<Worldcup[]>> => {
+export const findBySearchWord = async (offset: number, limit: number, searchWord): Promise<Worldcup[]> => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  const worldcups = await worldcupRepository
+  return await worldcupRepository
     .createQueryBuilder('worldcup')
     .where('worldcup.is_temp = :isTemp', { isTemp: false })
     .andWhere('worldcup.title like :title', { title: `%${searchWord}%` })
     .skip(offset)
     .take(limit)
     .getMany();
-  return succeed(worldcups);
 };
 
-export const findByKeyword = async (offset: number, limit: number, keyword): Promise<ApiResult<Worldcup[]>> => {
+export const findByKeyword = async (offset: number, limit: number, keyword): Promise<Worldcup[]> => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  const worldcups = await worldcupRepository
+  return await worldcupRepository
     .createQueryBuilder('worldcup')
     .innerJoin('worldcup.keywords', 'keywords')
     .where('keywords.name= :name', { name: keyword })
     .offset(offset)
     .limit(limit)
     .getMany();
-  return succeed(worldcups);
 };
 
-export const findMyWorldcup = async (id, offset, limit) => {
-  const worldcupRepository = getRepository(Worldcup);
-  return await worldcupRepository.find({
-    select: ['id', 'title', 'thumbnail1', 'thumbnail2', 'description'],
-    where: { user: id },
-    skip: Number(offset),
-    take: Number(limit),
-  });
+export const findMyWorldcup = async (offset: number, limit: number, id: number): Promise<Worldcup[]> => {
+  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
+  return await worldcupRepository
+    .createQueryBuilder('worldcup')
+    .where('worldcup.user_id = :id', { id: id })
+    .skip(offset)
+    .take(limit)
+    .getMany();
 };
 
 export const findById = async (id) => {

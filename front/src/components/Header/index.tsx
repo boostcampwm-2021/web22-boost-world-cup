@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
 import { loginState } from '../../recoil/atom';
@@ -16,23 +17,30 @@ interface searchHeaderProps {
   onSubmit: React.MouseEventHandler<HTMLButtonElement>;
   onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
   searchWord: string;
+  onResetData?: () => void;
 }
 type Props = headerProps | searchHeaderProps;
 
 function Header(props: Props): JSX.Element {
+  const location = useLocation();
+  const history = useHistory();
+  const url = useMemo(() => history.location.pathname.split('/')[1], []);
   const isLoggedIn = useRecoilValue(loginState);
   const [modal, setModal] = useState(false);
   const prop = { ...props };
   const toggleModal = () => {
     setModal(!modal);
   };
+  const onMoveMainPage = () => {
+    if (url === 'main' && props.type === 'searchHeader' && props.onResetData) {
+      props.onResetData();
+    } else history.push('/main');
+  };
   return (
     <>
       {modal && <Overlay onClick={() => setModal(false)} />}
       <MainHeader>
-        <Link to="/main">
-          <Logo>world cup</Logo>
-        </Link>
+        <Logo onClick={onMoveMainPage}>world cup</Logo>
         <RightHeader>
           {prop.type === 'searchHeader' ? (
             <SearchBar
@@ -47,7 +55,12 @@ function Header(props: Props): JSX.Element {
             {isLoggedIn ? (
               <UserIcon onClick={toggleModal} />
             ) : (
-              <Link to="/login">
+              <Link
+                to={{
+                  pathname: '/login',
+                  state: { from: location.pathname },
+                }}
+              >
                 <Login>로그인</Login>
               </Link>
             )}

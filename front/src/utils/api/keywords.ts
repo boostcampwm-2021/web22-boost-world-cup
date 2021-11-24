@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-export const getWorldcupList = async (): Promise<Array<string>> => {
+interface TagType {
+  name: string;
+}
+export const getWorldcupList = async (): Promise<Array<TagType>> => {
   const response = await axios.get('/api/tags');
-  return response.data.data.tags;
+  return response.data;
 };

@@ -16,7 +16,7 @@ const MyWorldcup = (): JSX.Element => {
     isClickMore,
     onClickMoreBtn,
     setOffset,
-  } = useInfiniteScroll<Worldcup>(8, getWorldcupList, [searchWord]);
+  } = useInfiniteScroll<Worldcup>(8, getMyWorldcupList, [searchWord]);
 
   useEffect(() => {
     setOffsetRef.current = setOffset;

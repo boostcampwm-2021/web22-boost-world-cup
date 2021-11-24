@@ -22,9 +22,9 @@ export class User {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @OneToMany((type) => Comment, (comment) => comment.worldcup)
+  @OneToMany((type) => Comment, (comment) => comment.worldcup, { cascade: true })
   comments: Comment[];
 
-  @OneToMany((type) => Worldcup, (worldcup) => worldcup.user)
+  @OneToMany((type) => Worldcup, (worldcup) => worldcup.user, { cascade: true })
   worldcups: Worldcup[];
 }

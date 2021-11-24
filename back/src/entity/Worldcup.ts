@@ -54,7 +54,7 @@ export class Worldcup {
   @OneToMany((type) => Comment, (comment) => comment.worldcup, { cascade: true })
   comments: Comment[];
 
-  @ManyToOne((type) => User, (user) => user.worldcups)
+  @ManyToOne((type) => User, (user) => user.worldcups, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

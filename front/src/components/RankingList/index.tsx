@@ -2,42 +2,43 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { SearchBar, RankingModal } from '../../components';
+import Pagination from '../Pagination';
+import { usePaginationAsync } from '../../hooks';
+import useApiRequset, { REQUEST } from '../../hooks/useApiRequest';
 import { getCandidateList } from '../../utils/api/ranking';
-import { RankingData, RankingSummaryData, InfoData } from '../../types/Datas';
+import { getWorldcupMetadata } from '../../utils/api/worldcups';
+import { RankingData, RankingSummaryData, InfoData, WorldcupMetaData } from '../../types/Datas';
 
 interface RankingProps {
   worldcupId: string;
 }
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
-  const [initialData, setInitialData] = useState<RankingData[]>([]);
+  const PAGINATION_LIMIT = 8;
   const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [info, setInfo] = useState<InfoData[]>([]);
+  const [totalCnt, setTotalCnt] = useState<number>(0);
   const candidateRef = useRef<number | null>(null);
+
+  const [items, currentPage, offset, lastPage, onPageChange] = usePaginationAsync<RankingData>(
+    totalCnt,
+    PAGINATION_LIMIT,
+    getCandidateList,
+    [worldcupId],
+  );
+  const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
+  const getWorldcupMetaDataDispatcher = useApiRequset(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
 
   const openModal = (event: React.MouseEvent<Element>) => {
     setIsOpenModal(true);
     const candidateName = event.currentTarget.children[2].innerHTML;
-    candidateRef.current = initialData.findIndex((v) => v.name === candidateName);
+    candidateRef.current = items.findIndex((v) => v.name === candidateName);
   };
   const closeModal = (event: React.MouseEvent<Element>) => {
     event.stopPropagation();
     if (event.target === event.currentTarget) setIsOpenModal(false);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const newData = await getCandidateList(worldcupId);
-      setInitialData(() => newData);
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    setRenderData(getRenderData(initialData));
-    setInfo(getInfoAcc(initialData));
-  }, [initialData]);
 
   const getRenderData = useCallback((dataset: RankingData[]) => {
     return dataset
@@ -78,7 +79,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     const filteredData = getRenderData(
-      initialData.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputWord.replace(/(\s*)/g, '')) !== -1),
+      items.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputWord.replace(/(\s*)/g, '')) !== -1),
     );
     setRenderData([...filteredData]);
     setInputWord('');
@@ -88,10 +89,19 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     const inputValue = event.target.value;
     setInputWord(inputValue);
     const filteredData = getRenderData(
-      initialData.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputValue.replace(/(\s*)/g, '')) !== -1),
+      items.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputValue.replace(/(\s*)/g, '')) !== -1),
     );
     setRenderData([...filteredData]);
   };
+
+  useEffect(() => {
+    getWorldcupMetaDataDispatcher({ type: REQUEST, requestProps: [worldcupId] });
+  }, []);
+
+  useEffect(() => {
+    setRenderData(getRenderData(items));
+    setInfo(getInfoAcc(items));
+  }, [items]);
   return (
     <>
       <Navigation>
@@ -120,7 +130,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
           return (
             <Wrapper key={v.id}>
               <RankingItem
-                id={index + 1}
+                id={offset + index + 1}
                 url={v.url}
                 name={v.name}
                 victoryRatio={v.victoryRatio}
@@ -131,6 +141,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
             </Wrapper>
           );
         })}
+        <Pagination lastPage={lastPage} currentPage={currentPage} onPageChange={onPageChange} />
       </RankingItemContainer>
       {isOpenModal && <RankingModal closeModal={closeModal} info={info[candidateRef.current as number]} />}
     </>
