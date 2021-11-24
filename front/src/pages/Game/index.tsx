@@ -203,10 +203,12 @@ const NameContainer = styled.div<{ select: number }>`
 `;
 
 const RightName = styled.div<{ select: number }>`
+  flex: none;
   display: ${({ select }) => (select === 1 ? 'none' : 'flex')};
 `;
 
 const LeftName = styled.div<{ select: number }>`
+  flex: none;
   display: ${({ select }) => (select === 2 ? 'none' : 'flex')};
 `;
 
@@ -221,16 +223,16 @@ const ImageContainer = styled.div<{ select: number }>`
     transform: translate(-50%, 0);
     left: 50%;
     align-self: center;
-    display: ${({ select }) => (select === 0 ? 'block' : 'none')};
+    visibility: ${({ select }) => (select === 0 ? 'visible' : 'hidden')};
   }
 `;
 
 const notSelected = keyframes`
   from {
-    width:100%;
+    width: 100%;
   }
   to {
-    width:0%;
+    width: 0%;
   }
 `;
 
