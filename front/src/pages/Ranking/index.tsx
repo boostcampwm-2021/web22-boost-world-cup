@@ -15,7 +15,6 @@ function Ranking({ location }: Props): JSX.Element {
       <RankingContent>
         <RankingList worldcupId={worldcupId} />
       </RankingContent>
-      <Comment worldcupId={worldcupId} />
     </Wrapper>
   );
 }
