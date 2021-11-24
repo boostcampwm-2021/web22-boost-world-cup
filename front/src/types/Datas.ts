@@ -81,7 +81,6 @@ export interface DoughnutChartData {
   endY: number;
   isLargeArc: number;
   targetArc: number;
-  restArc: number;
 }
 
 export interface ErrorResponseData {

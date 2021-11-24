@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GoMarkGithub } from 'react-icons/go';
 import { SiKakaotalk } from 'react-icons/si';
@@ -8,8 +9,22 @@ import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 import { UserStateContext } from '../../stores/userStore';
 
+interface locationState {
+  from: string;
+}
+
 function Login(): JSX.Element {
   const { isLoggedIn } = useContext(UserStateContext);
+  const location = useLocation();
+  let prevPage = '/main';
+  if (location.state) {
+    const { from } = location.state as locationState;
+    prevPage = from;
+  }
+
+  const githubCallbackUrl = `${process.env.REACT_APP_GITHUB_CALLBACK_URL}?redirect_url=${prevPage}`;
+  const kakaoCallbackUrl = `${process.env.REACT_APP_KAKAO_CALLBACK_URL}?redirect_url=${prevPage}`;
+  const googleCallbackUrl = `${process.env.REACT_APP_GOOGLE_CALLBACK_URL}?redirect_url=${prevPage}`;
 
   return isLoggedIn ? (
     <Redirect to="/main" />
@@ -18,13 +33,13 @@ function Login(): JSX.Element {
       <img src={logo} alt="logo" width="220px" height="220px" />
       <Title>Welcome to world cup</Title>
       <ButtonContainer>
-        <a href={process.env.REACT_APP_GITHUB_CALLBACK_URL}>
+        <a href={githubCallbackUrl}>
           <SocialLoginButton mark={<GoMarkGithub />} contents="Continue with Github" />
         </a>
-        <a href={process.env.REACT_APP_KAKAO_CALLBACK_URL}>
+        <a href={kakaoCallbackUrl}>
           <SocialLoginButton mark={<SiKakaotalk />} contents="Continue with Kakao" />
         </a>
-        <a href={process.env.REACT_APP_GOOGLE_CALLBACK_URL}>
+        <a href={googleCallbackUrl}>
           <SocialLoginButton mark={<FcGoogle />} contents="Continue with Google" />
         </a>
       </ButtonContainer>

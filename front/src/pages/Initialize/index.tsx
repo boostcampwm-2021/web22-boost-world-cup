@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
@@ -9,11 +9,8 @@ import { getCandidatesList } from '../../utils/api/game';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import { objectEncryption } from '../../utils/crypto';
 
-interface Props {
-  location: Location;
-}
-
-function Initialize({ location }: Props): JSX.Element {
+function Initialize(): JSX.Element {
+  const location = useLocation();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [ready, setReady] = useState(false);

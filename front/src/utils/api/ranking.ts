@@ -1,12 +1,7 @@
-import axios from 'axios';
-import { RankingData } from '../../types/Datas';
+import axios, { AxiosResponse } from 'axios';
 
-export const getCandidateList = async (worldcupId: string): Promise<RankingData[]> => {
-  const response = await axios.get(`/api/ranking/${worldcupId}`);
-  const {
-    data: { candidateLists },
-  } = response;
-  return candidateLists;
+export const getCandidateList = (offset: number, limit: number, worldcupId: string): Promise<AxiosResponse> => {
+  return axios.get(`/api/ranking/${worldcupId}?offset=${offset}&limit=${limit}`);
 };
 
 export const sendCurrentResult = async (winId: number, loseId: number): Promise<void> => {

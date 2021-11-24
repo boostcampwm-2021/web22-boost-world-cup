@@ -59,7 +59,7 @@ const openModal = keyframes`
     opacity: 1;
   }
 `;
-const MenuBox = styled.ul`
+const MenuBox = styled.div`
   position: absolute;
   right: 18px;
   top: 75px;
@@ -89,6 +89,11 @@ const MenuBox = styled.ul`
     }
     button {
       all: unset;
+     padding: 0 2.3em;
+    }
+    a{
+      display:block;
+      width: 100%:
     }
   }
   li:last-child {

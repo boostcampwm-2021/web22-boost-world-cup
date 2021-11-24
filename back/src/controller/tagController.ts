@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 
 const userController = {
   all: async (request: Request, response: Response, next: NextFunction) => {
-    const users = await tagService.findTen();
+    const users = await tagService.getTopRankTags();
     response.json(users);
   },
 };
