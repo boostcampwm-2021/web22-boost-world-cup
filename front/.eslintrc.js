@@ -25,5 +25,6 @@ module.exports = {
     'no-param-reassign': 0,
     '@typescript-eslint/no-empty-function': 0,
     'consistent-return': 0,
+    '@typescript-eslint/no-explicit-any': 0,
   },
 };

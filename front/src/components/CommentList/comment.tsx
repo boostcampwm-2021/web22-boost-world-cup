@@ -10,7 +10,7 @@ interface Props {
 }
 
 function Comment({ comment, setComments }: Props): JSX.Element {
-  const { isLoggedIn, id: userId } = useContext(UserStateContext);
+  const { id: userId } = useContext(UserStateContext);
 
   const getDateString = useCallback((date: string) => {
     const yymmdd = date.split('T')[0];

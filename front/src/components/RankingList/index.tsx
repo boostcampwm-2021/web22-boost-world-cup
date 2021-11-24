@@ -8,12 +8,12 @@ import useApiRequset, { REQUEST } from '../../hooks/useApiRequest';
 import { getCandidateList } from '../../utils/api/ranking';
 import { getWorldcupMetadata } from '../../utils/api/worldcups';
 import { RankingData, RankingSummaryData, InfoData, WorldcupMetaData } from '../../types/Datas';
+import { PAGINATION_LIMIT } from '../../commons/constants/number';
 
 interface RankingProps {
   worldcupId: string;
 }
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
-  const PAGINATION_LIMIT = 8;
   const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);

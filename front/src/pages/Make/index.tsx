@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, TabBar, StoreBtns } from '../../components';
 import { usePaginationSync, useTabBar, useImgInfos, useWorldcupForm } from '../../hooks';
 import { ImgInfo } from '../../types/Datas';
+import { PAGINATION_LIMIT } from '../../commons/constants/number';
 
 function Make(): JSX.Element {
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
   const [imgInfos, imgInfosDispatcher] = useImgInfos();
-  const PAGINATION_LIMIT = 8;
   const [previewStartIdx, setPreviewStartIdx] = useState(0);
   const [currentTab, onTabChange] = useTabBar(() => setPreviewStartIdx(imgInfos.length));
   const [pageItems, currentPage, offset, lastPage, onPageChange] = usePaginationSync<ImgInfo>(
