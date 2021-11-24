@@ -80,19 +80,6 @@ export const save = async (title: string, description: string, keywordNames: str
   await saveCandidates(imgInfos, id);
 };
 
-export const removeById = async (id) => {
-  const worldcupRepository = getRepository(Worldcup);
-  const worldcupToRemove = await findById(id);
-  await worldcupRepository.remove(worldcupToRemove);
-  return await worldcupRepository.find();
-};
-
-export const getWorldcupTitle = async (id: number) => {
-  const worldcupRepository = getRepository(Worldcup);
-  const worldcup = await worldcupRepository.findOne(id, { select: ['title'] });
-  return worldcup.title;
-};
-
 export const plusTotalCnt = async (id: number) => {
   const worldcupRepository = getRepository(Worldcup);
   const worldcup = await worldcupRepository.findOne(id);

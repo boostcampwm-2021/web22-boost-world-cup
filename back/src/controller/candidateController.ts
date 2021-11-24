@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import * as candidateService from '../services/candidateService';
-import { findById } from '../services/worldcupService';
 import { deleteFromEveryBucket } from '../utils/cloud';
 import ApiResult from '../utils/ApiResult';
 
