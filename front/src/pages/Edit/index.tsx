@@ -11,9 +11,9 @@ import {
 } from '../../utils/api/worldcups';
 import { createCandidates } from '../../utils/api/candidate';
 import { ImgInfo, WorldcupMetaData, Candidate } from '../../types/Datas';
+import { PAGINATION_LIMIT } from '../../commons/constants/number';
 
 function Edit(): JSX.Element {
-  const PAGINATION_LIMIT = 8;
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
   const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
   const [addedImgs, addedImgsDispatcher] = useImgInfos();

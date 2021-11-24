@@ -1,17 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
 import WorldCupList from '../../components/WorldcupList';
-import { useInfiniteScroll, useSearchBar } from '../../hooks';
+import { useInfiniteScroll } from '../../hooks';
 import { getWorldcupList } from '../../utils/api/worldcups';
 import { Worldcup } from '../../types/Datas';
+import { FETCH_WORLDCUPS_LIMIT } from '../../commons/constants/number';
 
 function Main(): JSX.Element {
-  const setOffsetRef = useRef<React.Dispatch<React.SetStateAction<number>> | null>(null);
+  const [searchWord, setSearchWord] = useState('');
+  const [inputWord, setInputWord] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
-
-  const [searchWord, inputWord, onSubmit, onSearchWordChange, setSearchWord] = useSearchBar(setOffsetRef.current);
   const {
     items: worldcups,
     target,
@@ -19,8 +19,18 @@ function Main(): JSX.Element {
     isClickMore,
     onClickMoreBtn,
     setOffset,
-  } = useInfiniteScroll<Worldcup>(8, getWorldcupList, [searchWord, selectedTag]);
+  } = useInfiniteScroll<Worldcup>(FETCH_WORLDCUPS_LIMIT, getWorldcupList, [searchWord, selectedTag]);
 
+  const onSubmit: React.MouseEventHandler = (event) => {
+    event.preventDefault();
+    setOffset(0);
+    setSearchWord(inputWord);
+    setSelectedTag('');
+    setInputWord('');
+  };
+  const onSearchWordChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    setInputWord(target.value);
+  };
   const onClickTag = (keyword: string) => {
     setOffset(0);
     setSelectedTag(keyword);

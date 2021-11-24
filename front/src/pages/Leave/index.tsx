@@ -1,5 +1,4 @@
 import React, { useCallback, useContext } from 'react';
-import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import logo from '../../images/logo.png';
@@ -7,7 +6,7 @@ import { deleteUser } from '../../utils/api/auth';
 import { UserStateContext, UserDispatcherContext } from '../../stores/userStore';
 
 const Leave = (): JSX.Element => {
-  const { isLoggedIn, id: userId } = useContext(UserStateContext);
+  const { id: userId } = useContext(UserStateContext);
   const userDispatcher = useContext(UserDispatcherContext);
 
   const leaveHandler = useCallback(() => {
@@ -15,9 +14,7 @@ const Leave = (): JSX.Element => {
     userDispatcher({ type: 'LOGOUT' });
   }, []);
 
-  return !isLoggedIn ? (
-    <Redirect to="/main" />
-  ) : (
+  return (
     <>
       <Header type="header" />
       <Container>
