@@ -47,7 +47,6 @@ const worldcupController = {
       await worldcupService.save(title, desc, keywords, imgInfos, user);
       response.json(succeed(null));
     } catch (e) {
-      console.log(e.message);
       response.json(failed(e.message));
     }
   },
