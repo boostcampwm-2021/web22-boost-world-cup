@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { loginState } from '../../../recoil/atom';
 import ShareModal from '../../ShareModal';
 
 interface Props {
@@ -17,7 +15,6 @@ interface ModalProps {
   isOpenModal: boolean;
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const isLoggedIn = useRecoilValue(loginState);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const onToggleModal = (event: React.SyntheticEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -33,7 +30,7 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
       <Title>{title}</Title>
       <Desc>{desc}</Desc>
       <Buttons>
-        <Link to={isLoggedIn ? `/initialize/${id}` : '/login'}>
+        <Link to={`/initialize/${id}`}>
           <Start>
             <FaPlay />
             <span>시작하기</span>

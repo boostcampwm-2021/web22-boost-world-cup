@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
@@ -22,6 +22,7 @@ interface searchHeaderProps {
 type Props = headerProps | searchHeaderProps;
 
 function Header(props: Props): JSX.Element {
+  const location = useLocation();
   const history = useHistory();
   const url = useMemo(() => history.location.pathname.split('/')[1], []);
   const isLoggedIn = useRecoilValue(loginState);
@@ -54,7 +55,12 @@ function Header(props: Props): JSX.Element {
             {isLoggedIn ? (
               <UserIcon onClick={toggleModal} />
             ) : (
-              <Link to="/login">
+              <Link
+                to={{
+                  pathname: '/login',
+                  state: { from: location.pathname },
+                }}
+              >
                 <Login>로그인</Login>
               </Link>
             )}

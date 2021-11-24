@@ -3,19 +3,18 @@ import * as authService from '../services/authService';
 import { NextFunction, Request, Response } from 'express';
 
 const authController = {
-  githubCallback: async (request: Request, response: Response, next: NextFunction) => {
-    request.user.nickname
-      ? response.redirect(`${process.env.REDIRECT_URL}/main`)
-      : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
+  setCookie: async (request: Request, response: Response, next: NextFunction) => {
+    const { redirect_url: redirectUrl } = request.query;
+    response.cookie('redirectUrl', redirectUrl);
+    next();
   },
-  kakaoCallback: async (request: Request, response: Response, next: NextFunction) => {
+  oauthCallback: async (request: Request, response: Response) => {
+    const {
+      cookies: { redirectUrl },
+    } = request;
+    response.clearCookie('redirectUrl');
     request.user.nickname
-      ? response.redirect(`${process.env.REDIRECT_URL}/main`)
-      : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
-  },
-  googleCallback: async (request: Request, response: Response, next: NextFunction) => {
-    request.user.nickname
-      ? response.redirect(`${process.env.REDIRECT_URL}/main`)
+      ? response.redirect(`${process.env.REDIRECT_URL}${redirectUrl}`)
       : response.redirect(`${process.env.REDIRECT_URL}/signup?client_id=${request.user.providerId}`);
   },
   info: async (request: Request, response: Response, next: NextFunction) => {

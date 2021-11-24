@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { loginState } from '../../recoil/atom';
@@ -11,11 +11,8 @@ import { getCandidatesList } from '../../utils/api/game';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import { objectEncryption } from '../../utils/crypto';
 
-interface Props {
-  location: Location;
-}
-
-function Initialize({ location }: Props): JSX.Element {
+function Initialize(): JSX.Element {
+  const location = useLocation();
   const isLoggedIn = useRecoilValue(loginState);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -82,7 +79,14 @@ function Initialize({ location }: Props): JSX.Element {
   };
 
   if (!isLoggedIn) {
-    return <Redirect to="/login" />;
+    return (
+      <Redirect
+        to={{
+          pathname: '/login',
+          state: { from: location.pathname },
+        }}
+      />
+    );
   }
 
   return ready ? (
