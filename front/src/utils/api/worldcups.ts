@@ -11,10 +11,9 @@ export const getWorldcupList = (
 export const getMyWorldcupList = (offset: number, limit: number): Promise<AxiosResponse> =>
   axios.get(`/api/worldcups/user`, { params: { offset, limit } });
 
-export const getWorldcupById = async (id: number): Promise<WorldcupMetaData> => {
+export const getWorldcupById = async (id: number): Promise<AxiosResponse> => {
   const response = await axios.get(`/api/worldcups/${id}?metaonly=true`);
-  const { data: worldcup } = response;
-  return worldcup;
+  return response.data;
 };
 
 export const createWorldcup = (

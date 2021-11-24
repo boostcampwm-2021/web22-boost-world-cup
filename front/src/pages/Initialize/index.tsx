@@ -20,7 +20,7 @@ function Initialize(): JSX.Element {
   const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
 
   const fetchWorldAndSetState = useCallback(async () => {
-    const worldcup = await getWorldcupById(Number(worldcupId));
+    const { data: worldcup } = await getWorldcupById(Number(worldcupId));
     const { totalCnt, title, description } = worldcup;
     setTitle(title);
     setDescription(description);
