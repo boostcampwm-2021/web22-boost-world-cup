@@ -12,7 +12,13 @@ interface Props {
 function SearchBar({ onSubmit, onSearchWordChange, searchWord }: Props): JSX.Element {
   return (
     <Container>
-      <TextInput name="searchWord" value={searchWord} onChange={onSearchWordChange} width="230px" />
+      <TextInput
+        name="searchWord"
+        value={searchWord}
+        onChange={onSearchWordChange}
+        width="230px"
+        placeholder="검색어를 입력하세요."
+      />
       <SubmitButton onClick={onSubmit}>
         <FaSearch size={20} />
       </SubmitButton>
