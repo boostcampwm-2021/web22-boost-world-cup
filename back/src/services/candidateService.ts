@@ -1,4 +1,5 @@
 import { Candidate } from '../entity/Candidate';
+import { Worldcup } from '../entity/Worldcup';
 import { Info } from '../entity/Info';
 import { getRepository } from 'typeorm';
 import { removeByCandidateId as removeInfoByCandidateId } from './infoService';
@@ -70,9 +71,13 @@ export const removeByKey = async (key: string) => {
   return candidateRepository.remove(candidateToRemove);
 };
 
-export const save = async (imgInfos, worldcup) => {
+export const save = async (imgInfos, worldcupId) => {
+  const worldcupRepository = getRepository(Worldcup);
   const candidateRepository = getRepository(Candidate);
   const InfoRepository = getRepository(Info);
+
+  const worldcup = await worldcupRepository.findOne(worldcupId);
+
   const candidates = await Promise.all(
     imgInfos.map(async ({ key, name }) => {
       const info = InfoRepository.create();
@@ -85,6 +90,7 @@ export const save = async (imgInfos, worldcup) => {
       });
     }),
   );
+
   return await candidateRepository.save(candidates);
 };
 

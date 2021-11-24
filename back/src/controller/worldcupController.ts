@@ -43,8 +43,13 @@ const worldcupController = {
         passport: { user },
       },
     } = request;
-    await worldcupService.save(title, desc, keywords, imgInfos, user);
-    response.json(succeed(null));
+    try {
+      await worldcupService.save(title, desc, keywords, imgInfos, user);
+      response.json(succeed(null));
+    } catch (e) {
+      console.log(e.message);
+      response.json(failed(e.message));
+    }
   },
 
   remove: async (request: Request, response: Response, next: NextFunction) => {
