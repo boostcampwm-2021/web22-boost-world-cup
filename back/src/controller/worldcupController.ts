@@ -117,12 +117,13 @@ const worldcupController = {
   },
 
   getMyWorldcup: async (request: Request, response: Response, next: NextFunction) => {
-    const { offset, limit, id } = request.query;
+    const { offset, limit } = request.query;
+    const { id } = request.user;
     try {
       const data = await worldcupService.findMyWorldcup(Number(offset), Number(limit), Number(id));
       response.json(succeed(data));
     } catch (err) {
-      response.json(failed('getMyWorldcup error'));
+      response.json(failed('cannot get myWorldcup list'));
     }
   },
 };

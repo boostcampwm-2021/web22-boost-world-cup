@@ -8,8 +8,8 @@ export const getWorldcupList = (
   keyword: string,
 ): Promise<AxiosResponse> => axios.get('/api/worldcups', { params: { offset, limit, search, keyword } });
 
-export const getMyWorldcupList = (offset: number, limit: number, id: number): Promise<AxiosResponse> =>
-  axios.get(`/api/worldcups/user`, { params: { offset, limit, id } });
+export const getMyWorldcupList = (offset: number, limit: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/user`, { params: { offset, limit } });
 
 export const getWorldcupById = async (id: number): Promise<WorldcupMetaData> => {
   const response = await axios.get(`/api/worldcups/${id}?metaonly=true`);

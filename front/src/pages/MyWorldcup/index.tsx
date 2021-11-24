@@ -18,7 +18,7 @@ const MyWorldcup = (): JSX.Element => {
     <>
       <Header type="header" />
       <WorldCupList
-        type="worldcup"
+        type="myWorldcup"
         worldcups={worldcups}
         observeTarget={target}
         isLoading={isLoading}
