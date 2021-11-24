@@ -93,12 +93,6 @@ function MakeWorldcupForm({
         <HorizontalWrapper>
           <Label>키워드</Label>
           <KeywordInput />
-          {/* <TextInput
-            name="keyword"
-            onChange={onKeywordsChange}
-            width="100%"
-            placeholder="월드컵을 잘 나타내는 키워드를 입력하세요. ex) #배우"
-          /> */}
         </HorizontalWrapper>
       </InputsWrapper>
       <VerticalWrapper>
