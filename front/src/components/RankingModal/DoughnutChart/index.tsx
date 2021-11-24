@@ -20,14 +20,14 @@ function DoughnutChart({ data }: DoughnutProps): JSX.Element {
                 fill="none"
                 strokeWidth="0.4"
                 stroke={COLORS[index]}
-                strokeDasharray={`${value.targetArc}}`}
+                strokeDasharray={`${value.targetArc}`}
                 strokeDashoffset={value.targetArc}
               >
                 <animate
                   attributeName="stroke-dashoffset"
                   begin={DURATION * index}
                   from={value.targetArc}
-                  to="0.15"
+                  to="0"
                   dur={DURATION}
                   fill="freeze"
                 />
