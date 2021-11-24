@@ -10,6 +10,7 @@ import { WorldcupState } from '../../hooks/useWorldcupForm';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
+import KeywordInput from '../KeywordInput';
 
 interface Props {
   imgInfos: ImgInfo[];
@@ -91,12 +92,13 @@ function MakeWorldcupForm({
         </HorizontalWrapper>
         <HorizontalWrapper>
           <Label>키워드</Label>
-          <TextInput
+          <KeywordInput />
+          {/* <TextInput
             name="keyword"
             onChange={onKeywordsChange}
             width="100%"
             placeholder="월드컵을 잘 나타내는 키워드를 입력하세요. ex) #배우"
-          />
+          /> */}
         </HorizontalWrapper>
       </InputsWrapper>
       <VerticalWrapper>
