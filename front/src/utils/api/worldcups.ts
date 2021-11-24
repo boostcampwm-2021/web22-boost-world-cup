@@ -36,6 +36,5 @@ export const patchWorldcupTitle = (worldcupId: number, title: string): Promise<A
 export const patchWorldcupDesc = (worldcupId: number, desc: string): Promise<AxiosResponse> =>
   axios.patch(`/api/worldcups/${worldcupId}/desc`, { desc });
 
-export const deleteWorldcup = (worldcupId: number): void => {
+export const deleteWorldcup = (worldcupId: number): Promise<AxiosResponse> =>
   axios.delete(`/api/worldcups/${worldcupId}`);
-};

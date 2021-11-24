@@ -51,10 +51,14 @@ const worldcupController = {
     }
   },
 
-  remove: async (request: Request, response: Response, next: NextFunction) => {
+  deleteWorldcup: async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
-    await worldcupService.removeWorldcupById(Number(id));
-    response.json(succeed(null));
+    try {
+      await worldcupService.removeWorldcupById(Number(id));
+      response.json(succeed(null));
+    } catch (e) {
+      response.json(failed('cannot delete worldcup'));
+    }
   },
 
   patchTitle: async (request: Request, response: Response, next: NextFunction) => {
