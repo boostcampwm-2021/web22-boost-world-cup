@@ -1,10 +1,17 @@
 import axios, { AxiosResponse } from 'axios';
 import { ImgInfo } from '../../types/Datas';
 
-export const deleteCandidate = (key: string): Promise<AxiosResponse> => axios.delete(`/api/candidates/${key}`);
+export const deleteCandidate = async (key: string): Promise<AxiosResponse> => {
+  const response = await axios.delete(`/api/candidates/${key}`);
+  return response.data;
+};
 
-export const createCandidates = (worldcupId: number, newImgInfos: ImgInfo[]): Promise<AxiosResponse> =>
-  axios.post('/api/candidates', { worldcupId, newImgInfos });
+export const createCandidates = async (worldcupId: number, newImgInfos: ImgInfo[]): Promise<AxiosResponse> => {
+  const response = await axios.post('/api/candidates', { worldcupId, newImgInfos });
+  return response.data;
+};
 
-export const patchCandidate = (key: string, name: string, newKey?: string): Promise<AxiosResponse> =>
-  axios.patch(`/api/candidates/${key}`, { newKey, name });
+export const patchCandidate = async (key: string, name: string, newKey?: string): Promise<AxiosResponse> => {
+  const response = await axios.patch(`/api/candidates/${key}`, { newKey, name });
+  return response.data;
+};

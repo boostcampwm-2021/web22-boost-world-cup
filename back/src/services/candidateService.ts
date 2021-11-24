@@ -1,7 +1,7 @@
 import { Candidate } from '../entity/Candidate';
 import { Worldcup } from '../entity/Worldcup';
 import { Info } from '../entity/Info';
-import { getRepository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { removeByCandidateId as removeInfoByCandidateId } from './infoService';
 
 export const getCandidatesByWorldcup = async (offset: number, limit: number, worldcupId: String) => {
@@ -104,15 +104,15 @@ export const patchCandidate = async (key: string, name: string, newKey?: string)
 };
 
 export const getCandidates = (worldcupId: number, offset: number, limit: number) => {
-  const candidateRepository = getRepository(Candidate);
+  const candidateRepository: Repository<Candidate> = getRepository(Candidate);
   return candidateRepository
     .createQueryBuilder('candidate')
-    .select(['candidate.id AS id', 'candidate.name AS name', 'candidate.url AS url'])
+    .select()
     .leftJoin('candidate.worldcup', 'worldcup')
     .where('worldcup.id = :id', { id: worldcupId })
     .offset(offset)
     .limit(limit)
-    .execute();
+    .getMany();
 };
 
 export const getTotalCount = (worldcupId: number) => {

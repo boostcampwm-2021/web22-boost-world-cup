@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { json, NextFunction, Request, Response } from 'express';
 import * as worldcupService from '../services/worldcupService';
 import * as commentService from '../services/commentService';
 import { findById as findUserById } from '../services/userService';
@@ -30,10 +30,9 @@ const worldcupController = {
       query: { metaonly },
     } = request;
     if (metaonly) {
-      const metadata = await worldcupService.getMetaData(Number(id));
-      return response.json(metadata);
+      return response.json(succeed(await worldcupService.getMetaData(Number(id))));
     }
-    response.end();
+    return response.status(400).json(failed('cannot get worldcup metadata'));
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {
@@ -64,22 +63,33 @@ const worldcupController = {
   patchTitle: async (request: Request, response: Response, next: NextFunction) => {
     const { title } = request.body;
     const { id } = request.params;
-    await worldcupService.patchWorldcupTitle(Number(id), title);
-    response.json(succeed(null));
+    try {
+      await worldcupService.patchWorldcupTitle(Number(id), title);
+      response.json(succeed(null));
+    } catch (e) {
+      response.json(failed('cannot patch worldcup title'));
+    }
   },
 
   patchDesc: async (request: Request, response: Response, next: NextFunction) => {
     const { desc } = request.body;
     const { id } = request.params;
-    await worldcupService.patchWorldcupDesc(Number(id), desc);
-    response.json(succeed(null));
+    try {
+      await worldcupService.patchWorldcupDesc(Number(id), desc);
+      response.json(succeed(null));
+    } catch (e) {
+      response.json(failed('cannot patch worldcup desc'));
+    }
   },
 
   getCandidates: async (request: Request, response: Response, next: NextFunction) => {
     const { offset, limit } = request.query;
     const { id } = request.params;
-    const candidates = await getCandidates(Number(id), Number(offset), Number(limit));
-    response.json(candidates);
+    try {
+      response.json(succeed(await getCandidates(Number(id), Number(offset), Number(limit))));
+    } catch (e) {
+      response.json(failed('cannot get candidates'));
+    }
   },
 
   getComments: async (request: Request, response: Response, next: NextFunction) => {

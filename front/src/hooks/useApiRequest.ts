@@ -25,9 +25,10 @@ const fetchData = async <T>(
   try {
     const { data: response } = requestProps ? await apiRequest(...requestProps) : await apiRequest();
     requestDispatcher({ type: SUCCESS, response });
-  } catch (err) {
-    const error = err as AxiosError;
-    requestDispatcher({ type: FAILURE, statusCode: error.response?.status });
+  } catch (error) {
+    const err = error as AxiosError;
+    console.error(err.response?.data.error);
+    requestDispatcher({ type: FAILURE, statusCode: err.response?.status });
   }
 };
 
