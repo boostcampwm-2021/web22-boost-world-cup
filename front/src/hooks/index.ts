@@ -6,4 +6,3 @@ export { default as useWorldcupForm } from './useWorldcupForm';
 export { default as useInfiniteScroll } from './useInfiniteScroll';
 export { default as useLoginCheck } from './useLoginCheck';
 export { usePaginationSync, usePaginationAsync } from './usePagination';
-export { useSearchBar } from './useSearchBar';
