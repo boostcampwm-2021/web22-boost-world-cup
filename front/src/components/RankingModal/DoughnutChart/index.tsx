@@ -6,7 +6,7 @@ interface DoughnutProps {
   data: DoughnutChartData[];
 }
 function DoughnutChart({ data }: DoughnutProps): JSX.Element {
-  const COLORS = ['#212F3C', '#21618C', '#2E86C1', '#5DADE2 ', '#AED6F1 ', '#F0FFFF'];
+  const COLORS = ['#121152', '#003C84', '#0066AA', '#0090C0 ', '#00BAC4 ', '#00E2BB'];
   const DURATION = 0.3;
 
   return (

@@ -8,7 +8,7 @@ interface BarProps {
   };
 }
 function BarChart({ data }: BarProps): JSX.Element {
-  const COLORS = ['#84bd00', '#efdf00'];
+  const COLORS = ['#493C84', '#F6EBFF'];
   return (
     <>
       <BarSvg width="100%" height="150px">
