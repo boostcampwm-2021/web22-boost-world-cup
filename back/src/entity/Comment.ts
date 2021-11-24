@@ -17,7 +17,7 @@ export class Comment {
   @JoinColumn({ name: 'worldcup_id' })
   worldcup: Worldcup;
 
-  @ManyToOne((type) => User, (user) => user.comments)
+  @ManyToOne((type) => User, (user) => user.comments, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 }
