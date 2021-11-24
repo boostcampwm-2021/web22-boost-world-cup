@@ -5,7 +5,6 @@ import { CommentData } from '../../types/Datas';
 import CommentList from '../CommentList';
 import { useInfiniteScroll } from '../../hooks';
 import { UserStateContext } from '../../stores/userStore';
-import { FETCH_COMMENTS_LIMIT } from '../../commons/constants/number';
 
 interface Props {
   worldcupId: string;
@@ -21,7 +20,7 @@ function Comment({ worldcupId }: Props): JSX.Element {
     isClickMore,
     onClickMoreBtn,
     setItems: setComments,
-  } = useInfiniteScroll<CommentData>(FETCH_COMMENTS_LIMIT, getComments, [worldcupId]);
+  } = useInfiniteScroll<CommentData>(10, getComments, [worldcupId]);
 
   const onSubmit = useCallback(
     async (event: React.MouseEvent<HTMLElement>) => {

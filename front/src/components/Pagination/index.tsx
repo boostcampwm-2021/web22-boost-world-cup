@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BiChevronLeftCircle, BiChevronRightCircle } from 'react-icons/bi';
-import { SHOW_PAGE_LIMIT } from '../../commons/constants/number';
 
 interface Props {
   lastPage: number;
@@ -10,9 +9,10 @@ interface Props {
 }
 
 function Pagination({ lastPage, currentPage, onPageChange }: Props): JSX.Element {
-  const preCycleCnt = SHOW_PAGE_LIMIT * Math.floor((currentPage - 1) / SHOW_PAGE_LIMIT);
+  const SHOW_PAGE_CNT = 9;
+  const preCycleCnt = SHOW_PAGE_CNT * Math.floor((currentPage - 1) / SHOW_PAGE_CNT);
   const pageBtns = Array.from(
-    { length: preCycleCnt + SHOW_PAGE_LIMIT > lastPage ? lastPage - preCycleCnt : SHOW_PAGE_LIMIT },
+    { length: preCycleCnt + SHOW_PAGE_CNT > lastPage ? lastPage - preCycleCnt : SHOW_PAGE_CNT },
     (_, idx) => idx + 1 + preCycleCnt,
   ).map((page) => (
     <PageBtn
