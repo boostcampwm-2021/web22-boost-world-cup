@@ -24,7 +24,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     PAGINATION_LIMIT,
     getCandidateList,
     [inputWord, worldcupId],
-    [inputWord],
+    [totalCnt],
   );
   const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
   const getWorldcupMetaDataDispatcher = useApiRequset(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
@@ -66,7 +66,8 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
 
   useEffect(() => {
     getWorldcupMetaDataDispatcher({ type: REQUEST, requestProps: [worldcupId] });
-  }, []);
+    console.log(totalCnt);
+  }, [inputWord]);
 
   return (
     <>

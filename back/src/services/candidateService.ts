@@ -150,3 +150,13 @@ export const getTotalCount = (worldcupId: number) => {
     .where('worldcup.id = :id', { id: worldcupId })
     .getCount();
 };
+
+export const getTotalCountBySearchhWord = (worldcupId: number, searchWord: String) => {
+  const candidateRepository = getRepository(Candidate);
+  return candidateRepository
+    .createQueryBuilder('candidate')
+    .leftJoin('candidate.worldcup', 'worldcup')
+    .where('worldcup.id = :id', { id: worldcupId })
+    .andWhere('candidate.name like :name', { name: `%${searchWord}%` })
+    .getCount();
+};
