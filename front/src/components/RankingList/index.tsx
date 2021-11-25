@@ -4,7 +4,7 @@ import RankingItem from './RankingItem';
 import { SearchBar, RankingModal } from '../../components';
 import Pagination from '../Pagination';
 import { usePaginationAsync } from '../../hooks';
-import useApiRequset, { REQUEST } from '../../hooks/useApiRequest';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { getCandidateList } from '../../utils/api/ranking';
 import { getWorldcupMetadata } from '../../utils/api/worldcups';
 import { RankingData, WorldcupMetaData } from '../../types/Datas';
@@ -27,7 +27,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     [totalCnt],
   );
   const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
-  const getWorldcupMetaDataDispatcher = useApiRequset(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
+  const getWorldcupMetaDataDispatcher = useApiRequest(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
 
   const openModal = (event: React.MouseEvent<Element>) => {
     setIsOpenModal(true);
@@ -65,8 +65,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   };
 
   useEffect(() => {
-    getWorldcupMetaDataDispatcher({ type: REQUEST, requestProps: [worldcupId] });
-    console.log(totalCnt);
+    getWorldcupMetaDataDispatcher({ type: REQUEST, requestProps: [worldcupId, inputWord] });
   }, [inputWord]);
 
   return (
