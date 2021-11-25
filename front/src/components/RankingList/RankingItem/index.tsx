@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import Image from '../../Image';
 
 interface ItemProps {
   id: number;
-  url: string;
+  imgKey: string;
   name: string;
   victoryRatio: number;
   winRatio: number;
@@ -14,12 +15,12 @@ interface RatioProp {
   color: string;
 }
 
-function RankingItem({ id, url, name, victoryRatio, winRatio, onClick }: ItemProps): JSX.Element {
+function RankingItem({ id, imgKey, name, victoryRatio, winRatio, onClick }: ItemProps): JSX.Element {
   return (
     <Section>
       <LeftSection onClick={onClick}>
         <span>{id}</span>
-        <img src={url} alt="월드컵 후보 사진" />
+        <Image width={50} height={50} imgKey={imgKey} />
         <p>{name}</p>
         <div />
       </LeftSection>

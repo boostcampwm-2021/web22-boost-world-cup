@@ -10,6 +10,7 @@ import { candidateData, gameInfoData, WorldcupMetaData } from '../../types/Datas
 import { objectEncryption } from '../../utils/crypto';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { MAIN, WORLDCUP } from '../../commons/constants/route';
+import getImgURL from '../../utils/getImgURL';
 
 function Initialize(): JSX.Element {
   const location = useLocation();
@@ -56,7 +57,7 @@ function Initialize(): JSX.Element {
     currentRound: 1,
     candidatesList,
     selectedCandidate: [],
-    winCandidate: { id: 0, name: '', url: '' },
+    winCandidate: { id: 0, name: '', imgKey: '' },
   });
 
   const onStartBtnClick = () => getCandidateListDispatcher({ type: REQUEST, requestProps: [worldcupId, gameRound] });

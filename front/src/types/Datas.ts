@@ -13,7 +13,7 @@ export interface ImgInfo {
 export interface candidateData {
   id: number;
   name: string;
-  url: string;
+  imgKey: string;
 }
 
 export interface gameInfoData {
@@ -38,7 +38,7 @@ export interface CommentData {
 export interface RankingData {
   id: number;
   name: string;
-  url: string;
+  imgKey: string;
   winRatio: number;
   victoryRatio: number;
   male: number;
@@ -50,6 +50,7 @@ export interface RankingData {
   fifties: number;
   etc: number;
 }
+
 export interface InfoData {
   id: number;
   name: string;
@@ -71,11 +72,6 @@ export interface DoughnutChartData {
   endY: number;
   isLargeArc: number;
   targetArc: number;
-}
-
-export interface ErrorResponseData {
-  result: 'fail';
-  message: string;
 }
 
 export interface WorldcupMetaData {

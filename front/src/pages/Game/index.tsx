@@ -9,6 +9,7 @@ import { objectDecryption, objectEncryption } from '../../utils/crypto';
 import { sendCurrentResult, sendFinalResult } from '../../utils/api/ranking';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { LEFT, RIGHT } from '../../commons/constants/number';
+import getImgURL from '../../utils/getImgURL';
 
 function Worldcup(): JSX.Element {
   const [isInitialized, setIsInitialized] = useState(true);
@@ -125,8 +126,16 @@ function Worldcup(): JSX.Element {
       </InfoContainer>
       <ImageContainer select={pick}>
         <img src={vsImg} alt="versus" />
-        <LeftImage imageUrl={leftCandidate ? leftCandidate.url : ''} select={pick} onClick={onImageClick(LEFT)} />
-        <RightImage imageUrl={rightCandidate ? rightCandidate.url : ''} select={pick} onClick={onImageClick(RIGHT)} />
+        <LeftImage
+          imageUrl={leftCandidate ? getImgURL(leftCandidate.imgKey) : ''}
+          select={pick}
+          onClick={onImageClick(LEFT)}
+        />
+        <RightImage
+          imageUrl={rightCandidate ? getImgURL(rightCandidate.imgKey) : ''}
+          select={pick}
+          onClick={onImageClick(RIGHT)}
+        />
       </ImageContainer>
       <NameContainer select={pick}>
         <LeftName select={pick}>{leftCandidate ? leftCandidate.name : ''}</LeftName>

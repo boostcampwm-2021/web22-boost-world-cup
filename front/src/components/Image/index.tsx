@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { BsImage } from 'react-icons/bs';
 import { IMG_URL_END_POINT } from '../../commons/constants/route';
 
 interface Props {
   width: number;
   height: number;
   imgKey: string;
-  placeholder: JSX.Element;
+  placeholder?: JSX.Element;
 }
 
 function Image({ width, height, imgKey, placeholder }: Props): JSX.Element {
@@ -16,7 +17,12 @@ function Image({ width, height, imgKey, placeholder }: Props): JSX.Element {
   const [imgURL, setImgURL] = useState(resizedImgURL);
   return (
     <Container isLoading width={width} height={height}>
-      {isLoading && placeholder}
+      {isLoading &&
+        (placeholder || (
+          <div>
+            <BsImage size={20} />
+          </div>
+        ))}
       <Img
         src={imgURL}
         onLoad={() => setIsLoading(false)}

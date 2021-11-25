@@ -97,7 +97,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
             <Wrapper key={v.id}>
               <RankingItem
                 id={offset + index + 1}
-                url={v.url}
+                imgKey={v.imgKey}
                 name={v.name}
                 victoryRatio={v.victoryRatio}
                 winRatio={v.winRatio}

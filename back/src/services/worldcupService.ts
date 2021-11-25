@@ -6,7 +6,7 @@ import {
   getTotalCountBySearchhWord as getCandidateTotalCntBySearchWord,
 } from './candidateService';
 import { findById as findUserById } from './userService';
-import { Repository, getRepository, Like } from 'typeorm';
+import { Repository, getRepository } from 'typeorm';
 
 export const findFromPage = async (offset: number, limit: number): Promise<Worldcup[]> => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
@@ -62,9 +62,7 @@ export const save = async (title: string, description: string, keywordNames: str
     Promise.all(keywordNames.map((name: string) => findOrCreateTag(name))),
     findUserById(userId),
   ]);
-  const [thumbnail1, thumbnail2] = imgInfos
-    .slice(0, 2)
-    .map(({ key }) => `${process.env.IMG_URL_END_POINT}/${key}.webp`);
+  const [thumbnail1, thumbnail2] = imgInfos.slice(0, 2).map(({ key }) => key);
 
   const { id } = await worldcupRepository.save({
     title,

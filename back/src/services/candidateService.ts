@@ -13,7 +13,7 @@ export const getCandidatesByWorldcup = async (offset: number, limit: number, wor
     .select([
       'candidate.id AS id',
       'candidate.name AS name',
-      'candidate.url AS url',
+      'candidate.img_key AS imgKey',
       'candidate.win_cnt / candidate.show_cnt AS winRatio',
       'candidate.victory_cnt /  worldcup.total_cnt AS victoryRatio',
       'info.male / (info.male + info.female) AS male',
@@ -41,7 +41,7 @@ export const getCandidatesBySearchWord = async (offset: number, limit: number, s
     .select([
       'candidate.id AS id',
       'candidate.name AS name',
-      'candidate.url AS url',
+      'candidate.img_key AS imgKey',
       'candidate.win_cnt / candidate.show_cnt AS winRatio',
       'candidate.victory_cnt /  worldcup.total_cnt AS victoryRatio',
       'info.male / (info.male + info.female) AS male',
@@ -62,7 +62,7 @@ export const getCandidatesBySearchWord = async (offset: number, limit: number, s
 export const getRandomCandidateList = async (worldcupId: number, round: number) => {
   const randomCandidateList = await getRepository(Candidate)
     .createQueryBuilder('candidate')
-    .select(['id', 'name', 'url'])
+    .select(['id', 'name', 'img_key AS imgKey'])
     .where('candidate.worldcup_id= :id', { id: worldcupId })
     .orderBy('RAND()')
     .limit(round)
@@ -87,7 +87,7 @@ export const saveCandidate = async (candidate: Candidate) => {
 
 export const findOneByKey = (candidateKey: string) => {
   const candidateRepository = getRepository(Candidate);
-  return candidateRepository.findOne({ url: `${process.env.IMG_URL_END_POINT}/${candidateKey}.webp` });
+  return candidateRepository.findOne({ imgKey: candidateKey });
 };
 
 export const removeByKey = async (key: string) => {
@@ -110,7 +110,7 @@ export const save = async (imgInfos, worldcupId) => {
       const info = InfoRepository.create();
       await InfoRepository.save(info);
       return candidateRepository.create({
-        url: `${process.env.IMG_URL_END_POINT}/${key}.webp`,
+        imgKey: key,
         worldcup,
         name,
         info,
@@ -126,7 +126,7 @@ export const patchCandidate = async (key: string, name: string, newKey?: string)
   const candidate = await findOneByKey(key);
   if (!candidate) return;
   candidate.name = name;
-  if (newKey) candidate.url = `${process.env.IMG_URL_END_POINT}/${newKey}.webp`;
+  if (newKey) candidate.imgKey = newKey;
   return candidateRepository.save(candidate);
 };
 

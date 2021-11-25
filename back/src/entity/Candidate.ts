@@ -7,8 +7,8 @@ export class Candidate {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  url: string;
+  @Column({ name: 'img_key' })
+  imgKey: string;
 
   @Column({ name: 'show_cnt', default: '0' })
   showCnt: number;
