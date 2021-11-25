@@ -23,7 +23,8 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     totalCnt,
     PAGINATION_LIMIT,
     getCandidateList,
-    [worldcupId, inputWord],
+    [inputWord, worldcupId],
+    [inputWord],
   );
   const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
   const getWorldcupMetaDataDispatcher = useApiRequset(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
@@ -55,18 +56,12 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    // const filteredData = getRenderData(
-    //   candidateList.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputWord.replace(/(\s*)/g, '')) !== -1),
-    // );
     setInputWord('');
   };
 
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     setInputWord(inputValue);
-    // const filteredData = getRenderData(
-    //   candidateList.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputValue.replace(/(\s*)/g, '')) !== -1),
-    // );
   };
 
   useEffect(() => {
