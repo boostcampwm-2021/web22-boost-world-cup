@@ -13,7 +13,7 @@ export const getCandidatesByWorldcup = async (offset: number, limit: number, wor
     .select([
       'candidate.id AS id',
       'candidate.name AS name',
-      'candidate.url AS url',
+      'candidate.key AS key',
       'worldcup.total_cnt AS total',
       'candidate.show_cnt AS showCnt',
       'candidate.win_cnt AS winCnt',
@@ -35,7 +35,7 @@ export const getCandidatesByWorldcup = async (offset: number, limit: number, wor
 export const getRandomCandidateList = async (worldcupId: number, round: number) => {
   const randomCandidateList = await getRepository(Candidate)
     .createQueryBuilder('candidate')
-    .select(['id', 'name', 'url'])
+    .select(['id', 'name', 'key'])
     .where('candidate.worldcup_id= :id', { id: worldcupId })
     .orderBy('RAND()')
     .limit(round)
@@ -60,7 +60,7 @@ export const saveCandidate = async (candidate: Candidate) => {
 
 export const findOneByKey = (candidateKey: string) => {
   const candidateRepository = getRepository(Candidate);
-  return candidateRepository.findOne({ url: `${process.env.IMG_URL_END_POINT}/${candidateKey}.webp` });
+  return candidateRepository.findOne({ key: candidateKey });
 };
 
 export const removeByKey = async (key: string) => {
@@ -83,7 +83,7 @@ export const save = async (imgInfos, worldcupId) => {
       const info = InfoRepository.create();
       await InfoRepository.save(info);
       return candidateRepository.create({
-        url: `${process.env.IMG_URL_END_POINT}/${key}.webp`,
+        key,
         worldcup,
         name,
         info,
@@ -99,7 +99,7 @@ export const patchCandidate = async (key: string, name: string, newKey?: string)
   const candidate = await findOneByKey(key);
   if (!candidate) return;
   candidate.name = name;
-  if (newKey) candidate.url = `${process.env.IMG_URL_END_POINT}/${newKey}.webp`;
+  if (newKey) candidate.key = newKey;
   return candidateRepository.save(candidate);
 };
 
