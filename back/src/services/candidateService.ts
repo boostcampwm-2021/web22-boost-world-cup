@@ -14,19 +14,18 @@ export const getCandidatesByWorldcup = async (offset: number, limit: number, wor
       'candidate.id AS id',
       'candidate.name AS name',
       'candidate.url AS url',
-      'worldcup.total_cnt AS total',
-      'candidate.show_cnt AS showCnt',
-      'candidate.win_cnt AS winCnt',
-      'candidate.victory_cnt AS victoryCnt',
-      'info.male AS male',
-      'info.female AS female',
-      'info.teens AS teens',
-      'info.twenties AS twenties',
-      'info.thirties AS thirties',
-      'info.forties AS forties',
-      'info.fifties AS fifties',
-      'info.etc AS etc',
+      'candidate.win_cnt / candidate.show_cnt AS winRatio',
+      'candidate.victory_cnt /  worldcup.total_cnt AS victoryRatio',
+      'info.male / (info.male + info.female) AS male',
+      'info.female / (info.male + info.female) AS female',
+      'info.teens / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS teens',
+      'info.twenties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS twenties',
+      'info.thirties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS thirties',
+      'info.forties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS forties',
+      'info.fifties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS fifties',
+      'info.etc / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS etc',
     ])
+    .orderBy('candidate.victory_cnt /  worldcup.total_cnt', 'DESC')
     .offset(offset)
     .limit(limit)
     .execute();
