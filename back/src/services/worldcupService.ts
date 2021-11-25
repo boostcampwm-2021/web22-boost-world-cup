@@ -111,17 +111,11 @@ export const patchWorldcupDesc = async (id: number, desc: string) => {
     .execute();
 };
 
-export const getMetaData = async (id: number) => {
-  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  const [worldcup, totalCnt] = await Promise.all([worldcupRepository.findOne(id), getCandidateTotalCnt(id)]);
-  const { title, description } = worldcup;
-  return { totalCnt, title, description };
-};
-export const getMetaDataBySearchWord = async (id: number, searchWord: String) => {
+export const getMetaData = async (id: number, searchWord?: String) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   const [worldcup, totalCnt] = await Promise.all([
     worldcupRepository.findOne(id),
-    getCandidateTotalCntBySearchWord(id, searchWord),
+    searchWord ? getCandidateTotalCntBySearchWord(id, searchWord) : getCandidateTotalCnt(id),
   ]);
   const { title, description } = worldcup;
   return { totalCnt, title, description };

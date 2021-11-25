@@ -30,12 +30,8 @@ const worldcupController = {
       params: { id },
       query: { metaonly, searchWord },
     } = request;
-    if (metaonly && !searchWord) {
-      const worldcupMetadata = await worldcupService.getMetaData(Number(id));
-      return response.json(succeed(worldcupMetadata));
-    }
-    if (metaonly && searchWord) {
-      const worldcupMetadata = await worldcupService.getMetaDataBySearchWord(Number(id), String(searchWord));
+    if (metaonly) {
+      const worldcupMetadata = await worldcupService.getMetaData(Number(id), String(searchWord));
       return response.json(succeed(worldcupMetadata));
     }
     response.status(400).json(failed('cannot get worldcup metadata'));
