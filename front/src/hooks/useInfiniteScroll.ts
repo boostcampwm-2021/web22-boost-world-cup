@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AxiosResponse } from 'axios';
 import useApiRequest, { REQUEST } from './useApiRequest';
 import { INTERSECT_THRESHOLD } from '../commons/constants/number';
@@ -8,7 +8,7 @@ interface ReturnType<T> {
   target: React.MutableRefObject<HTMLDivElement | null>;
   isLoading: boolean;
   isClickMore: boolean;
-  onClickMoreBtn: () => void;
+  onClickMoreBtn: React.MouseEventHandler;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
   setItems: React.Dispatch<React.SetStateAction<T[]>>;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { signup } from '../../../utils/api/auth';
+import useApiRequest, { REQUEST } from '../../../hooks/useApiRequest';
 
 interface Props {
   nickname: string;
@@ -12,6 +13,8 @@ interface Props {
 function SignupButton({ nickname, gender, age, setAuthenticated }: Props): JSX.Element {
   const url = new URL(window.location.href);
   const clientId = url.searchParams.get('client_id');
+  const onSignUpSuccess = () => setAuthenticated(true);
+  const signUpDispatcher = useApiRequest(signup, onSignUpSuccess);
 
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -20,11 +23,7 @@ function SignupButton({ nickname, gender, age, setAuthenticated }: Props): JSX.E
       alert('정보를 모두 입력해주세요.');
       return;
     }
-    const response = await signup(clientId as string, nickname, gender, age);
-    const { result } = response;
-    if (result === 'success') {
-      setAuthenticated(true);
-    }
+    signUpDispatcher({ type: REQUEST, requestProps: [clientId as string, nickname, gender, age] });
   };
 
   return (

@@ -11,7 +11,7 @@ interface ShareModalProps {
 const ShareModal = ({ id }: ShareModalProps): JSX.Element => {
   const [clipBoardModal, setClipBoardModal] = useState(false);
   const url = `${window.location.origin}/initialize/${id}`;
-  const clipBoardHandler = () => {
+  const onURLBtnClick = () => {
     setClipBoardModal(true);
     setTimeout(() => {
       setClipBoardModal(false);
@@ -29,7 +29,7 @@ const ShareModal = ({ id }: ShareModalProps): JSX.Element => {
           <FacebookIcon size={48} borderRadius={24} />
         </Facebookbutton>
         <CopyToClipboard text={url}>
-          <URLButton onClick={clipBoardHandler}>URL</URLButton>
+          <URLButton onClick={onURLBtnClick}>URL</URLButton>
         </CopyToClipboard>
         {clipBoardModal ? <ClipBordModal>클립보드에 복사되었습니다.</ClipBordModal> : ''}
       </Content>

@@ -22,11 +22,11 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const deleteModalHandler = () => {
+  const onDeleteBtnClick = () => {
     setIsDeleteModalOpen((isDeleteModalOpen) => !isDeleteModalOpen);
   };
 
-  const openModal = () => {
+  const onShareBtnClick = () => {
     setIsOpenModal((isOpenModal) => !isOpenModal);
   };
   return (
@@ -38,7 +38,7 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
       <Title>{title}</Title>
       <Desc>{desc}</Desc>
       <Buttons>
-        <Delete onClick={deleteModalHandler}>
+        <Delete onClick={onDeleteBtnClick}>
           <FaTrash />
           <span>삭제하기</span>
         </Delete>
@@ -48,7 +48,7 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
             <span>수정하기</span>
           </Edit>
         </Link>
-        <Share onClick={openModal}>
+        <Share onClick={onShareBtnClick}>
           <FaShare />
           <span>공유하기</span>
         </Share>

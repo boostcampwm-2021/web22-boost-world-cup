@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
+import { MALE, FEMALE } from '../../../commons/constants/number';
 
 interface Props {
   gender: number;
@@ -7,22 +8,17 @@ interface Props {
 }
 
 function GenderSelector({ gender, setGender }: Props): JSX.Element {
-  const genderSelectHandler: React.MouseEventHandler = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    const {
-      dataset: { value },
-    } = event.target as HTMLElement;
-    if (value) {
-      setGender(parseInt(value, 10));
-    }
+  const onGenderSelect = useCallback((gender: number): React.MouseEventHandler => {
+    return () => setGender(gender);
   }, []);
 
   return (
     <>
       <GenderContainer>
-        <Male onClick={genderSelectHandler} gender={gender} data-value="1">
+        <Male onClick={onGenderSelect(MALE)} gender={gender}>
           남자
         </Male>
-        <Female onClick={genderSelectHandler} gender={gender} data-value="2">
+        <Female onClick={onGenderSelect(FEMALE)} gender={gender}>
           여자
         </Female>
       </GenderContainer>

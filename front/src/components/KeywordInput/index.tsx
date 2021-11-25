@@ -7,7 +7,7 @@ function KeywordInput(): JSX.Element {
   const [keywords, setKeywords] = useState<string[]>([]);
   const hideSpanRef = useRef<HTMLSpanElement | null>(null);
 
-  const onChangeEventHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (keywords.length === possibleKeywordCnt) {
       alert('키워드 초과');
       return;
@@ -22,7 +22,7 @@ function KeywordInput(): JSX.Element {
     }
   };
 
-  const keydownEventHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.keyCode === 229) {
       return;
     }
@@ -55,8 +55,8 @@ function KeywordInput(): JSX.Element {
       <Input
         keywordLen={keywords.length}
         value={text}
-        onChange={onChangeEventHandler}
-        onKeyDown={keydownEventHandler}
+        onChange={onKeywordChange}
+        onKeyDown={onKeydown}
         placeholder={keywords.length === 0 ? '키워드는 최대 5개입니다.' : ''}
       />
       <HideText ref={hideSpanRef} />

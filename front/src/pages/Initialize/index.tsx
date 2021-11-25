@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import RoundSelector from '../../components/RoundSelector';
-import { getWorldcupById } from '../../utils/api/worldcups';
-import { getCandidatesList } from '../../utils/api/game';
-import { candidateData, gameInfoData } from '../../types/Datas';
+import { getWorldcupMetadata } from '../../utils/api/worldcups';
+import { getCandidateList } from '../../utils/api/game';
+import { candidateData, gameInfoData, WorldcupMetaData } from '../../types/Datas';
 import { objectEncryption } from '../../utils/crypto';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { MAIN, WORLDCUP } from '../../commons/constants/route';
 
 function Initialize(): JSX.Element {
   const location = useLocation();
@@ -17,66 +19,55 @@ function Initialize(): JSX.Element {
   const [round, setRound] = useState(0);
   const [candidatesSize, setCandidatesSize] = useState(1);
   const [possibleRound, setPossibleRound] = useState([] as string[]);
-  const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
 
-  const fetchWorldAndSetState = useCallback(async () => {
-    const { data: worldcup } = await getWorldcupById(Number(worldcupId));
-    const { totalCnt, title, description } = worldcup;
+  const worldcupId = useMemo(() => location.pathname.split('/')[2], [location]);
+  const gameRound = 2 ** (round + 2);
+
+  const onGetWorldcupMetadataSuccess = ({ totalCnt, title, description }: WorldcupMetaData) => {
     setTitle(title);
     setDescription(description);
     setCandidatesSize(totalCnt);
-  }, [worldcupId]);
+  };
+  const getWorldcupMetadataDispatcher = useApiRequest(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
+  const onGetCandidateListSuccess = (candidateList: candidateData[]) => {
+    const gameInfo = makeGameInfo(gameRound, candidateList);
+    const secretKey = process.env.REACT_APP_SECRET_KEY;
+    if (!secretKey) return;
+    sessionStorage.clear();
+    const cipherText = objectEncryption(gameInfo);
+    sessionStorage.setItem('_wiziboost', cipherText);
+    setReady(true);
+  };
+  const getCandidateListDispatcher = useApiRequest(getCandidateList, onGetCandidateListSuccess);
 
   const initializePossibleRound = useCallback(() => {
-    const tempRoundList = [] as string[];
     const tempNumber = Math.floor(Math.log2(candidatesSize));
-    // eslint-disable-next-line no-plusplus
-    for (let i = 2; i <= tempNumber; i++) {
-      tempRoundList.push((2 ** i).toString());
-    }
+    const tempRoundList = Array.from({ length: tempNumber - 1 }, (_, i) => i + 2).map((index) => String(2 ** index));
     setPossibleRound([...possibleRound, ...tempRoundList]);
   }, [candidatesSize]);
 
+  const roundSelector = (newAge: number) => setRound(newAge);
+
+  const makeGameInfo = (gameRound: number, candidatesList: candidateData[]): gameInfoData => ({
+    isCompleted: false,
+    worldcupId,
+    title,
+    round: gameRound / 2,
+    currentRound: 1,
+    candidatesList,
+    selectedCandidate: [],
+    winCandidate: { id: 0, name: '', url: '' },
+  });
+
+  const onStartBtnClick = () => getCandidateListDispatcher({ type: REQUEST, requestProps: [worldcupId, gameRound] });
+
   useEffect(() => {
-    fetchWorldAndSetState();
+    getWorldcupMetadataDispatcher({ type: REQUEST, requestProps: [Number(worldcupId)] });
     initializePossibleRound();
   }, [initializePossibleRound]);
 
-  const roundSelector = useCallback((newAge: number) => {
-    setRound(newAge);
-  }, []);
-
-  const makeGameInfo = useCallback(
-    (gameRound: number, candidatesList: candidateData[]): gameInfoData => {
-      return {
-        isCompleted: false,
-        worldcupId,
-        title,
-        round: gameRound / 2,
-        currentRound: 1,
-        candidatesList,
-        selectedCandidate: [],
-        winCandidate: { id: 0, name: '', url: '' },
-      };
-    },
-    [title],
-  );
-
-  const startBtnClickHandler = async () => {
-    const gameRound = 2 ** (round + 2);
-    const candidatesList = await getCandidatesList(worldcupId, gameRound);
-    const gameInfo = makeGameInfo(gameRound, candidatesList);
-    const secretKey = process.env.REACT_APP_SECRET_KEY;
-    if (secretKey) {
-      sessionStorage.clear();
-      const cipherText = objectEncryption(gameInfo);
-      sessionStorage.setItem('_wiziboost', cipherText);
-      setReady(true);
-    }
-  };
-
   return ready ? (
-    <Redirect to="/worldcup" />
+    <Redirect to={WORLDCUP} />
   ) : (
     <>
       <Header type="header" />
@@ -96,9 +87,9 @@ function Initialize(): JSX.Element {
           </RoundSubContainer>
         </RoundContainer>
         <ButtonContainer>
-          <StartButton onClick={startBtnClickHandler}>시작하기</StartButton>
+          <StartButton onClick={onStartBtnClick}>시작하기</StartButton>
           <MainButton>
-            <Link to="/main">메인으로</Link>
+            <Link to={MAIN}>메인으로</Link>
           </MainButton>
         </ButtonContainer>
       </Container>

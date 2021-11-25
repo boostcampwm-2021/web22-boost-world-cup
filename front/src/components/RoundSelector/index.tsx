@@ -11,18 +11,18 @@ interface Props {
 function RoundSelector({ round, possibleRound, roundSelector }: Props): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleHandler = useCallback(() => {
+  const onToggle = useCallback(() => {
     setIsOpen((v) => !v);
   }, []);
 
-  const clickBackWindow = useCallback((event: React.MouseEvent<HTMLElement>) => {
+  const onBackgroundClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setIsOpen((v) => !v);
     event.stopPropagation();
   }, []);
 
   return (
     <>
-      <RoundInput onClick={toggleHandler}>
+      <RoundInput onClick={onToggle}>
         <span>{possibleRound[round]}강</span>
         <img src={selectImg} alt="select" width="20px" height="20px" />
         <RoundList isOpen={isOpen}>
@@ -33,12 +33,12 @@ function RoundSelector({ round, possibleRound, roundSelector }: Props): JSX.Elem
           ))}
         </RoundList>
       </RoundInput>
-      <BackWindow onClick={clickBackWindow} isOpen={isOpen} />
+      <Background onClick={onBackgroundClick} isOpen={isOpen} />
     </>
   );
 }
 
-const BackWindow = styled.div<{ isOpen: boolean }>`
+const Background = styled.div<{ isOpen: boolean }>`
   position: fixed;
   background-color: transparent;
   width: 100%;
