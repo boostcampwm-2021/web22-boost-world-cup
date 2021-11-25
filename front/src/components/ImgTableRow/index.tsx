@@ -61,7 +61,7 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
 
   return (
     <Container>
-      <RowItem>{num}</RowItem>
+      <RowItem style={{ width: '50px' }}>{num}</RowItem>
       <RowItem>
         <ImgPreView
           info={imgInfo}
@@ -75,8 +75,8 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
         <TextInput
           name="imgName"
           onBlur={onImgNameBlur}
-          width="90%"
-          placeholder="이미지의 이름을 입력해주세요."
+          width="100%"
+          placeholder="이름을 입력해주세요."
           defaultValue={imgInfo.name}
         />
       </RowItem>
@@ -109,7 +109,7 @@ const RowItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  ${({ theme }) => theme.fontStyle.h2};
+  ${({ theme }) => theme.fontStyle.h3};
 `;
 
 const DeleteBtn = styled.button`

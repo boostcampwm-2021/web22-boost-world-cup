@@ -23,11 +23,11 @@ function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange, imgIn
     <Container>
       <Title>이미지 이름 수정/삭제</Title>
       <TableHeader>
-        <TableHeaderItem>순번</TableHeaderItem>
-        <TableHeaderItem>이미지</TableHeaderItem>
-        <TableHeaderItem>이름 변경</TableHeaderItem>
-        <TableHeaderItem>이미지 변경</TableHeaderItem>
-        <TableHeaderItem>삭제</TableHeaderItem>
+        <TableHeaderItem style={{ width: '50px' }}>순번</TableHeaderItem>
+        <TableHeaderItem style={{ width: '120px' }}>이미지</TableHeaderItem>
+        <TableHeaderItem style={{ width: '228px' }}>이름 변경</TableHeaderItem>
+        <TableHeaderItem style={{ width: '400px' }}>이미지 변경</TableHeaderItem>
+        <TableHeaderItem style={{ width: '100px' }}>삭제</TableHeaderItem>
       </TableHeader>
       <RowsWrapper>
         {imgInfos.length ? (
@@ -80,19 +80,18 @@ const RowsWrapper = styled.div`
 `;
 
 const Placeholder = styled.div`
-  margin-top: 200px;
+  margin-top: 40px;
   ${({ theme }) => theme.fontStyle.h3};
   text-align: center;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: bold;
 `;
 
-const Footer = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
+const Footer = styled.footer`
+  width: fit-content;
+  position: relative;
+  left: 40%;
   margin-top: 18px;
-  padding: 0 60px;
 `;
 
 export default ImgTable;
