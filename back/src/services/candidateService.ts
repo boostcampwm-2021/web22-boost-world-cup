@@ -14,19 +14,46 @@ export const getCandidatesByWorldcup = async (offset: number, limit: number, wor
       'candidate.id AS id',
       'candidate.name AS name',
       'candidate.url AS url',
-      'worldcup.total_cnt AS total',
-      'candidate.show_cnt AS showCnt',
-      'candidate.win_cnt AS winCnt',
-      'candidate.victory_cnt AS victoryCnt',
-      'info.male AS male',
-      'info.female AS female',
-      'info.teens AS teens',
-      'info.twenties AS twenties',
-      'info.thirties AS thirties',
-      'info.forties AS forties',
-      'info.fifties AS fifties',
-      'info.etc AS etc',
+      'candidate.win_cnt / candidate.show_cnt AS winRatio',
+      'candidate.victory_cnt /  worldcup.total_cnt AS victoryRatio',
+      'info.male / (info.male + info.female) AS male',
+      'info.female / (info.male + info.female) AS female',
+      'info.teens / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS teens',
+      'info.twenties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS twenties',
+      'info.thirties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS thirties',
+      'info.forties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS forties',
+      'info.fifties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS fifties',
+      'info.etc / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS etc',
     ])
+    .orderBy('candidate.victory_cnt /  worldcup.total_cnt', 'DESC')
+    .offset(offset)
+    .limit(limit)
+    .execute();
+  return candidateList;
+};
+export const getCandidatesBySearchWord = async (offset: number, limit: number, search: String, worldcupId: String) => {
+  const candidateList = await getRepository(Candidate)
+    .createQueryBuilder('candidate')
+    .leftJoinAndSelect('candidate.worldcup', 'worldcup')
+    .leftJoinAndSelect('candidate.info', 'info')
+    .where('candidate.worldcup_id= :id', { id: worldcupId })
+    .andWhere('candidate.name like :name', { name: `%${search}%` })
+    .select([
+      'candidate.id AS id',
+      'candidate.name AS name',
+      'candidate.url AS url',
+      'candidate.win_cnt / candidate.show_cnt AS winRatio',
+      'candidate.victory_cnt /  worldcup.total_cnt AS victoryRatio',
+      'info.male / (info.male + info.female) AS male',
+      'info.female / (info.male + info.female) AS female',
+      'info.teens / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS teens',
+      'info.twenties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS twenties',
+      'info.thirties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS thirties',
+      'info.forties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS forties',
+      'info.fifties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS fifties',
+      'info.etc / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS etc',
+    ])
+    .orderBy('candidate.victory_cnt /  worldcup.total_cnt', 'DESC')
     .offset(offset)
     .limit(limit)
     .execute();
@@ -121,5 +148,15 @@ export const getTotalCount = (worldcupId: number) => {
     .createQueryBuilder('candidate')
     .leftJoin('candidate.worldcup', 'worldcup')
     .where('worldcup.id = :id', { id: worldcupId })
+    .getCount();
+};
+
+export const getTotalCountBySearchhWord = (worldcupId: number, searchWord: String) => {
+  const candidateRepository = getRepository(Candidate);
+  return candidateRepository
+    .createQueryBuilder('candidate')
+    .leftJoin('candidate.worldcup', 'worldcup')
+    .where('worldcup.id = :id', { id: worldcupId })
+    .andWhere('candidate.name like :name', { name: `%${searchWord}%` })
     .getCount();
 };

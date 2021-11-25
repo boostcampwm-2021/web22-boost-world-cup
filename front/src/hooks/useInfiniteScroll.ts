@@ -27,6 +27,11 @@ const useInfiniteScroll = <T>(
   const target = useRef<HTMLDivElement | null>(null);
   const onGetItemsSuccess = (newItems: T[]) => {
     setIsLoading(false);
+    if (!newItems.length && !offset) {
+      setItems([...newItems]);
+      (observer.current as IntersectionObserver).disconnect();
+      return;
+    }
     if (!newItems.length) {
       (observer.current as IntersectionObserver).disconnect();
       return;
@@ -54,14 +59,14 @@ const useInfiniteScroll = <T>(
     observer.current = new IntersectionObserver(onIntersect, { threshold: INTERSECT_THRESHOLD });
     observer.current.observe(target.current as HTMLDivElement);
     return () => (observer.current as IntersectionObserver).disconnect();
-  }, [offset, isClickMore]);
+  }, [offset, isClickMore, ...requestProps]);
 
   useEffect(() => {
     if (offset !== 0) return;
     setIsLoading(true);
     observer.current = new IntersectionObserver(onIntersect, { threshold: INTERSECT_THRESHOLD });
     getItemsDispatcher({ type: REQUEST, requestProps: [offset, limit, ...requestProps] });
-  }, [offset]);
+  }, [offset, ...requestProps]);
 
   return { items, target, isLoading, isClickMore, onClickMoreBtn, setOffset, setItems, setIsClickMore };
 };
