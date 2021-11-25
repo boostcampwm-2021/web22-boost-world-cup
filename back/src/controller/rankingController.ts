@@ -22,7 +22,6 @@ const rankingController = {
       String(search),
       id,
     );
-    console.log(candidateLists);
     response.json(succeed(candidateLists));
   },
 

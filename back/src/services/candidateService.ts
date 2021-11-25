@@ -37,7 +37,7 @@ export const getCandidatesBySearchWord = async (offset: number, limit: number, s
     .leftJoinAndSelect('candidate.worldcup', 'worldcup')
     .leftJoinAndSelect('candidate.info', 'info')
     .where('candidate.worldcup_id= :id', { id: worldcupId })
-    .andWhere('worldcup.title like :title', { title: `%${search}%` })
+    .andWhere('candidate.name like :name', { name: `%${search}%` })
     .select([
       'candidate.id AS id',
       'candidate.name AS name',
