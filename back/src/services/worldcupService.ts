@@ -1,6 +1,10 @@
 import { Worldcup } from '../entity/Worldcup';
 import { findOrCreate as findOrCreateTag } from './tagService';
-import { save as saveCandidates, getTotalCount as getCandidateTotalCnt } from './candidateService';
+import {
+  save as saveCandidates,
+  getTotalCount as getCandidateTotalCnt,
+  getTotalCountBySearchhWord as getCandidateTotalCntBySearchWord,
+} from './candidateService';
 import { findById as findUserById } from './userService';
 import { Repository, getRepository } from 'typeorm';
 
@@ -53,27 +57,21 @@ export const findById = async (id) => {
 
 export const save = async (title: string, description: string, keywordNames: string[], imgInfos, userId: number) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
+
   const [keywords, user] = await Promise.all([
     Promise.all(keywordNames.map((name: string) => findOrCreateTag(name))),
     findUserById(userId),
   ]);
   const [thumbnail1, thumbnail2] = imgInfos.slice(0, 2).map(({ key }) => key);
 
-  const {
-    identifiers: [{ id }],
-  } = await worldcupRepository
-    .createQueryBuilder('worldcup')
-    .insert()
-    .into(Worldcup)
-    .values({
-      title,
-      thumbnail1,
-      thumbnail2,
-      description,
-      keywords,
-      user,
-    })
-    .execute();
+  const { id } = await worldcupRepository.save({
+    title,
+    thumbnail1,
+    thumbnail2,
+    description,
+    keywords,
+    user,
+  });
 
   await saveCandidates(imgInfos, id);
 };
@@ -105,9 +103,12 @@ export const patchWorldcupDesc = async (id: number, desc: string) => {
     .execute();
 };
 
-export const getMetaData = async (id: number) => {
+export const getMetaData = async (id: number, searchWord?: String) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  const [worldcup, totalCnt] = await Promise.all([worldcupRepository.findOne(id), getCandidateTotalCnt(id)]);
+  const [worldcup, totalCnt] = await Promise.all([
+    worldcupRepository.findOne(id),
+    searchWord ? getCandidateTotalCntBySearchWord(id, searchWord) : getCandidateTotalCnt(id),
+  ]);
   const { title, description } = worldcup;
   return { totalCnt, title, description };
 };

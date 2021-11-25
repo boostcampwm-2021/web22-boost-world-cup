@@ -27,7 +27,7 @@ const Input = styled.input`
   height: 40px;
   border-radius: 10px;
   transition: border-color 0.3s;
-  padding: 10px 50px 10px 10px;
+  padding: 10px 10px 10px 10px;
   font: ${({ theme }) => theme.fontStyle.body};
   font-size: 15px;
   color: ${({ theme }) => theme.color.black};

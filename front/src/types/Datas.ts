@@ -39,10 +39,8 @@ export interface RankingData {
   id: number;
   name: string;
   imgKey: string;
-  total: number;
-  showCnt: number;
-  winCnt: number;
-  victoryCnt: number;
+  winRatio: number;
+  victoryRatio: number;
   male: number;
   female: number;
   teens: number;
@@ -53,15 +51,8 @@ export interface RankingData {
   etc: number;
 }
 
-export interface RankingSummaryData {
-  id: number;
-  imgKey: string;
-  name: string;
-  victoryRatio: number;
-  winRatio: number;
-}
-
 export interface InfoData {
+  id: number;
   name: string;
   male: number;
   female: number;

@@ -6,7 +6,7 @@ import { getSignedURLs } from '../../utils/api/image';
 import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
 import { ImgsAction } from '../../hooks/useImgInfos';
-import { WorldcupState } from '../../hooks/useWorldcupForm';
+import { WorldcupState, WorldcupAction } from '../../hooks/useWorldcupForm';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
@@ -15,10 +15,10 @@ import KeywordInput from '../KeywordInput';
 interface Props {
   imgInfos: ImgInfo[];
   worldcupFormState: WorldcupState;
-  onKeywordsChange: React.ChangeEventHandler<HTMLInputElement>;
   imgInfosDispatcher: React.Dispatch<ImgsAction>;
   getSignedURLsSuccessEffect: (newImgInfos: ImgInfo[]) => void;
   onTitleChange?: React.ChangeEventHandler<HTMLInputElement>;
+  worldcupFormDispatcher?: React.Dispatch<WorldcupAction>;
   onDescChange?: React.ChangeEventHandler<HTMLInputElement>;
   onTitleBlur?: React.FocusEventHandler<HTMLInputElement>;
   onDescBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -29,7 +29,7 @@ function MakeWorldcupForm({
   worldcupFormState,
   onTitleChange,
   onDescChange,
-  onKeywordsChange,
+  worldcupFormDispatcher,
   imgInfosDispatcher,
   getSignedURLsSuccessEffect,
   onTitleBlur,
@@ -51,7 +51,7 @@ function MakeWorldcupForm({
 
   const [uploadState, uploadStateDispatcher] = useUploadState();
   const { willUploadFiles } = uploadState;
-  const { title, desc } = worldcupFormState;
+  const { title, desc, keywords } = worldcupFormState;
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
     const { files } = target;
@@ -92,7 +92,7 @@ function MakeWorldcupForm({
         </HorizontalWrapper>
         <HorizontalWrapper>
           <Label>키워드</Label>
-          <KeywordInput />
+          <KeywordInput worldcupFormDispatcher={worldcupFormDispatcher} defaultValue={keywords} />
         </HorizontalWrapper>
       </InputsWrapper>
       <VerticalWrapper>

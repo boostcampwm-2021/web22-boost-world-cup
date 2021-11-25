@@ -1,7 +1,17 @@
 import React from 'react';
+import styled from 'styled-components';
+import Loader from '../../components/Loader';
 
 function Loading(): JSX.Element {
-  return <div>로딩 중...</div>;
+  return (
+    <Wrapper>
+      <Loader />;
+    </Wrapper>
+  );
 }
+
+const Wrapper = styled.div`
+  padding-top: 30%;
+`;
 
 export default Loading;

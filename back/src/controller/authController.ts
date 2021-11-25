@@ -31,15 +31,15 @@ const authController = {
 
   signup: async (request: Request, response: Response, next: NextFunction) => {
     const { clientId: providerId, nickname, gender, age } = request.body;
-    const user = await authService.findByProviderId(providerId);
-    user.nickname = nickname;
-    user.gender = gender;
-    user.age = age;
     try {
+      const user = await authService.findByProviderId(providerId);
+      user.nickname = nickname;
+      user.gender = gender;
+      user.age = age;
       await authService.saveUser(user);
       response.json(succeed(null));
-    } catch (err) {
-      next(err);
+    } catch (e) {
+      response.json(failed('signup failed'));
     }
   },
 
@@ -48,25 +48,29 @@ const authController = {
       request.session.destroy(() => {});
       response.clearCookie('sid');
       response.json(succeed(null));
-    } catch (err) {
-      next(err);
+    } catch (e) {
+      response.json(failed('logout failed'));
     }
   },
 
   update: async (request: Request, response: Response, next: NextFunction) => {
     try {
       await authService.updateUser(request.body);
-      return response.json(succeed(null));
+      response.json(succeed(null));
     } catch (err) {
-      next(err);
+      response.json(failed('userInfo update failed'));
     }
   },
 
   leave: async (request: Request, response: Response, next: NextFunction) => {
-    request.session.destroy(() => {});
-    response.clearCookie('sid');
-    await authService.removeUser(request.params.id);
-    response.json(succeed(null));
+    try {
+      request.session.destroy(() => {});
+      response.clearCookie('sid');
+      await authService.removeUser(request.params.id);
+      response.json(succeed(null));
+    } catch (e) {
+      response.json(failed('service leave failed'));
+    }
   },
 };
 

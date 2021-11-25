@@ -48,6 +48,7 @@ function Pagination({ lastPage, currentPage, onPageChange }: Props): JSX.Element
 const Container = styled.div`
   display: flex;
   align-items: center;
+  padding-top: 20px;
 `;
 
 const PageBtn = styled.button<{ activated: boolean }>`

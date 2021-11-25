@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import logo from '../../images/logo.png';
+import { PROFILE, LEAVE } from '../../commons/constants/route';
 
 const MyInfo = (): JSX.Element => {
   return (
@@ -12,10 +13,10 @@ const MyInfo = (): JSX.Element => {
         <img src={logo} alt="logo" width="220px" height="220px" />
         <Title>내 정보</Title>
         <MenuContainer>
-          <Link to="/profile">
+          <Link to={PROFILE}>
             <Menu>내 정보 수정</Menu>
           </Link>
-          <Link to="/leave">
+          <Link to={LEAVE}>
             <Menu>회원 탈퇴</Menu>
           </Link>
         </MenuContainer>

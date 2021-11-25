@@ -37,9 +37,7 @@ function Make(): JSX.Element {
             onDescChange={({ target }) => {
               worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
             }}
-            onKeywordsChange={({ target }) => {
-              worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
-            }}
+            worldcupFormDispatcher={worldcupFormDispatcher}
             imgInfosDispatcher={imgInfosDispatcher}
             getSignedURLsSuccessEffect={getSignedURLsSuccessEffect}
           />
