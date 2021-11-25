@@ -92,7 +92,7 @@ const Ratio = styled.div`
   position: absolute;
   left: 0;
   top: 0;
-  border-radius: ${(props: RatioProp) => (props.width === 1 ? `12px` : `12px 0 0 12px`)};
+  border-radius: ${(props: RatioProp) => (props.width >= 1 ? `12px` : `12px 0 0 12px`)};
   width: ${(props: RatioProp) => `${props.width * 100}%`};
   height: 36px;
   background-color: ${(props: RatioProp) => `${props.color}`};
