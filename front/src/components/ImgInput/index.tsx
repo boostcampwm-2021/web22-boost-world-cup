@@ -90,23 +90,22 @@ const AddAdditionalImgsContainer = styled.div`
 `;
 
 const ChangeImgContainer = styled.div`
-  width: 440px;
-  height: 100px;
+  display: flex;
+  height: 80px;
+  text-align: center;
+  padding: 5px 5px 5px 5px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  ${({ theme }) => theme.fontStyle.body};
+  font-size: 15px;
   border: 1px solid ${({ theme }) => theme.color.black};
   background-color: ${({ theme }) => theme.color.white};
-  border-radius: 15px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  ${({ theme }) => theme.fontStyle.body};
 `;
 
 const Input = styled.input`
   position: absolute;
-  width: 100%;
-  height: 100%;
   cursor: pointer;
   opacity: 0;
 `;
