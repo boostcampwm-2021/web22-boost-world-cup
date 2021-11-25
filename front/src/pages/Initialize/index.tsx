@@ -10,7 +10,6 @@ import { candidateData, gameInfoData, WorldcupMetaData } from '../../types/Datas
 import { objectEncryption } from '../../utils/crypto';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { MAIN, WORLDCUP } from '../../commons/constants/route';
-import getImgURL from '../../utils/getImgURL';
 
 function Initialize(): JSX.Element {
   const location = useLocation();

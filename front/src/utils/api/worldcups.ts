@@ -20,7 +20,7 @@ export const createWorldcup = (
   imgInfos: ImgInfo[],
 ): Promise<AxiosResponse> => axios.post('/api/worldcups', { title, desc, keywords, imgInfos });
 
-export const getWorldcupMetadata = (id: number, searchWord: string): Promise<AxiosResponse> =>
+export const getWorldcupMetadata = (id: number, searchWord = ''): Promise<AxiosResponse> =>
   axios.get(`/api/worldcups/${id}?metaonly=true&searchWord=${searchWord}`);
 
 export const getWorldcupCandidates = (offset: number, limit: number, worldcupId: number): Promise<AxiosResponse> =>

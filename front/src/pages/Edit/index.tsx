@@ -10,7 +10,7 @@ import {
   patchWorldcupDesc,
 } from '../../utils/api/worldcups';
 import { createCandidates } from '../../utils/api/candidate';
-import { ImgInfo, WorldcupMetaData, Candidate } from '../../types/Datas';
+import { ImgInfo, WorldcupMetaData, candidateData } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../commons/constants/number';
 
 function Edit(): JSX.Element {
@@ -21,7 +21,7 @@ function Edit(): JSX.Element {
   const [totalCnt, setTotalCnt] = useState(0);
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
   const [currentTab, onTabChange] = useTabBar();
-  const [pageItems, currentPage, offset, lastPage, onPageChange] = usePaginationAsync<Candidate>(
+  const [pageItems, currentPage, offset, lastPage, onPageChange] = usePaginationAsync<candidateData>(
     totalCnt,
     PAGINATION_LIMIT,
     getWorldcupCandidates,
@@ -64,15 +64,12 @@ function Edit(): JSX.Element {
   }, [currentTab, worldcupId, candidates.length]);
 
   useEffect(() => {
-    const keyReg = /https:\/\/kr.object.ncloudstorage.com\/image-w120h120\/(?<key>[\w-]+.[\w]+).webp/;
-    const newCandidates: ImgInfo[] = pageItems.map(
-      (info: any): ImgInfo => ({
-        name: info.name,
-        id: info.id,
-        key: info.url.match(keyReg).groups.key,
-        isUploaded: true,
-      }),
-    );
+    const newCandidates = pageItems.map(({ id, name, imgKey: key }: candidateData) => ({
+      id,
+      name,
+      key,
+      isUploaded: true,
+    }));
     candidatesDispatcher({ type: 'SET_IMGS', payload: newCandidates });
   }, [pageItems]);
 

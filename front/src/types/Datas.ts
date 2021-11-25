@@ -6,7 +6,7 @@ export interface PreSignedData {
 export interface ImgInfo {
   key: string;
   name: string;
-  isUploaded: boolean;
+  isUploaded?: boolean;
   id: number;
 }
 
@@ -78,12 +78,6 @@ export interface WorldcupMetaData {
   totalCnt: number;
   title: string;
   description: string;
-}
-
-export interface Candidate {
-  url: string;
-  name: string;
-  id: number;
 }
 
 export interface UserInfo {
