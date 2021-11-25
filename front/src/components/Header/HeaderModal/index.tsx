@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { logout } from '../../../utils/api/auth';
 import { UserDispatcherContext } from '../../../stores/userStore';
+import useApiRequest, { REQUEST } from '../../../hooks/useApiRequest';
 
 interface Props {
   open: boolean;
@@ -11,14 +12,13 @@ interface Props {
 function HeaderModal({ open, setModal }: Props): JSX.Element {
   const userDispatcher = useContext(UserDispatcherContext);
   const history = useHistory();
-  const setLogout = async () => {
+  const onLogoutSuccess = () => {
     setModal(false);
-    const response = await logout();
-    if (response.result) {
-      userDispatcher({ type: 'LOGOUT' });
-      history.push('/main');
-    }
+    userDispatcher({ type: 'LOGOUT' });
+    history.push('/main');
   };
+  const logoutDispatcher = useApiRequest(logout, onLogoutSuccess);
+  const onLogoutBtnClick: React.MouseEventHandler = () => logoutDispatcher({ type: REQUEST });
   return (
     <>
       {open ? (
@@ -33,7 +33,7 @@ function HeaderModal({ open, setModal }: Props): JSX.Element {
             <Link to="/make">월드컵 만들기</Link>
           </li>
           <li>
-            <button type="button" onClick={setLogout}>
+            <button type="button" onClick={onLogoutBtnClick}>
               로그아웃
             </button>
           </li>

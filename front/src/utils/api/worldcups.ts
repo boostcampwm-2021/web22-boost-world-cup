@@ -1,61 +1,36 @@
 import axios, { AxiosResponse } from 'axios';
-import { ImgInfo, WorldcupMetaData } from '../../types/Datas';
+import { ImgInfo } from '../../types/Datas';
 
-export const getWorldcupList = async (
+export const getWorldcupList = (
   offset: number,
   limit: number,
   search: string,
   keyword: string,
-): Promise<AxiosResponse> => {
-  const response = await axios.get('/api/worldcups', { params: { offset, limit, search, keyword } });
-  return response.data;
-};
+): Promise<AxiosResponse> => axios.get('/api/worldcups', { params: { offset, limit, search, keyword } });
 
-export const getMyWorldcupList = async (offset: number, limit: number): Promise<AxiosResponse> => {
-  const response = await axios.get(`/api/worldcups/user`, { params: { offset, limit } });
-  return response.data;
-};
+export const getMyWorldcupList = (offset: number, limit: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/user`, { params: { offset, limit } });
 
-export const getWorldcupById = async (id: number): Promise<AxiosResponse> => {
-  const response = await axios.get(`/api/worldcups/${id}?metaonly=true`);
-  return response.data;
-};
+export const getWorldcupById = (id: number): Promise<AxiosResponse> => axios.get(`/api/worldcups/${id}?metaonly=true`);
 
-export const createWorldcup = async (
+export const createWorldcup = (
   title: string,
   desc: string,
   keywords: string[],
   imgInfos: ImgInfo[],
-): Promise<AxiosResponse> => {
-  const response = await axios.post('/api/worldcups', { title, desc, keywords, imgInfos });
-  return response.data;
-};
+): Promise<AxiosResponse> => axios.post('/api/worldcups', { title, desc, keywords, imgInfos });
 
-export const getWorldcupMetadata = async (id: number): Promise<AxiosResponse> => {
-  const response = await axios.get(`/api/worldcups/${id}?metaonly=true`);
-  return response.data;
-};
+export const getWorldcupMetadata = (id: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/${id}?metaonly=true`);
 
-export const getWorldcupCandidates = async (
-  offset: number,
-  limit: number,
-  worldcupId: number,
-): Promise<AxiosResponse> => {
-  const response = await axios.get(`/api/worldcups/${worldcupId}/candidates?offset=${offset}&limit=${limit}`);
-  return response.data;
-};
+export const getWorldcupCandidates = (offset: number, limit: number, worldcupId: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/${worldcupId}/candidates?offset=${offset}&limit=${limit}`);
 
-export const patchWorldcupTitle = async (worldcupId: number, title: string): Promise<AxiosResponse> => {
-  const response = await axios.patch(`/api/worldcups/${worldcupId}/title`, { title });
-  return response.data;
-};
+export const patchWorldcupTitle = (worldcupId: number, title: string): Promise<AxiosResponse> =>
+  axios.patch(`/api/worldcups/${worldcupId}/title`, { title });
 
-export const patchWorldcupDesc = async (worldcupId: number, desc: string): Promise<AxiosResponse> => {
-  const response = await axios.patch(`/api/worldcups/${worldcupId}/desc`, { desc });
-  return response.data;
-};
+export const patchWorldcupDesc = (worldcupId: number, desc: string): Promise<AxiosResponse> =>
+  axios.patch(`/api/worldcups/${worldcupId}/desc`, { desc });
 
-export const deleteWorldcup = async (worldcupId: number): Promise<AxiosResponse> => {
-  const response = await axios.delete(`/api/worldcups/${worldcupId}`);
-  return response.data;
-};
+export const deleteWorldcup = (worldcupId: number): Promise<AxiosResponse> =>
+  axios.delete(`/api/worldcups/${worldcupId}`);

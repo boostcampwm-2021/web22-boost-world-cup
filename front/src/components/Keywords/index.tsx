@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { getWorldcupList } from '../../utils/api/keywords';
+import { getTagList } from '../../utils/api/keywords';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 interface Props {
   onClickTag: (keyword: string) => void;
@@ -19,13 +20,9 @@ function Keywords({ onClickTag, selectedTag }: Props): JSX.Element {
     draggable: false,
     speed: 300,
   };
-
   const [tagList, setTagList] = useState<Array<string>>([]);
-  const getTagList = useCallback(async () => {
-    const data = await getWorldcupList();
-    const tagList = data.map((value) => value.name);
-    setTagList(tagList);
-  }, []);
+  const onGetTagListSuccess = (tagList: string[]) => setTagList(tagList);
+  const getTagListDispatcher = useApiRequest(getTagList, onGetTagListSuccess);
   const onToggleKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
     const element = event.target as HTMLElement;
     if (element.innerText === selectedTag) {
@@ -36,7 +33,7 @@ function Keywords({ onClickTag, selectedTag }: Props): JSX.Element {
   };
 
   useEffect(() => {
-    getTagList();
+    getTagListDispatcher({ type: REQUEST });
   }, []);
 
   return (

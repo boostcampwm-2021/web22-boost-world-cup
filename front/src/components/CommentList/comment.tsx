@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { CommentData } from '../../types/Datas';
 import { deleteComment } from '../../utils/api/comment';
 import { UserStateContext } from '../../stores/userStore';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 interface Props {
   comment: CommentData;
@@ -11,6 +12,9 @@ interface Props {
 
 function Comment({ comment, setComments }: Props): JSX.Element {
   const { id: userId } = useContext(UserStateContext);
+  const onDeleteCommentSuccess = () =>
+    setComments((prevComments) => prevComments.filter((prevComment) => prevComment.commentId !== comment.commentId));
+  const deleteCommentDispatcher = useApiRequest(deleteComment, onDeleteCommentSuccess);
 
   const getDateString = useCallback((date: string) => {
     const yymmdd = date.split('T')[0];
@@ -18,30 +22,15 @@ function Comment({ comment, setComments }: Props): JSX.Element {
     return `${yymmdd} ${hhmmss}`;
   }, []);
 
-  const deleteButtonClickHandler = async (event: React.MouseEvent<HTMLElement>) => {
-    const {
-      dataset: { value: commendId },
-    } = event.target as HTMLElement;
-    if (commendId) {
-      const { result } = await deleteComment(commendId);
-      if (result === 'success') {
-        setComments((prev) => prev.filter((comment) => comment.commentId !== Number(commendId)));
-      }
-    }
-  };
+  const onDeleteBtnClick: React.MouseEventHandler = () =>
+    deleteCommentDispatcher({ type: REQUEST, requestProps: [comment.commentId] });
 
   return (
     <Wrapper>
       <SubContainer>
         <Writer>{comment.nickname}</Writer>
         <Date>{getDateString(comment.createdAt)}</Date>
-        {userId === comment.userId ? (
-          <DeleteButton onClick={deleteButtonClickHandler} data-value={comment.commentId}>
-            삭제
-          </DeleteButton>
-        ) : (
-          ''
-        )}
+        {userId === comment.userId && <DeleteButton onClick={onDeleteBtnClick}>삭제</DeleteButton>}
       </SubContainer>
       <Message>{comment.message}</Message>
     </Wrapper>

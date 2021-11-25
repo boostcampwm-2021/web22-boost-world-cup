@@ -19,6 +19,7 @@ function Main(): JSX.Element {
     isClickMore,
     onClickMoreBtn,
     setOffset,
+    setIsClickMore,
   } = useInfiniteScroll<Worldcup>(FETCH_WORLDCUPS_LIMIT, getWorldcupList, [searchWord, selectedTag]);
 
   const onSubmit: React.MouseEventHandler = (event) => {
@@ -40,6 +41,7 @@ function Main(): JSX.Element {
     setSearchWord('');
     setSelectedTag('');
     setOffset(0);
+    setIsClickMore(false);
   };
 
   return (

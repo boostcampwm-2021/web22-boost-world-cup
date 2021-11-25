@@ -3,3 +3,7 @@ export const FETCH_WORLDCUPS_LIMIT = 8;
 export const FETCH_COMMENTS_LIMIT = 10;
 export const PAGINATION_LIMIT = 8;
 export const SHOW_PAGE_LIMIT = 9;
+export const LEFT = 1;
+export const RIGHT = 2;
+export const MALE = 1;
+export const FEMALE = 2;
