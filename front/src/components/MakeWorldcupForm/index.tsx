@@ -51,7 +51,7 @@ function MakeWorldcupForm({
 
   const [uploadState, uploadStateDispatcher] = useUploadState();
   const { willUploadFiles } = uploadState;
-  const { title, desc } = worldcupFormState;
+  const { title, desc, keywords } = worldcupFormState;
 
   const onAddImgs: React.ChangeEventHandler<HTMLInputElement> = async ({ target }) => {
     const { files } = target;
@@ -92,7 +92,7 @@ function MakeWorldcupForm({
         </HorizontalWrapper>
         <HorizontalWrapper>
           <Label>키워드</Label>
-          <KeywordInput worldcupFormDispatcher={worldcupFormDispatcher} />
+          <KeywordInput worldcupFormDispatcher={worldcupFormDispatcher} defaultValue={keywords} />
         </HorizontalWrapper>
       </InputsWrapper>
       <VerticalWrapper>

@@ -4,12 +4,12 @@ import { WorldcupAction } from '../../hooks/useWorldcupForm';
 
 interface Props {
   worldcupFormDispatcher?: React.Dispatch<WorldcupAction>;
+  defaultValue: string[];
 }
 
-function KeywordInput({ worldcupFormDispatcher }: Props): JSX.Element {
+function KeywordInput({ worldcupFormDispatcher, defaultValue: keywords }: Props): JSX.Element {
   const possibleKeywordCnt = 5;
   const [text, setText] = useState<string>('');
-  const [keywords, setKeywords] = useState<string[]>([]);
   const hideSpanRef = useRef<HTMLSpanElement | null>(null);
 
   const onChangeEventHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +29,7 @@ function KeywordInput({ worldcupFormDispatcher }: Props): JSX.Element {
   };
 
   const keydownEventHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.keyCode === 229) {
+    if (event.keyCode === 229 || !worldcupFormDispatcher) {
       return;
     }
     const { code } = event;
@@ -39,20 +39,15 @@ function KeywordInput({ worldcupFormDispatcher }: Props): JSX.Element {
         setText('');
         return;
       }
-      if (worldcupFormDispatcher) {
-        worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: tempText });
-      }
-      setKeywords((prev) => [...prev, tempText]);
+      worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: tempText });
       setText('');
       event.preventDefault();
     } else if (code === 'Backspace') {
-      if (text.length === 0) {
-        if (keywords.length === 0) {
-          return;
-        }
-        setText(keywords[keywords.length - 1]);
-        setKeywords((prev) => prev.slice(0, -1));
+      if (text.length !== 0 || keywords.length === 0) {
+        return;
       }
+      setText(keywords[keywords.length - 1]);
+      worldcupFormDispatcher({ type: 'DELETE_KEYWORD' });
     }
   };
 
