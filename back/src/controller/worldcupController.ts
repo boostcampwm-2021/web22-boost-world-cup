@@ -9,7 +9,7 @@ import ApiResult from '../utils/ApiResult';
 const { succeed, failed } = ApiResult;
 
 const worldcupController = {
-  all: async (request: Request, response: Response, next: NextFunction) => {
+  getWorldcups: async (request: Request, response: Response, next: NextFunction) => {
     const { offset, limit, search, keyword } = request.query;
     if (offset === undefined || limit === undefined)
       return response.status(400).json(failed('offset or limit is undefined'));
@@ -25,7 +25,7 @@ const worldcupController = {
     response.json(succeed(worldcups));
   },
 
-  one: async (request: Request, response: Response, next: NextFunction) => {
+  getWorldcup: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { id },
       query: { metaonly },
@@ -37,7 +37,7 @@ const worldcupController = {
     response.status(400).json(failed('cannot get worldcup metadata'));
   },
 
-  save: async (request: Request, response: Response, next: NextFunction) => {
+  saveWorldcup: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { title, desc, keywords, imgInfos },
       session: {
@@ -62,7 +62,7 @@ const worldcupController = {
     }
   },
 
-  patchTitle: async (request: Request, response: Response, next: NextFunction) => {
+  patchWorldcupTitle: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { title },
       params: { id },
@@ -75,7 +75,7 @@ const worldcupController = {
     }
   },
 
-  patchDesc: async (request: Request, response: Response, next: NextFunction) => {
+  patchWorldcupDesc: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { desc },
       params: { id },
@@ -144,7 +144,7 @@ const worldcupController = {
     }
   },
 
-  getMyWorldcup: async (request: Request, response: Response, next: NextFunction) => {
+  getMyWorldcups: async (request: Request, response: Response, next: NextFunction) => {
     const { offset, limit } = request.query;
     const { id } = request.user;
     try {
