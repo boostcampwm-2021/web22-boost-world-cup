@@ -10,17 +10,18 @@ interface ModalProps {
 }
 function RankingModal({ closeModal, info }: ModalProps): JSX.Element {
   const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
-  const { name, male, female, ...age } = info;
+  const { id, name, male, female, ...age } = info;
   const getCoordCircle = (percent: number) => {
     const x = Math.cos(2 * Math.PI * percent);
     const y = Math.sin(2 * Math.PI * percent);
     return [x, y];
   };
-  const makeDoughnutInfo = useCallback((dataSet: number[]) => {
+  const makeDoughnutInfo = useCallback((rankingInfoData: number[]) => {
     let acc = 0;
-    return dataSet.map((value) => {
+    return rankingInfoData.map((value) => {
       const [startX, startY] = getCoordCircle(acc);
       acc += value;
+      console.log(acc);
       const [endX, endY] = getCoordCircle(acc);
       const isLargeArc = value > 0.5 ? 1 : 0;
       const targetArc = 2 * Math.PI * value;

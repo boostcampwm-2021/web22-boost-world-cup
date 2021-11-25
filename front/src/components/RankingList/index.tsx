@@ -17,7 +17,6 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [info, setInfo] = useState<InfoData[]>([]);
   const [totalCnt, setTotalCnt] = useState<number>(0);
   const candidateRef = useRef<number | null>(null);
 
@@ -40,41 +39,20 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     if (event.target === event.currentTarget) setIsOpenModal(false);
   };
 
-  // const getRenderData = useCallback((dataset: RankingData[]) => {
-  //   return dataset
-  //     .map((v) => ({
-  //       id: v.id,
-  //       url: v.url,
-  //       name: v.name,
-  //       victoryRatio: v.total > 0 ? v.victoryCnt / v.total : 0,
-  //       winRatio: v.showCnt > 0 ? v.winCnt / v.showCnt : 0,
-  //     }))
-  //     .sort((a, b) => {
-  //       if (a.victoryRatio === b.victoryRatio) {
-  //         return b.winRatio - a.winRatio;
-  //       }
-  //       return b.victoryRatio - a.victoryRatio;
-  //     });
-  // }, []);
-
-  // const getInfoAcc = useCallback((dataset: RankingData[]) => {
-  //   return dataset.map((v) => {
-  //     const ageTotal = Object.values(v)
-  //       .slice(9)
-  //       .reduce((pre, cur) => pre + cur, 0);
-  //     return {
-  //       name: v.name,
-  //       male: v.male / (v.male + v.female),
-  //       female: v.female / (v.male + v.female),
-  //       teens: v.teens / ageTotal,
-  //       twenties: v.twenties / ageTotal,
-  //       thirties: v.thirties / ageTotal,
-  //       forties: v.forties / ageTotal,
-  //       fifties: v.fifties / ageTotal,
-  //       etc: v.etc / ageTotal,
-  //     };
-  //   });
-  // }, []);
+  const getInfoAcc = useCallback((candidate: RankingData) => {
+    return {
+      id: candidate.id,
+      name: candidate.name,
+      male: candidate.male,
+      female: candidate.female,
+      teens: candidate.teens,
+      twenties: candidate.twenties,
+      thirties: candidate.thirties,
+      forties: candidate.forties,
+      fifties: candidate.fifties,
+      etc: candidate.etc,
+    };
+  }, []);
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
@@ -98,10 +76,6 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     getWorldcupMetaDataDispatcher({ type: REQUEST, requestProps: [worldcupId] });
   }, []);
 
-  useEffect(() => {
-    // setRenderData(getRenderData(candidateList));
-    // setInfo(getInfoAcc(candidateList));
-  }, [candidateList]);
   return (
     <>
       <Navigation>
@@ -143,7 +117,9 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
         })}
         <Pagination lastPage={lastPage} currentPage={currentPage} onPageChange={onPageChange} />
       </RankingItemContainer>
-      {isOpenModal && <RankingModal closeModal={closeModal} info={info[candidateRef.current as number]} />}
+      {isOpenModal && (
+        <RankingModal closeModal={closeModal} info={getInfoAcc(candidateList[candidateRef.current as number])} />
+      )}
     </>
   );
 }

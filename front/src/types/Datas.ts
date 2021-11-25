@@ -60,6 +60,7 @@ export interface RankingSummaryData {
 }
 
 export interface InfoData {
+  id: number;
   name: string;
   male: number;
   female: number;
