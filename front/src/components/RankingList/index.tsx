@@ -43,14 +43,14 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     return {
       id: candidate.id,
       name: candidate.name,
-      male: candidate.male,
-      female: candidate.female,
-      teens: candidate.teens,
-      twenties: candidate.twenties,
-      thirties: candidate.thirties,
-      forties: candidate.forties,
-      fifties: candidate.fifties,
-      etc: candidate.etc,
+      male: Number(candidate.male),
+      female: Number(candidate.female),
+      teens: Number(candidate.teens),
+      twenties: Number(candidate.twenties),
+      thirties: Number(candidate.thirties),
+      forties: Number(candidate.forties),
+      fifties: Number(candidate.fifties),
+      etc: Number(candidate.etc),
     };
   }, []);
 
