@@ -29,6 +29,7 @@ const fetchData = async <T>(
     requestDispatcher({ type: SUCCESS, response });
   } catch (error) {
     const err = error as AxiosError;
+    // eslint-disable-next-line no-console
     console.error(err.response?.data.error);
     requestDispatcher({ type: FAILURE, statusCode: err.response?.status });
   }
