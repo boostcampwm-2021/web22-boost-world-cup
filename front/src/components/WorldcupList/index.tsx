@@ -29,7 +29,14 @@ function WorldcupList({ type, worldcups, observeTarget, isLoading, isClickMore, 
               desc={description}
             />
           ) : (
-            <MyWorldCupItem id={id} thumbnail1={thumbnail1} thumbnail2={thumbnail2} title={title} desc={description} />
+            <MyWorldCupItem
+              key={id}
+              id={id}
+              thumbnail1={thumbnail1}
+              thumbnail2={thumbnail2}
+              title={title}
+              desc={description}
+            />
           ),
         )}
       </Container>

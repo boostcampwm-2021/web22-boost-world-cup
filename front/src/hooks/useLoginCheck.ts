@@ -8,8 +8,8 @@ const useLoginCheck = (): boolean => {
   const [isLoginChecked, setIsLoginChecked] = useState(false);
   const userDispatcher = useContext(UserDispatcherContext);
 
-  const onGetUserSuccess = ({ data: userInfo }: { data: UserInfo }) => {
-    userDispatcher({ type: 'LOGIN', payload: { ...userInfo, isLoggedIn: true } });
+  const onGetUserSuccess = (data: UserInfo) => {
+    userDispatcher({ type: 'LOGIN', payload: { ...data, isLoggedIn: true } });
     setIsLoginChecked(true);
   };
   const onGetUserFailure = () => {

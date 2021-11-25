@@ -6,6 +6,7 @@ import GenderSelector from './GenderSelector';
 import SignupButton from './SingupButton';
 import UpdateButton from './UpdateButton';
 import { UserStateContext } from '../../stores/userStore';
+import { MAIN } from '../../commons/constants/route';
 
 interface Props {
   type: 'signup' | 'profile';
@@ -34,7 +35,7 @@ const UserInfoForm = ({ type }: Props): JSX.Element => {
   }, []);
 
   return authenticated ? (
-    <Redirect to="/main" />
+    <Redirect to={MAIN} />
   ) : (
     <InputContainer>
       <NameInput type="text" value={nickname} placeholder="닉네임" onChange={nicknameOnchange} />
