@@ -1,11 +1,15 @@
 import * as tagService from '../services/tagService';
 import { NextFunction, Request, Response } from 'express';
+import ApiResult from '../utils/ApiResult';
 
-const userController = {
+const { succeed, failed } = ApiResult;
+
+const tagController = {
   all: async (request: Request, response: Response, next: NextFunction) => {
-    const users = await tagService.getTopRankTags();
-    response.json(users);
+    const tags = await tagService.getTopRankTags();
+    const tagNames = tags.map((tag) => tag.name);
+    response.json(succeed(tagNames));
   },
 };
 
-export default userController;
+export default tagController;
