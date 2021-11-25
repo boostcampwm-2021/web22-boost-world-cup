@@ -5,7 +5,6 @@ import { FaHome, FaList } from 'react-icons/fa';
 import { Header } from '../../components';
 import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
-import KeywordInput from '../../components/KeywordInput';
 
 interface Props {
   winCandidate: candidateData | undefined;
@@ -37,7 +36,6 @@ function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
           </Link>
         </ButtonContainer>
       </Container>
-      <KeywordInput />
     </Wrapper>
   );
 }

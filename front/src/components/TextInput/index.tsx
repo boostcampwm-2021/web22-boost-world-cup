@@ -20,16 +20,7 @@ function TextInput({ name, width, defaultValue, ...props }: Props): JSX.Element 
     if (!defaultValue || !input) return;
     input.value = String(defaultValue);
   }, [defaultValue]);
-  return (
-    <Input
-      ref={inputRef}
-      style={{ width }}
-      name={name}
-      {...props}
-      autoComplete="off"
-      placeholder="검색어를 입력하세요"
-    />
-  );
+  return <Input ref={inputRef} style={{ width }} name={name} {...props} autoComplete="off" />;
 }
 
 const Input = styled.input`

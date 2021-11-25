@@ -10,6 +10,7 @@ import { WorldcupState } from '../../hooks/useWorldcupForm';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
+import KeywordInput from '../KeywordInput';
 
 interface Props {
   imgInfos: ImgInfo[];
@@ -72,7 +73,7 @@ function MakeWorldcupForm({
           <TextInput
             name="title"
             onChange={onTitleChange}
-            width="1236px"
+            width="100%"
             placeholder="이상형월드컵의 제목을 입력하세요. ex) 여자 아이돌 이상형 월드컵, 남자 연예인 이상형월드컵"
             defaultValue={title}
             onBlur={onTitleBlur}
@@ -83,7 +84,7 @@ function MakeWorldcupForm({
           <TextInput
             name="desc"
             onChange={onDescChange}
-            width="1236px"
+            width="100%"
             placeholder="설명, 하고싶은 말 등을 자유롭게 입력하세요."
             defaultValue={desc}
             onBlur={onDescBlur}
@@ -91,12 +92,7 @@ function MakeWorldcupForm({
         </HorizontalWrapper>
         <HorizontalWrapper>
           <Label>키워드</Label>
-          <TextInput
-            name="keyword"
-            onChange={onKeywordsChange}
-            width="1236px"
-            placeholder="월드컵을 잘 나타내는 키워드를 입력하세요. ex) #배우"
-          />
+          <KeywordInput />
         </HorizontalWrapper>
       </InputsWrapper>
       <VerticalWrapper>
@@ -117,47 +113,46 @@ function MakeWorldcupForm({
 }
 
 const Container = styled.form`
-  width: 1844px;
-  height: 811px;
-  padding-right: 261px;
-  background-color: ${({ theme }) => theme.color.white};
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  padding: 30px 40px 20px 40px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: ${({ theme }) => theme.color.white};
 `;
 
 const Title = styled.div`
-  width: 100%;
-  padding-left: 137px;
-  ${({ theme }) => theme.fontStyle.h1};
-  margin-top: 26px;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
+  ${({ theme }) => theme.fontStyle.h3};
+`;
+
+const InputsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const HorizontalWrapper = styled.div`
   display: flex;
   margin-bottom: 35px;
   label {
+    width: 60px;
+    height: 30px;
     margin-right: 23px;
-    line-height: 60px;
-  }
-`;
-
-const InputsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-`;
-
-const VerticalWrapper = styled.div`
-  label {
-    margin-bottom: 30px;
+    ${({ theme }) => theme.fontStyle.bodyBold};
+    line-height: 40px;
   }
 `;
 
 const Label = styled.label`
-  ${({ theme }) => theme.fontStyle.h3};
+  flex: none;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const VerticalWrapper = styled.div`
+  width: 100%;
+  label {
+    margin-bottom: 30px;
+  }
 `;
 
 export default MakeWorldcupForm;

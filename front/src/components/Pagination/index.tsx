@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BiChevronLeftCircle, BiChevronRightCircle } from 'react-icons/bi';
+import { BiChevronLeftCircle, BiChevronRightCircle, BiLeftArrow, BiRightArrow } from 'react-icons/bi';
 import { SHOW_PAGE_LIMIT } from '../../commons/constants/number';
 
 interface Props {
@@ -30,7 +30,7 @@ function Pagination({ lastPage, currentPage, onPageChange }: Props): JSX.Element
   return (
     <Container>
       <ArrowBtn type="button" position="left" onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1}>
-        <BiChevronLeftCircle size={40} />
+        <BiLeftArrow size={20} />
       </ArrowBtn>
       {pageBtns}
       <ArrowBtn
@@ -39,7 +39,7 @@ function Pagination({ lastPage, currentPage, onPageChange }: Props): JSX.Element
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage >= lastPage}
       >
-        <BiChevronRightCircle size={40} />
+        <BiRightArrow size={20} />
       </ArrowBtn>
     </Container>
   );
@@ -55,9 +55,8 @@ const PageBtn = styled.button<{ activated: boolean }>`
   height: 45px;
   margin: 0 5px;
   line-height: 45px;
-  background-color: ${({ activated, theme }) => (activated ? theme.color.pink : theme.color.white)};
-  border: ${({ activated, theme }) =>
-    activated ? `2px solid ${theme.color.black}` : `1px solid ${theme.color.gray[0]}`};
+  border-radius: 10px;
+  background-color: ${({ activated, theme }) => (activated ? theme.color.pink : `transparent`)};
   ${({ activated, theme }) => (activated ? theme.fontStyle.bodyBold : theme.fontStyle.body)};
   transition: background-color 0.3s;
   &:disabled {
@@ -65,7 +64,7 @@ const PageBtn = styled.button<{ activated: boolean }>`
     color: ${({ theme }) => theme.color.black};
   }
   &:hover {
-    ${({ activated, theme }) => (activated ? '' : `background-color: ${theme.color.primary}`)};
+    ${({ activated, theme }) => (activated ? '' : `background-color: ${theme.color.pink}`)};
   }
 `;
 
@@ -73,7 +72,9 @@ const ArrowBtn = styled.button<{ position: 'left' | 'right' }>`
   height: 40px;
   margin-left: ${({ position }) => (position === 'left' ? 0 : `15px`)};
   margin-right: ${({ position }) => (position === 'right' ? 0 : `15px`)};
+  opacity: 0.5;
   &:disabled {
+    opacity: 1;
     cursor: unset;
   }
 `;

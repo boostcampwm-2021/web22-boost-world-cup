@@ -14,8 +14,9 @@ function TabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
         return (
           <TabBtn
             key={tabTitle.indexOf(title)}
-            activated={currentTab === index + 1}
             onClick={() => onTabChange(index + 1)}
+            activated={currentTab === index + 1}
+            index={index}
           >
             {title}
           </TabBtn>
@@ -25,15 +26,15 @@ function TabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
   );
 }
 
-const TabBtn = styled.button<{ activated: boolean }>`
-  width: 330px;
-  height: 74px;
+const TabBtn = styled.button<{ activated: boolean; index: number }>`
+  width: ${({ index }) => (index === 0 ? '300px' : '240px')};
+  height: 60px;
   line-height: 74px;
   text-align: center;
-  ${({ theme }) => theme.fontStyle.h3Bold};
+  ${({ theme }) => theme.fontStyle.bodyBold};
   border: 1px solid ${({ theme }) => theme.color.primary};
   border-radius: 12px 12px 0 0;
-  color: #959595;
+  color: ${({ theme }) => theme.color.gray[3]};
   background-color: ${({ activated, theme }) => (activated ? theme.color.primary : theme.color.white)};
   transition: background-color 0.3s, color 0.3s;
   &:hover {

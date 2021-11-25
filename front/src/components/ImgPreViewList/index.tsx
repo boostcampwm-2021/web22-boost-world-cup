@@ -35,24 +35,20 @@ function ImgPreViewList({ imgInfos, uploadState, onAddImgs, imgInfosDispatcher }
 }
 
 const Container = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+  border-radius: 10px;
   background-color: ${({ theme }) => theme.color.white};
   border: 1px solid ${({ theme }) => theme.color.black};
-  border-radius: 10px;
-  width: 1312px;
-  height: 260px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ImgsWrapper = styled.ul`
-  width: 1075px;
-  height: 200px;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
   padding-top: 20px;
-  overflow-x: scroll;
-  overflow-y: visible;
-  white-space: nowrap;
-  margin-left: 30px;
+  margin-left: 10px;
   li {
     display: inline-block;
     margin: 0 15px;

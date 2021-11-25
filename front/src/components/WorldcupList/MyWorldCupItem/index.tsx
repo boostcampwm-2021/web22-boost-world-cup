@@ -19,7 +19,7 @@ interface DeleteModalProps {
   isDeleteModalOpen: boolean;
 }
 function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const [isOpenModal, setIsOpenMpdal] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const deleteModalHandler = () => {
@@ -27,7 +27,7 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
   };
 
   const openModal = () => {
-    setIsOpenMpdal((isOpenModal) => !isOpenModal);
+    setIsOpenModal((isOpenModal) => !isOpenModal);
   };
   return (
     <Item>

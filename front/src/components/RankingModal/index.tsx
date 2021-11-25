@@ -69,7 +69,7 @@ const Modal = styled.div`
   left: 50%;
   transform: translate(-50%, -30%);
   width: 800px;
-  height: 400px;
+  height: 450px;
   display: flex;
   flex-direction: column;
   border-radius: 12px;

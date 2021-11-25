@@ -29,9 +29,11 @@
 
 #### 👉 미리보기
 
-![스크린샷 2021-10-28 오전 11 07 20](https://user-images.githubusercontent.com/56618964/139173863-2c5e587a-b3fd-4f9b-b754-d14dd7f8d559.png)
+![image](https://user-images.githubusercontent.com/55246584/143255244-b1c06e07-c896-466a-b100-ea0effa5434c.png)
 
-![스크린샷 2021-10-28 오전 11 07 40](https://user-images.githubusercontent.com/56618964/139173888-d3f5dd9f-2b12-4f12-85da-f8c99ef67546.png)
+![image](https://user-images.githubusercontent.com/55246584/143255766-3bf223f3-4bb9-4187-8b29-d64d126854e7.png)
+
+![image](https://user-images.githubusercontent.com/55246584/143255585-ed0c402e-766d-4d14-b8fc-44d14569b276.png)
 
 ## 👀 페이지
 
