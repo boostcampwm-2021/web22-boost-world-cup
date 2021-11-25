@@ -18,7 +18,7 @@ function BarChart({ data }: BarProps): JSX.Element {
               <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={data.male} />
             </stop>
             <stop offset="0" stopColor={COLORS[1]}>
-              <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={data.female} />
+              <animate dur="1s" attributeName="offset" fill="freeze" from="0" to={data.male} />
             </stop>
           </linearGradient>
         </defs>
