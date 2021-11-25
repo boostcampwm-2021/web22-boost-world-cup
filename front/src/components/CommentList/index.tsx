@@ -4,6 +4,7 @@ import Comment from './comment';
 import { CommentData } from '../../types/Datas';
 import Loader from '../Loader';
 import { getCommentsCount } from '../../utils/api/comment';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 interface Props {
   worldcupId: string;
@@ -25,14 +26,11 @@ function CommentList({
   onClickMoreBtn,
 }: Props): JSX.Element {
   const [commentCount, setCommentCount] = useState(0);
-
-  const getCount = async () => {
-    const { commentCount: fetchData } = await getCommentsCount(worldcupId);
-    setCommentCount(fetchData);
-  };
+  const onGetCommentCountSuccess = (count: number) => setCommentCount(count);
+  const getCommnetCountDispatcher = useApiRequest(getCommentsCount, onGetCommentCountSuccess);
 
   useEffect(() => {
-    getCount();
+    getCommnetCountDispatcher({ type: REQUEST, requestProps: [worldcupId] });
   }, [comments.length]);
 
   return (
@@ -43,12 +41,10 @@ function CommentList({
           <Comment key={comment.commentId} comment={comment} setComments={setComments} />
         ))}
       </CommentContainer>
-      {!isClickMore ? (
+      {!isClickMore && (
         <MoreButton onClick={onClickMoreBtn}>
           <Title>더보기</Title>
         </MoreButton>
-      ) : (
-        ''
       )}
       <div ref={observeTarget} style={{ width: '10px', height: '10px' }}>
         {isLoading && <Loader />}

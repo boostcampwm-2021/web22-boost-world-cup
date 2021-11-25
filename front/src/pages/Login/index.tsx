@@ -8,6 +8,7 @@ import { FcGoogle } from 'react-icons/fc';
 import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 import { UserStateContext } from '../../stores/userStore';
+import { MAIN } from '../../commons/constants/route';
 
 interface locationState {
   from: string;
@@ -16,7 +17,7 @@ interface locationState {
 function Login(): JSX.Element {
   const { isLoggedIn } = useContext(UserStateContext);
   const location = useLocation();
-  let prevPage = '/main';
+  let prevPage = MAIN;
   if (location.state) {
     const { from } = location.state as locationState;
     prevPage = from;
@@ -27,7 +28,7 @@ function Login(): JSX.Element {
   const googleCallbackUrl = `${process.env.REACT_APP_GOOGLE_CALLBACK_URL}?redirect_url=${prevPage}`;
 
   return isLoggedIn ? (
-    <Redirect to="/main" />
+    <Redirect to={MAIN} />
   ) : (
     <Container>
       <img src={logo} alt="logo" width="220px" height="220px" />

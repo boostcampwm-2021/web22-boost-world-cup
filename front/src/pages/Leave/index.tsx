@@ -1,18 +1,18 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import logo from '../../images/logo.png';
 import { deleteUser } from '../../utils/api/auth';
 import { UserStateContext, UserDispatcherContext } from '../../stores/userStore';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 const Leave = (): JSX.Element => {
   const { id: userId } = useContext(UserStateContext);
   const userDispatcher = useContext(UserDispatcherContext);
+  const onDeleteUserSuccess = () => userDispatcher({ type: 'LOGOUT' });
+  const deleteUserDispatcher = useApiRequest(deleteUser, onDeleteUserSuccess);
 
-  const leaveHandler = useCallback(() => {
-    deleteUser(userId as number);
-    userDispatcher({ type: 'LOGOUT' });
-  }, []);
+  const onLeaveBtnClick = () => deleteUserDispatcher({ type: REQUEST, requestProps: [userId] });
 
   return (
     <>
@@ -21,7 +21,7 @@ const Leave = (): JSX.Element => {
         <img src={logo} alt="logo" width="220px" height="220px" />
         <Title>탈퇴하시겠습니까?</Title>
         <Contents>탈퇴하시면 복구할 수 없어요!</Contents>
-        <Menu onClick={leaveHandler}>탈퇴하기</Menu>
+        <Menu onClick={onLeaveBtnClick}>탈퇴하기</Menu>
       </Container>
     </>
   );
@@ -49,7 +49,7 @@ const Contents = styled.div`
   color : ${({ theme }) => theme.color.gray[0]};
 `;
 
-const Menu = styled.div`
+const Menu = styled.button`
   ${({ theme }) => theme.fontStyle.h3};
   display: flex;
   justify-content: center;
@@ -59,7 +59,6 @@ const Menu = styled.div`
   background-color: ${({ theme }) => theme.color.primary};
   border-radius: 10px;
   box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
   margin-top: 260px;
 
   &:hover {

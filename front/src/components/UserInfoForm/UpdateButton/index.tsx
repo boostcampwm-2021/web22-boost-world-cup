@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { putUser } from '../../../utils/api/auth';
 import { UserDispatcherContext } from '../../../stores/userStore';
+import useApiRequest, { REQUEST } from '../../../hooks/useApiRequest';
 
 interface Props {
   id: number;
@@ -13,6 +14,11 @@ interface Props {
 
 function UpdateButton({ id, nickname, gender, age, setAuthenticated }: Props): JSX.Element {
   const userDispatcher = useContext(UserDispatcherContext);
+  const onPutUserSuccess = () => {
+    userDispatcher({ type: 'LOGIN', payload: { id, nickname, gender, age, isLoggedIn: true } });
+    setAuthenticated(true);
+  };
+  const putUserDispatcher = useApiRequest(putUser, onPutUserSuccess);
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     if (nickname === '' || gender === 0 || age === 0) {
@@ -20,13 +26,7 @@ function UpdateButton({ id, nickname, gender, age, setAuthenticated }: Props): J
       alert('정보를 모두 입력해주세요.');
       return;
     }
-
-    const { result } = await putUser(id, nickname, gender, age);
-
-    if (result === 'success') {
-      userDispatcher({ type: 'LOGIN', payload: { id, nickname, gender, age, isLoggedIn: true } });
-      setAuthenticated(true);
-    }
+    putUserDispatcher({ type: REQUEST, requestProps: [id, nickname, gender, age] });
   };
 
   return (

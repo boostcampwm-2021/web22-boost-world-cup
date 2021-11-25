@@ -6,6 +6,7 @@ import CommentList from '../CommentList';
 import { useInfiniteScroll } from '../../hooks';
 import { UserStateContext } from '../../stores/userStore';
 import { FETCH_COMMENTS_LIMIT } from '../../commons/constants/number';
+import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 interface Props {
   worldcupId: string;
@@ -22,9 +23,12 @@ function Comment({ worldcupId }: Props): JSX.Element {
     onClickMoreBtn,
     setItems: setComments,
   } = useInfiniteScroll<CommentData>(FETCH_COMMENTS_LIMIT, getComments, [worldcupId]);
+  const onCreateCommentSuccess = ({ commentId, userId, nickname, createdAt, message }: CommentData) =>
+    setComments([{ commentId, userId, nickname, createdAt, message }, ...comments]);
+  const createCommentDispatcher = useApiRequest(createComment, onCreateCommentSuccess);
 
   const onSubmit = useCallback(
-    async (event: React.MouseEvent<HTMLElement>) => {
+    (event: React.MouseEvent<HTMLElement>) => {
       event.preventDefault();
       const trimMessage = message.trim();
       if (trimMessage === '') {
@@ -32,23 +36,14 @@ function Comment({ worldcupId }: Props): JSX.Element {
         return;
       }
       setMessage('');
-      const {
-        commentId,
-        userId,
-        nickname,
-        createdAt,
-        message: newMessage,
-      } = await createComment(worldcupId, trimMessage);
-      setComments([{ commentId, userId, nickname, createdAt, message: newMessage }, ...comments]);
+      createCommentDispatcher({ type: REQUEST, requestProps: [worldcupId, trimMessage] });
     },
     [comments, message],
   );
 
-  const commentChangeEvent = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const {
-        target: { value },
-      } = event;
+  const onCommentChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+    ({ target }) => {
+      const { value } = target;
       setMessage(value);
     },
     [message],
@@ -59,9 +54,9 @@ function Comment({ worldcupId }: Props): JSX.Element {
       <InputContainer>
         <Text>나의 한마디</Text>
         {isLoggedIn ? (
-          <CommentInput placeholder="메시지를 입력하세요." onChange={commentChangeEvent} value={message} />
+          <CommentInput placeholder="메시지를 입력하세요." onChange={onCommentChange} value={message} />
         ) : (
-          <CommentInput placeholder="로그인이 필요합니다." onChange={commentChangeEvent} value={message} disabled />
+          <CommentInput placeholder="로그인이 필요합니다." disabled />
         )}
 
         <SubmitButton onClick={onSubmit}>확인</SubmitButton>

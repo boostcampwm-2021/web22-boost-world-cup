@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { useLocation } from 'react-router';
-
 import styled from 'styled-components';
 import { Header, RankingList, Comment } from '../../components';
 

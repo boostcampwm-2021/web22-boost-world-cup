@@ -18,12 +18,14 @@ type RequestReducer<T> = (state: RequestState<T>, action: RequestState<T>) => Re
 const requestReducer = <T>(state: RequestState<T>, action: RequestState<T>) => action;
 
 const fetchData = async <T>(
-  apiRequest: (...args: any) => Promise<AxiosResponse<T>>,
+  apiRequest: (...args: any) => Promise<AxiosResponse>,
   requestDispatcher: React.Dispatch<RequestState<T>>,
   requestProps?: any[],
 ) => {
   try {
-    const { data: response } = requestProps ? await apiRequest(...requestProps) : await apiRequest();
+    const {
+      data: { data: response },
+    } = requestProps ? await apiRequest(...requestProps) : await apiRequest();
     requestDispatcher({ type: SUCCESS, response });
   } catch (error) {
     const err = error as AxiosError;

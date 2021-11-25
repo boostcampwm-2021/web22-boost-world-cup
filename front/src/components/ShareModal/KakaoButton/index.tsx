@@ -15,7 +15,7 @@ const KakaoButton = ({ url }: kakaoProps): JSX.Element => {
   useEffect(() => {
     createButton();
   }, []);
-  const handleButton = () => {
+  const onKakaoBtnClick: React.MouseEventHandler = () => {
     window.Kakao.Link.sendDefault({
       objectType: 'feed',
       content: {
@@ -47,7 +47,7 @@ const KakaoButton = ({ url }: kakaoProps): JSX.Element => {
     });
   };
   return (
-    <button type="button" onClick={handleButton}>
+    <button type="button" onClick={onKakaoBtnClick}>
       <KaKaoLogo />
     </button>
   );

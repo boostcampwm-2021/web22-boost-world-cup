@@ -7,17 +7,17 @@ interface ItemProps {
   name: string;
   victoryRatio: number;
   winRatio: number;
-  handleClick: (event: React.MouseEvent<Element>) => void;
+  onClick: React.MouseEventHandler;
 }
 interface RatioProp {
   width: number;
   color: string;
 }
 
-function RankingItem({ id, url, name, victoryRatio, winRatio, handleClick }: ItemProps): JSX.Element {
+function RankingItem({ id, url, name, victoryRatio, winRatio, onClick }: ItemProps): JSX.Element {
   return (
     <Section>
-      <LeftSection onClick={handleClick}>
+      <LeftSection onClick={onClick}>
         <span>{id}</span>
         <img src={url} alt="월드컵 후보 사진" />
         <p>{name}</p>

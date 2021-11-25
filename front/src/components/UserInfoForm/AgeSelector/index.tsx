@@ -13,15 +13,15 @@ function AgeSelector({ age, setAge }: Props): JSX.Element {
     setIsOpen(false);
   }, [age]);
 
-  const toggleHandler = useCallback(() => {
+  const onToggle = useCallback(() => {
     setIsOpen((v) => !v);
   }, []);
 
-  const ageSelectHandler = useCallback((age: number) => {
+  const onAgeSelect = useCallback((age: number) => {
     setAge(age);
   }, []);
 
-  const clickBackWindow = useCallback((event: React.MouseEvent<HTMLElement>) => {
+  const onBackgroundClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setIsOpen((v) => !v);
     event.stopPropagation();
   }, []);
@@ -34,17 +34,17 @@ function AgeSelector({ age, setAge }: Props): JSX.Element {
 
   return (
     <>
-      <AgeInput onClick={toggleHandler}>
+      <AgeInput onClick={onToggle}>
         <span>{selectedAgeText()}</span>
         <AgeList isOpen={isOpen}>
           {ages.map((age, idx) => (
-            <Item key={age} onClick={() => ageSelectHandler(idx + 1)}>
+            <Item key={age} onClick={() => onAgeSelect(idx + 1)}>
               {age}
             </Item>
           ))}
         </AgeList>
       </AgeInput>
-      <BackWindow onClick={clickBackWindow} isOpen={isOpen} />
+      <Background onClick={onBackgroundClick} isOpen={isOpen} />
     </>
   );
 }
@@ -61,7 +61,7 @@ const Item = styled.div`
   }
 `;
 
-const BackWindow = styled.div<{ isOpen: boolean }>`
+const Background = styled.div<{ isOpen: boolean }>`
   position: fixed;
   background-color: transparent;
   width: 100%;

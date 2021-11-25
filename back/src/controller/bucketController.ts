@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { v4 as uuid } from 'uuid';
 import { extension } from 'mime-types';
 import s3 from '../config/s3';
+import ApiResult from '../utils/ApiResult';
+
+const { succeed, failed } = ApiResult;
 
 const bucketController = {
   getSignedURL: async (request: Request, response: Response, next: NextFunction) => {
@@ -19,7 +22,7 @@ const bucketController = {
         return { presignedURL, key };
       }),
     );
-    response.json(presignedData);
+    response.json(succeed(presignedData));
   },
 };
 

@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import * as candidateService from '../services/candidateService';
+import ApiResult from '../utils/ApiResult';
+
+const { succeed, failed } = ApiResult;
 
 const gameController = {
   getCandidates: async (request: Request, response: Response, next: NextFunction) => {
@@ -7,7 +10,7 @@ const gameController = {
       query: { worldcupId, round },
     } = request;
     const candidateList = await candidateService.getRandomCandidateList(Number(worldcupId), Number(round));
-    response.json(candidateList);
+    response.json(succeed(candidateList));
   },
 };
 

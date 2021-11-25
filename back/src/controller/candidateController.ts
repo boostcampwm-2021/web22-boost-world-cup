@@ -10,18 +10,20 @@ const candidateController = {
     const { key } = request.params;
     try {
       await Promise.all([deleteFromEveryBucket(key), candidateService.removeByKey(key)]);
-      response.json(succeed(1));
+      response.json(succeed(null));
     } catch (e) {
       response.status(400).json(failed('cannot delete candidate'));
     }
   },
 
   patchCandidate: async (request: Request, response: Response, next: NextFunction) => {
-    const { key } = request.params;
-    const { newKey, name } = request.body;
+    const {
+      params: { key },
+      body: { newKey, name },
+    } = request;
     try {
       await candidateService.patchCandidate(key, name, newKey);
-      response.json(succeed(1));
+      response.json(succeed(null));
     } catch (e) {
       response.status(400).json(failed('cannot patch candidate'));
     }

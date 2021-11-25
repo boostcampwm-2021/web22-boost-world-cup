@@ -135,7 +135,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
                 name={v.name}
                 victoryRatio={v.victoryRatio}
                 winRatio={v.winRatio}
-                handleClick={openModal}
+                onClick={openModal}
               />
               {index + 1 < renderData.length ? <Divider /> : ''}
             </Wrapper>

@@ -12,7 +12,7 @@ function KeywordInput({ worldcupFormDispatcher, defaultValue: keywords }: Props)
   const [text, setText] = useState<string>('');
   const hideSpanRef = useRef<HTMLSpanElement | null>(null);
 
-  const onChangeEventHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (keywords.length === possibleKeywordCnt) {
       // eslint-disable-next-line no-alert
       alert('키워드 초과');
@@ -28,7 +28,7 @@ function KeywordInput({ worldcupFormDispatcher, defaultValue: keywords }: Props)
     }
   };
 
-  const keydownEventHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.keyCode === 229 || !worldcupFormDispatcher) {
       return;
     }
@@ -59,8 +59,8 @@ function KeywordInput({ worldcupFormDispatcher, defaultValue: keywords }: Props)
       <Input
         keywordLen={keywords.length}
         value={text}
-        onChange={onChangeEventHandler}
-        onKeyDown={keydownEventHandler}
+        onChange={onKeywordChange}
+        onKeyDown={onKeydown}
         placeholder={keywords.length === 0 ? '키워드는 최대 5개입니다.' : ''}
       />
       <HideText ref={hideSpanRef} />
