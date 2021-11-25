@@ -31,6 +31,34 @@ export const getCandidatesByWorldcup = async (offset: number, limit: number, wor
     .execute();
   return candidateList;
 };
+export const getCandidatesBySearchWord = async (offset: number, limit: number, search: String, worldcupId: String) => {
+  const candidateList = await getRepository(Candidate)
+    .createQueryBuilder('candidate')
+    .leftJoinAndSelect('candidate.worldcup', 'worldcup')
+    .leftJoinAndSelect('candidate.info', 'info')
+    .where('candidate.worldcup_id= :id', { id: worldcupId })
+    .andWhere('worldcup.title like :title', { title: `%${search}%` })
+    .select([
+      'candidate.id AS id',
+      'candidate.name AS name',
+      'candidate.url AS url',
+      'candidate.win_cnt / candidate.show_cnt AS winRatio',
+      'candidate.victory_cnt /  worldcup.total_cnt AS victoryRatio',
+      'info.male / (info.male + info.female) AS male',
+      'info.female / (info.male + info.female) AS female',
+      'info.teens / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS teens',
+      'info.twenties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS twenties',
+      'info.thirties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS thirties',
+      'info.forties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS forties',
+      'info.fifties / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS fifties',
+      'info.etc / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS etc',
+    ])
+    .orderBy('candidate.victory_cnt /  worldcup.total_cnt', 'DESC')
+    .offset(offset)
+    .limit(limit)
+    .execute();
+  return candidateList;
+};
 export const getRandomCandidateList = async (worldcupId: number, round: number) => {
   const randomCandidateList = await getRepository(Candidate)
     .createQueryBuilder('candidate')

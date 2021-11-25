@@ -10,9 +10,19 @@ const rankingController = {
   getRankingInfo: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { id },
-      query: { offset, limit },
+      query: { offset, limit, search },
     } = request;
-    const candidateLists = await candidateService.getCandidatesByWorldcup(Number(offset), Number(limit), id);
+    if (!search) {
+      const candidateLists = await candidateService.getCandidatesByWorldcup(Number(offset), Number(limit), id);
+      response.json(succeed(candidateLists));
+    }
+    const candidateLists = await candidateService.getCandidatesBySearchWord(
+      Number(offset),
+      Number(limit),
+      String(search),
+      id,
+    );
+    console.log(candidateLists);
     response.json(succeed(candidateLists));
   },
 
