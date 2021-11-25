@@ -21,7 +21,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const [totalCnt, setTotalCnt] = useState<number>(0);
   const candidateRef = useRef<number | null>(null);
 
-  const [items, currentPage, offset, lastPage, onPageChange] = usePaginationAsync<RankingData>(
+  const [candidateList, currentPage, offset, lastPage, onPageChange] = usePaginationAsync<RankingData>(
     totalCnt,
     PAGINATION_LIMIT,
     getCandidateList,
@@ -33,65 +33,65 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const openModal = (event: React.MouseEvent<Element>) => {
     setIsOpenModal(true);
     const candidateName = event.currentTarget.children[2].innerHTML;
-    candidateRef.current = items.findIndex((v) => v.name === candidateName);
+    candidateRef.current = candidateList.findIndex((v) => v.name === candidateName);
   };
   const closeModal = (event: React.MouseEvent<Element>) => {
     event.stopPropagation();
     if (event.target === event.currentTarget) setIsOpenModal(false);
   };
 
-  const getRenderData = useCallback((dataset: RankingData[]) => {
-    return dataset
-      .map((v) => ({
-        id: v.id,
-        url: v.url,
-        name: v.name,
-        victoryRatio: v.total > 0 ? v.victoryCnt / v.total : 0,
-        winRatio: v.showCnt > 0 ? v.winCnt / v.showCnt : 0,
-      }))
-      .sort((a, b) => {
-        if (a.victoryRatio === b.victoryRatio) {
-          return b.winRatio - a.winRatio;
-        }
-        return b.victoryRatio - a.victoryRatio;
-      });
-  }, []);
+  // const getRenderData = useCallback((dataset: RankingData[]) => {
+  //   return dataset
+  //     .map((v) => ({
+  //       id: v.id,
+  //       url: v.url,
+  //       name: v.name,
+  //       victoryRatio: v.total > 0 ? v.victoryCnt / v.total : 0,
+  //       winRatio: v.showCnt > 0 ? v.winCnt / v.showCnt : 0,
+  //     }))
+  //     .sort((a, b) => {
+  //       if (a.victoryRatio === b.victoryRatio) {
+  //         return b.winRatio - a.winRatio;
+  //       }
+  //       return b.victoryRatio - a.victoryRatio;
+  //     });
+  // }, []);
 
-  const getInfoAcc = useCallback((dataset: RankingData[]) => {
-    return dataset.map((v) => {
-      const ageTotal = Object.values(v)
-        .slice(9)
-        .reduce((pre, cur) => pre + cur, 0);
-      return {
-        name: v.name,
-        male: v.male / (v.male + v.female),
-        female: v.female / (v.male + v.female),
-        teens: v.teens / ageTotal,
-        twenties: v.twenties / ageTotal,
-        thirties: v.thirties / ageTotal,
-        forties: v.forties / ageTotal,
-        fifties: v.fifties / ageTotal,
-        etc: v.etc / ageTotal,
-      };
-    });
-  }, []);
+  // const getInfoAcc = useCallback((dataset: RankingData[]) => {
+  //   return dataset.map((v) => {
+  //     const ageTotal = Object.values(v)
+  //       .slice(9)
+  //       .reduce((pre, cur) => pre + cur, 0);
+  //     return {
+  //       name: v.name,
+  //       male: v.male / (v.male + v.female),
+  //       female: v.female / (v.male + v.female),
+  //       teens: v.teens / ageTotal,
+  //       twenties: v.twenties / ageTotal,
+  //       thirties: v.thirties / ageTotal,
+  //       forties: v.forties / ageTotal,
+  //       fifties: v.fifties / ageTotal,
+  //       etc: v.etc / ageTotal,
+  //     };
+  //   });
+  // }, []);
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
-    const filteredData = getRenderData(
-      items.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputWord.replace(/(\s*)/g, '')) !== -1),
-    );
-    setRenderData([...filteredData]);
+    // const filteredData = getRenderData(
+    //   candidateList.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputWord.replace(/(\s*)/g, '')) !== -1),
+    // );
+    // setRenderData([...filteredData]);
     setInputWord('');
   };
 
   const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     setInputWord(inputValue);
-    const filteredData = getRenderData(
-      items.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputValue.replace(/(\s*)/g, '')) !== -1),
-    );
-    setRenderData([...filteredData]);
+    // const filteredData = getRenderData(
+    //   candidateList.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputValue.replace(/(\s*)/g, '')) !== -1),
+    // );
+    // setRenderData([...filteredData]);
   };
 
   useEffect(() => {
@@ -99,9 +99,9 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   }, []);
 
   useEffect(() => {
-    setRenderData(getRenderData(items));
-    setInfo(getInfoAcc(items));
-  }, [items]);
+    // setRenderData(getRenderData(candidateList));
+    // setInfo(getInfoAcc(candidateList));
+  }, [candidateList]);
   return (
     <>
       <Navigation>
@@ -126,7 +126,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
         </RightCaption>
       </Caption>
       <RankingItemContainer>
-        {renderData.map((v, index) => {
+        {candidateList.map((v, index) => {
           return (
             <Wrapper key={v.id}>
               <RankingItem

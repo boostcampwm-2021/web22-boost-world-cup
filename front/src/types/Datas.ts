@@ -39,10 +39,8 @@ export interface RankingData {
   id: number;
   name: string;
   url: string;
-  total: number;
-  showCnt: number;
-  winCnt: number;
-  victoryCnt: number;
+  winRatio: number;
+  victoryRatio: number;
   male: number;
   female: number;
   teens: number;
