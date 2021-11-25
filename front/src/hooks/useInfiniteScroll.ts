@@ -11,6 +11,7 @@ interface ReturnType<T> {
   onClickMoreBtn: React.MouseEventHandler;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
   setItems: React.Dispatch<React.SetStateAction<T[]>>;
+  setIsClickMore: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const useInfiniteScroll = <T>(
@@ -62,7 +63,7 @@ const useInfiniteScroll = <T>(
     getItemsDispatcher({ type: REQUEST, requestProps: [offset, limit, ...requestProps] });
   }, [offset]);
 
-  return { items, target, isLoading, isClickMore, onClickMoreBtn, setOffset, setItems };
+  return { items, target, isLoading, isClickMore, onClickMoreBtn, setOffset, setItems, setIsClickMore };
 };
 
 export default useInfiniteScroll;
