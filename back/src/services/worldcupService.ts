@@ -53,6 +53,7 @@ export const findById = async (id) => {
 
 export const save = async (title: string, description: string, keywordNames: string[], imgInfos, userId: number) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
+
   const [keywords, user] = await Promise.all([
     Promise.all(keywordNames.map((name: string) => findOrCreateTag(name))),
     findUserById(userId),
@@ -61,21 +62,14 @@ export const save = async (title: string, description: string, keywordNames: str
     .slice(0, 2)
     .map(({ key }) => `${process.env.IMG_URL_END_POINT}/${key}.webp`);
 
-  const {
-    identifiers: [{ id }],
-  } = await worldcupRepository
-    .createQueryBuilder('worldcup')
-    .insert()
-    .into(Worldcup)
-    .values({
-      title,
-      thumbnail1,
-      thumbnail2,
-      description,
-      keywords,
-      user,
-    })
-    .execute();
+  const { id } = await worldcupRepository.save({
+    title,
+    thumbnail1,
+    thumbnail2,
+    description,
+    keywords,
+    user,
+  });
 
   await saveCandidates(imgInfos, id);
 };
