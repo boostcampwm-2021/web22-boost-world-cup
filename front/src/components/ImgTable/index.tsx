@@ -85,6 +85,7 @@ const Placeholder = styled.div`
   text-align: center;
   font-size: 17px;
   font-weight: bold;
+  color: ${({ theme }) => theme.color.gray[3]};
 `;
 
 const Footer = styled.footer`
