@@ -57,9 +57,7 @@ export const save = async (title: string, description: string, keywordNames: str
     Promise.all(keywordNames.map((name: string) => findOrCreateTag(name))),
     findUserById(userId),
   ]);
-  const [thumbnail1, thumbnail2] = imgInfos
-    .slice(0, 2)
-    .map(({ key }) => `${process.env.IMG_URL_END_POINT}/${key}.webp`);
+  const [thumbnail1, thumbnail2] = imgInfos.slice(0, 2).map(({ key }) => key);
 
   const {
     identifiers: [{ id }],
