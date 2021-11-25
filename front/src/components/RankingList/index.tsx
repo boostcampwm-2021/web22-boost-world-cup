@@ -23,7 +23,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     totalCnt,
     PAGINATION_LIMIT,
     getCandidateList,
-    [worldcupId],
+    [worldcupId, inputWord],
   );
   const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
   const getWorldcupMetaDataDispatcher = useApiRequset(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
