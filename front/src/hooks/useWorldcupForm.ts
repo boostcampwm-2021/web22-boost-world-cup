@@ -31,7 +31,7 @@ const worldcupFormReducer = (state: WorldcupState, action: WorldcupAction): Worl
 
     case 'ADD_KEYWORD': {
       const { payload: newKeyword } = action;
-      return { ...state, keywords: [newKeyword] };
+      return { ...state, keywords: [...state.keywords, newKeyword] };
     }
 
     default: {

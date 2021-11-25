@@ -1,7 +1,12 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { WorldcupAction } from '../../hooks/useWorldcupForm';
 
-function KeywordInput(): JSX.Element {
+interface Props {
+  worldcupFormDispatcher?: React.Dispatch<WorldcupAction>;
+}
+
+function KeywordInput({ worldcupFormDispatcher }: Props): JSX.Element {
   const possibleKeywordCnt = 5;
   const [text, setText] = useState<string>('');
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -9,6 +14,7 @@ function KeywordInput(): JSX.Element {
 
   const onChangeEventHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (keywords.length === possibleKeywordCnt) {
+      // eslint-disable-next-line no-alert
       alert('키워드 초과');
       return;
     }
@@ -32,6 +38,9 @@ function KeywordInput(): JSX.Element {
       if (tempText.length === 0) {
         setText('');
         return;
+      }
+      if (worldcupFormDispatcher) {
+        worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: tempText });
       }
       setKeywords((prev) => [...prev, tempText]);
       setText('');

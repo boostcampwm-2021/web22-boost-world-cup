@@ -91,9 +91,7 @@ function Edit(): JSX.Element {
             worldcupFormState={worldcupFormState}
             onTitleBlur={onTitleBlur}
             onDescBlur={onDescBlur}
-            onKeywordsChange={({ target }) => {
-              worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: target.value });
-            }}
+            worldcupFormDispatcher={worldcupFormDispatcher}
             imgInfosDispatcher={addedImgsDispatcher}
             getSignedURLsSuccessEffect={getSignedURLsSuccessEffect}
           />
