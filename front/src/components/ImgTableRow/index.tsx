@@ -61,8 +61,8 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
 
   return (
     <Container>
-      <RowItem style={{ width: '138px' }}>{num}</RowItem>
-      <RowItem style={{ width: '144px' }}>
+      <RowItem style={{ width: '50px' }}>{num}</RowItem>
+      <RowItem>
         <ImgPreView
           info={imgInfo}
           tab={2}
@@ -71,19 +71,19 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
           imgInfosDispatcher={imgInfosDispatcher}
         />
       </RowItem>
-      <RowItem style={{ width: '487px' }}>
+      <RowItem>
         <TextInput
           name="imgName"
           onBlur={onImgNameBlur}
-          width="400px"
-          placeholder="이미지의 이름을 입력해주세요."
+          width="100%"
+          placeholder="이름을 입력해주세요."
           defaultValue={imgInfo.name}
         />
       </RowItem>
-      <RowItem style={{ width: '625px' }}>
+      <RowItem>
         <ImgInput onChange={onImgChange} type="changeImg" />
       </RowItem>
-      <RowItem style={{ width: '450px' }}>
+      <RowItem>
         <DeleteBtn type="button" onClick={onDeleteImg}>
           라인 삭제
         </DeleteBtn>
@@ -93,32 +93,29 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
 }
 
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.color.white};
-  height: 150px;
+  height: 130px;
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: ${({ theme }) => theme.color.white};
   border-bottom: 1px solid ${({ theme }) => theme.color.black};
-  transition: background-color 0.3s;
-  &:hover {
-    background-color: #f5f5f5;
-  }
 `;
 
 const RowItem = styled.div`
-  height: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
-  ${({ theme }) => theme.fontStyle.h2};
+  ${({ theme }) => theme.fontStyle.h3};
 `;
 
 const DeleteBtn = styled.button`
-  width: 134px;
-  height: 60px;
+  width: 100px;
+  height: 40px;
   border-radius: 10px;
   border: 1px solid #ff0000;
   color: #ff0000;
-  ${({ theme }) => theme.fontStyle.h3};
   transition: background-color 0.3s, color 0.3s;
+  ${({ theme }) => theme.fontStyle.button};
   &:hover {
     background-color: #ff0000;
     color: ${({ theme }) => theme.color.white};

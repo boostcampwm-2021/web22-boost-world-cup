@@ -21,13 +21,13 @@ function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange, imgIn
 
   return (
     <Container>
-      <TitleRow>이미지 이름 수정/삭제</TitleRow>
+      <Title>이미지 이름 수정/삭제</Title>
       <TableHeader>
-        <TableHeaderItem style={{ width: '138px' }}>순번</TableHeaderItem>
-        <TableHeaderItem style={{ width: '144px' }}>이미지</TableHeaderItem>
-        <TableHeaderItem style={{ width: '487px' }}>이름 변경</TableHeaderItem>
-        <TableHeaderItem style={{ width: '625px' }}>이미지 변경</TableHeaderItem>
-        <TableHeaderItem style={{ width: '450px' }}>삭제</TableHeaderItem>
+        <TableHeaderItem style={{ width: '50px' }}>순번</TableHeaderItem>
+        <TableHeaderItem style={{ width: '120px' }}>이미지</TableHeaderItem>
+        <TableHeaderItem style={{ width: '228px' }}>이름 변경</TableHeaderItem>
+        <TableHeaderItem style={{ width: '380px' }}>이미지 변경</TableHeaderItem>
+        <TableHeaderItem style={{ width: '100px' }}>삭제</TableHeaderItem>
       </TableHeader>
       <RowsWrapper>
         {imgInfos.length ? (
@@ -48,55 +48,51 @@ function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange, imgIn
 }
 
 const Container = styled.div`
-  width: 1844px;
-  height: 811px;
-  background-color: ${({ theme }) => theme.color.white};
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  padding: 30px 40px 20px 40px;
+  background-color: ${({ theme }) => theme.color.white};
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
-const TitleRow = styled.div`
-  ${({ theme }) => theme.fontStyle.h1};
-  padding-left: 137px;
-  width: 100%;
-  margin-top: 26px;
+const Title = styled.div`
   margin-bottom: 20px;
+  ${({ theme }) => theme.fontStyle.h3};
 `;
 
 const TableHeader = styled.div`
-  height: 80px;
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
   border-bottom: 1px solid ${({ theme }) => theme.color.black};
 `;
 
 const TableHeaderItem = styled.div`
-  height: 80px;
-  ${({ theme }) => theme.fontStyle.h2};
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  ${({ theme }) => theme.fontStyle.bodyBold};
 `;
 
 const RowsWrapper = styled.div`
-  height: 545px;
   width: 100%;
-  overflow: scroll;
 `;
 
 const Placeholder = styled.div`
-  ${({ theme }) => theme.fontStyle.h2};
+  margin-top: 40px;
+  ${({ theme }) => theme.fontStyle.h3};
   text-align: center;
-  margin-top: 200px;
+  font-size: 17px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.color.gray[3]};
 `;
 
-const Footer = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
+const Footer = styled.footer`
+  width: fit-content;
+  position: relative;
+  left: 40%;
   margin-top: 18px;
-  padding: 0 60px;
 `;
 
 export default ImgTable;

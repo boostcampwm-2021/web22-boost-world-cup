@@ -1,14 +1,20 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { WorldcupAction } from '../../hooks/useWorldcupForm';
 
-function KeywordInput(): JSX.Element {
+interface Props {
+  worldcupFormDispatcher?: React.Dispatch<WorldcupAction>;
+  defaultValue: string[];
+}
+
+function KeywordInput({ worldcupFormDispatcher, defaultValue: keywords }: Props): JSX.Element {
   const possibleKeywordCnt = 5;
   const [text, setText] = useState<string>('');
-  const [keywords, setKeywords] = useState<string[]>([]);
   const hideSpanRef = useRef<HTMLSpanElement | null>(null);
 
   const onKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (keywords.length === possibleKeywordCnt) {
+      // eslint-disable-next-line no-alert
       alert('키워드 초과');
       return;
     }
@@ -23,7 +29,7 @@ function KeywordInput(): JSX.Element {
   };
 
   const onKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.keyCode === 229) {
+    if (event.keyCode === 229 || !worldcupFormDispatcher) {
       return;
     }
     const { code } = event;
@@ -33,17 +39,15 @@ function KeywordInput(): JSX.Element {
         setText('');
         return;
       }
-      setKeywords((prev) => [...prev, tempText]);
+      worldcupFormDispatcher({ type: 'ADD_KEYWORD', payload: tempText });
       setText('');
       event.preventDefault();
     } else if (code === 'Backspace') {
-      if (text.length === 0) {
-        if (keywords.length === 0) {
-          return;
-        }
-        setText(keywords[keywords.length - 1]);
-        setKeywords((prev) => prev.slice(0, -1));
+      if (text.length !== 0 || keywords.length === 0) {
+        return;
       }
+      setText(keywords[keywords.length - 1]);
+      worldcupFormDispatcher({ type: 'DELETE_KEYWORD' });
     }
   };
 
