@@ -52,7 +52,7 @@ export const findById = async (id) => {
 };
 
 export const save = async (title: string, description: string, keywordNames: string[], imgInfos, userId: number) => {
-  const worldcupRepository = getRepository(Worldcup);
+  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   const [keywords, user] = await Promise.all([
     Promise.all(keywordNames.map((name: string) => findOrCreateTag(name))),
     findUserById(userId),
@@ -60,28 +60,24 @@ export const save = async (title: string, description: string, keywordNames: str
   const [thumbnail1, thumbnail2] = imgInfos
     .slice(0, 2)
     .map(({ key }) => `${process.env.IMG_URL_END_POINT}/${key}.webp`);
-  const newWorldcup = worldcupRepository.create({
-    title,
-    thumbnail1,
-    thumbnail2,
-    description,
-    keywords,
-    user,
-  });
-  return Promise.all([worldcupRepository.save(newWorldcup), saveCandidates(imgInfos, newWorldcup)]);
-};
 
-export const removeById = async (id) => {
-  const worldcupRepository = getRepository(Worldcup);
-  const worldcupToRemove = await findById(id);
-  await worldcupRepository.remove(worldcupToRemove);
-  return await worldcupRepository.find();
-};
+  const {
+    identifiers: [{ id }],
+  } = await worldcupRepository
+    .createQueryBuilder('worldcup')
+    .insert()
+    .into(Worldcup)
+    .values({
+      title,
+      thumbnail1,
+      thumbnail2,
+      description,
+      keywords,
+      user,
+    })
+    .execute();
 
-export const getWorldcupTitle = async (id: number) => {
-  const worldcupRepository = getRepository(Worldcup);
-  const worldcup = await worldcupRepository.findOne(id, { select: ['title'] });
-  return worldcup.title;
+  await saveCandidates(imgInfos, id);
 };
 
 export const plusTotalCnt = async (id: number) => {
@@ -92,21 +88,27 @@ export const plusTotalCnt = async (id: number) => {
 };
 
 export const patchWorldcupTitle = async (id: number, title: string) => {
-  const worldcupRepository = getRepository(Worldcup);
-  const worldcup = await worldcupRepository.findOne(id);
-  worldcup.title = title;
-  worldcupRepository.save(worldcup);
+  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
+  return await worldcupRepository
+    .createQueryBuilder('worldcup')
+    .update(Worldcup)
+    .set({ title: title })
+    .where('worldcup.id = :id', { id: id })
+    .execute();
 };
 
 export const patchWorldcupDesc = async (id: number, desc: string) => {
-  const worldcupRepository = getRepository(Worldcup);
-  const worldcup = await worldcupRepository.findOne(id);
-  worldcup.description = desc;
-  worldcupRepository.save(worldcup);
+  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
+  return await worldcupRepository
+    .createQueryBuilder('worldcup')
+    .update(Worldcup)
+    .set({ description: desc })
+    .where('worldcup.id = :id', { id: id })
+    .execute();
 };
 
 export const getMetaData = async (id: number) => {
-  const worldcupRepository = getRepository(Worldcup);
+  const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   const [worldcup, totalCnt] = await Promise.all([worldcupRepository.findOne(id), getCandidateTotalCnt(id)]);
   const { title, description } = worldcup;
   return { totalCnt, title, description };
