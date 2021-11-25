@@ -1,20 +1,17 @@
 import axios, { AxiosResponse } from 'axios';
 
-export const getCandidateList = (offset: number, limit: number, worldcupId: string): Promise<AxiosResponse> => {
-  return axios.get(`/api/ranking/${worldcupId}?offset=${offset}&limit=${limit}`);
-};
+export const getCandidateList = (offset: number, limit: number, worldcupId: string): Promise<AxiosResponse> =>
+  axios.get(`/api/ranking/${worldcupId}?offset=${offset}&limit=${limit}`);
 
-export const sendCurrentResult = async (winId: number, loseId: number): Promise<void> => {
-  await axios.post('/api/ranking/current', {
+export const sendCurrentResult = (winId: number, loseId: number): Promise<AxiosResponse> =>
+  axios.post('/api/ranking/current', {
     winId,
     loseId,
   });
-};
 
-export const sendFinalResult = async (worldcupId: string, winId: number, loseId: number): Promise<void> => {
-  await axios.post('/api/ranking/final', {
+export const sendFinalResult = (worldcupId: string, winId: number, loseId: number): Promise<AxiosResponse> =>
+  axios.post('/api/ranking/final', {
     worldcupId,
     winId,
     loseId,
   });
-};
