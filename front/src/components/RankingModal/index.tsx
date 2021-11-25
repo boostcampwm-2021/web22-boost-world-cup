@@ -21,7 +21,6 @@ function RankingModal({ closeModal, info }: ModalProps): JSX.Element {
     return rankingInfoData.map((value) => {
       const [startX, startY] = getCoordCircle(acc);
       acc += value;
-      console.log(acc);
       const [endX, endY] = getCoordCircle(acc);
       const isLargeArc = value > 0.5 ? 1 : 0;
       const targetArc = 2 * Math.PI * value;
