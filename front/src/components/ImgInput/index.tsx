@@ -91,6 +91,7 @@ const AddAdditionalImgsContainer = styled.div`
 
 const ChangeImgContainer = styled.div`
   display: flex;
+  position: relative;
   height: 80px;
   text-align: center;
   padding: 5px 5px 5px 5px;
@@ -102,10 +103,16 @@ const ChangeImgContainer = styled.div`
   font-size: 15px;
   border: 1px solid ${({ theme }) => theme.color.black};
   background-color: ${({ theme }) => theme.color.white};
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: #f5f5f5;
+  }
 `;
 
 const Input = styled.input`
   position: absolute;
+  width: 100%;
+  height: 100%;
   cursor: pointer;
   opacity: 0;
 `;

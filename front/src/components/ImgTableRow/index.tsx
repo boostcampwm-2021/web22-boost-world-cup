@@ -97,12 +97,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  transition: background-color 0.3s;
   background-color: ${({ theme }) => theme.color.white};
   border-bottom: 1px solid ${({ theme }) => theme.color.black};
-  &:hover {
-    background-color: #f5f5f5;
-  }
 `;
 
 const RowItem = styled.div`
