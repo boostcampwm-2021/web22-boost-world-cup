@@ -2,7 +2,7 @@ import { Worldcup } from '../entity/Worldcup';
 import { findOrCreate as findOrCreateTag } from './tagService';
 import { save as saveCandidates, getTotalCount as getCandidateTotalCnt } from './candidateService';
 import { findById as findUserById } from './userService';
-import { Repository, getRepository, Like } from 'typeorm';
+import { Repository, getRepository } from 'typeorm';
 
 export const findFromPage = async (offset: number, limit: number): Promise<Worldcup[]> => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
