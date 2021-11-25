@@ -8,44 +8,44 @@ interface Props {
 }
 
 function ImgInput({ onChange, type }: Props): JSX.Element {
-  if (type === 'addImgs')
-    return (
-      <AddImgsContainer>
-        <div>
-          Drop files here or click to upload.
+  switch (type) {
+    case 'addImgs':
+      return (
+        <AddImgsContainer>
+          <div>
+            Drop files here or click to upload.
+            <hr />
+            여기 파일을 놓거나 클릭하여 업로드하세요.
+          </div>
+          <Input value="" type="file" multiple onChange={onChange} accept="image/*" />
+        </AddImgsContainer>
+      );
+    case 'addAdditionalImgs':
+      return (
+        <AddAdditionalImgsContainer>
+          <RiImageAddLine size={50} />
+          <div>
+            Drop files here
+            <hr />
+            or
+            <hr />
+            click to upload.
+          </div>
+          <Input value="" type="file" multiple onChange={onChange} accept="image/*" />
+        </AddAdditionalImgsContainer>
+      );
+    case 'changeImg':
+      return (
+        <ChangeImgContainer>
+          Drop file here or click to upload.
           <hr />
-          여기 파일을 놓거나 클릭하여 업로드하세요.
-        </div>
-        <Input value="" type="file" multiple onChange={onChange} accept="image/*" />
-      </AddImgsContainer>
-    );
-
-  if (type === 'addAdditionalImgs')
-    return (
-      <AddAdditionalImgsContainer>
-        <RiImageAddLine size={50} />
-        <div>
-          Drop files here
-          <hr />
-          or
-          <hr />
-          click to upload.
-        </div>
-        <Input value="" type="file" multiple onChange={onChange} accept="image/*" />
-      </AddAdditionalImgsContainer>
-    );
-
-  if (type === 'changeImg')
-    return (
-      <ChangeImgContainer>
-        Drop file here or click to upload.
-        <hr />
-        여기 변경할 사진 파일을 놓거나 클릭하여 업로드하세요.
-        <Input value="" type="file" accept="image/*" onChange={onChange} />
-      </ChangeImgContainer>
-    );
-
-  return <div />;
+          여기 변경할 사진 파일을 놓거나 클릭하여 업로드하세요.
+          <Input value="" type="file" accept="image/*" onChange={onChange} />
+        </ChangeImgContainer>
+      );
+    default:
+      return <div />;
+  }
 }
 
 const AddImgsContainer = styled.div`
