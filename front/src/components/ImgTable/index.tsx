@@ -26,7 +26,7 @@ function ImgTable({ imgInfos, currentPage, lastPage, offset, onPageChange, imgIn
         <TableHeaderItem style={{ width: '50px' }}>순번</TableHeaderItem>
         <TableHeaderItem style={{ width: '120px' }}>이미지</TableHeaderItem>
         <TableHeaderItem style={{ width: '228px' }}>이름 변경</TableHeaderItem>
-        <TableHeaderItem style={{ width: '400px' }}>이미지 변경</TableHeaderItem>
+        <TableHeaderItem style={{ width: '380px' }}>이미지 변경</TableHeaderItem>
         <TableHeaderItem style={{ width: '100px' }}>삭제</TableHeaderItem>
       </TableHeader>
       <RowsWrapper>

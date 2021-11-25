@@ -39,7 +39,7 @@ function ImgInput({ onChange, type }: Props): JSX.Element {
         <ChangeImgContainer>
           Drop file here or click to upload.
           <hr />
-          여기 변경할 사진 파일을 놓거나 클릭하여 업로드하세요.
+          변경할 사진 파일을 놓거나 클릭하여 업로드하세요.
           <Input value="" type="file" accept="image/*" onChange={onChange} />
         </ChangeImgContainer>
       );
