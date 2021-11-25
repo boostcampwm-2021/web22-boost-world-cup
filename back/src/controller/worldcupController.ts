@@ -46,7 +46,7 @@ const worldcupController = {
       await worldcupService.save(title, desc, keywords, imgInfos, user);
       response.json(succeed(null));
     } catch (e) {
-      response.json(failed(e.message));
+      response.status(400).json(failed(e.message));
     }
   },
 
@@ -56,7 +56,7 @@ const worldcupController = {
       await worldcupService.removeWorldcupById(Number(id));
       response.json(succeed(null));
     } catch (e) {
-      response.json(failed('cannot delete worldcup'));
+      response.status(400).json(failed('cannot delete worldcup'));
     }
   },
 
@@ -99,10 +99,10 @@ const worldcupController = {
     } = request;
     if (length) {
       const worldcup = await findWorldcupById(id);
-      response.json(await commentService.getCountByWorldcupId(worldcup));
+      response.json(succeed(await commentService.getCountByWorldcupId(worldcup)));
     } else {
       const comments = await commentService.findByWorldcupId(id, offset as string, limit as string);
-      response.json(comments);
+      response.json(succeed(comments));
     }
   },
 
@@ -120,7 +120,7 @@ const worldcupController = {
       createdAt,
       id: commentId,
     } = comment;
-    response.json({ commentId, userId, nickname, createdAt, message });
+    response.json(succeed({ commentId, userId, nickname, createdAt, message }));
   },
 
   deleteComment: async (request: Request, response: Response, next: NextFunction) => {

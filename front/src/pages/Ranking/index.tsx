@@ -14,10 +14,10 @@ function Ranking(): JSX.Element {
       <RankingContent>
         <RankingList worldcupId={worldcupId} />
       </RankingContent>
+      <Comment worldcupId={worldcupId} />
     </Wrapper>
   );
 }
-// <Comment worldcupId={worldcupId} />
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

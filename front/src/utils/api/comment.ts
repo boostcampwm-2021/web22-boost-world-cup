@@ -1,14 +1,17 @@
 import axios, { AxiosResponse } from 'axios';
 import { CommentData } from '../../types/Datas';
 
-export const getComments = (offset: number, limit: number, worldcupId: string): Promise<AxiosResponse> =>
-  axios.get(`/api/worldcups/${worldcupId}/comments`, { params: { offset, limit } });
+export const getComments = async (offset: number, limit: number, worldcupId: string): Promise<AxiosResponse> => {
+  const response = await axios.get(`/api/worldcups/${worldcupId}/comments`, { params: { offset, limit } });
+  return response.data;
+};
 
 export const createComment = async (worldcupId: string, message: string): Promise<CommentData> => {
   const response = await axios.post(`/api/worldcups/${worldcupId}/comments`, {
     message,
   });
-  return response.data;
+  console.log(response.data);
+  return response.data.data;
 };
 
 interface commonResponse {
