@@ -4,6 +4,7 @@ import { FaTrash, FaPen, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ShareModal from '../../ShareModal';
 import DeleteModal from '../../DeleteModal';
+import Image from '../../Image';
 
 interface Props {
   id: number;
@@ -32,8 +33,8 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
   return (
     <Item>
       <Thumbnail>
-        <img src={thumbnail1} alt={thumbnail1} />
-        <img src={thumbnail2} alt={thumbnail2} />
+        <Image width={140} height={180} imgKey={thumbnail1} />
+        <Image width={140} height={180} imgKey={thumbnail2} />
       </Thumbnail>
       <Title>{title}</Title>
       <Desc>{desc}</Desc>

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ShareModal from '../../ShareModal';
+import Image from '../../Image';
 
 interface Props {
   id: number;
@@ -27,8 +28,8 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
   return (
     <Item>
       <Thumbnail>
-        <img src={thumbnail1} alt={thumbnail1} />
-        <img src={thumbnail2} alt={thumbnail2} />
+        <Image width={140} height={180} imgKey={thumbnail1} />
+        <Image width={140} height={180} imgKey={thumbnail2} />
       </Thumbnail>
       <Title>{title}</Title>
       <Desc>{desc}</Desc>
@@ -71,9 +72,6 @@ const Thumbnail = styled.div`
   height: 180px;
   display: flex;
   margin-top: 1em;
-  img {
-    width: 140px;
-  }
 `;
 const Title = styled.p`
   font: ${({ theme }) => theme.fontStyle.h3Bold};

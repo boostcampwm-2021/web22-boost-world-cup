@@ -44,7 +44,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     return dataset
       .map((v) => ({
         id: v.id,
-        url: v.url,
+        imgKey: v.imgKey,
         name: v.name,
         victoryRatio: v.total > 0 ? v.victoryCnt / v.total : 0,
         winRatio: v.showCnt > 0 ? v.winCnt / v.showCnt : 0,
@@ -131,7 +131,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
             <Wrapper key={v.id}>
               <RankingItem
                 id={offset + index + 1}
-                url={v.url}
+                imgKey={v.imgKey}
                 name={v.name}
                 victoryRatio={v.victoryRatio}
                 winRatio={v.winRatio}

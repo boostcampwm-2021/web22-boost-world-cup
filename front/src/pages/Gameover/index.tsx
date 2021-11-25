@@ -5,11 +5,12 @@ import { FaHome, FaList } from 'react-icons/fa';
 import { Header } from '../../components';
 import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
+import getImgURL from '../../utils/getImgURL';
 
 interface Props {
-  winCandidate: candidateData | undefined;
-  title: string | undefined;
-  worldcupId: string | undefined;
+  winCandidate?: candidateData;
+  title?: string;
+  worldcupId?: string;
 }
 
 function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
@@ -19,7 +20,7 @@ function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
       <Container>
         <img src={trophyImg} alt="trophy" />
         <Title>{title || ''} 우승!</Title>
-        <Winner imageUrl={winCandidate ? winCandidate.url : ''} />
+        <Winner imageUrl={winCandidate ? getImgURL(winCandidate.imgKey) : ''} />
         <Name>{winCandidate?.name}</Name>
         <ButtonContainer>
           <Link to={`/ranking/${worldcupId || ''}`}>
