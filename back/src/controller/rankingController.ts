@@ -14,7 +14,7 @@ const rankingController = {
     } = request;
     if (!search) {
       const candidateLists = await candidateService.getCandidatesByWorldcup(Number(offset), Number(limit), id);
-      response.json(succeed(candidateLists));
+      return response.json(succeed(candidateLists));
     }
     const candidateLists = await candidateService.getCandidatesBySearchWord(
       Number(offset),
