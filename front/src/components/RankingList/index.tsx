@@ -7,14 +7,13 @@ import { usePaginationAsync } from '../../hooks';
 import useApiRequset, { REQUEST } from '../../hooks/useApiRequest';
 import { getCandidateList } from '../../utils/api/ranking';
 import { getWorldcupMetadata } from '../../utils/api/worldcups';
-import { RankingData, RankingSummaryData, InfoData, WorldcupMetaData } from '../../types/Datas';
+import { RankingData, WorldcupMetaData } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../commons/constants/number';
 
 interface RankingProps {
   worldcupId: string;
 }
 function RankingList({ worldcupId }: RankingProps): JSX.Element {
-  const [renderData, setRenderData] = useState<RankingSummaryData[]>([]);
   const [inputWord, setInputWord] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [totalCnt, setTotalCnt] = useState<number>(0);
@@ -59,7 +58,6 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     // const filteredData = getRenderData(
     //   candidateList.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputWord.replace(/(\s*)/g, '')) !== -1),
     // );
-    // setRenderData([...filteredData]);
     setInputWord('');
   };
 
@@ -69,7 +67,6 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     // const filteredData = getRenderData(
     //   candidateList.filter((value) => value.name.replace(/(\s*)/g, '').indexOf(inputValue.replace(/(\s*)/g, '')) !== -1),
     // );
-    // setRenderData([...filteredData]);
   };
 
   useEffect(() => {
@@ -111,7 +108,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
                 winRatio={v.winRatio}
                 onClick={openModal}
               />
-              {index + 1 < renderData.length ? <Divider /> : ''}
+              {index + 1 < candidateList.length ? <Divider /> : ''}
             </Wrapper>
           );
         })}
