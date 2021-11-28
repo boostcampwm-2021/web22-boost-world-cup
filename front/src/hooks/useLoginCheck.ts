@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from 'react';
 import { UserInfo } from '../types/Datas';
 import { UserDispatcherContext } from '../stores/userStore';
 import useApiRequest, { REQUEST } from './useApiRequest';
-import { getUser } from '../utils/api/auth';
+import { getUser } from '../apis/auth';
 
 const useLoginCheck = (): boolean => {
   const [isLoginChecked, setIsLoginChecked] = useState(false);

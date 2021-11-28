@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import { GlobalStyle, Reset, theme } from './commons/style';
-import * as ROUTE from './commons/constants/route';
+import { GlobalStyle, Reset, theme } from './styles';
+import * as ROUTE from './constants/route';
 import * as PAGE from './pages';
 import { PrivateRoute, PublicRoute } from './components';
 import GlobalStore from './stores';

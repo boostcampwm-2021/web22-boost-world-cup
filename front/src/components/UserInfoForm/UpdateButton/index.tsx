@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { putUser } from '../../../utils/api/auth';
+import { putUser } from '../../../apis/auth';
 import { UserDispatcherContext } from '../../../stores/userStore';
 import useApiRequest, { REQUEST } from '../../../hooks/useApiRequest';
 

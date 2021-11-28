@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { createWorldcup } from '../../utils/api/worldcups';
-import { MAIN } from '../../commons/constants/route';
+import { createWorldcup } from '../../apis/worldcups';
+import { MAIN } from '../../constants/route';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { WorldcupState } from '../../hooks/useWorldcupForm';
 import { ImgInfo } from '../../types/Datas';

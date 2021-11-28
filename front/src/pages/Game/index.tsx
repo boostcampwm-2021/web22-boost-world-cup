@@ -6,9 +6,9 @@ import vsImg from '../../images/vs.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from '../Gameover';
 import { objectDecryption, objectEncryption } from '../../utils/crypto';
-import { sendCurrentResult, sendFinalResult } from '../../utils/api/ranking';
+import { sendCurrentResult, sendFinalResult } from '../../apis/ranking';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { LEFT, RIGHT } from '../../commons/constants/number';
+import { LEFT, RIGHT } from '../../constants/number';
 import getImgURL from '../../utils/getImgURL';
 
 function Worldcup(): JSX.Element {

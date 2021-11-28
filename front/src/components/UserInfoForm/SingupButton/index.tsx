@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { signup } from '../../../utils/api/auth';
+import { signup } from '../../../apis/auth';
 import useApiRequest, { REQUEST } from '../../../hooks/useApiRequest';
 
 interface Props {

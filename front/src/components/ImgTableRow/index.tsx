@@ -4,8 +4,8 @@ import { ImgInfo, PreSignedData } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
-import { getSignedURLs } from '../../utils/api/image';
-import { deleteCandidate, patchCandidate } from '../../utils/api/candidate';
+import { getSignedURLs } from '../../apis/image';
+import { deleteCandidate, patchCandidate } from '../../apis/candidate';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { ImgsAction } from '../../hooks/useImgInfos';
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AxiosResponse } from 'axios';
 import useApiRequest, { REQUEST } from './useApiRequest';
-import { INTERSECT_THRESHOLD } from '../commons/constants/number';
+import { INTERSECT_THRESHOLD } from '../constants/number';
 
 interface ReturnType<T> {
   items: T[];

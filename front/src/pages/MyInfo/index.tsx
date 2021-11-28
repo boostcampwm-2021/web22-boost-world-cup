@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Header from '../../components/Header';
+import { Header } from '../../components';
 import logo from '../../images/logo.png';
-import { PROFILE, LEAVE } from '../../commons/constants/route';
+import { PROFILE, LEAVE } from '../../constants/route';
 
 const MyInfo = (): JSX.Element => {
   return (

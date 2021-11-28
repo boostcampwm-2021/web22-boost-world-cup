@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from '../../components/Header';
+import { Header } from '../../components';
 import '@fontsource/rancho';
 import leftLogo from '../../images/404logo_1.png';
 import rightLogo from '../../images/404logo_2.png';

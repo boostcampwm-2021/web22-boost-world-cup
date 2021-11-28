@@ -8,10 +8,10 @@ import {
   getWorldcupCandidates,
   patchWorldcupTitle,
   patchWorldcupDesc,
-} from '../../utils/api/worldcups';
-import { createCandidates } from '../../utils/api/candidate';
+} from '../../apis/worldcups';
+import { createCandidates } from '../../apis/candidate';
 import { ImgInfo, WorldcupMetaData, candidateData } from '../../types/Datas';
-import { PAGINATION_LIMIT } from '../../commons/constants/number';
+import { PAGINATION_LIMIT } from '../../constants/number';
 
 function Edit(): JSX.Element {
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);

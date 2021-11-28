@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Comment from './comment';
 import { CommentData } from '../../types/Datas';
 import Loader from '../Loader';
-import { getCommentsCount } from '../../utils/api/comment';
+import { getCommentsCount } from '../../apis/comment';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 interface Props {

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, TabBar, StoreBtns } from '../../components';
 import { usePaginationSync, useTabBar, useImgInfos, useWorldcupForm } from '../../hooks';
 import { ImgInfo } from '../../types/Datas';
-import { PAGINATION_LIMIT } from '../../commons/constants/number';
+import { PAGINATION_LIMIT } from '../../constants/number';
 
 function Make(): JSX.Element {
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();

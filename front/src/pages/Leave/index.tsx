@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import Header from '../../components/Header';
+import { Header } from '../../components';
 import logo from '../../images/logo.png';
-import { deleteUser } from '../../utils/api/auth';
+import { deleteUser } from '../../apis/auth';
 import { UserStateContext, UserDispatcherContext } from '../../stores/userStore';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 

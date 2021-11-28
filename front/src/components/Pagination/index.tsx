@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BiChevronLeftCircle, BiChevronRightCircle, BiLeftArrow, BiRightArrow } from 'react-icons/bi';
-import { SHOW_PAGE_LIMIT } from '../../commons/constants/number';
+import { BiLeftArrow, BiRightArrow } from 'react-icons/bi';
+import { SHOW_PAGE_LIMIT } from '../../constants/number';
 
 interface Props {
   lastPage: number;

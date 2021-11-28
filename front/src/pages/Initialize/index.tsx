@@ -1,15 +1,14 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { Header } from '../../components';
+import { Header, RoundSelector } from '../../components';
 import logo from '../../images/logo.png';
-import RoundSelector from '../../components/RoundSelector';
-import { getWorldcupMetadata } from '../../utils/api/worldcups';
-import { getCandidateList } from '../../utils/api/game';
+import { getWorldcupMetadata } from '../../apis/worldcups';
+import { getCandidateList } from '../../apis/game';
 import { candidateData, gameInfoData, WorldcupMetaData } from '../../types/Datas';
 import { objectEncryption } from '../../utils/crypto';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { MAIN, WORLDCUP } from '../../commons/constants/route';
+import { MAIN, WORLDCUP } from '../../constants/route';
 
 function Initialize(): JSX.Element {
   const location = useLocation();

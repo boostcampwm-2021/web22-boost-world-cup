@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { useUploadState } from '../../hooks';
-import { getSignedURLs } from '../../utils/api/image';
+import { getSignedURLs } from '../../apis/image';
 import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
 import { ImgsAction } from '../../hooks/useImgInfos';

@@ -5,10 +5,10 @@ import { SearchBar, RankingModal } from '../../components';
 import Pagination from '../Pagination';
 import { usePaginationAsync } from '../../hooks';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { getCandidateList } from '../../utils/api/ranking';
-import { getWorldcupMetadata } from '../../utils/api/worldcups';
+import { getCandidateList } from '../../apis/ranking';
+import { getWorldcupMetadata } from '../../apis/worldcups';
 import { RankingData, WorldcupMetaData } from '../../types/Datas';
-import { PAGINATION_LIMIT } from '../../commons/constants/number';
+import { PAGINATION_LIMIT } from '../../constants/number';
 
 interface RankingProps {
   worldcupId: string;

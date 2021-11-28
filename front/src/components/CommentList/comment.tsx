@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
 import { CommentData } from '../../types/Datas';
-import { deleteComment } from '../../utils/api/comment';
+import { deleteComment } from '../../apis/comment';
 import { UserStateContext } from '../../stores/userStore';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 

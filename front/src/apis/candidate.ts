@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { ImgInfo } from '../../types/Datas';
+import { ImgInfo } from '../types/Datas';
 
 export const deleteCandidate = (key: string): Promise<AxiosResponse> => axios.delete(`/api/candidates/${key}`);
 

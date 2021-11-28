@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { MALE, FEMALE } from '../../../commons/constants/number';
+import { MALE, FEMALE } from '../../../constants/number';
 
 interface Props {
   gender: number;

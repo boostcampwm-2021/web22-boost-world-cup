@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useContext } from 'react';
 import styled from 'styled-components';
-import { createComment, getComments } from '../../utils/api/comment';
+import { createComment, getComments } from '../../apis/comment';
 import { CommentData } from '../../types/Datas';
 import CommentList from '../CommentList';
 import { useInfiniteScroll } from '../../hooks';
 import { UserStateContext } from '../../stores/userStore';
-import { FETCH_COMMENTS_LIMIT } from '../../commons/constants/number';
+import { FETCH_COMMENTS_LIMIT } from '../../constants/number';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 interface Props {

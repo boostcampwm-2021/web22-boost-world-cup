@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useApiRequest, { REQUEST } from './useApiRequest';
 import { ImgsAction } from './useImgInfos';
-import { uploadImage } from '../utils/api/image';
+import { uploadImage } from '../apis/image';
 import { ImgInfo } from '../types/Datas';
 
 const useUploadImg = (

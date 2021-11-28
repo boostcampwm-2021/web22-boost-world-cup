@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '../../images/logo.png';
-import UserInfoForm from '../../components/UserInfoForm';
+import { UserInfoForm } from '../../components';
 
 function SignUp(): JSX.Element {
   return (

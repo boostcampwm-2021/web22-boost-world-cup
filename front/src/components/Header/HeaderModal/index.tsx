@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import { logout } from '../../../utils/api/auth';
+import { logout } from '../../../apis/auth';
 import { UserDispatcherContext } from '../../../stores/userStore';
 import useApiRequest, { REQUEST } from '../../../hooks/useApiRequest';
 

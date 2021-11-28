@@ -6,7 +6,7 @@ import GenderSelector from './GenderSelector';
 import SignupButton from './SingupButton';
 import UpdateButton from './UpdateButton';
 import { UserStateContext } from '../../stores/userStore';
-import { MAIN } from '../../commons/constants/route';
+import { MAIN } from '../../constants/route';
 
 interface Props {
   type: 'signup' | 'profile';

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Redirect, Route, useLocation } from 'react-router-dom';
 import { UserStateContext } from '../../stores/userStore/index';
 import Loading from '../../pages/Loading';
-import { LOGIN } from '../../commons/constants/route';
+import { LOGIN } from '../../constants/route';
 import { useLoginCheck } from '../../hooks';
 
 interface Props {

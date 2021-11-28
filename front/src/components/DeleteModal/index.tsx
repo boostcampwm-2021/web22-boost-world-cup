@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import Logo from '../../images/logo.png';
-import { deleteWorldcup } from '../../utils/api/worldcups';
+import { deleteWorldcup } from '../../apis/worldcups';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { MAIN } from '../../commons/constants/route';
+import { MAIN } from '../../constants/route';
 
 interface DeleteModalProps {
   id: number;

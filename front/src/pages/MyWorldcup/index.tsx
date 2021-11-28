@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../components/Header';
-import WorldCupList from '../../components/WorldcupList';
-import { getMyWorldcupList } from '../../utils/api/worldcups';
+import { WorldcupList } from '../../components';
+import { getMyWorldcupList } from '../../apis/worldcups';
 import { useInfiniteScroll } from '../../hooks';
 import { Worldcup } from '../../types/Datas';
 
@@ -17,7 +17,7 @@ const MyWorldcup = (): JSX.Element => {
   return (
     <>
       <Header type="header" />
-      <WorldCupList
+      <WorldcupList
         type="myWorldcup"
         worldcups={worldcups}
         observeTarget={target}

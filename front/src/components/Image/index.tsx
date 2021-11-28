@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BsImage } from 'react-icons/bs';
-import { IMG_URL_END_POINT } from '../../commons/constants/route';
+import getImgURL from '../../utils/getImgURL';
 
 interface Props {
   width: number;
@@ -11,8 +11,8 @@ interface Props {
 }
 
 function Image({ width, height, imgKey, placeholder }: Props): JSX.Element {
-  const resizedImgURL = `${IMG_URL_END_POINT}/image-w${width}h${height}/${imgKey}.webp`;
-  const originImgURL = `${IMG_URL_END_POINT}/wiziboost-image-raw/${imgKey}`;
+  const resizedImgURL = getImgURL(imgKey, width, height);
+  const originImgURL = getImgURL(imgKey);
   const [isLoading, setIsLoading] = useState(true);
   const [imgURL, setImgURL] = useState(resizedImgURL);
   return (

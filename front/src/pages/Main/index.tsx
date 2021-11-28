@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Header from '../../components/Header';
-import Keywords from '../../components/Keywords';
-import WorldCupList from '../../components/WorldcupList';
+import { Header, Keywords, WorldcupList } from '../../components';
 import { useInfiniteScroll } from '../../hooks';
-import { getWorldcupList } from '../../utils/api/worldcups';
+import { getWorldcupList } from '../../apis/worldcups';
 import { Worldcup } from '../../types/Datas';
-import { FETCH_WORLDCUPS_LIMIT } from '../../commons/constants/number';
+import { FETCH_WORLDCUPS_LIMIT } from '../../constants/number';
 
 function Main(): JSX.Element {
   const [searchWord, setSearchWord] = useState('');
@@ -54,7 +52,7 @@ function Main(): JSX.Element {
         onResetData={onResetData}
       />
       <Keywords onClickTag={onClickTag} selectedTag={selectedTag} />
-      <WorldCupList
+      <WorldcupList
         type="worldcup"
         worldcups={worldcups}
         observeTarget={target}
