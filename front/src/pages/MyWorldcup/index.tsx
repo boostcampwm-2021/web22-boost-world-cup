@@ -16,7 +16,7 @@ const MyWorldcup = (): JSX.Element => {
 
   return (
     <>
-      <Header type="header" />
+      <Header />
       <WorldcupList
         type="myWorldcup"
         worldcups={worldcups}

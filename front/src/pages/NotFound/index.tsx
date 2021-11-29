@@ -9,7 +9,7 @@ import rightLogo from '../../images/404logo_2.png';
 const NotFound = (): JSX.Element => {
   return (
     <Container>
-      <Header type="header" />
+      <Header />
       <Content>
         <h1>
           <LeftLogo src={leftLogo} alt="404_1" />

@@ -117,7 +117,7 @@ function Worldcup(): JSX.Element {
 
   return !gameInfo?.isCompleted ? (
     <Wrapper>
-      <Header type="header" />
+      <Header />
       <InfoContainer>
         <Title>
           {gameInfo?.title} {gameInfo?.currentRound}/{gameInfo?.round}

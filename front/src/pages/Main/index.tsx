@@ -5,6 +5,7 @@ import { useInfiniteScroll } from '../../hooks';
 import { getWorldcupList } from '../../apis/worldcups';
 import { Worldcup } from '../../types/Datas';
 import { FETCH_WORLDCUPS_LIMIT } from '../../constants/number';
+import { SearchBar } from '../../components';
 
 function Main(): JSX.Element {
   const [searchWord, setSearchWord] = useState('');
@@ -45,10 +46,7 @@ function Main(): JSX.Element {
   return (
     <Wrapper>
       <Header
-        type="searchHeader"
-        onSubmit={onSubmit}
-        onSearchWordChange={onSearchWordChange}
-        searchWord={inputWord}
+        searchBar={<SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />}
         onResetData={onResetData}
       />
       <Keywords onClickTag={onClickTag} selectedTag={selectedTag} />

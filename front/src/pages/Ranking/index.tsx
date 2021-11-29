@@ -9,7 +9,7 @@ function Ranking(): JSX.Element {
 
   return (
     <Wrapper>
-      <Header type="header" />
+      <Header />
       <RankingContent>
         <RankingList worldcupId={worldcupId} />
       </RankingContent>
