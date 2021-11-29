@@ -4,12 +4,12 @@ import ApiResult from '../utils/ApiResult';
 
 const { succeed, failed } = ApiResult;
 
-const tagController = {
+const keywordController = {
   all: async (request: Request, response: Response, next: NextFunction) => {
-    const tags = await keywordService.getTopRankKeywords();
-    const tagNames = tags.map((tag) => tag.name);
-    response.json(succeed(tagNames));
+    const keywords = await keywordService.getTopRankKeywords();
+    const keywordNames = keywords.map((keyword) => keyword.name);
+    response.json(succeed(keywordNames));
   },
 };
 
-export default tagController;
+export default keywordController;
