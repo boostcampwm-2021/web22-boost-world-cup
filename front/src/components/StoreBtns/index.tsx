@@ -25,7 +25,6 @@ function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
 
   return (
     <BtnsWrapper>
-      <Btn type="button">임시저장</Btn>
       <Btn type="button" onClick={onStore}>
         저장하기
       </Btn>
