@@ -110,11 +110,10 @@ const worldcupController = {
       if (length) {
         const worldcup = await findWorldcupById(id);
         const comments = await commentService.getCountByWorldcupId(worldcup);
-        response.json(succeed(comments));
-      } else {
-        const comments = await commentService.findByWorldcupId(id, offset as string, limit as string);
-        response.json(succeed(comments));
+        return response.json(succeed(comments));
       }
+      const comments = await commentService.findByWorldcupId(id, offset as string, limit as string);
+      response.json(succeed(comments));
     } catch (e) {
       response.status(400).json(failed('cannot get comments'));
     }

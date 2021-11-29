@@ -27,9 +27,9 @@ function Keywords({ onClickTag, selectedTag }: Props): JSX.Element {
     const element = event.target as HTMLElement;
     if (element.innerText === selectedTag) {
       onClickTag('');
-    } else {
-      onClickTag(element.innerText);
+      return;
     }
+    onClickTag(element.innerText);
   };
 
   useEffect(() => {
