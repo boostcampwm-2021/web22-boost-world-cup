@@ -1,19 +1,12 @@
 import React, { useEffect, useReducer } from 'react';
 import { AxiosResponse, AxiosError } from 'axios';
+import { RequestState } from '../types/States';
+import Reducer from '../types/Reducer';
 
 export const NULL = 'NULL';
 export const REQUEST = 'REQUEST';
 export const FAILURE = 'FAILURE';
 export const SUCCESS = 'SUCCESS';
-
-interface RequestState<T> {
-  type: 'NULL' | 'REQUEST' | 'SUCCESS' | 'FAILURE';
-  requestProps?: any[];
-  response?: T;
-  statusCode?: number;
-}
-
-type RequestReducer<T> = (state: RequestState<T>, action: RequestState<T>) => RequestState<T>;
 
 const requestReducer = <T>(state: RequestState<T>, action: RequestState<T>) => action;
 
@@ -40,7 +33,9 @@ const useApiRequest = <T>(
   onSuccess?: (data: T) => void,
   onFailure?: (status: number) => void,
 ): React.Dispatch<RequestState<T>> => {
-  const [requestState, requestDispatcher] = useReducer<RequestReducer<T>>(requestReducer, { type: NULL });
+  const [requestState, requestDispatcher] = useReducer<Reducer<RequestState<T>, RequestState<T>>>(requestReducer, {
+    type: NULL,
+  });
 
   useEffect(() => {
     switch (requestState.type) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useApiRequest, { REQUEST } from './useApiRequest';
-import { ImgsAction } from './useImgInfos';
+import { ImgsAction } from '../types/Actions';
 import { uploadImage } from '../apis/image';
 import { ImgInfo } from '../types/Datas';
 
