@@ -22,8 +22,5 @@ export const create = (name) => {
 
 export const findOrCreate = async (name) => {
   const keyword = await findByName(name);
-  if (keyword) {
-    return keyword;
-  }
-  return create(name);
+  return keyword ? keyword : create(name);
 };
