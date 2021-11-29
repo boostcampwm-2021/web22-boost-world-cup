@@ -4,8 +4,8 @@ import { Info } from '../entity/Info';
 import { getRepository, Repository } from 'typeorm';
 import * as infoService from './infoService';
 
-export const findByWorldcupId = async (offset: number, limit: number, worldcupId: String) => {
-  const candidateList = await getRepository(Candidate)
+export const findByWorldcupId = (offset: number, limit: number, worldcupId: String) => {
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoinAndSelect('candidate.worldcup', 'worldcup')
     .leftJoinAndSelect('candidate.info', 'info')
@@ -29,10 +29,10 @@ export const findByWorldcupId = async (offset: number, limit: number, worldcupId
     .offset(offset)
     .limit(limit)
     .execute();
-  return candidateList;
 };
-export const findBySearchWord = async (offset: number, limit: number, search: String, worldcupId: String) => {
-  const candidateList = await getRepository(Candidate)
+
+export const findBySearchWord = (offset: number, limit: number, search: String, worldcupId: String) => {
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoinAndSelect('candidate.worldcup', 'worldcup')
     .leftJoinAndSelect('candidate.info', 'info')
@@ -57,22 +57,20 @@ export const findBySearchWord = async (offset: number, limit: number, search: St
     .offset(offset)
     .limit(limit)
     .execute();
-  return candidateList;
 };
-export const getRandomCandidateList = async (worldcupId: number, round: number) => {
-  const randomCandidateList = await getRepository(Candidate)
+
+export const getRandomList = (worldcupId: number, round: number) => {
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .select(['id', 'name', 'img_key AS imgKey'])
     .where('candidate.worldcup_id= :id', { id: worldcupId })
     .orderBy('RAND()')
     .limit(round)
     .execute();
-  return randomCandidateList;
 };
 
-export const findOneWithInfoById = async (id: number) => {
-  const candidateRepository = getRepository(Candidate);
-  return await candidateRepository.findOne(id, { relations: ['info'] });
+export const findOneWithInfoById = (id: number) => {
+  return getRepository(Candidate).findOne(id, { relations: ['info'] });
 };
 
 export const findOneById = async (id: number) => {
@@ -117,8 +115,7 @@ export const saveWithInfo = async (imgInfos, worldcupId) => {
       });
     }),
   );
-
-  return await candidateRepository.save(candidates);
+  return candidateRepository.save(candidates);
 };
 
 export const patchCandidate = async (key: string, name: string, newKey?: string) => {
@@ -131,8 +128,7 @@ export const patchCandidate = async (key: string, name: string, newKey?: string)
 };
 
 export const getCandidates = (worldcupId: number, offset: number, limit: number) => {
-  const candidateRepository: Repository<Candidate> = getRepository(Candidate);
-  return candidateRepository
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .select()
     .leftJoin('candidate.worldcup', 'worldcup')
@@ -143,8 +139,7 @@ export const getCandidates = (worldcupId: number, offset: number, limit: number)
 };
 
 export const getTotalCount = (worldcupId: number) => {
-  const candidateRepository = getRepository(Candidate);
-  return candidateRepository
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoin('candidate.worldcup', 'worldcup')
     .where('worldcup.id = :id', { id: worldcupId })
@@ -152,8 +147,7 @@ export const getTotalCount = (worldcupId: number) => {
 };
 
 export const getTotalCountBySearchhWord = (worldcupId: number, searchWord: String) => {
-  const candidateRepository = getRepository(Candidate);
-  return candidateRepository
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoin('candidate.worldcup', 'worldcup')
     .where('worldcup.id = :id', { id: worldcupId })
