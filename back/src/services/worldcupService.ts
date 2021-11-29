@@ -1,5 +1,5 @@
 import { Worldcup } from '../entity/Worldcup';
-import { findOrCreate as findOrCreateTag } from './keywordService';
+import * as keywordService from './keywordService';
 import {
   save as saveCandidates,
   getTotalCount as getCandidateTotalCnt,
@@ -57,13 +57,11 @@ export const findById = async (id) => {
 
 export const save = async (title: string, description: string, keywordNames: string[], imgInfos, userId: number) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-
   const [keywords, user] = await Promise.all([
-    Promise.all(keywordNames.map((name: string) => findOrCreateTag(name))),
+    Promise.all(keywordNames.map((name: string) => keywordService.findOrCreate(name))),
     findUserById(userId),
   ]);
   const [thumbnail1, thumbnail2] = imgInfos.slice(0, 2).map(({ key }) => key);
-
   const { id } = await worldcupRepository.save({
     title,
     thumbnail1,
@@ -72,7 +70,6 @@ export const save = async (title: string, description: string, keywordNames: str
     keywords,
     user,
   });
-
   await saveCandidates(imgInfos, id);
 };
 
