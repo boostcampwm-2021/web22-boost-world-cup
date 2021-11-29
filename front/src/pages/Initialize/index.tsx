@@ -6,7 +6,6 @@ import logo from '../../images/logo.png';
 import { getWorldcupMetadata } from '../../apis/worldcups';
 import { getCandidateList } from '../../apis/game';
 import { candidateData, gameInfoData, WorldcupMetaData } from '../../types/Datas';
-import { objectEncryption } from '../../utils/crypto';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { MAIN, WORLDCUP } from '../../constants/route';
 
@@ -33,8 +32,7 @@ function Initialize(): JSX.Element {
     const secretKey = process.env.REACT_APP_SECRET_KEY;
     if (!secretKey) return;
     sessionStorage.clear();
-    const cipherText = objectEncryption(gameInfo);
-    sessionStorage.setItem('_wiziboost', cipherText);
+    sessionStorage.setItem('_wiziboost', JSON.stringify(gameInfo));
     setReady(true);
   };
   const getCandidateListDispatcher = useApiRequest(getCandidateList, onGetCandidateListSuccess);
