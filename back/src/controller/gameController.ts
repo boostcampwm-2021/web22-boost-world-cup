@@ -9,7 +9,7 @@ const gameController = {
     const {
       query: { worldcupId, round },
     } = request;
-    const candidateList = await candidateService.getRandomCandidateList(Number(worldcupId), Number(round));
+    const candidateList = await candidateService.getRandomList(Number(worldcupId), Number(round));
     response.json(succeed(candidateList));
   },
 };
