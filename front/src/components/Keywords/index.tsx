@@ -4,7 +4,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { getTagList } from '../../apis/keyword';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { useApiRequest } from '../../hooks';
 
 interface Props {
   onClickTag: (keyword: string) => void;
@@ -33,7 +33,7 @@ function Keywords({ onClickTag, selectedTag }: Props): JSX.Element {
   };
 
   useEffect(() => {
-    getTagListDispatcher({ type: REQUEST });
+    getTagListDispatcher({ type: 'REQUEST' });
   }, []);
 
   return (

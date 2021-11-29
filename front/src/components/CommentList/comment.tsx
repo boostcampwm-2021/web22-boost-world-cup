@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { CommentData } from '../../types/Datas';
 import { deleteComment } from '../../apis/comment';
 import { UserStateContext } from '../../stores/userStore';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { useApiRequest } from '../../hooks';
 
 interface Props {
   comment: CommentData;
@@ -23,7 +23,7 @@ function Comment({ comment, setComments }: Props): JSX.Element {
   }, []);
 
   const onDeleteBtnClick: React.MouseEventHandler = () =>
-    deleteCommentDispatcher({ type: REQUEST, requestProps: [comment.commentId] });
+    deleteCommentDispatcher({ type: 'REQUEST', requestProps: [comment.commentId] });
 
   return (
     <Wrapper>

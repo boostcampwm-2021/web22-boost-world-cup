@@ -6,7 +6,7 @@ import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import { getSignedURLs } from '../../apis/image';
 import { deleteCandidate, patchCandidate } from '../../apis/candidate';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { useApiRequest } from '../../hooks';
 import { ImgsAction } from '../../types/Actions';
 
 interface Props {
@@ -28,7 +28,7 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
     const { key: preKey } = imgInfo;
     const { name } = willUploadFile;
     setPresignedURL(presignedURL);
-    patchCandidateDispatcher({ type: REQUEST, requestProps: [preKey, name, newKey] });
+    patchCandidateDispatcher({ type: 'REQUEST', requestProps: [preKey, name, newKey] });
     imgInfosDispatcher({
       type: 'CHANGE_IMG',
       payload: { newKey, name, preKey },
@@ -39,18 +39,18 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
   const patchCandidateDispatcher = useApiRequest(patchCandidate);
 
   const onDeleteImg = () => {
-    deleteCandidateDispatcher({ type: REQUEST, requestProps: [imgInfo.key] });
+    deleteCandidateDispatcher({ type: 'REQUEST', requestProps: [imgInfo.key] });
   };
   const onImgNameBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
     if (imgInfo.name === target.value) return;
-    patchCandidateDispatcher({ type: REQUEST, requestProps: [imgInfo.key, target.value] });
+    patchCandidateDispatcher({ type: 'REQUEST', requestProps: [imgInfo.key, target.value] });
     imgInfosDispatcher({ type: 'CHANGE_IMG_NAME', payload: { key: imgInfo.key, name: target.value } });
   };
   const onImgChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     if (!target.files) return;
     const [file] = [...target.files];
     const contentTypes = [file.type];
-    getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
+    getSignedURLsDispatcher({ type: 'REQUEST', requestProps: [contentTypes] });
     setWillUploadFile(file);
   };
 

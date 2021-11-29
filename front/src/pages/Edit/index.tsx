@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, TabBar } from '../../components';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { useTabBar, useWorldcupForm, useImgInfos, usePaginationAsync } from '../../hooks';
+import { useTabBar, useWorldcupForm, useImgInfos, usePaginationAsync, useApiRequest } from '../../hooks';
 import {
   getWorldcupMetadata,
   getWorldcupCandidates,
@@ -43,24 +42,24 @@ function Edit(): JSX.Element {
   const patchDescDispatcher = useApiRequest(patchWorldcupDesc);
 
   const getSignedURLsSuccessEffect = (addedImgs: ImgInfo[]) => {
-    createCandidatesDispatcher({ type: REQUEST, requestProps: [worldcupId, addedImgs] });
+    createCandidatesDispatcher({ type: 'REQUEST', requestProps: [worldcupId, addedImgs] });
     addedImgsDispatcher({ type: 'ADD_IMGS', payload: addedImgs });
   };
   const onTitleBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
     const { title } = worldcupFormState;
     if (title === target.value) return;
-    patchTitleDispatcher({ type: REQUEST, requestProps: [worldcupId, target.value] });
+    patchTitleDispatcher({ type: 'REQUEST', requestProps: [worldcupId, target.value] });
     worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
   };
   const onDescBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
     const { desc } = worldcupFormState;
     if (desc === target.value) return;
-    patchDescDispatcher({ type: REQUEST, requestProps: [worldcupId, target.value] });
+    patchDescDispatcher({ type: 'REQUEST', requestProps: [worldcupId, target.value] });
     worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
   };
 
   useEffect(() => {
-    getMetadataDispatcher({ type: REQUEST, requestProps: [worldcupId] });
+    getMetadataDispatcher({ type: 'REQUEST', requestProps: [worldcupId] });
   }, [currentTab, worldcupId, candidates.length]);
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { putUser } from '../../../apis/auth';
 import { UserDispatcherContext } from '../../../stores/userStore';
-import useApiRequest, { REQUEST } from '../../../hooks/useApiRequest';
+import { useApiRequest } from '../../../hooks';
 
 interface Props {
   id: number;
@@ -26,7 +26,7 @@ function UpdateButton({ id, nickname, gender, age, setAuthenticated }: Props): J
       alert('정보를 모두 입력해주세요.');
       return;
     }
-    putUserDispatcher({ type: REQUEST, requestProps: [id, nickname, gender, age] });
+    putUserDispatcher({ type: 'REQUEST', requestProps: [id, nickname, gender, age] });
   };
 
   return (
