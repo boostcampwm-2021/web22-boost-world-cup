@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import useApiRequest, { REQUEST } from './useApiRequest';
+import useApiRequest from './useApiRequest';
 
 const usePagination = <T>(
   totalCnt: number,
@@ -35,7 +35,7 @@ export const usePaginationAsync = <T>(
   const getItemsDispatcher = useApiRequest(getItems, onGetItemsSuccess);
 
   useEffect(() => {
-    getItemsDispatcher({ type: REQUEST, requestProps: [offset, limit, ...requestProps] });
+    getItemsDispatcher({ type: 'REQUEST', requestProps: [offset, limit, ...requestProps] });
   }, [currentPage, ...dependencies]);
 
   return [pageItems, currentPage, offset, lastPage, onPageChange];

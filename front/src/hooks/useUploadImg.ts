@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useApiRequest, { REQUEST } from './useApiRequest';
+import useApiRequest from './useApiRequest';
 import { ImgsAction } from '../types/Actions';
 import { uploadImage } from '../apis/image';
 import { ImgInfo } from '../types/Datas';
@@ -20,7 +20,7 @@ const useUploadImg = (
     const upload = async () => {
       const fileBuffer = await file.arrayBuffer();
       uploadImageDispatcher({
-        type: REQUEST,
+        type: 'REQUEST',
         requestProps: [presignedURL, fileBuffer, file.type],
       });
     };
