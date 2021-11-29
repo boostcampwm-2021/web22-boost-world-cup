@@ -109,9 +109,9 @@ function Edit(): JSX.Element {
 }
 
 const Content = styled.main`
-  width: 1844px;
-  margin: 0 auto;
-  margin-top: 22px;
+  width: 90%;
+  margin: auto;
+  margin-top: 20px;
 `;
 
 export default Edit;
