@@ -26,6 +26,7 @@ export const getCandidatesByWorldcup = async (offset: number, limit: number, wor
       'info.etc / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS etc',
     ])
     .orderBy('candidate.victory_cnt /  worldcup.total_cnt', 'DESC')
+    .addOrderBy('candidate.win_cnt / candidate.show_cnt', 'DESC')
     .offset(offset)
     .limit(limit)
     .execute();
