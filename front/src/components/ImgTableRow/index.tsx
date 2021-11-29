@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
 import TextInput from '../TextInput';
-import ImgInput from '../ImgInput';
+import ChangeImg from '../ImgInputs/ChangeImg';
 import { getSignedURLs } from '../../apis/image';
 import { deleteCandidate, patchCandidate } from '../../apis/candidate';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
@@ -81,7 +81,7 @@ function ImgTableRow({ imgInfo, num, imgInfosDispatcher }: Props): JSX.Element {
         />
       </RowItem>
       <RowItem>
-        <ImgInput onChange={onImgChange} type="changeImg" />
+        <ChangeImg onChange={onImgChange} />
       </RowItem>
       <RowItem>
         <DeleteBtn type="button" onClick={onDeleteImg}>

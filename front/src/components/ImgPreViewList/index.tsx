@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import ImgInput from '../ImgInput';
 import ImgPreView from '../ImgPreView';
+import AddAdditionalImg from '../ImgInputs/AddAdditionalImgs';
 import { ImgInfo } from '../../types/Datas';
 import { ImgsAction } from '../../hooks/useImgInfos';
 import { UploadState } from '../../hooks/useUploadState';
@@ -28,7 +28,7 @@ function ImgPreViewList({ imgInfos, uploadState, onAddImgs, imgInfosDispatcher }
 
   return (
     <Container>
-      <ImgInput onChange={onAddImgs} type="addAdditionalImgs" />
+      <AddAdditionalImg onChange={onAddImgs} />
       <ImgsWrapper>{imgs}</ImgsWrapper>
     </Container>
   );
