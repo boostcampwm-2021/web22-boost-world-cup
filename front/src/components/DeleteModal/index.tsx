@@ -9,15 +9,16 @@ import { MAIN } from '../../constants/route';
 interface DeleteModalProps {
   id: number;
   onToggleDeleteModal: React.MouseEventHandler;
+  setDeleteModalOn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DeleteModal = ({ id, onToggleDeleteModal }: DeleteModalProps): JSX.Element => {
+const DeleteModal = ({ id, onToggleDeleteModal, setDeleteModalOn }: DeleteModalProps): JSX.Element => {
   const history = useHistory();
   const onDeleteWorldcupSuccess = () => history.push(MAIN);
 
   const deleteWorldcupDispatcher = useApiRequest(deleteWorldcup, onDeleteWorldcupSuccess);
-  const onDeleteMyWorldcup: React.MouseEventHandler = (event: React.MouseEvent<Element>) => {
-    onToggleDeleteModal(event);
+  const onDeleteMyWorldcup: React.MouseEventHandler = () => {
+    setDeleteModalOn(false);
     deleteWorldcupDispatcher({ type: REQUEST, requestProps: [id] });
   };
 

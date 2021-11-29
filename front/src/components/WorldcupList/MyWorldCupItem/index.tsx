@@ -21,7 +21,7 @@ interface DeleteModalProps {
   deleteModalOn: boolean;
 }
 function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const [deleteModalOn, onToggleDeleteModal] = useModal();
+  const [deleteModalOn, onToggleDeleteModal, setDeleteModalOn] = useModal();
   const [shareModalOn, onToggleShareModal] = useModal();
   return (
     <Item>
@@ -51,7 +51,7 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
         <ShareModal id={id} />
       </ModalBox>
       <DeleteModalContainer deleteModalOn={deleteModalOn}>
-        <DeleteModal id={id} onToggleDeleteModal={onToggleDeleteModal} />
+        <DeleteModal id={id} onToggleDeleteModal={onToggleDeleteModal} setDeleteModalOn={setDeleteModalOn} />
       </DeleteModalContainer>
     </Item>
   );

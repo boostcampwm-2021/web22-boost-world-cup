@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const useModal = (): [boolean, React.MouseEventHandler] => {
+const useModal = (): [boolean, React.MouseEventHandler, React.Dispatch<React.SetStateAction<boolean>>] => {
   const [modalOn, setModalOn] = useState(false);
   const onToggleModal: React.MouseEventHandler = (event) => {
     if (modalOn && event.target === event.currentTarget) {
@@ -9,7 +9,7 @@ const useModal = (): [boolean, React.MouseEventHandler] => {
     }
     setModalOn(true);
   };
-  return [modalOn, onToggleModal];
+  return [modalOn, onToggleModal, setModalOn];
 };
 
 export default useModal;
