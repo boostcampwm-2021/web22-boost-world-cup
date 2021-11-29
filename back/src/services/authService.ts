@@ -14,7 +14,7 @@ export const findByProviderId = async (providerId) => {
   return await userRepository.findOne({ providerId });
 };
 
-export const saveUser = async (user) => {
+export const save = async (user) => {
   const userRepository = getRepository(User);
   return await userRepository.save(user);
 };
@@ -26,12 +26,12 @@ export const saveInitUser = async (providerId) => {
   return await userRepository.save(newUser);
 };
 
-export const updateUser = async (user) => {
+export const update = async (user) => {
   const userRepository = getRepository(User);
   return await userRepository.save(user);
 };
 
-export const removeUser = async (userId) => {
+export const remove = async (userId) => {
   const userRepository = getRepository(User);
   await userRepository.delete({ id: userId });
   return succeed(null);

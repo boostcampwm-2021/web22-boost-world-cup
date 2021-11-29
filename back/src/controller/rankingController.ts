@@ -13,15 +13,10 @@ const rankingController = {
       query: { offset, limit, search },
     } = request;
     if (!search) {
-      const candidateLists = await candidateService.getCandidatesByWorldcup(Number(offset), Number(limit), id);
+      const candidateLists = await candidateService.findByWorldcupId(Number(offset), Number(limit), id);
       return response.json(succeed(candidateLists));
     }
-    const candidateLists = await candidateService.getCandidatesBySearchWord(
-      Number(offset),
-      Number(limit),
-      String(search),
-      id,
-    );
+    const candidateLists = await candidateService.findBySearchWord(Number(offset), Number(limit), String(search), id);
     response.json(succeed(candidateLists));
   },
 
@@ -41,7 +36,7 @@ const rankingController = {
     loseCandidate.showCnt += 1;
 
     winCandidate.info = winCandidate.info ? setInfoData(winCandidate.info, gender, age) : makeInfoData(gender, age);
-    await Promise.all([candidateService.saveCandidate(winCandidate), candidateService.saveCandidate(loseCandidate)]);
+    await Promise.all([candidateService.save(winCandidate), candidateService.save(loseCandidate)]);
     response.json(succeed(null));
   },
 
@@ -63,8 +58,8 @@ const rankingController = {
 
     winCandidate.info = setInfoData(winCandidate.info, gender, age);
     await Promise.all([
-      candidateService.saveCandidate(winCandidate),
-      candidateService.saveCandidate(loseCandidate),
+      candidateService.save(winCandidate),
+      candidateService.save(loseCandidate),
       plusTotalCnt(worldcupId),
     ]);
     response.json(succeed(null));

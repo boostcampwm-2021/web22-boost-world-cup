@@ -1,11 +1,7 @@
 import { Worldcup } from '../entity/Worldcup';
 import * as keywordService from './keywordService';
-import {
-  save as saveCandidates,
-  getTotalCount as getCandidateTotalCnt,
-  getTotalCountBySearchhWord as getCandidateTotalCntBySearchWord,
-} from './candidateService';
-import { findById as findUserById } from './userService';
+import * as candidateService from './candidateService';
+import * as authService from './authService';
 import { Repository, getRepository } from 'typeorm';
 
 export const findFromPage = async (offset: number, limit: number): Promise<Worldcup[]> => {
@@ -59,7 +55,7 @@ export const save = async (title: string, description: string, keywordNames: str
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   const [keywords, user] = await Promise.all([
     Promise.all(keywordNames.map((name: string) => keywordService.findOrCreate(name))),
-    findUserById(userId),
+    authService.findById(userId),
   ]);
   const [thumbnail1, thumbnail2] = imgInfos.slice(0, 2).map(({ key }) => key);
   const { id } = await worldcupRepository.save({
@@ -70,7 +66,7 @@ export const save = async (title: string, description: string, keywordNames: str
     keywords,
     user,
   });
-  await saveCandidates(imgInfos, id);
+  await candidateService.saveWithInfo(imgInfos, id);
 };
 
 export const plusTotalCnt = async (id: number) => {
@@ -104,7 +100,7 @@ export const getMetaData = async (id: number, searchWord?: String) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   const [worldcup, totalCnt, worldcupKeyword] = await Promise.all([
     worldcupRepository.findOne(id),
-    searchWord ? getCandidateTotalCntBySearchWord(id, searchWord) : getCandidateTotalCnt(id),
+    searchWord ? candidateService.getTotalCountBySearchhWord(id, searchWord) : candidateService.getTotalCount(id),
     worldcupRepository.findOne(id, { relations: ['keywords'] }),
   ]);
   const keywords = worldcupKeyword.keywords.map((keyword) => keyword.name);

@@ -2,9 +2,9 @@ import { Candidate } from '../entity/Candidate';
 import { Worldcup } from '../entity/Worldcup';
 import { Info } from '../entity/Info';
 import { getRepository, Repository } from 'typeorm';
-import { removeByCandidateId as removeInfoByCandidateId } from './infoService';
+import * as infoService from './infoService';
 
-export const getCandidatesByWorldcup = async (offset: number, limit: number, worldcupId: String) => {
+export const findByWorldcupId = async (offset: number, limit: number, worldcupId: String) => {
   const candidateList = await getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoinAndSelect('candidate.worldcup', 'worldcup')
@@ -31,7 +31,7 @@ export const getCandidatesByWorldcup = async (offset: number, limit: number, wor
     .execute();
   return candidateList;
 };
-export const getCandidatesBySearchWord = async (offset: number, limit: number, search: String, worldcupId: String) => {
+export const findBySearchWord = async (offset: number, limit: number, search: String, worldcupId: String) => {
   const candidateList = await getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoinAndSelect('candidate.worldcup', 'worldcup')
@@ -80,7 +80,7 @@ export const findOneById = async (id: number) => {
   return await candidateRepository.findOne(id);
 };
 
-export const saveCandidate = async (candidate: Candidate) => {
+export const save = async (candidate: Candidate) => {
   const candidateRepository = getRepository(Candidate);
   return await candidateRepository.save(candidate);
 };
@@ -94,11 +94,11 @@ export const removeByKey = async (key: string) => {
   const candidateRepository = getRepository(Candidate);
   const candidateToRemove = await findOneByKey(key);
   if (!candidateToRemove) return;
-  await removeInfoByCandidateId(candidateToRemove.id);
+  await infoService.removeByCandidateId(candidateToRemove.id);
   return candidateRepository.remove(candidateToRemove);
 };
 
-export const save = async (imgInfos, worldcupId) => {
+export const saveWithInfo = async (imgInfos, worldcupId) => {
   const worldcupRepository = getRepository(Worldcup);
   const candidateRepository = getRepository(Candidate);
   const InfoRepository = getRepository(Info);

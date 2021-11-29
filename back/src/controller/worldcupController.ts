@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import * as worldcupService from '../services/worldcupService';
 import * as commentService from '../services/commentService';
-import { findById as findUserById } from '../services/userService';
+import * as authService from '../services/authService';
 import { findById as findWorldcupById } from '../services/worldcupService';
 import { getCandidates } from '../services/candidateService';
 import ApiResult from '../utils/ApiResult';
@@ -127,7 +127,7 @@ const worldcupController = {
       user: { id: userId },
     } = request;
     try {
-      const [user, worldcup] = await Promise.all([findUserById(userId), findWorldcupById(id)]);
+      const [user, worldcup] = await Promise.all([authService.findById(userId), findWorldcupById(id)]);
       const {
         user: { nickname },
         createdAt,
