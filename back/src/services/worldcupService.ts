@@ -76,7 +76,7 @@ export const plusTotalCnt = async (id: number) => {
   return await worldcupRepository.save(worldcup);
 };
 
-export const patchWorldcupTitle = async (id: number, title: string) => {
+export const patchTitle = async (id: number, title: string) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   return await worldcupRepository
     .createQueryBuilder('worldcup')
@@ -86,7 +86,7 @@ export const patchWorldcupTitle = async (id: number, title: string) => {
     .execute();
 };
 
-export const patchWorldcupDesc = async (id: number, desc: string) => {
+export const patchDesc = async (id: number, desc: string) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   return await worldcupRepository
     .createQueryBuilder('worldcup')
@@ -108,7 +108,6 @@ export const getMetaData = async (id: number, searchWord?: String) => {
   return { totalCnt, title, description, keywords };
 };
 
-export const removeWorldcupById = async (id: number) => {
-  const worldcupRepository = getRepository(Worldcup);
-  worldcupRepository.delete(id);
+export const removeById = async (id: number) => {
+  return getRepository(Worldcup).delete(id);
 };

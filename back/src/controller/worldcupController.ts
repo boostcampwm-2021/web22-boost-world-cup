@@ -8,7 +8,7 @@ import ApiResult from '../utils/ApiResult';
 const { succeed, failed } = ApiResult;
 
 const worldcupController = {
-  getWorldcups: async (request: Request, response: Response, next: NextFunction) => {
+  get: async (request: Request, response: Response, next: NextFunction) => {
     const { offset, limit, search, keyword } = request.query;
     if (offset === undefined || limit === undefined)
       return response.status(400).json(failed('offset or limit is undefined'));
@@ -24,7 +24,7 @@ const worldcupController = {
     response.json(succeed(worldcups));
   },
 
-  getWorldcup: async (request: Request, response: Response, next: NextFunction) => {
+  getMetadata: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { id },
       query: { metaonly, searchWord },
@@ -36,7 +36,7 @@ const worldcupController = {
     response.status(400).json(failed('cannot get worldcup metadata'));
   },
 
-  saveWorldcup: async (request: Request, response: Response, next: NextFunction) => {
+  save: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { title, desc, keywords, imgInfos },
       session: {
@@ -51,36 +51,36 @@ const worldcupController = {
     }
   },
 
-  deleteWorldcup: async (request: Request, response: Response, next: NextFunction) => {
+  delete: async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
     try {
-      await worldcupService.removeWorldcupById(Number(id));
+      await worldcupService.removeById(Number(id));
       response.json(succeed(null));
     } catch (e) {
       response.status(400).json(failed('cannot delete worldcup'));
     }
   },
 
-  patchWorldcupTitle: async (request: Request, response: Response, next: NextFunction) => {
+  patchTitle: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { title },
       params: { id },
     } = request;
     try {
-      await worldcupService.patchWorldcupTitle(Number(id), title);
+      await worldcupService.patchTitle(Number(id), title);
       response.json(succeed(null));
     } catch (e) {
       response.status(400).json(failed('cannot patch worldcup title'));
     }
   },
 
-  patchWorldcupDesc: async (request: Request, response: Response, next: NextFunction) => {
+  patchDesc: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { desc },
       params: { id },
     } = request;
     try {
-      await worldcupService.patchWorldcupDesc(Number(id), desc);
+      await worldcupService.patchDesc(Number(id), desc);
       response.json(succeed(null));
     } catch (e) {
       response.status(400).json(failed('cannot patch worldcup desc'));

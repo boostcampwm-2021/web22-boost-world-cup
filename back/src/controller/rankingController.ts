@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import * as candidateService from '../services/candidateService';
-import { makeInfoData, setInfoData } from '../services/infoService';
-import { plusTotalCnt } from '../services/worldcupService';
+import * as infoService from '../services/infoService';
+import * as worldcupService from '../services/worldcupService';
 import ApiResult from '../utils/ApiResult';
 
 const { succeed, failed } = ApiResult;
 
 const rankingController = {
-  getRankingInfo: async (request: Request, response: Response, next: NextFunction) => {
+  get: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { id },
       query: { offset, limit, search },
@@ -35,7 +35,9 @@ const rankingController = {
     winCandidate.winCnt += 1;
     loseCandidate.showCnt += 1;
 
-    winCandidate.info = winCandidate.info ? setInfoData(winCandidate.info, gender, age) : makeInfoData(gender, age);
+    winCandidate.info = winCandidate.info
+      ? infoService.setInfoData(winCandidate.info, gender, age)
+      : infoService.makeInfoData(gender, age);
     await Promise.all([candidateService.save(winCandidate), candidateService.save(loseCandidate)]);
     response.json(succeed(null));
   },
@@ -56,11 +58,11 @@ const rankingController = {
     winCandidate.victoryCnt += 1;
     loseCandidate.showCnt += 1;
 
-    winCandidate.info = setInfoData(winCandidate.info, gender, age);
+    winCandidate.info = infoService.setInfoData(winCandidate.info, gender, age);
     await Promise.all([
       candidateService.save(winCandidate),
       candidateService.save(loseCandidate),
-      plusTotalCnt(worldcupId),
+      worldcupService.plusTotalCnt(worldcupId),
     ]);
     response.json(succeed(null));
   },
