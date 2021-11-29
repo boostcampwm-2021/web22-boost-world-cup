@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, TabBar } from '../../components';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
@@ -12,6 +13,7 @@ import {
 import { createCandidates } from '../../apis/candidate';
 import { ImgInfo, WorldcupMetaData, candidateData } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../constants/number';
+import { MAIN } from '../../constants/route';
 
 function Edit(): JSX.Element {
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
@@ -103,6 +105,11 @@ function Edit(): JSX.Element {
             imgInfosDispatcher={candidatesDispatcher}
           />
         )}
+        <Link to={MAIN}>
+          <BtnWrapper>
+            <CompleteBtn>완료하기</CompleteBtn>
+          </BtnWrapper>
+        </Link>
       </Content>
     </>
   );
@@ -112,6 +119,30 @@ const Content = styled.main`
   width: 90%;
   margin: auto;
   margin-top: 20px;
+`;
+
+const BtnWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+`;
+
+const CompleteBtn = styled.button`
+  width: 110px;
+  height: 45px;
+  margin-top: 11px;
+  display: flex;
+  text-align: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  ransition: background-color 0.3s;
+  background-color: ${({ theme }) => theme.color.primary};
+  ${({ theme }) => theme.fontStyle.bodyBold};
+  &:hover {
+    background-color: ${({ theme }) => theme.color.pink};
+  }
 `;
 
 export default Edit;
