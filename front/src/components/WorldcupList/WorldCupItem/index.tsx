@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ShareModal from '../../ShareModal';
+import { useModal } from '../../../hooks';
 import Image from '../../Image';
 
 interface Props {
@@ -13,18 +14,10 @@ interface Props {
   desc: string;
 }
 interface ModalProps {
-  isOpenModal: boolean;
+  modalOn: boolean;
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const onToggleModal = (event: React.SyntheticEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    if (isOpenModal && event.target === event.currentTarget) {
-      setIsOpenModal(false);
-      return;
-    }
-    setIsOpenModal(true);
-  };
+  const [modalOn, onToggleModal] = useModal();
   return (
     <Item>
       <Thumbnail>
@@ -51,7 +44,7 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
           <span>공유하기</span>
         </Share>
       </Buttons>
-      <ModalBox onClick={onToggleModal} isOpenModal={isOpenModal}>
+      <ModalBox onClick={onToggleModal} modalOn={modalOn}>
         <ShareModal id={id} />
       </ModalBox>
     </Item>
@@ -160,7 +153,7 @@ const ModalBox = styled.div`
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 99999;
   display: ${(props: ModalProps) => {
-    return props.isOpenModal ? 'block' : 'none';
+    return props.modalOn ? 'block' : 'none';
   }};
 `;
 
