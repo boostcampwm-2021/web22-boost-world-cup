@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaTrash, FaPen, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import ShareModal from '../../ShareModal';
-import DeleteModal from '../../DeleteModal';
-import Image from '../../Image';
+import ShareModal from '../ShareModal';
+import DeleteModal from '../DeleteModal';
+import Image from '../Image';
 
 interface Props {
   id: number;

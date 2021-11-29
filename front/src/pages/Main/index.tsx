@@ -5,6 +5,7 @@ import { useInfiniteScroll } from '../../hooks';
 import { getWorldcupList } from '../../apis/worldcups';
 import { Worldcup } from '../../types/Datas';
 import { FETCH_WORLDCUPS_LIMIT } from '../../constants/number';
+import WorldCupItem from '../../components/WorldCupItem';
 
 function Main(): JSX.Element {
   const [searchWord, setSearchWord] = useState('');
@@ -49,13 +50,22 @@ function Main(): JSX.Element {
       </Header>
       <Keywords onClickTag={onClickTag} selectedTag={selectedTag} />
       <WorldcupList
-        type="worldcup"
-        worldcups={worldcups}
         observeTarget={target}
         isLoading={isLoading}
         isClickMore={isClickMore}
         onClickMoreBtn={onClickMoreBtn}
-      />
+      >
+        {worldcups.map(({ id, thumbnail1, thumbnail2, title, description }) => (
+          <WorldCupItem
+            key={id}
+            id={id}
+            thumbnail1={thumbnail1}
+            thumbnail2={thumbnail2}
+            title={title}
+            desc={description}
+          />
+        ))}
+      </WorldcupList>
     </Wrapper>
   );
 }
