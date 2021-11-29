@@ -26,6 +26,9 @@ export const getWorldcupMetadata = (id: number, searchWord = ''): Promise<AxiosR
 export const getWorldcupCandidates = (offset: number, limit: number, worldcupId: number): Promise<AxiosResponse> =>
   axios.get(`/api/worldcups/${worldcupId}/candidates`, { params: { offset, limit } });
 
+export const getWorldcupRandomCandidates = (limit: number, worldcupId: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/${worldcupId}/candidates`, { params: { random: true, limit } });
+
 export const patchWorldcupTitle = (worldcupId: number, title: string): Promise<AxiosResponse> =>
   axios.patch(`/api/worldcups/${worldcupId}/title`, { title });
 

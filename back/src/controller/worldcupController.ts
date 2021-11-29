@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as worldcupService from '../services/worldcupService';
 import * as commentService from '../services/commentService';
 import * as authService from '../services/authService';
-import { findById as findWorldcupById } from '../services/worldcupService';
-import { getCandidates } from '../services/candidateService';
+import * as candidateService from '../services/candidateService';
 import ApiResult from '../utils/ApiResult';
 
 const { succeed, failed } = ApiResult;
@@ -90,11 +89,17 @@ const worldcupController = {
 
   getCandidates: async (request: Request, response: Response, next: NextFunction) => {
     const {
-      query: { offset, limit },
+      query: { offset, limit, random },
       params: { id },
     } = request;
+
     try {
-      const candidates = await getCandidates(Number(id), Number(offset), Number(limit));
+      if (random) {
+        const candidates = await candidateService.getRandomList(Number(id), Number(limit));
+        response.json(succeed(candidates));
+        return;
+      }
+      const candidates = await candidateService.getCandidates(Number(id), Number(offset), Number(limit));
       response.json(succeed(candidates));
     } catch (e) {
       response.status(400).json(failed('cannot get candidates'));
@@ -108,7 +113,7 @@ const worldcupController = {
     } = request;
     try {
       if (length) {
-        const worldcup = await findWorldcupById(id);
+        const worldcup = await worldcupService.findById(id);
         const comments = await commentService.getCountByWorldcupId(worldcup);
         response.json(succeed(comments));
       } else {
@@ -127,7 +132,7 @@ const worldcupController = {
       user: { id: userId },
     } = request;
     try {
-      const [user, worldcup] = await Promise.all([authService.findById(userId), findWorldcupById(id)]);
+      const [user, worldcup] = await Promise.all([authService.findById(userId), worldcupService.findById(id)]);
       const {
         user: { nickname },
         createdAt,
