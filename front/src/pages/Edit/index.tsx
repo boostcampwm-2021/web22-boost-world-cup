@@ -32,9 +32,10 @@ function Edit(): JSX.Element {
   );
 
   const onGetMetadataSuccess = (metadata: WorldcupMetaData) => {
-    const { totalCnt, title, description } = metadata;
+    const { totalCnt, title, description, keywords } = metadata;
     worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: title });
     worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: description });
+    worldcupFormDispatcher({ type: 'ADD_KEYWORDS', payload: keywords });
     setTotalCnt(totalCnt);
   };
   const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(getWorldcupMetadata, onGetMetadataSuccess);
