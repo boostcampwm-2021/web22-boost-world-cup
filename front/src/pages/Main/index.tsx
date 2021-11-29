@@ -26,6 +26,7 @@ function Main(): JSX.Element {
     setSearchWord(inputWord);
     setSelectedTag('');
     setInputWord('');
+    setIsClickMore(false);
   };
   const onSearchWordChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setInputWord(target.value);
@@ -34,6 +35,7 @@ function Main(): JSX.Element {
     setOffset(0);
     setSelectedTag(keyword);
     setSearchWord('');
+    setIsClickMore(false);
   };
   const onResetData = () => {
     setSearchWord('');
