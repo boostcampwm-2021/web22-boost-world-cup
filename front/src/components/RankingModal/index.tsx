@@ -6,11 +6,11 @@ import BarChart from './BarChart';
 
 interface ModalProps {
   info: InfoData;
-  closeModal: (event: React.MouseEvent<Element>) => void;
+  onToggleModal: React.MouseEventHandler;
 }
-function RankingModal({ closeModal, info }: ModalProps): JSX.Element {
+function RankingModal({ onToggleModal, info }: ModalProps): JSX.Element {
   const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
-  const { male, female, ...age } = info;
+  const { id, name, male, female, ...age } = info;
   const getCoordCircle = (percent: number) => {
     const x = Math.cos(2 * Math.PI * percent);
     const y = Math.sin(2 * Math.PI * percent);
@@ -31,10 +31,10 @@ function RankingModal({ closeModal, info }: ModalProps): JSX.Element {
     setDoughnutInfo(makeDoughnutInfo(Object.values(age)));
   }, []);
   return (
-    <Modaloverlay onClick={closeModal}>
+    <Modaloverlay onClick={onToggleModal}>
       <Modal>
         <Header>
-          <span>{info.name}</span>
+          <span>{name}</span>
         </Header>
         {doughnutInfo.length ? (
           <Content>
