@@ -159,15 +159,11 @@ const ModalBox = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
-  display: ${(props: ShareModalProps) => {
-    return props.shareModalOn ? 'block' : 'none';
-  }};
+  display: ${(props: ShareModalProps) => (props.shareModalOn ? 'block' : 'none')};
 `;
 
 const DeleteModalContainer = styled.div`
-  display: ${(props: DeleteModalProps) => {
-    return props.deleteModalOn ? 'block' : 'none';
-  }};
+  display: ${(props: DeleteModalProps) => (props.deleteModalOn ? 'block' : 'none')};
   position: absolute;
   top: 0;
   left: 0;
