@@ -1,15 +1,8 @@
 import { Keyword } from '../entity/Keyword';
 import { getRepository } from 'typeorm';
 
-export const getTopRankTags = async () => {
-  const tagList = await getRepository(Keyword)
-    .createQueryBuilder('keyword')
-    .select('name')
-    .orderBy('cnt', 'DESC')
-    .limit(15)
-    .execute();
-  return tagList;
-};
+export const getTopRankKeywords = () =>
+  getRepository(Keyword).createQueryBuilder('keyword').select('name').orderBy('cnt', 'DESC').limit(15).execute();
 
 export const findOrCreate = async (tagName) => {
   const tagRepository = getRepository(Keyword);

@@ -1,5 +1,5 @@
 import { Worldcup } from '../entity/Worldcup';
-import { findOrCreate as findOrCreateTag } from './tagService';
+import { findOrCreate as findOrCreateTag } from './keywordService';
 import {
   save as saveCandidates,
   getTotalCount as getCandidateTotalCnt,
@@ -105,12 +105,14 @@ export const patchWorldcupDesc = async (id: number, desc: string) => {
 
 export const getMetaData = async (id: number, searchWord?: String) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  const [worldcup, totalCnt] = await Promise.all([
+  const [worldcup, totalCnt, worldcupKeyword] = await Promise.all([
     worldcupRepository.findOne(id),
     searchWord ? getCandidateTotalCntBySearchWord(id, searchWord) : getCandidateTotalCnt(id),
+    worldcupRepository.findOne(id, { relations: ['keywords'] }),
   ]);
+  const keywords = worldcupKeyword.keywords.map((keyword) => keyword.name);
   const { title, description } = worldcup;
-  return { totalCnt, title, description };
+  return { totalCnt, title, description, keywords };
 };
 
 export const removeWorldcupById = async (id: number) => {
