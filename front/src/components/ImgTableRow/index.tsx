@@ -7,7 +7,7 @@ import ImgInput from '../ImgInput';
 import { getSignedURLs } from '../../apis/image';
 import { deleteCandidate, patchCandidate } from '../../apis/candidate';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { ImgsAction } from '../../hooks/useImgInfos';
+import { ImgsAction } from '../../types/Actions';
 
 interface Props {
   imgInfo: ImgInfo;

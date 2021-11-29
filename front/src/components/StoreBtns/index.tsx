@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { createWorldcup } from '../../apis/worldcups';
 import { MAIN } from '../../constants/route';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { WorldcupState } from '../../hooks/useWorldcupForm';
+import { WorldcupState } from '../../types/States';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {

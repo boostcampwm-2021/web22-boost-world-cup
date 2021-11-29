@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ImgTableRow from '../ImgTableRow';
 import Pagination from '../Pagination';
 import { ImgInfo } from '../../types/Datas';
-import { ImgsAction } from '../../hooks/useImgInfos';
+import { ImgsAction } from '../../types/Actions';
 
 interface Props {
   imgInfos: ImgInfo[];

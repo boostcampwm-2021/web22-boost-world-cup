@@ -4,7 +4,7 @@ import Loading from 'react-loading';
 import { BsImage } from 'react-icons/bs';
 import { ImgInfo } from '../../types/Datas';
 import { useUploadImg } from '../../hooks';
-import { ImgsAction } from '../../hooks/useImgInfos';
+import { ImgsAction } from '../../types/Actions';
 
 interface Props {
   info: ImgInfo;
