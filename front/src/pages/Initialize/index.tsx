@@ -69,7 +69,7 @@ function Initialize(): JSX.Element {
     <Redirect to={WORLDCUP} />
   ) : (
     <>
-      <Header type="header" />
+      <Header />
       <Container>
         <InfoContainer>
           <img src={logo} alt="logo" width="220px" height="200px" />

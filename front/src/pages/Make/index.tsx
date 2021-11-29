@@ -24,7 +24,7 @@ function Make(): JSX.Element {
 
   return (
     <>
-      <Header type="header" />
+      <Header />
       <Content>
         <TabBar tabTitle={tabTitle} currentTab={currentTab} onTabChange={onTabChange} />
         {currentTab === 1 && (

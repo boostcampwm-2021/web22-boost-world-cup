@@ -5,35 +5,27 @@ import { useHistory } from 'react-router';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
 import HeaderModal from './HeaderModal';
-import SearchBar from '../SearchBar';
 import { UserStateContext } from '../../stores/userStore';
+import { MAIN } from '../../constants/route';
 
-interface headerProps {
-  type: 'header';
-}
-interface searchHeaderProps {
-  type: 'searchHeader';
-  onSubmit: React.MouseEventHandler<HTMLButtonElement>;
-  onSearchWordChange: React.ChangeEventHandler<HTMLInputElement>;
-  searchWord: string;
+interface Props {
+  children?: React.ReactNode;
   onResetData?: () => void;
 }
-type Props = headerProps | searchHeaderProps;
 
-function Header(props: Props): JSX.Element {
+function Header({ children, onResetData }: Props): JSX.Element {
   const { isLoggedIn } = useContext(UserStateContext);
   const location = useLocation();
   const history = useHistory();
   const url = useMemo(() => history.location.pathname.split('/')[1], []);
   const [modal, setModal] = useState(false);
-  const prop = { ...props };
   const toggleModal = () => {
     setModal(!modal);
   };
   const onMoveMainPage = () => {
-    if (url === 'main' && props.type === 'searchHeader' && props.onResetData) {
-      props.onResetData();
-    } else history.push('/main');
+    if (url === 'main' && onResetData) {
+      onResetData();
+    } else history.push(MAIN);
   };
   return (
     <>
@@ -41,29 +33,19 @@ function Header(props: Props): JSX.Element {
       <MainHeader>
         <Logo onClick={onMoveMainPage}>world cup</Logo>
         <RightHeader>
-          {prop.type === 'searchHeader' ? (
-            <SearchBar
-              onSubmit={prop.onSubmit}
-              onSearchWordChange={prop.onSearchWordChange}
-              searchWord={prop.searchWord}
-            />
+          {children}
+          {isLoggedIn ? (
+            <UserIcon onClick={toggleModal} />
           ) : (
-            ''
+            <Link
+              to={{
+                pathname: '/login',
+                state: { from: location.pathname },
+              }}
+            >
+              <Login>로그인</Login>
+            </Link>
           )}
-          <>
-            {isLoggedIn ? (
-              <UserIcon onClick={toggleModal} />
-            ) : (
-              <Link
-                to={{
-                  pathname: '/login',
-                  state: { from: location.pathname },
-                }}
-              >
-                <Login>로그인</Login>
-              </Link>
-            )}
-          </>
           {modal && <HeaderModal open={modal} setModal={setModal} />}
         </RightHeader>
       </MainHeader>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Header, Keywords, WorldcupList } from '../../components';
+import { Header, Keywords, WorldcupList, SearchBar } from '../../components';
 import { useInfiniteScroll } from '../../hooks';
 import { getWorldcupList } from '../../apis/worldcups';
 import { Worldcup } from '../../types/Datas';
@@ -44,13 +44,9 @@ function Main(): JSX.Element {
 
   return (
     <Wrapper>
-      <Header
-        type="searchHeader"
-        onSubmit={onSubmit}
-        onSearchWordChange={onSearchWordChange}
-        searchWord={inputWord}
-        onResetData={onResetData}
-      />
+      <Header onResetData={onResetData}>
+        <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
+      </Header>
       <Keywords onClickTag={onClickTag} selectedTag={selectedTag} />
       <WorldcupList
         type="worldcup"
