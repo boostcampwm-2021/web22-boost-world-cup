@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { SearchBar, RankingModal } from '../../components';
 import Pagination from '../Pagination';
-import { usePaginationAsync } from '../../hooks';
+import { usePaginationAsync, useThrottle } from '../../hooks';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 import { getCandidateList } from '../../apis/ranking';
 import { getWorldcupMetadata } from '../../apis/worldcups';
@@ -28,6 +28,10 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   );
   const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
   const getWorldcupMetaDataDispatcher = useApiRequest(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
+  const throttledGetWorldcupMetaData = useThrottle(
+    () => getWorldcupMetaDataDispatcher({ type: REQUEST, requestProps: [worldcupId, inputWord] }),
+    500,
+  );
 
   const openModal = (event: React.MouseEvent<Element>) => {
     setIsOpenModal(true);
@@ -65,7 +69,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   };
 
   useEffect(() => {
-    getWorldcupMetaDataDispatcher({ type: REQUEST, requestProps: [worldcupId, inputWord] });
+    throttledGetWorldcupMetaData();
   }, [inputWord]);
 
   return (
