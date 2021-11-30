@@ -4,6 +4,7 @@ import { FaTrash, FaPen, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ShareModal from '../ShareModal';
 import DeleteModal from '../DeleteModal';
+import BackDrop from '../BackDrop';
 import Image from '../Image';
 import { useModal } from '../../hooks';
 
@@ -47,12 +48,12 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
           <span>공유하기</span>
         </Share>
       </Buttons>
-      <ModalBox shareModalOn={shareModalOn} onClick={onToggleShareModal}>
+      <BackDrop modalOn={shareModalOn} onToggleModal={onToggleShareModal}>
         <ShareModal id={id} />
-      </ModalBox>
-      <DeleteModalContainer deleteModalOn={deleteModalOn}>
+      </BackDrop>
+      <BackDrop modalOn={deleteModalOn}>
         <DeleteModal id={id} onToggleDeleteModal={onToggleDeleteModal} setDeleteModalOn={setDeleteModalOn} />
-      </DeleteModalContainer>
+      </BackDrop>
     </Item>
   );
 }
@@ -151,25 +152,4 @@ const Share = styled.div`
     background-color: blue;
   }
 `;
-
-const ModalBox = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: ${(props: ShareModalProps) => (props.shareModalOn ? 'block' : 'none')};
-`;
-
-const DeleteModalContainer = styled.div`
-  display: ${(props: DeleteModalProps) => (props.deleteModalOn ? 'block' : 'none')};
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
-`;
-
 export default MyWorldCupItem;
