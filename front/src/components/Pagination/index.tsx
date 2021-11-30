@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BiLeftArrow, BiRightArrow } from 'react-icons/bi';
+import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import { SHOW_PAGE_LIMIT } from '../../constants/number';
 
 interface Props {
@@ -29,6 +30,9 @@ function Pagination({ lastPage, currentPage, onPageChange }: Props): JSX.Element
 
   return (
     <Container>
+      <ArrowBtn type="button" position="left" onClick={() => onPageChange(1)} disabled={currentPage <= 1}>
+        <FaAngleDoubleLeft size={20} />
+      </ArrowBtn>
       <ArrowBtn type="button" position="left" onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1}>
         <BiLeftArrow size={20} />
       </ArrowBtn>
@@ -40,6 +44,14 @@ function Pagination({ lastPage, currentPage, onPageChange }: Props): JSX.Element
         disabled={currentPage >= lastPage}
       >
         <BiRightArrow size={20} />
+      </ArrowBtn>
+      <ArrowBtn
+        type="button"
+        position="right"
+        onClick={() => onPageChange(lastPage)}
+        disabled={currentPage >= lastPage}
+      >
+        <FaAngleDoubleRight size={20} />
       </ArrowBtn>
     </Container>
   );
