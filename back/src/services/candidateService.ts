@@ -2,10 +2,10 @@ import { Candidate } from '../entity/Candidate';
 import { Worldcup } from '../entity/Worldcup';
 import { Info } from '../entity/Info';
 import { getRepository, Repository } from 'typeorm';
-import { removeByCandidateId as removeInfoByCandidateId } from './infoService';
+import * as infoService from './infoService';
 
-export const getCandidatesByWorldcup = async (offset: number, limit: number, worldcupId: String) => {
-  const candidateList = await getRepository(Candidate)
+export const findByWorldcupId = (offset: number, limit: number, worldcupId: String) => {
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoinAndSelect('candidate.worldcup', 'worldcup')
     .leftJoinAndSelect('candidate.info', 'info')
@@ -26,13 +26,14 @@ export const getCandidatesByWorldcup = async (offset: number, limit: number, wor
       'info.etc / (info.teens+info.twenties+info.thirties+info.forties+info.fifties+info.etc) AS etc',
     ])
     .orderBy('candidate.victory_cnt /  worldcup.total_cnt', 'DESC')
+    .addOrderBy('candidate.win_cnt / candidate.show_cnt', 'DESC')
     .offset(offset)
     .limit(limit)
     .execute();
-  return candidateList;
 };
-export const getCandidatesBySearchWord = async (offset: number, limit: number, search: String, worldcupId: String) => {
-  const candidateList = await getRepository(Candidate)
+
+export const findBySearchWord = (offset: number, limit: number, search: String, worldcupId: String) => {
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoinAndSelect('candidate.worldcup', 'worldcup')
     .leftJoinAndSelect('candidate.info', 'info')
@@ -57,22 +58,20 @@ export const getCandidatesBySearchWord = async (offset: number, limit: number, s
     .offset(offset)
     .limit(limit)
     .execute();
-  return candidateList;
 };
-export const getRandomCandidateList = async (worldcupId: number, round: number) => {
-  const randomCandidateList = await getRepository(Candidate)
+
+export const getRandomList = (worldcupId: number, round: number) => {
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .select(['id', 'name', 'img_key AS imgKey'])
     .where('candidate.worldcup_id= :id', { id: worldcupId })
     .orderBy('RAND()')
     .limit(round)
     .execute();
-  return randomCandidateList;
 };
 
-export const findOneWithInfoById = async (id: number) => {
-  const candidateRepository = getRepository(Candidate);
-  return await candidateRepository.findOne(id, { relations: ['info'] });
+export const findOneWithInfoById = (id: number) => {
+  return getRepository(Candidate).findOne(id, { relations: ['info'] });
 };
 
 export const findOneById = async (id: number) => {
@@ -80,7 +79,7 @@ export const findOneById = async (id: number) => {
   return await candidateRepository.findOne(id);
 };
 
-export const saveCandidate = async (candidate: Candidate) => {
+export const save = async (candidate: Candidate) => {
   const candidateRepository = getRepository(Candidate);
   return await candidateRepository.save(candidate);
 };
@@ -94,11 +93,11 @@ export const removeByKey = async (key: string) => {
   const candidateRepository = getRepository(Candidate);
   const candidateToRemove = await findOneByKey(key);
   if (!candidateToRemove) return;
-  await removeInfoByCandidateId(candidateToRemove.id);
+  await infoService.removeByCandidateId(candidateToRemove.id);
   return candidateRepository.remove(candidateToRemove);
 };
 
-export const save = async (imgInfos, worldcupId) => {
+export const saveWithInfo = async (imgInfos, worldcupId) => {
   const worldcupRepository = getRepository(Worldcup);
   const candidateRepository = getRepository(Candidate);
   const InfoRepository = getRepository(Info);
@@ -117,8 +116,7 @@ export const save = async (imgInfos, worldcupId) => {
       });
     }),
   );
-
-  return await candidateRepository.save(candidates);
+  return candidateRepository.save(candidates);
 };
 
 export const patchCandidate = async (key: string, name: string, newKey?: string) => {
@@ -131,8 +129,7 @@ export const patchCandidate = async (key: string, name: string, newKey?: string)
 };
 
 export const getCandidates = (worldcupId: number, offset: number, limit: number) => {
-  const candidateRepository: Repository<Candidate> = getRepository(Candidate);
-  return candidateRepository
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .select()
     .leftJoin('candidate.worldcup', 'worldcup')
@@ -143,8 +140,7 @@ export const getCandidates = (worldcupId: number, offset: number, limit: number)
 };
 
 export const getTotalCount = (worldcupId: number) => {
-  const candidateRepository = getRepository(Candidate);
-  return candidateRepository
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoin('candidate.worldcup', 'worldcup')
     .where('worldcup.id = :id', { id: worldcupId })
@@ -152,8 +148,7 @@ export const getTotalCount = (worldcupId: number) => {
 };
 
 export const getTotalCountBySearchhWord = (worldcupId: number, searchWord: String) => {
-  const candidateRepository = getRepository(Candidate);
-  return candidateRepository
+  return getRepository(Candidate)
     .createQueryBuilder('candidate')
     .leftJoin('candidate.worldcup', 'worldcup')
     .where('worldcup.id = :id', { id: worldcupId })

@@ -7,4 +7,5 @@ export { default as useInfiniteScroll } from './useInfiniteScroll';
 export { default as useLoginCheck } from './useLoginCheck';
 export { default as useThrottle } from './useThrottle';
 export { default as useApiRequest } from './useApiRequest';
+export { default as useModal } from './useModal';
 export { usePaginationSync, usePaginationAsync } from './usePagination';

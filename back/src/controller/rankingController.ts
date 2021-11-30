@@ -1,27 +1,22 @@
 import { NextFunction, Request, Response } from 'express';
 import * as candidateService from '../services/candidateService';
-import { makeInfoData, setInfoData } from '../services/infoService';
-import { plusTotalCnt } from '../services/worldcupService';
+import * as infoService from '../services/infoService';
+import * as worldcupService from '../services/worldcupService';
 import ApiResult from '../utils/ApiResult';
 
 const { succeed, failed } = ApiResult;
 
 const rankingController = {
-  getRankingInfo: async (request: Request, response: Response, next: NextFunction) => {
+  get: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { id },
       query: { offset, limit, search },
     } = request;
     if (!search) {
-      const candidateLists = await candidateService.getCandidatesByWorldcup(Number(offset), Number(limit), id);
+      const candidateLists = await candidateService.findByWorldcupId(Number(offset), Number(limit), id);
       return response.json(succeed(candidateLists));
     }
-    const candidateLists = await candidateService.getCandidatesBySearchWord(
-      Number(offset),
-      Number(limit),
-      String(search),
-      id,
-    );
+    const candidateLists = await candidateService.findBySearchWord(Number(offset), Number(limit), String(search), id);
     response.json(succeed(candidateLists));
   },
 
@@ -40,8 +35,10 @@ const rankingController = {
     winCandidate.winCnt += 1;
     loseCandidate.showCnt += 1;
 
-    winCandidate.info = winCandidate.info ? setInfoData(winCandidate.info, gender, age) : makeInfoData(gender, age);
-    await Promise.all([candidateService.saveCandidate(winCandidate), candidateService.saveCandidate(loseCandidate)]);
+    winCandidate.info = winCandidate.info
+      ? infoService.setInfoData(winCandidate.info, gender, age)
+      : infoService.makeInfoData(gender, age);
+    await Promise.all([candidateService.save(winCandidate), candidateService.save(loseCandidate)]);
     response.json(succeed(null));
   },
 
@@ -61,11 +58,11 @@ const rankingController = {
     winCandidate.victoryCnt += 1;
     loseCandidate.showCnt += 1;
 
-    winCandidate.info = setInfoData(winCandidate.info, gender, age);
+    winCandidate.info = infoService.setInfoData(winCandidate.info, gender, age);
     await Promise.all([
-      candidateService.saveCandidate(winCandidate),
-      candidateService.saveCandidate(loseCandidate),
-      plusTotalCnt(worldcupId),
+      candidateService.save(winCandidate),
+      candidateService.save(loseCandidate),
+      worldcupService.plusTotalCnt(worldcupId),
     ]);
     response.json(succeed(null));
   },

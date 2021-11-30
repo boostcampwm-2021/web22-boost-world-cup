@@ -3,21 +3,20 @@ import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { SearchBar, RankingModal } from '../../components';
 import Pagination from '../Pagination';
-import { usePaginationAsync, useThrottle, useApiRequest } from '../../hooks';
+import { usePaginationAsync, useThrottle, useApiRequest, useModal } from '../../hooks';
 import { getCandidateList } from '../../apis/ranking';
 import { getWorldcupMetadata } from '../../apis/worldcups';
 import { RankingData, WorldcupMetaData } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../constants/number';
 
-interface RankingProps {
+interface Props {
   worldcupId: string;
 }
-function RankingList({ worldcupId }: RankingProps): JSX.Element {
+
+function RankingList({ worldcupId }: Props): JSX.Element {
   const [inputWord, setInputWord] = useState('');
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const [totalCnt, setTotalCnt] = useState<number>(0);
   const candidateRef = useRef<number | null>(null);
-
   const [candidateList, currentPage, offset, lastPage, onPageChange] = usePaginationAsync<RankingData>(
     totalCnt,
     PAGINATION_LIMIT,
@@ -25,21 +24,17 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
     [inputWord, worldcupId],
     [totalCnt],
   );
+  const [modalOn, onToggleModal] = useModal();
   const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
   const getWorldcupMetaDataDispatcher = useApiRequest(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
   const throttledGetWorldcupMetaData = useThrottle(
     () => getWorldcupMetaDataDispatcher({ type: 'REQUEST', requestProps: [worldcupId, inputWord] }),
     500,
   );
-
-  const openModal = (event: React.MouseEvent<Element>) => {
-    setIsOpenModal(true);
+  const onShowRankingDetail = (event: React.MouseEvent<Element>) => {
+    onToggleModal(event);
     const candidateName = event.currentTarget.children[2].innerHTML;
     candidateRef.current = candidateList.findIndex((v) => v.name === candidateName);
-  };
-  const closeModal = (event: React.MouseEvent<Element>) => {
-    event.stopPropagation();
-    if (event.target === event.currentTarget) setIsOpenModal(false);
   };
 
   const getInfoAcc = useCallback((candidate: RankingData) => {
@@ -104,7 +99,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
                 name={v.name}
                 victoryRatio={v.victoryRatio}
                 winRatio={v.winRatio}
-                onClick={openModal}
+                onClick={onShowRankingDetail}
               />
               {index + 1 < candidateList.length ? <Divider /> : ''}
             </Wrapper>
@@ -112,8 +107,8 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
         })}
         <Pagination lastPage={lastPage} currentPage={currentPage} onPageChange={onPageChange} />
       </RankingItemContainer>
-      {isOpenModal && (
-        <RankingModal closeModal={closeModal} info={getInfoAcc(candidateList[candidateRef.current as number])} />
+      {modalOn && (
+        <RankingModal onToggleModal={onToggleModal} info={getInfoAcc(candidateList[candidateRef.current as number])} />
       )}
     </>
   );

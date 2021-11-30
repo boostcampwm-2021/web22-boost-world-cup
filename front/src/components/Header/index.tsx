@@ -7,6 +7,7 @@ import { FaUserAlt } from 'react-icons/fa';
 import HeaderModal from './HeaderModal';
 import SearchBar from '../SearchBar';
 import { UserStateContext } from '../../stores/userStore';
+import { MAIN } from '../../constants/route';
 
 interface headerProps {
   type: 'header';
@@ -33,7 +34,9 @@ function Header(props: Props): JSX.Element {
   const onMoveMainPage = () => {
     if (url === 'main' && props.type === 'searchHeader' && props.onResetData) {
       props.onResetData();
-    } else history.push('/main');
+      return;
+    }
+    history.push(MAIN);
   };
   return (
     <>

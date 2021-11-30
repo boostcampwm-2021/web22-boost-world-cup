@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header, MakeWorldcupForm, ImgTable, TabBar } from '../../components';
 import { useTabBar, useWorldcupForm, useImgInfos, usePaginationAsync, useApiRequest } from '../../hooks';
@@ -11,6 +12,7 @@ import {
 import { createCandidates } from '../../apis/candidate';
 import { ImgInfo, WorldcupMetaData, candidateData } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../constants/number';
+import { MAIN } from '../../constants/route';
 
 function Edit(): JSX.Element {
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
@@ -29,9 +31,10 @@ function Edit(): JSX.Element {
   );
 
   const onGetMetadataSuccess = (metadata: WorldcupMetaData) => {
-    const { totalCnt, title, description } = metadata;
+    const { totalCnt, title, description, keywords } = metadata;
     worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: title });
     worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: description });
+    worldcupFormDispatcher({ type: 'ADD_KEYWORDS', payload: keywords });
     setTotalCnt(totalCnt);
   };
   const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(getWorldcupMetadata, onGetMetadataSuccess);
@@ -102,15 +105,44 @@ function Edit(): JSX.Element {
             imgInfosDispatcher={candidatesDispatcher}
           />
         )}
+        <Link to={MAIN}>
+          <BtnWrapper>
+            <CompleteBtn>완료하기</CompleteBtn>
+          </BtnWrapper>
+        </Link>
       </Content>
     </>
   );
 }
 
 const Content = styled.main`
-  width: 1844px;
-  margin: 0 auto;
-  margin-top: 22px;
+  width: 90%;
+  margin: auto;
+  margin-top: 20px;
+`;
+
+const BtnWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+`;
+
+const CompleteBtn = styled.button`
+  width: 110px;
+  height: 45px;
+  margin-top: 11px;
+  display: flex;
+  text-align: center;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  ransition: background-color 0.3s;
+  background-color: ${({ theme }) => theme.color.primary};
+  ${({ theme }) => theme.fontStyle.bodyBold};
+  &:hover {
+    background-color: ${({ theme }) => theme.color.pink};
+  }
 `;
 
 export default Edit;

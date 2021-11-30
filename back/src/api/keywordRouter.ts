@@ -1,7 +1,5 @@
-import controller from '../controller/tagController';
-
+import controller from '../controller/keywordController';
 import { Router } from 'express';
-
 const router = Router();
 
 router.get('/', controller.all);

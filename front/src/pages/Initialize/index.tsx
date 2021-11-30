@@ -3,10 +3,8 @@ import { Link, Redirect, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Header, RoundSelector } from '../../components';
 import logo from '../../images/logo.png';
-import { getWorldcupMetadata } from '../../apis/worldcups';
-import { getCandidateList } from '../../apis/game';
+import { getWorldcupMetadata, getWorldcupRandomCandidates } from '../../apis/worldcups';
 import { candidateData, gameInfoData, WorldcupMetaData } from '../../types/Datas';
-import { objectEncryption } from '../../utils/crypto';
 import { useApiRequest } from '../../hooks';
 import { MAIN, WORLDCUP } from '../../constants/route';
 
@@ -33,11 +31,10 @@ function Initialize(): JSX.Element {
     const secretKey = process.env.REACT_APP_SECRET_KEY;
     if (!secretKey) return;
     sessionStorage.clear();
-    const cipherText = objectEncryption(gameInfo);
-    sessionStorage.setItem('_wiziboost', cipherText);
+    sessionStorage.setItem('_wiziboost', JSON.stringify(gameInfo));
     setReady(true);
   };
-  const getCandidateListDispatcher = useApiRequest(getCandidateList, onGetCandidateListSuccess);
+  const getCandidateListDispatcher = useApiRequest(getWorldcupRandomCandidates, onGetCandidateListSuccess);
 
   const initializePossibleRound = useCallback(() => {
     const tempNumber = Math.floor(Math.log2(candidatesSize));

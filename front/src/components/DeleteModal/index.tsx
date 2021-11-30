@@ -8,31 +8,29 @@ import { MAIN } from '../../constants/route';
 
 interface DeleteModalProps {
   id: number;
-  setIsDeleteModalOpen: any;
+  onToggleDeleteModal: React.MouseEventHandler;
+  setDeleteModalOn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DeleteModal = ({ id, setIsDeleteModalOpen }: DeleteModalProps): JSX.Element => {
+const DeleteModal = ({ id, onToggleDeleteModal, setDeleteModalOn }: DeleteModalProps): JSX.Element => {
   const history = useHistory();
-  const onDeleteWorldcupSuccess = () => {
-    setIsDeleteModalOpen(false);
-    history.push(MAIN);
-  };
+  const onDeleteWorldcupSuccess = () => history.push(MAIN);
   const deleteWorldcupDispatcher = useApiRequest(deleteWorldcup, onDeleteWorldcupSuccess);
-
-  const onDeleteBtnClick: React.MouseEventHandler = () =>
-    deleteWorldcupDispatcher({ type: 'REQUEST', requestProps: [id] });
-  const onCancelBtnClick: React.MouseEventHandler = () => setIsDeleteModalOpen(false);
+  const onDeleteMyWorldcup: React.MouseEventHandler = () => {
+    setDeleteModalOn(false);
+    deleteWorldcupDispatcher({ type: REQUEST, requestProps: [id] });
+  };
 
   return (
     <Container>
       <img src={Logo} alt="logo" width="220px" height="220px" />
       <Title>삭제하시겠습니까?</Title>
-      <Desc>삭제하시면 복구할 수 없어요!</Desc>
+      <Desc>삭제하면 복구할 수 없어요!</Desc>
       <ButtonContainer>
-        <Button onClick={onDeleteBtnClick} colorType="pink">
+        <Button onClick={onDeleteMyWorldcup} colorType="pink">
           삭제
         </Button>
-        <Button onClick={onCancelBtnClick} colorType="lightpink">
+        <Button onClick={onToggleDeleteModal} colorType="lightpink">
           취소
         </Button>
       </ButtonContainer>

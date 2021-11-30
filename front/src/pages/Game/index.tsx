@@ -5,7 +5,6 @@ import { Header } from '../../components';
 import vsImg from '../../images/vs.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from '../Gameover';
-import { objectDecryption, objectEncryption } from '../../utils/crypto';
 import { sendCurrentResult, sendFinalResult } from '../../apis/ranking';
 import { useApiRequest } from '../../hooks';
 import { LEFT, RIGHT } from '../../constants/number';
@@ -34,9 +33,9 @@ function Worldcup(): JSX.Element {
   useEffect(() => {
     const sessionStorageData = sessionStorage.getItem('_wiziboost');
     if (sessionStorageData) {
-      const decryptedData = objectDecryption(sessionStorageData);
-      setGameInfo(decryptedData);
-      setCandidates(decryptedData.candidatesList);
+      const gameData = JSON.parse(sessionStorageData);
+      setGameInfo(gameData);
+      setCandidates(gameData.candidatesList);
       setPick(0);
       return;
     }
@@ -44,8 +43,7 @@ function Worldcup(): JSX.Element {
   }, []);
 
   const setSessionStorage = useCallback((gameInfo: gameInfoData): void => {
-    const cipherText = objectEncryption(gameInfo);
-    sessionStorage.setItem('_wiziboost', cipherText);
+    sessionStorage.setItem('_wiziboost', JSON.stringify(gameInfo));
   }, []);
 
   const onImageClick = useCallback(
