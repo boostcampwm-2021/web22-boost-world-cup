@@ -6,10 +6,6 @@ interface Props {
   modalOn: boolean;
   onToggleModal?: React.MouseEventHandler;
 }
-interface StyleProps {
-  modalOn: boolean;
-}
-
 function BackDrop({ children, modalOn, onToggleModal }: Props): JSX.Element {
   return (
     <Container modalOn={modalOn} onClick={onToggleModal}>
@@ -17,7 +13,7 @@ function BackDrop({ children, modalOn, onToggleModal }: Props): JSX.Element {
     </Container>
   );
 }
-const Container = styled.section`
+const Container = styled.section<{ modalOn: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -25,7 +21,7 @@ const Container = styled.section`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 99999;
-  display: ${(props: StyleProps) => (props.modalOn ? 'block' : 'none')};
+  display: ${({ modalOn }) => (modalOn ? 'block' : 'none')};
 `;
 
 export default BackDrop;
