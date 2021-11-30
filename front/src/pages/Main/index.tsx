@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
+import { useLocation, useHistory } from 'react-router';
 import { Header, Keywords, WorldcupList, SearchBar } from '../../components';
 import { useInfiniteScroll } from '../../hooks';
 import { getWorldcupList } from '../../apis/worldcups';
@@ -8,9 +9,17 @@ import { FETCH_WORLDCUPS_LIMIT } from '../../constants/number';
 import WorldCupItem from '../../components/WorldCupItem';
 
 function Main(): JSX.Element {
-  const [searchWord, setSearchWord] = useState('');
+  const location = useLocation();
+  const history = useHistory();
+  const searchWord = useMemo(() => (location.search.split('=')[1] ? location.search.split('=')[1] : ''), [location]);
+  const keyword = useMemo(
+    () =>
+      location.pathname.split('/')[2] !== 'search' && location.pathname.split('/')[2]
+        ? location.pathname.split('/')[2]
+        : '',
+    [location],
+  );
   const [inputWord, setInputWord] = useState('');
-  const [selectedKeyword, setSelectedKeyword] = useState('');
   const {
     items: worldcups,
     target,
@@ -19,38 +28,30 @@ function Main(): JSX.Element {
     onClickMoreBtn,
     setOffset,
     setIsClickMore,
-  } = useInfiniteScroll<Worldcup>(FETCH_WORLDCUPS_LIMIT, getWorldcupList, [searchWord, selectedKeyword]);
+  } = useInfiniteScroll<Worldcup>(FETCH_WORLDCUPS_LIMIT, getWorldcupList, [searchWord, keyword]);
 
   const onSubmit: React.MouseEventHandler = (event) => {
     event.preventDefault();
     setOffset(0);
-    setSearchWord(inputWord);
-    setSelectedKeyword('');
     setInputWord('');
     setIsClickMore(false);
+    history.push(`/main/search?title=${inputWord}`);
   };
   const onSearchWordChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setInputWord(target.value);
   };
   const onClickKeyword = (keyword: string) => {
     setOffset(0);
-    setSelectedKeyword(keyword);
-    setSearchWord('');
     setIsClickMore(false);
-  };
-  const onResetData = () => {
-    setSearchWord('');
-    setSelectedKeyword('');
-    setOffset(0);
-    setIsClickMore(false);
+    history.push(`/main/${keyword}`);
   };
 
   return (
     <Wrapper>
-      <Header onResetData={onResetData}>
+      <Header>
         <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
       </Header>
-      <Keywords onClickKeyword={onClickKeyword} selectedKeyword={selectedKeyword} />
+      <Keywords onClickKeyword={onClickKeyword} selectedKeyword={keyword} />
       <WorldcupList
         observeTarget={target}
         isLoading={isLoading}
