@@ -8,19 +8,7 @@ import Loading from './pages/Loading';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 
-const Main = lazy(() => import('./pages/Main'));
-const Login = lazy(() => import('./pages/Login'));
-const SignUp = lazy(() => import('./pages/SignUp'));
-const Make = lazy(() => import('./pages/Make'));
-const Initialize = lazy(() => import('./pages/Initialize'));
-const Game = lazy(() => import('./pages/Game'));
-const MyWorldcup = lazy(() => import('./pages/MyWorldcup'));
-const Ranking = lazy(() => import('./pages/Ranking'));
-const MyInfo = lazy(() => import('./pages/MyInfo'));
-const Leave = lazy(() => import('./pages/Leave'));
-const Edit = lazy(() => import('./pages/Edit'));
-const Profile = lazy(() => import('./pages/Profile'));
-const NotFound = lazy(() => import('./pages/NotFound'));
+const getLazyLoadComponent = (name: string) => lazy(() => import(`./pages/${name}`));
 
 function App(): JSX.Element {
   return (
@@ -31,19 +19,19 @@ function App(): JSX.Element {
         <Router>
           <Suspense fallback={<Loading />}>
             <Switch>
-              <PublicRoute path={ROUTE.MAIN} component={Main} exact />
-              <PublicRoute path={ROUTE.LOGIN} component={Login} />
-              <PublicRoute path={ROUTE.SIGNUP} component={SignUp} />
-              <PrivateRoute path={ROUTE.MAKE} component={Make} />
-              <PrivateRoute path={ROUTE.INITIALIZE} component={Initialize} />
-              <PrivateRoute path={ROUTE.WORLDCUP} component={Game} />
-              <PrivateRoute path={ROUTE.MYWORLDCUP} component={MyWorldcup} />
-              <PublicRoute path={ROUTE.RANKING} component={Ranking} />
-              <PrivateRoute path={ROUTE.MYINFO} component={MyInfo} />
-              <PrivateRoute path={ROUTE.LEAVE} component={Leave} />
-              <PrivateRoute path={ROUTE.EDIT} component={Edit} />
-              <PrivateRoute path={ROUTE.PROFILE} component={Profile} />
-              <PublicRoute component={NotFound} />
+              <PublicRoute path={ROUTE.MAIN} component={getLazyLoadComponent('Main')} exact />
+              <PublicRoute path={ROUTE.LOGIN} component={getLazyLoadComponent('Login')} />
+              <PublicRoute path={ROUTE.SIGNUP} component={getLazyLoadComponent('SiguUp')} />
+              <PrivateRoute path={ROUTE.MAKE} component={getLazyLoadComponent('Main')} />
+              <PrivateRoute path={ROUTE.INITIALIZE} component={getLazyLoadComponent('Initialize')} />
+              <PrivateRoute path={ROUTE.WORLDCUP} component={getLazyLoadComponent('Game')} />
+              <PrivateRoute path={ROUTE.MYWORLDCUP} component={getLazyLoadComponent('MyWorldcup')} />
+              <PublicRoute path={ROUTE.RANKING} component={getLazyLoadComponent('Ranking')} />
+              <PrivateRoute path={ROUTE.MYINFO} component={getLazyLoadComponent('MyInfo')} />
+              <PrivateRoute path={ROUTE.LEAVE} component={getLazyLoadComponent('Leave')} />
+              <PrivateRoute path={ROUTE.EDIT} component={getLazyLoadComponent('Edit')} />
+              <PrivateRoute path={ROUTE.PROFILE} component={getLazyLoadComponent('Profile')} />
+              <PublicRoute component={getLazyLoadComponent('NotFound')} />
             </Switch>
           </Suspense>
         </Router>
