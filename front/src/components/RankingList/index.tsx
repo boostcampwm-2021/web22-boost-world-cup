@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { SearchBar, RankingModal } from '../../components';
 import Pagination from '../Pagination';
+import BackDrop from '../BackDrop';
 import { usePaginationAsync, useThrottle, useApiRequest, useModal } from '../../hooks';
 import { getCandidateList } from '../../apis/ranking';
 import { getWorldcupMetadata } from '../../apis/worldcups';
@@ -108,7 +109,9 @@ function RankingList({ worldcupId }: Props): JSX.Element {
         <Pagination lastPage={lastPage} currentPage={currentPage} onPageChange={onPageChange} />
       </RankingItemContainer>
       {modalOn && (
-        <RankingModal onToggleModal={onToggleModal} info={getInfoAcc(candidateList[candidateRef.current as number])} />
+        <BackDrop modalOn={modalOn} onToggleModal={onToggleModal}>
+          <RankingModal info={getInfoAcc(candidateList[candidateRef.current as number])} />
+        </BackDrop>
       )}
     </>
   );
