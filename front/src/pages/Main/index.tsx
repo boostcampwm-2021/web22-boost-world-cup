@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Header, Keywords, WorldcupList } from '../../components';
+import { Header, Keywords, WorldcupList, SearchBar } from '../../components';
 import { useInfiniteScroll } from '../../hooks';
 import { getWorldcupList } from '../../apis/worldcups';
 import { Worldcup } from '../../types/Datas';
 import { FETCH_WORLDCUPS_LIMIT } from '../../constants/number';
+import WorldCupItem from '../../components/WorldCupItem';
 
 function Main(): JSX.Element {
   const [searchWord, setSearchWord] = useState('');
@@ -46,22 +47,27 @@ function Main(): JSX.Element {
 
   return (
     <Wrapper>
-      <Header
-        type="searchHeader"
-        onSubmit={onSubmit}
-        onSearchWordChange={onSearchWordChange}
-        searchWord={inputWord}
-        onResetData={onResetData}
-      />
+      <Header onResetData={onResetData}>
+        <SearchBar onSubmit={onSubmit} onSearchWordChange={onSearchWordChange} searchWord={inputWord} />
+      </Header>
       <Keywords onClickKeyword={onClickKeyword} selectedKeyword={selectedKeyword} />
       <WorldcupList
-        type="worldcup"
-        worldcups={worldcups}
         observeTarget={target}
         isLoading={isLoading}
         isClickMore={isClickMore}
         onClickMoreBtn={onClickMoreBtn}
-      />
+      >
+        {worldcups.map(({ id, thumbnail1, thumbnail2, title, description }) => (
+          <WorldCupItem
+            key={id}
+            id={id}
+            thumbnail1={thumbnail1}
+            thumbnail2={thumbnail2}
+            title={title}
+            desc={description}
+          />
+        ))}
+      </WorldcupList>
     </Wrapper>
   );
 }

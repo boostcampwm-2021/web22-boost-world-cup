@@ -7,7 +7,7 @@ import { ImgInfo, PreSignedData } from '../../types/Datas';
 import { ImgsAction, WorldcupAction } from '../../types/Actions';
 import { WorldcupState } from '../../types/States';
 import TextInput from '../TextInput';
-import ImgInput from '../ImgInput';
+import AddImgs from '../ImgInputs/AddImgs';
 import ImgPreViewList from '../ImgPreViewList';
 import KeywordInput from '../KeywordInput';
 
@@ -104,7 +104,7 @@ function MakeWorldcupForm({
             imgInfosDispatcher={imgInfosDispatcher}
           />
         ) : (
-          <ImgInput onChange={onAddImgs} type="addImgs" />
+          <AddImgs onChange={onAddImgs} />
         )}
       </VerticalWrapper>
     </Container>

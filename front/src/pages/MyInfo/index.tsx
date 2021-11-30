@@ -8,7 +8,7 @@ import { PROFILE, LEAVE } from '../../constants/route';
 const MyInfo = (): JSX.Element => {
   return (
     <>
-      <Header type="header" />
+      <Header />
       <Container>
         <img src={logo} alt="logo" width="220px" height="220px" />
         <Title>내 정보</Title>

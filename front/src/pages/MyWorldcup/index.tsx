@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../../components/Header';
+import MyWorldCupItem from '../../components/MyWorldCupItem';
 import { WorldcupList } from '../../components';
 import { getMyWorldcupList } from '../../apis/worldcups';
 import { useInfiniteScroll } from '../../hooks';
@@ -16,15 +17,24 @@ const MyWorldcup = (): JSX.Element => {
 
   return (
     <>
-      <Header type="header" />
+      <Header />
       <WorldcupList
-        type="myWorldcup"
-        worldcups={worldcups}
         observeTarget={target}
         isLoading={isLoading}
         isClickMore={isClickMore}
         onClickMoreBtn={onClickMoreBtn}
-      />
+      >
+        {worldcups.map(({ id, thumbnail1, thumbnail2, title, description }) => (
+          <MyWorldCupItem
+            key={id}
+            id={id}
+            thumbnail1={thumbnail1}
+            thumbnail2={thumbnail2}
+            title={title}
+            desc={description}
+          />
+        ))}
+      </WorldcupList>
     </>
   );
 };

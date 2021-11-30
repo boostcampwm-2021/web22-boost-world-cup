@@ -81,7 +81,7 @@ function Edit(): JSX.Element {
 
   return (
     <>
-      <Header type="header" />
+      <Header />
       <Content>
         <TabBar currentTab={currentTab} onTabChange={onTabChange} tabTitle={tabTitle} />
         {currentTab === 1 && (

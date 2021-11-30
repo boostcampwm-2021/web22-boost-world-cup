@@ -1,45 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import WorldCupItem from './WorldCupItem';
-import MyWorldCupItem from './MyWorldCupItem';
 import Loader from '../Loader';
-import { Worldcup } from '../../types/Datas';
 
 interface Props {
-  type: 'worldcup' | 'myWorldcup';
-  worldcups: Worldcup[];
+  children: React.ReactNode;
   observeTarget: React.MutableRefObject<HTMLDivElement | null>;
   isLoading: boolean;
   isClickMore: boolean;
   onClickMoreBtn: React.MouseEventHandler;
 }
 
-function WorldcupList({ type, worldcups, observeTarget, isLoading, isClickMore, onClickMoreBtn }: Props): JSX.Element {
+function WorldcupList({ children, observeTarget, isLoading, isClickMore, onClickMoreBtn }: Props): JSX.Element {
   return (
     <>
-      <Container>
-        {worldcups.map(({ id, thumbnail1, thumbnail2, title, description }) =>
-          type === 'worldcup' ? (
-            <WorldCupItem
-              key={id}
-              id={id}
-              thumbnail1={thumbnail1}
-              thumbnail2={thumbnail2}
-              title={title}
-              desc={description}
-            />
-          ) : (
-            <MyWorldCupItem
-              key={id}
-              id={id}
-              thumbnail1={thumbnail1}
-              thumbnail2={thumbnail2}
-              title={title}
-              desc={description}
-            />
-          ),
-        )}
-      </Container>
+      <Container>{children}</Container>
       {!isClickMore ? (
         <MoreButton onClick={onClickMoreBtn}>
           <Title>더보기</Title>

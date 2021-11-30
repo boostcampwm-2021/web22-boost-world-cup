@@ -16,7 +16,7 @@ const Leave = (): JSX.Element => {
 
   return (
     <>
-      <Header type="header" />
+      <Header />
       <Container>
         <img src={logo} alt="logo" width="220px" height="220px" />
         <Title>탈퇴하시겠습니까?</Title>
