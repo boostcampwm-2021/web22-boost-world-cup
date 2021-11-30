@@ -3,8 +3,8 @@ import controller from '../controller/candidateController';
 
 const router = Router();
 
+router.post('/', controller.create);
+router.patch('/:key', controller.update);
 router.delete('/:key', controller.remove);
-router.patch('/:key', controller.patchCandidate);
-router.post('/', controller.createCandidates);
 
 export default router;

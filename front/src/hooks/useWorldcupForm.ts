@@ -10,6 +10,7 @@ export type WorldcupAction =
   | { type: 'CHANGE_TITLE'; payload: string }
   | { type: 'CHANGE_DESC'; payload: string }
   | { type: 'ADD_KEYWORD'; payload: string }
+  | { type: 'ADD_KEYWORDS'; payload: string[] }
   | { type: 'DELETE_KEYWORD' };
 
 const initialWorldcupState: WorldcupState = {
@@ -33,6 +34,11 @@ const worldcupFormReducer = (state: WorldcupState, action: WorldcupAction): Worl
     case 'ADD_KEYWORD': {
       const { payload: newKeyword } = action;
       return { ...state, keywords: [...state.keywords, newKeyword] };
+    }
+
+    case 'ADD_KEYWORDS': {
+      const { payload: newKeyword } = action;
+      return { ...state, keywords: [...newKeyword] };
     }
 
     case 'DELETE_KEYWORD': {

@@ -1,11 +1,7 @@
 import { Worldcup } from '../entity/Worldcup';
-import { findOrCreate as findOrCreateTag } from './tagService';
-import {
-  save as saveCandidates,
-  getTotalCount as getCandidateTotalCnt,
-  getTotalCountBySearchhWord as getCandidateTotalCntBySearchWord,
-} from './candidateService';
-import { findById as findUserById } from './userService';
+import * as keywordService from './keywordService';
+import * as candidateService from './candidateService';
+import * as authService from './authService';
 import { Repository, getRepository } from 'typeorm';
 
 export const findFromPage = async (offset: number, limit: number): Promise<Worldcup[]> => {
@@ -57,13 +53,11 @@ export const findById = async (id) => {
 
 export const save = async (title: string, description: string, keywordNames: string[], imgInfos, userId: number) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-
   const [keywords, user] = await Promise.all([
-    Promise.all(keywordNames.map((name: string) => findOrCreateTag(name))),
-    findUserById(userId),
+    Promise.all(keywordNames.map((name: string) => keywordService.findOrCreate(name))),
+    authService.findById(userId),
   ]);
   const [thumbnail1, thumbnail2] = imgInfos.slice(0, 2).map(({ key }) => key);
-
   const { id } = await worldcupRepository.save({
     title,
     thumbnail1,
@@ -72,8 +66,7 @@ export const save = async (title: string, description: string, keywordNames: str
     keywords,
     user,
   });
-
-  await saveCandidates(imgInfos, id);
+  await candidateService.saveWithInfo(imgInfos, id);
 };
 
 export const plusTotalCnt = async (id: number) => {
@@ -83,7 +76,7 @@ export const plusTotalCnt = async (id: number) => {
   return await worldcupRepository.save(worldcup);
 };
 
-export const patchWorldcupTitle = async (id: number, title: string) => {
+export const patchTitle = async (id: number, title: string) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   return await worldcupRepository
     .createQueryBuilder('worldcup')
@@ -93,7 +86,7 @@ export const patchWorldcupTitle = async (id: number, title: string) => {
     .execute();
 };
 
-export const patchWorldcupDesc = async (id: number, desc: string) => {
+export const patchDesc = async (id: number, desc: string) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   return await worldcupRepository
     .createQueryBuilder('worldcup')
@@ -105,15 +98,16 @@ export const patchWorldcupDesc = async (id: number, desc: string) => {
 
 export const getMetaData = async (id: number, searchWord?: String) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  const [worldcup, totalCnt] = await Promise.all([
+  const [worldcup, totalCnt, worldcupKeyword] = await Promise.all([
     worldcupRepository.findOne(id),
-    searchWord ? getCandidateTotalCntBySearchWord(id, searchWord) : getCandidateTotalCnt(id),
+    searchWord ? candidateService.getTotalCountBySearchhWord(id, searchWord) : candidateService.getTotalCount(id),
+    worldcupRepository.findOne(id, { relations: ['keywords'] }),
   ]);
+  const keywords = worldcupKeyword.keywords.map((keyword) => keyword.name);
   const { title, description } = worldcup;
-  return { totalCnt, title, description };
+  return { totalCnt, title, description, keywords };
 };
 
-export const removeWorldcupById = async (id: number) => {
-  const worldcupRepository = getRepository(Worldcup);
-  worldcupRepository.delete(id);
+export const removeById = async (id: number) => {
+  return getRepository(Worldcup).delete(id);
 };

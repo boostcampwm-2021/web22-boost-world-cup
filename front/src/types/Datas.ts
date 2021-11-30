@@ -78,6 +78,7 @@ export interface WorldcupMetaData {
   totalCnt: number;
   title: string;
   description: string;
+  keywords: string[];
 }
 
 export interface UserInfo {

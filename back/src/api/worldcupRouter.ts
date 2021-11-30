@@ -3,15 +3,15 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.get('/', controller.getWorldcups);
+router.get('/', controller.get);
 router.get('/user', controller.getMyWorldcups);
-router.get('/:id', controller.getWorldcup);
+router.get('/:id', controller.getMetadata);
 router.get('/:id/comments', controller.getComments);
-router.post('/', controller.saveWorldcup);
+router.post('/', controller.save);
 router.post('/:id/comments', controller.saveComment);
-router.delete('/:id', controller.deleteWorldcup);
-router.patch('/:id/title', controller.patchWorldcupTitle);
-router.patch('/:id/desc', controller.patchWorldcupDesc);
+router.delete('/:id', controller.delete);
+router.patch('/:id/title', controller.patchTitle);
+router.patch('/:id/desc', controller.patchDesc);
 router.get('/:id/candidates', controller.getCandidates);
 router.delete('/comments/:id', controller.deleteComment);
 

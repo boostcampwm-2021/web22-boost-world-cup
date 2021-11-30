@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { getTagList } from '../../apis/keyword';
+import { getKeywordList } from '../../apis/keyword';
 import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 interface Props {
-  onClickTag: (keyword: string) => void;
-  selectedTag: string;
+  onClickKeyword: (keyword: string) => void;
+  selectedKeyword: string;
 }
-function Keywords({ onClickTag, selectedTag }: Props): JSX.Element {
+function Keywords({ onClickKeyword, selectedKeyword }: Props): JSX.Element {
   const settings = {
     dots: false,
     slidesToShow: 1,
@@ -20,34 +20,34 @@ function Keywords({ onClickTag, selectedTag }: Props): JSX.Element {
     draggable: false,
     speed: 300,
   };
-  const [tagList, setTagList] = useState<Array<string>>([]);
-  const onGetTagListSuccess = (tagList: string[]) => setTagList(tagList);
-  const getTagListDispatcher = useApiRequest(getTagList, onGetTagListSuccess);
+  const [keywordList, setKeywordList] = useState<Array<string>>([]);
+  const onGetKeywordListSuccess = (keywordList: string[]) => setKeywordList(keywordList);
+  const getKeywordListDispatcher = useApiRequest(getKeywordList, onGetKeywordListSuccess);
   const onToggleKeyword = (event: React.SyntheticEvent<HTMLDivElement>) => {
     const element = event.target as HTMLElement;
-    if (element.innerText === selectedTag) {
-      onClickTag('');
-    } else {
-      onClickTag(element.innerText);
+    if (element.innerText === selectedKeyword) {
+      onClickKeyword('');
+      return;
     }
+    onClickKeyword(element.innerText);
   };
 
   useEffect(() => {
-    getTagListDispatcher({ type: REQUEST });
+    getKeywordListDispatcher({ type: REQUEST });
   }, []);
 
   return (
-    <TagContainer {...settings}>
-      {tagList.map((tag) => (
-        <div key={tagList.indexOf(tag)} onClick={onToggleKeyword} aria-hidden="true">
-          <TagName selected={selectedTag === tag}>{tag}</TagName>
+    <KeywordContainer {...settings}>
+      {keywordList.map((keyword) => (
+        <div key={keywordList.indexOf(keyword)} onClick={onToggleKeyword} aria-hidden="true">
+          <KeywordName selected={selectedKeyword === keyword}>{keyword}</KeywordName>
         </div>
       ))}
-    </TagContainer>
+    </KeywordContainer>
   );
 }
 
-const TagContainer = styled(Slider)`
+const KeywordContainer = styled(Slider)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,7 +87,7 @@ const TagContainer = styled(Slider)`
   }
 `;
 
-const TagName = styled.h3<{ selected: boolean }>`
+const KeywordName = styled.h3<{ selected: boolean }>`
   color: ${(props) => (props.selected ? '#524847' : 'white')};
   font-weight: ${(props) => (props.selected ? 'bold' : '400')};
   &:hover {
