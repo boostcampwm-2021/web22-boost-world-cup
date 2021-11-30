@@ -4,7 +4,7 @@ import Loading from '../../pages/Loading';
 import { useLoginCheck } from '../../hooks';
 
 interface Props {
-  component: (props: any) => JSX.Element;
+  component: any;
   exact?: boolean;
   path?: string;
 }
