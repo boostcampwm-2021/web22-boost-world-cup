@@ -152,9 +152,7 @@ const ModalBox = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 99999;
-  display: ${(props: ModalProps) => {
-    return props.modalOn ? 'block' : 'none';
-  }};
+  display: ${(props: ModalProps) => (props.modalOn ? 'block' : 'none')};
 `;
 
 export default WorldCupItem;

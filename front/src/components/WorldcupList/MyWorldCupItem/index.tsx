@@ -21,7 +21,7 @@ interface DeleteModalProps {
   deleteModalOn: boolean;
 }
 function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const [deleteModalOn, onToggleDeleteModal] = useModal();
+  const [deleteModalOn, onToggleDeleteModal, setDeleteModalOn] = useModal();
   const [shareModalOn, onToggleShareModal] = useModal();
   return (
     <Item>
@@ -51,7 +51,7 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
         <ShareModal id={id} />
       </ModalBox>
       <DeleteModalContainer deleteModalOn={deleteModalOn}>
-        <DeleteModal id={id} onToggleDeleteModal={onToggleDeleteModal} />
+        <DeleteModal id={id} onToggleDeleteModal={onToggleDeleteModal} setDeleteModalOn={setDeleteModalOn} />
       </DeleteModalContainer>
     </Item>
   );
@@ -159,15 +159,11 @@ const ModalBox = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
-  display: ${(props: ShareModalProps) => {
-    return props.shareModalOn ? 'block' : 'none';
-  }};
+  display: ${(props: ShareModalProps) => (props.shareModalOn ? 'block' : 'none')};
 `;
 
 const DeleteModalContainer = styled.div`
-  display: ${(props: DeleteModalProps) => {
-    return props.deleteModalOn ? 'block' : 'none';
-  }};
+  display: ${(props: DeleteModalProps) => (props.deleteModalOn ? 'block' : 'none')};
   position: absolute;
   top: 0;
   left: 0;
