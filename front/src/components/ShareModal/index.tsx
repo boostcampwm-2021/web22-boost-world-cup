@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FacebookShareButton, FacebookIcon } from 'react-share';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -17,6 +17,17 @@ const ShareModal = ({ id }: ShareModalProps): JSX.Element => {
       setClipBoardModal(false);
     }, 1000);
   };
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <ModalBox>
       <Header>
