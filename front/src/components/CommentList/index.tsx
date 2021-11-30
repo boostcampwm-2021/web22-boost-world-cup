@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Comment from './comment';
+import Comment from '../CommentItem';
 import { CommentData } from '../../types/Datas';
 import Loader from '../Loader';
 import { getCommentsCount } from '../../apis/comment';
