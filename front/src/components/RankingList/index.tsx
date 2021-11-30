@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
-import { SearchBar, RankingModal } from '../../components';
+import SearchBar from '../SearchBar';
+import RankingModal from '../RankingModal';
 import Pagination from '../Pagination';
 import { usePaginationAsync, useThrottle, useApiRequest, useModal } from '../../hooks';
 import { getCandidateList } from '../../apis/ranking';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHome, FaList } from 'react-icons/fa';
-import { Header } from '../../components';
+import Header from '../../components/Header';
 import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
 import getImgURL from '../../utils/getImgURL';

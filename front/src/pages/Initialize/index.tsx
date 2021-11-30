@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { Header, RoundSelector } from '../../components';
+import Header from '../../components/Header';
+import RoundSelector from '../../components/RoundSelector';
 import logo from '../../images/logo.png';
 import { getWorldcupMetadata, getWorldcupRandomCandidates } from '../../apis/worldcups';
 import { candidateData, gameInfoData, WorldcupMetaData } from '../../types/Datas';

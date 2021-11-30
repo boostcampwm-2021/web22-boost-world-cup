@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Header, UserInfoForm } from '../../components';
+import Header from '../../components/Header';
+import UserInfoForm from '../../components/UserInfoForm';
 import logo from '../../images/logo.png';
 
 const Profile = (): JSX.Element => {

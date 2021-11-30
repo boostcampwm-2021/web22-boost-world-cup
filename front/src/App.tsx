@@ -3,9 +3,10 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle, Reset, theme } from './styles';
 import * as ROUTE from './constants/route';
-import { PrivateRoute, PublicRoute } from './components';
 import GlobalStore from './stores';
 import Loading from './pages/Loading';
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
 
 const Main = lazy(() => import('./pages/Main'));
 const Login = lazy(() => import('./pages/Login'));

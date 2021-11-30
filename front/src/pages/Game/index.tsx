@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Redirect } from 'react-router';
 import styled, { keyframes, css } from 'styled-components';
-import { Header } from '../../components';
+import Header from '../../components/Header';
 import vsImg from '../../images/vs.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from '../Gameover';

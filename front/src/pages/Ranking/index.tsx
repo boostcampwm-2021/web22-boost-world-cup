@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
-import { Header, RankingList, Comment } from '../../components';
+import Header from '../../components/Header';
+import RankingList from '../../components/RankingList';
+import Comment from '../../components/Comment';
 
 function Ranking(): JSX.Element {
   const location = useLocation();

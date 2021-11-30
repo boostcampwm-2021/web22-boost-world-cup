@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Header, Keywords, WorldcupList, SearchBar } from '../../components';
+import Header from '../../components/Header';
+import Keywords from '../../components/Keywords';
+import WorldcupList from '../../components/WorldcupList';
+import SearchBar from '../../components/SearchBar';
 import { useInfiniteScroll } from '../../hooks';
 import { getWorldcupList } from '../../apis/worldcups';
 import { Worldcup } from '../../types/Datas';
