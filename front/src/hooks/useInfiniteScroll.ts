@@ -27,11 +27,7 @@ const useInfiniteScroll = <T>(
   const target = useRef<HTMLDivElement | null>(null);
   const onGetItemsSuccess = (newItems: T[]) => {
     setIsLoading(false);
-    if (!newItems.length && !offset) {
-      setItems([...newItems]);
-      (observer.current as IntersectionObserver).disconnect();
-      return;
-    }
+    if (!newItems.length && !offset) setItems([]);
     if (!newItems.length) {
       (observer.current as IntersectionObserver).disconnect();
       return;
