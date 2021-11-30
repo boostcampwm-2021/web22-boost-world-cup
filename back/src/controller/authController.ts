@@ -36,7 +36,7 @@ const authController = {
       user.nickname = nickname;
       user.gender = gender;
       user.age = age;
-      await authService.saveUser(user);
+      await authService.save(user);
       response.json(succeed(null));
     } catch (e) {
       response.json(failed('signup failed'));
@@ -55,7 +55,7 @@ const authController = {
 
   update: async (request: Request, response: Response, next: NextFunction) => {
     try {
-      await authService.updateUser(request.body);
+      await authService.update(request.body);
       response.json(succeed(null));
     } catch (err) {
       response.json(failed('userInfo update failed'));
@@ -66,7 +66,7 @@ const authController = {
     try {
       request.session.destroy(() => {});
       response.clearCookie('sid');
-      await authService.removeUser(request.params.id);
+      await authService.remove(request.params.id);
       response.json(succeed(null));
     } catch (e) {
       response.json(failed('service leave failed'));

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FaTrash, FaPen, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ShareModal from '../../ShareModal';
 import DeleteModal from '../../DeleteModal';
 import Image from '../../Image';
+import { useModal } from '../../../hooks';
 
 interface Props {
   id: number;
@@ -13,23 +14,15 @@ interface Props {
   title: string;
   desc: string;
 }
-interface ModalProps {
-  isOpenModal: boolean;
+interface ShareModalProps {
+  shareModalOn: boolean;
 }
 interface DeleteModalProps {
-  isDeleteModalOpen: boolean;
+  deleteModalOn: boolean;
 }
 function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-  const onDeleteBtnClick = () => {
-    setIsDeleteModalOpen((isDeleteModalOpen) => !isDeleteModalOpen);
-  };
-
-  const onShareBtnClick = () => {
-    setIsOpenModal((isOpenModal) => !isOpenModal);
-  };
+  const [deleteModalOn, onToggleDeleteModal, setDeleteModalOn] = useModal();
+  const [shareModalOn, onToggleShareModal] = useModal();
   return (
     <Item>
       <Thumbnail>
@@ -39,7 +32,7 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
       <Title>{title}</Title>
       <Desc>{desc}</Desc>
       <Buttons>
-        <Delete onClick={onDeleteBtnClick}>
+        <Delete onClick={onToggleDeleteModal}>
           <FaTrash />
           <span>삭제하기</span>
         </Delete>
@@ -49,16 +42,16 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
             <span>수정하기</span>
           </Edit>
         </Link>
-        <Share onClick={onShareBtnClick}>
+        <Share onClick={onToggleShareModal}>
           <FaShare />
           <span>공유하기</span>
         </Share>
       </Buttons>
-      <ModalBox isOpenModal={isOpenModal}>
+      <ModalBox shareModalOn={shareModalOn} onClick={onToggleShareModal}>
         <ShareModal id={id} />
       </ModalBox>
-      <DeleteModalContainer isDeleteModalOpen={isDeleteModalOpen}>
-        <DeleteModal id={id} setIsDeleteModalOpen={setIsDeleteModalOpen} />
+      <DeleteModalContainer deleteModalOn={deleteModalOn}>
+        <DeleteModal id={id} onToggleDeleteModal={onToggleDeleteModal} setDeleteModalOn={setDeleteModalOn} />
       </DeleteModalContainer>
     </Item>
   );
@@ -160,16 +153,17 @@ const Share = styled.div`
 `;
 
 const ModalBox = styled.div`
-  margin: 1em;
-  visibility: ${(props: ModalProps) => {
-    return props.isOpenModal ? 'visible' : 'hidden';
-  }};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: ${(props: ShareModalProps) => (props.shareModalOn ? 'block' : 'none')};
 `;
 
 const DeleteModalContainer = styled.div`
-  display: ${(props: DeleteModalProps) => {
-    return props.isDeleteModalOpen ? 'block' : 'none';
-  }};
+  display: ${(props: DeleteModalProps) => (props.deleteModalOn ? 'block' : 'none')};
   position: absolute;
   top: 0;
   left: 0;

@@ -21,10 +21,13 @@ export const createWorldcup = (
 ): Promise<AxiosResponse> => axios.post('/api/worldcups', { title, desc, keywords, imgInfos });
 
 export const getWorldcupMetadata = (id: number, searchWord = ''): Promise<AxiosResponse> =>
-  axios.get(`/api/worldcups/${id}?metaonly=true&searchWord=${searchWord}`);
+  axios.get(`/api/worldcups/${id}`, { params: { metaonly: true, searchWord } });
 
 export const getWorldcupCandidates = (offset: number, limit: number, worldcupId: number): Promise<AxiosResponse> =>
-  axios.get(`/api/worldcups/${worldcupId}/candidates?offset=${offset}&limit=${limit}`);
+  axios.get(`/api/worldcups/${worldcupId}/candidates`, { params: { offset, limit } });
+
+export const getWorldcupRandomCandidates = (limit: number, worldcupId: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/${worldcupId}/candidates`, { params: { random: true, limit } });
 
 export const patchWorldcupTitle = (worldcupId: number, title: string): Promise<AxiosResponse> =>
   axios.patch(`/api/worldcups/${worldcupId}/title`, { title });

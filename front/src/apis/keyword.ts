@@ -1,3 +1,3 @@
 import axios, { AxiosResponse } from 'axios';
 
-export const getTagList = (): Promise<AxiosResponse> => axios.get('/api/tags');
+export const getKeywordList = (): Promise<AxiosResponse> => axios.get('/api/keywords');

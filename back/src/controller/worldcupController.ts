@@ -1,15 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import * as worldcupService from '../services/worldcupService';
 import * as commentService from '../services/commentService';
-import { findById as findUserById } from '../services/userService';
-import { findById as findWorldcupById } from '../services/worldcupService';
-import { getCandidates } from '../services/candidateService';
+import * as authService from '../services/authService';
+import * as candidateService from '../services/candidateService';
 import ApiResult from '../utils/ApiResult';
 
 const { succeed, failed } = ApiResult;
 
 const worldcupController = {
-  getWorldcups: async (request: Request, response: Response, next: NextFunction) => {
+  get: async (request: Request, response: Response, next: NextFunction) => {
     const { offset, limit, search, keyword } = request.query;
     if (offset === undefined || limit === undefined)
       return response.status(400).json(failed('offset or limit is undefined'));
@@ -25,7 +24,7 @@ const worldcupController = {
     response.json(succeed(worldcups));
   },
 
-  getWorldcup: async (request: Request, response: Response, next: NextFunction) => {
+  getMetadata: async (request: Request, response: Response, next: NextFunction) => {
     const {
       params: { id },
       query: { metaonly, searchWord },
@@ -37,7 +36,7 @@ const worldcupController = {
     response.status(400).json(failed('cannot get worldcup metadata'));
   },
 
-  saveWorldcup: async (request: Request, response: Response, next: NextFunction) => {
+  save: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { title, desc, keywords, imgInfos },
       session: {
@@ -52,36 +51,36 @@ const worldcupController = {
     }
   },
 
-  deleteWorldcup: async (request: Request, response: Response, next: NextFunction) => {
+  delete: async (request: Request, response: Response, next: NextFunction) => {
     const { id } = request.params;
     try {
-      await worldcupService.removeWorldcupById(Number(id));
+      await worldcupService.removeById(Number(id));
       response.json(succeed(null));
     } catch (e) {
       response.status(400).json(failed('cannot delete worldcup'));
     }
   },
 
-  patchWorldcupTitle: async (request: Request, response: Response, next: NextFunction) => {
+  patchTitle: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { title },
       params: { id },
     } = request;
     try {
-      await worldcupService.patchWorldcupTitle(Number(id), title);
+      await worldcupService.patchTitle(Number(id), title);
       response.json(succeed(null));
     } catch (e) {
       response.status(400).json(failed('cannot patch worldcup title'));
     }
   },
 
-  patchWorldcupDesc: async (request: Request, response: Response, next: NextFunction) => {
+  patchDesc: async (request: Request, response: Response, next: NextFunction) => {
     const {
       body: { desc },
       params: { id },
     } = request;
     try {
-      await worldcupService.patchWorldcupDesc(Number(id), desc);
+      await worldcupService.patchDesc(Number(id), desc);
       response.json(succeed(null));
     } catch (e) {
       response.status(400).json(failed('cannot patch worldcup desc'));
@@ -90,11 +89,17 @@ const worldcupController = {
 
   getCandidates: async (request: Request, response: Response, next: NextFunction) => {
     const {
-      query: { offset, limit },
+      query: { offset, limit, random },
       params: { id },
     } = request;
+
     try {
-      const candidates = await getCandidates(Number(id), Number(offset), Number(limit));
+      if (random) {
+        const candidates = await candidateService.getRandomList(Number(id), Number(limit));
+        response.json(succeed(candidates));
+        return;
+      }
+      const candidates = await candidateService.getCandidates(Number(id), Number(offset), Number(limit));
       response.json(succeed(candidates));
     } catch (e) {
       response.status(400).json(failed('cannot get candidates'));
@@ -108,7 +113,7 @@ const worldcupController = {
     } = request;
     try {
       if (length) {
-        const worldcup = await findWorldcupById(id);
+        const worldcup = await worldcupService.findById(id);
         const comments = await commentService.getCountByWorldcupId(worldcup);
         return response.json(succeed(comments));
       }
@@ -126,7 +131,7 @@ const worldcupController = {
       user: { id: userId },
     } = request;
     try {
-      const [user, worldcup] = await Promise.all([findUserById(userId), findWorldcupById(id)]);
+      const [user, worldcup] = await Promise.all([authService.findById(userId), worldcupService.findById(id)]);
       const {
         user: { nickname },
         createdAt,
