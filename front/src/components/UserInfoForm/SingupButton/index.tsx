@@ -1,19 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { signup } from '../../../apis/auth';
 import { useApiRequest } from '../../../hooks';
+import { MAIN } from '../../../constants/route';
 
 interface Props {
   nickname: string;
   gender: number;
   age: number;
-  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SignupButton({ nickname, gender, age, setAuthenticated }: Props): JSX.Element {
+function SignupButton({ nickname, gender, age }: Props): JSX.Element {
   const url = new URL(window.location.href);
   const clientId = url.searchParams.get('client_id');
-  const onSignUpSuccess = () => setAuthenticated(true);
+  const history = useHistory();
+
+  const onSignUpSuccess = () => {
+    history.push(MAIN);
+  };
   const signUpDispatcher = useApiRequest(signup, onSignUpSuccess);
 
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
@@ -26,11 +31,7 @@ function SignupButton({ nickname, gender, age, setAuthenticated }: Props): JSX.E
     signUpDispatcher({ type: 'REQUEST', requestProps: [clientId as string, nickname, gender, age] });
   };
 
-  return (
-    <>
-      <Container onClick={onSubmit}>회원가입</Container>
-    </>
-  );
+  return <Container onClick={onSubmit}>회원가입</Container>;
 }
 
 const Container = styled.button`
