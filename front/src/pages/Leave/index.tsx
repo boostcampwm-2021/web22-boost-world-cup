@@ -4,7 +4,7 @@ import { Header } from '../../components';
 import logo from '../../images/logo.png';
 import { deleteUser } from '../../apis/auth';
 import { UserStateContext, UserDispatcherContext } from '../../stores/userStore';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { useApiRequest } from '../../hooks';
 
 const Leave = (): JSX.Element => {
   const { id: userId } = useContext(UserStateContext);
@@ -12,7 +12,7 @@ const Leave = (): JSX.Element => {
   const onDeleteUserSuccess = () => userDispatcher({ type: 'LOGOUT' });
   const deleteUserDispatcher = useApiRequest(deleteUser, onDeleteUserSuccess);
 
-  const onLeaveBtnClick = () => deleteUserDispatcher({ type: REQUEST, requestProps: [userId] });
+  const onLeaveBtnClick = () => deleteUserDispatcher({ type: 'REQUEST', requestProps: [userId] });
 
   return (
     <>

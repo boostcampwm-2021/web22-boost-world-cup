@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { useApiRequest } from '../../hooks';
 import { getKeywordList } from '../../apis/keyword';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 interface Props {
   onClickKeyword: (keyword: string) => void;

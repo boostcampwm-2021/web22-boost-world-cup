@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { WorldcupAction } from '../../hooks/useWorldcupForm';
+import { WorldcupAction } from '../../types/Actions';
 
 interface Props {
   worldcupFormDispatcher?: React.Dispatch<WorldcupAction>;

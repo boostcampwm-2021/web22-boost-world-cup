@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import ImgInput from '../ImgInput';
 import ImgPreView from '../ImgPreView';
 import { ImgInfo } from '../../types/Datas';
-import { ImgsAction } from '../../hooks/useImgInfos';
-import { UploadState } from '../../hooks/useUploadState';
+import { ImgsAction } from '../../types/Actions';
+import { UploadState } from '../../types/States';
 
 interface Props {
   imgInfos: ImgInfo[];

@@ -6,7 +6,7 @@ import vsImg from '../../images/vs.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from '../Gameover';
 import { sendCurrentResult, sendFinalResult } from '../../apis/ranking';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { useApiRequest } from '../../hooks';
 import { LEFT, RIGHT } from '../../constants/number';
 import getImgURL from '../../utils/getImgURL';
 
@@ -80,12 +80,12 @@ function Worldcup(): JSX.Element {
               setGameInfo(newGameInfo);
               setSessionStorage(newGameInfo);
               sendFinalResultDispatcher({
-                type: REQUEST,
+                type: 'REQUEST',
                 requestProps: [gameInfo.worldcupId, winId as number, loseId as number],
               });
               return;
             }
-            sendCurrentResultDispatcher({ type: REQUEST, requestProps: [winId as number, loseId as number] });
+            sendCurrentResultDispatcher({ type: 'REQUEST', requestProps: [winId as number, loseId as number] });
             if (newGameInfo.currentRound === newGameInfo.round) {
               newGameInfo.round /= 2;
               newGameInfo.currentRound = 1;

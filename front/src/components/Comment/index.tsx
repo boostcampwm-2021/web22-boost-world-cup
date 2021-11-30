@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import { createComment, getComments } from '../../apis/comment';
 import { CommentData } from '../../types/Datas';
 import CommentList from '../CommentList';
-import { useInfiniteScroll } from '../../hooks';
+import { useInfiniteScroll, useApiRequest } from '../../hooks';
 import { UserStateContext } from '../../stores/userStore';
 import { FETCH_COMMENTS_LIMIT } from '../../constants/number';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
 
 interface Props {
   worldcupId: string;
@@ -36,7 +35,7 @@ function Comment({ worldcupId }: Props): JSX.Element {
         return;
       }
       setMessage('');
-      createCommentDispatcher({ type: REQUEST, requestProps: [worldcupId, trimMessage] });
+      createCommentDispatcher({ type: 'REQUEST', requestProps: [worldcupId, trimMessage] });
     },
     [comments, message],
   );

@@ -5,5 +5,7 @@ export { default as useUploadState } from './useUploadState';
 export { default as useWorldcupForm } from './useWorldcupForm';
 export { default as useInfiniteScroll } from './useInfiniteScroll';
 export { default as useLoginCheck } from './useLoginCheck';
+export { default as useThrottle } from './useThrottle';
+export { default as useApiRequest } from './useApiRequest';
 export { default as useModal } from './useModal';
 export { usePaginationSync, usePaginationAsync } from './usePagination';

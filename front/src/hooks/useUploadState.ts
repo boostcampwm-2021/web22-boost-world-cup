@@ -1,14 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
-
-export interface UploadState {
-  willUploadFiles: File[];
-  presignedURLs: string[];
-}
-
-export type UploadAction =
-  | { type: 'ADD_FILES'; payload: File[] }
-  | { type: 'ADD_PRESIGNED_URL'; payload: string[] }
-  | { type: 'RESET' };
+import { UploadState } from '../types/States';
+import { UploadAction } from '../types/Actions';
 
 const initialUploadState: UploadState = {
   willUploadFiles: [],

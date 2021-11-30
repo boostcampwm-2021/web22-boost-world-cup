@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import { UserInfo } from '../types/Datas';
 import { UserDispatcherContext } from '../stores/userStore';
-import useApiRequest, { REQUEST } from './useApiRequest';
+import useApiRequest from './useApiRequest';
 import { getUser } from '../apis/auth';
 
 const useLoginCheck = (): boolean => {
@@ -19,7 +19,7 @@ const useLoginCheck = (): boolean => {
   const getUserDispatcher = useApiRequest(getUser, onGetUserSuccess, onGetUserFailure);
 
   useEffect(() => {
-    getUserDispatcher({ type: REQUEST });
+    getUserDispatcher({ type: 'REQUEST' });
   }, []);
 
   return isLoginChecked;

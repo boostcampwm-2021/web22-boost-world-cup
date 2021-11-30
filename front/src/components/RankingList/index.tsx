@@ -3,17 +3,17 @@ import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import { SearchBar, RankingModal } from '../../components';
 import Pagination from '../Pagination';
-import { usePaginationAsync, useModal } from '../../hooks';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { usePaginationAsync, useThrottle, useApiRequest, useModal } from '../../hooks';
 import { getCandidateList } from '../../apis/ranking';
 import { getWorldcupMetadata } from '../../apis/worldcups';
 import { RankingData, WorldcupMetaData } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../constants/number';
 
-interface RankingProps {
+interface Props {
   worldcupId: string;
 }
-function RankingList({ worldcupId }: RankingProps): JSX.Element {
+
+function RankingList({ worldcupId }: Props): JSX.Element {
   const [inputWord, setInputWord] = useState('');
   const [totalCnt, setTotalCnt] = useState<number>(0);
   const candidateRef = useRef<number | null>(null);
@@ -27,6 +27,10 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   const [modalOn, onToggleModal] = useModal();
   const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
   const getWorldcupMetaDataDispatcher = useApiRequest(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
+  const throttledGetWorldcupMetaData = useThrottle(
+    () => getWorldcupMetaDataDispatcher({ type: 'REQUEST', requestProps: [worldcupId, inputWord] }),
+    500,
+  );
   const onShowRankingDetail = (event: React.MouseEvent<Element>) => {
     onToggleModal(event);
     const candidateName = event.currentTarget.children[2].innerHTML;
@@ -59,7 +63,7 @@ function RankingList({ worldcupId }: RankingProps): JSX.Element {
   };
 
   useEffect(() => {
-    getWorldcupMetaDataDispatcher({ type: REQUEST, requestProps: [worldcupId, inputWord] });
+    throttledGetWorldcupMetaData();
   }, [inputWord]);
 
   return (

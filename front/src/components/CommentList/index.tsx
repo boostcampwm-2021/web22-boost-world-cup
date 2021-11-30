@@ -4,7 +4,7 @@ import Comment from './comment';
 import { CommentData } from '../../types/Datas';
 import Loader from '../Loader';
 import { getCommentsCount } from '../../apis/comment';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { useApiRequest } from '../../hooks';
 
 interface Props {
   worldcupId: string;
@@ -30,7 +30,7 @@ function CommentList({
   const getCommnetCountDispatcher = useApiRequest(getCommentsCount, onGetCommentCountSuccess);
 
   useEffect(() => {
-    getCommnetCountDispatcher({ type: REQUEST, requestProps: [worldcupId] });
+    getCommnetCountDispatcher({ type: 'REQUEST', requestProps: [worldcupId] });
   }, [comments.length]);
 
   return (

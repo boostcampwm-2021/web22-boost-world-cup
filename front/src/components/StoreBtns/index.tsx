@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { createWorldcup } from '../../apis/worldcups';
 import { MAIN } from '../../constants/route';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { WorldcupState } from '../../hooks/useWorldcupForm';
+import { useApiRequest } from '../../hooks';
+import { WorldcupState } from '../../types/States';
 import { ImgInfo } from '../../types/Datas';
 
 interface Props {
@@ -20,7 +20,7 @@ function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     const { title, desc, keywords } = worldcupFormState;
-    createWorldcupDispatcher({ type: REQUEST, requestProps: [title, desc, keywords, imgInfos] });
+    createWorldcupDispatcher({ type: 'REQUEST', requestProps: [title, desc, keywords, imgInfos] });
   };
 
   return (

@@ -1,17 +1,6 @@
 import React, { useReducer } from 'react';
-
-export interface WorldcupState {
-  title: string;
-  desc: string;
-  keywords: string[];
-}
-
-export type WorldcupAction =
-  | { type: 'CHANGE_TITLE'; payload: string }
-  | { type: 'CHANGE_DESC'; payload: string }
-  | { type: 'ADD_KEYWORD'; payload: string }
-  | { type: 'ADD_KEYWORDS'; payload: string[] }
-  | { type: 'DELETE_KEYWORD' };
+import { WorldcupAction } from '../types/Actions';
+import { WorldcupState } from '../types/States';
 
 const initialWorldcupState: WorldcupState = {
   title: '',

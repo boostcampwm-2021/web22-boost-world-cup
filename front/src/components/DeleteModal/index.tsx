@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import Logo from '../../images/logo.png';
 import { deleteWorldcup } from '../../apis/worldcups';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { useApiRequest } from '../../hooks';
 import { MAIN } from '../../constants/route';
 
 interface DeleteModalProps {
@@ -15,7 +15,6 @@ interface DeleteModalProps {
 const DeleteModal = ({ id, onToggleDeleteModal, setDeleteModalOn }: DeleteModalProps): JSX.Element => {
   const history = useHistory();
   const onDeleteWorldcupSuccess = () => history.push(MAIN);
-
   const deleteWorldcupDispatcher = useApiRequest(deleteWorldcup, onDeleteWorldcupSuccess);
   const onDeleteMyWorldcup: React.MouseEventHandler = () => {
     setDeleteModalOn(false);

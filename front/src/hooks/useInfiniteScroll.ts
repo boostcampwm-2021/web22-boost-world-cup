@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AxiosResponse } from 'axios';
-import useApiRequest, { REQUEST } from './useApiRequest';
+import useApiRequest from './useApiRequest';
 import { INTERSECT_THRESHOLD } from '../constants/number';
 
 interface ReturnType<T> {
@@ -48,7 +48,7 @@ const useInfiniteScroll = <T>(
   const onIntersect = ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     if (!entry.isIntersecting || isLoading) return;
     setIsLoading(true);
-    getItemsDispatcher({ type: REQUEST, requestProps: [offset, limit, ...requestProps] });
+    getItemsDispatcher({ type: 'REQUEST', requestProps: [offset, limit, ...requestProps] });
     observer.unobserve(entry.target);
   };
 
@@ -65,7 +65,7 @@ const useInfiniteScroll = <T>(
     if (offset !== 0) return;
     setIsLoading(true);
     observer.current = new IntersectionObserver(onIntersect, { threshold: INTERSECT_THRESHOLD });
-    getItemsDispatcher({ type: REQUEST, requestProps: [offset, limit, ...requestProps] });
+    getItemsDispatcher({ type: 'REQUEST', requestProps: [offset, limit, ...requestProps] });
   }, [offset, ...requestProps]);
 
   return { items, target, isLoading, isClickMore, onClickMoreBtn, setOffset, setItems, setIsClickMore };

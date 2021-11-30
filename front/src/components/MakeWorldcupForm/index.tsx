@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
-import { useUploadState } from '../../hooks';
+import { useUploadState, useApiRequest } from '../../hooks';
 import { getSignedURLs } from '../../apis/image';
 import getUUID from '../../utils/getUUID';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
-import { ImgsAction } from '../../hooks/useImgInfos';
-import { WorldcupState, WorldcupAction } from '../../hooks/useWorldcupForm';
+import { ImgsAction, WorldcupAction } from '../../types/Actions';
+import { WorldcupState } from '../../types/States';
 import TextInput from '../TextInput';
 import ImgInput from '../ImgInput';
 import ImgPreViewList from '../ImgPreViewList';
@@ -60,7 +59,7 @@ function MakeWorldcupForm({
     }
     const newFiles = [...files].filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name));
     const contentTypes = newFiles.map((file) => file.type);
-    getSignedURLsDispatcher({ type: REQUEST, requestProps: [contentTypes] });
+    getSignedURLsDispatcher({ type: 'REQUEST', requestProps: [contentTypes] });
     uploadStateDispatcher({ type: 'ADD_FILES', payload: newFiles });
   };
 

@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { logout } from '../../../apis/auth';
 import { UserDispatcherContext } from '../../../stores/userStore';
-import useApiRequest, { REQUEST } from '../../../hooks/useApiRequest';
+import { useApiRequest } from '../../../hooks';
 
 interface Props {
   open: boolean;
@@ -18,7 +18,7 @@ function HeaderModal({ open, setModal }: Props): JSX.Element {
     history.push('/main');
   };
   const logoutDispatcher = useApiRequest(logout, onLogoutSuccess);
-  const onLogoutBtnClick: React.MouseEventHandler = () => logoutDispatcher({ type: REQUEST });
+  const onLogoutBtnClick: React.MouseEventHandler = () => logoutDispatcher({ type: 'REQUEST' });
   return (
     <>
       {open ? (

@@ -5,7 +5,7 @@ import { Header, RoundSelector } from '../../components';
 import logo from '../../images/logo.png';
 import { getWorldcupMetadata, getWorldcupRandomCandidates } from '../../apis/worldcups';
 import { candidateData, gameInfoData, WorldcupMetaData } from '../../types/Datas';
-import useApiRequest, { REQUEST } from '../../hooks/useApiRequest';
+import { useApiRequest } from '../../hooks';
 import { MAIN, WORLDCUP } from '../../constants/route';
 
 function Initialize(): JSX.Element {
@@ -55,10 +55,10 @@ function Initialize(): JSX.Element {
     winCandidate: { id: 0, name: '', imgKey: '' },
   });
 
-  const onStartBtnClick = () => getCandidateListDispatcher({ type: REQUEST, requestProps: [gameRound, worldcupId] });
+  const onStartBtnClick = () => getCandidateListDispatcher({ type: 'REQUEST', requestProps: [worldcupId, gameRound] });
 
   useEffect(() => {
-    getWorldcupMetadataDispatcher({ type: REQUEST, requestProps: [Number(worldcupId)] });
+    getWorldcupMetadataDispatcher({ type: 'REQUEST', requestProps: [Number(worldcupId)] });
     initializePossibleRound();
   }, [initializePossibleRound]);
 

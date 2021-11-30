@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { signup } from '../../../apis/auth';
-import useApiRequest, { REQUEST } from '../../../hooks/useApiRequest';
+import { useApiRequest } from '../../../hooks';
 
 interface Props {
   nickname: string;
@@ -23,7 +23,7 @@ function SignupButton({ nickname, gender, age, setAuthenticated }: Props): JSX.E
       alert('정보를 모두 입력해주세요.');
       return;
     }
-    signUpDispatcher({ type: REQUEST, requestProps: [clientId as string, nickname, gender, age] });
+    signUpDispatcher({ type: 'REQUEST', requestProps: [clientId as string, nickname, gender, age] });
   };
 
   return (
