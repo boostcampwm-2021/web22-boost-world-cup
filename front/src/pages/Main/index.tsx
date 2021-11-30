@@ -11,14 +11,20 @@ import WorldCupItem from '../../components/WorldCupItem';
 function Main(): JSX.Element {
   const location = useLocation();
   const history = useHistory();
-  const searchWord = useMemo(() => (location.search.split('=')[1] ? location.search.split('=')[1] : ''), [location]);
-  const keyword = useMemo(
-    () =>
-      location.pathname.split('/')[2] !== 'search' && location.pathname.split('/')[2]
-        ? location.pathname.split('/')[2]
-        : '',
-    [location],
-  );
+  const searchWord = useMemo(() => {
+    const params = new URLSearchParams(location.search).get('title');
+    if (params) {
+      return params;
+    }
+    return '';
+  }, [location]);
+  const keyword = useMemo(() => {
+    const path = location.pathname.split('/')[2];
+    if (path !== 'search' && path) {
+      return path;
+    }
+    return '';
+  }, [location]);
   const [inputWord, setInputWord] = useState('');
   const {
     items: worldcups,
