@@ -10,8 +10,8 @@ export const findByName = async (name) => {
   const keyword = await keywordRepository.findOne({ where: { name } });
   if (keyword) {
     keyword.cnt = keyword.cnt + 1;
+    return keywordRepository.save(keyword);
   }
-  return keywordRepository.save(keyword);
 };
 
 export const create = (name) => {

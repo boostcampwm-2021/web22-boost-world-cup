@@ -18,7 +18,7 @@ const DeleteModal = ({ id, onToggleDeleteModal, setDeleteModalOn }: DeleteModalP
   const deleteWorldcupDispatcher = useApiRequest(deleteWorldcup, onDeleteWorldcupSuccess);
   const onDeleteMyWorldcup: React.MouseEventHandler = () => {
     setDeleteModalOn(false);
-    deleteWorldcupDispatcher({ type: REQUEST, requestProps: [id] });
+    deleteWorldcupDispatcher({ type: 'REQUEST', requestProps: [id] });
   };
 
   return (

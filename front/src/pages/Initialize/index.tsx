@@ -55,7 +55,7 @@ function Initialize(): JSX.Element {
     winCandidate: { id: 0, name: '', imgKey: '' },
   });
 
-  const onStartBtnClick = () => getCandidateListDispatcher({ type: 'REQUEST', requestProps: [worldcupId, gameRound] });
+  const onStartBtnClick = () => getCandidateListDispatcher({ type: 'REQUEST', requestProps: [gameRound, worldcupId] });
 
   useEffect(() => {
     getWorldcupMetadataDispatcher({ type: 'REQUEST', requestProps: [Number(worldcupId)] });
