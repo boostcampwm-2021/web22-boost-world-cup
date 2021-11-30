@@ -33,7 +33,7 @@ function Keywords({ onClickKeyword, selectedKeyword }: Props): JSX.Element {
   };
 
   useEffect(() => {
-    getKeywordListDispatcher({ type: REQUEST });
+    getKeywordListDispatcher({ type: 'REQUEST' });
   }, []);
 
   return (

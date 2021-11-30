@@ -4,7 +4,7 @@ import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import ShareModal from '../ShareModal';
 import Image from '../Image';
-import { useModal } from '../../../hooks';
+import { useModal } from '../../hooks';
 
 interface Props {
   id: number;

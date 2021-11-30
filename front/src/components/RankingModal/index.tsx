@@ -10,6 +10,7 @@ interface ModalProps {
 }
 function RankingModal({ onToggleModal, info }: ModalProps): JSX.Element {
   const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, name, male, female, ...age } = info;
   const getCoordCircle = (percent: number) => {
     const x = Math.cos(2 * Math.PI * percent);

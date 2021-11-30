@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import ShareModal from '../ShareModal';
 import DeleteModal from '../DeleteModal';
 import Image from '../Image';
-import { useModal } from '../../../hooks';
+import { useModal } from '../../hooks';
 
 interface Props {
   id: number;

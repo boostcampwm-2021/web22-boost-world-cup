@@ -21,4 +21,5 @@ export type WorldcupAction =
   | { type: 'CHANGE_TITLE'; payload: string }
   | { type: 'CHANGE_DESC'; payload: string }
   | { type: 'ADD_KEYWORD'; payload: string }
+  | { type: 'ADD_KEYWORDS'; payload: string[] }
   | { type: 'DELETE_KEYWORD' };
