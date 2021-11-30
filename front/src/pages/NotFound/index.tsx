@@ -5,6 +5,7 @@ import { Header } from '../../components';
 import '@fontsource/rancho';
 import leftLogo from '../../images/404logo_1.png';
 import rightLogo from '../../images/404logo_2.png';
+import { MAIN } from '../../constants/route';
 
 const NotFound = (): JSX.Element => {
   return (
@@ -18,7 +19,7 @@ const NotFound = (): JSX.Element => {
         </h1>
         <p>We couldn&#39;t find that page.</p>
         <p>
-          Go to <Link to="/main">Home page</Link>
+          Go to <Link to={MAIN}>Home page</Link>
         </p>
       </Content>
     </Container>

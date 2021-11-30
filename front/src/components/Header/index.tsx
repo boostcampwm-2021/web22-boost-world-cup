@@ -6,7 +6,7 @@ import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
 import HeaderModal from './HeaderModal';
 import { UserStateContext } from '../../stores/userStore';
-import { MAIN } from '../../constants/route';
+import { MAIN, LOGIN } from '../../constants/route';
 
 interface Props {
   children?: React.ReactNode;
@@ -23,7 +23,7 @@ function Header({ children, onResetData }: Props): JSX.Element {
     setModal(!modal);
   };
   const onMoveMainPage = () => {
-    if (url === 'main' && onResetData) {
+    if (url === '' && onResetData) {
       onResetData();
     } else history.push(MAIN);
   };
@@ -39,7 +39,7 @@ function Header({ children, onResetData }: Props): JSX.Element {
           ) : (
             <Link
               to={{
-                pathname: '/login',
+                pathname: LOGIN,
                 state: { from: location.pathname },
               }}
             >

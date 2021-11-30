@@ -4,6 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { logout } from '../../../apis/auth';
 import { UserDispatcherContext } from '../../../stores/userStore';
 import { useApiRequest } from '../../../hooks';
+import { MAIN } from '../../../constants/route';
 
 interface Props {
   open: boolean;
@@ -15,7 +16,7 @@ function HeaderModal({ open, setModal }: Props): JSX.Element {
   const onLogoutSuccess = () => {
     setModal(false);
     userDispatcher({ type: 'LOGOUT' });
-    history.push('/main');
+    history.push(MAIN);
   };
   const logoutDispatcher = useApiRequest(logout, onLogoutSuccess);
   const onLogoutBtnClick: React.MouseEventHandler = () => logoutDispatcher({ type: 'REQUEST' });
