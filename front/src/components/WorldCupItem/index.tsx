@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import ShareModal from '../ShareModal';
 import Image from '../Image';
 import { useModal } from '../../hooks';
+import BackDrop from '../BackDrop';
 
 interface Props {
   id: number;
@@ -12,9 +13,6 @@ interface Props {
   thumbnail2: string;
   title: string;
   desc: string;
-}
-interface ModalProps {
-  modalOn: boolean;
 }
 function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   const [modalOn, onToggleModal] = useModal();
@@ -44,9 +42,9 @@ function WorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.E
           <span>공유하기</span>
         </Share>
       </Buttons>
-      <ModalBox onClick={onToggleModal} modalOn={modalOn}>
+      <BackDrop modalOn={modalOn} onToggleModal={onToggleModal}>
         <ShareModal id={id} />
-      </ModalBox>
+      </BackDrop>
     </Item>
   );
 }
@@ -143,16 +141,4 @@ const Share = styled.div`
     background-color: blue;
   }
 `;
-
-const ModalBox = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 99999;
-  display: ${(props: ModalProps) => (props.modalOn ? 'block' : 'none')};
-`;
-
 export default WorldCupItem;
