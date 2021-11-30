@@ -15,12 +15,6 @@ interface Props {
   title: string;
   desc: string;
 }
-interface ShareModalProps {
-  shareModalOn: boolean;
-}
-interface DeleteModalProps {
-  deleteModalOn: boolean;
-}
 function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
   const [deleteModalOn, onToggleDeleteModal, setDeleteModalOn] = useModal();
   const [shareModalOn, onToggleShareModal] = useModal();
