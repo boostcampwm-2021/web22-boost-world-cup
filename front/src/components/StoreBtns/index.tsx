@@ -20,13 +20,12 @@ function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     const { title, desc, keywords } = worldcupFormState;
-
     /* eslint-disable no-alert */
-    if (!title) {
+    if (!title.trim()) {
       alert('제목을 입력해주세요!');
       return;
     }
-    if (!desc) {
+    if (!desc.trim()) {
       alert('설명을 입력해주세요!');
       return;
     }
@@ -34,7 +33,7 @@ function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
       alert('이미지를 4개 이상 업로드해주세요!');
       return;
     }
-    createWorldcupDispatcher({ type: 'REQUEST', requestProps: [title, desc, keywords, imgInfos] });
+    createWorldcupDispatcher({ type: 'REQUEST', requestProps: [title.trim(), desc.trim(), keywords, imgInfos] });
   };
 
   return (
