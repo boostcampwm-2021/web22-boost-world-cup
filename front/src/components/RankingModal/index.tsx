@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { InfoData, DoughnutChartData } from '../../types/Datas';
+import getUUID from '../../utils/getUUID';
 import DoughnutChart from './DoughnutChart';
 import BarChart from './BarChart';
 
 interface Props {
   info: InfoData;
+}
+interface DoughnutAccData {
+  rankingDatas: DoughnutChartData[];
+  acc: number;
 }
 function RankingModal({ info }: Props): JSX.Element {
   const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
@@ -17,15 +22,21 @@ function RankingModal({ info }: Props): JSX.Element {
     return [x, y];
   };
   const makeDoughnutInfo = useCallback((rankingInfoData: number[]) => {
-    let acc = 0;
-    return rankingInfoData.map((value) => {
-      const [startX, startY] = getCoordCircle(acc);
-      acc += value;
-      const [endX, endY] = getCoordCircle(acc);
-      const isLargeArc = value > 0.5 ? 1 : 0;
-      const targetArc = 2 * Math.PI * value;
-      return { value, startX, startY, endX, endY, isLargeArc, targetArc };
-    });
+    return rankingInfoData.reduce(
+      (pre, value) => {
+        const { rankingDatas: preRankingDatas, acc: preAcc } = pre;
+        const id = getUUID();
+        const [startX, startY] = getCoordCircle(preAcc);
+        const newAcc = preAcc + value;
+        const [endX, endY] = getCoordCircle(newAcc);
+        const isLargeArc = value > 0.5 ? 1 : 0;
+        const targetArc = 2 * Math.PI * value;
+        const chartData = { id, value, startX, startY, endX, endY, isLargeArc, targetArc };
+        const newRankingDatas = [...preRankingDatas, chartData];
+        return { rankingDatas: newRankingDatas, acc: newAcc };
+      },
+      { rankingDatas: [], acc: 0 } as DoughnutAccData,
+    ).rankingDatas;
   }, []);
   useEffect(() => {
     setDoughnutInfo(makeDoughnutInfo(Object.values(age)));

@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import SearchBar from '../SearchBar';
-import RankingModal from '../RankingModal';
 import Pagination from '../Pagination';
-import BackDrop from '../BackDrop';
 import { usePaginationAsync, useThrottle, useApiRequest, useModal } from '../../hooks';
 import { getCandidateList } from '../../apis/ranking';
 import { getWorldcupMetadata } from '../../apis/worldcups';
 import { RankingData, WorldcupMetaData } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../constants/number';
+import Loader from '../Loader';
 
 interface Props {
   worldcupId: string;
 }
+const RankingModal = lazy(() => import('../RankingModal'));
+const BackDrop = lazy(() => import('../BackDrop'));
 
 function RankingList({ worldcupId }: Props): JSX.Element {
   const [inputWord, setInputWord] = useState('');
@@ -26,7 +27,7 @@ function RankingList({ worldcupId }: Props): JSX.Element {
     [inputWord, worldcupId],
     [totalCnt],
   );
-  const [modalOn, onToggleModal] = useModal();
+  const [modalOn, onToggleModal, setModalOn] = useModal();
   const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
   const getWorldcupMetaDataDispatcher = useApiRequest(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
   const throttledGetWorldcupMetaData = useThrottle(
@@ -35,7 +36,7 @@ function RankingList({ worldcupId }: Props): JSX.Element {
   );
   const onShowRankingDetail = useCallback(
     (event: React.MouseEvent<Element>) => {
-      onToggleModal(event);
+      setModalOn(true);
       const candidateName = event.currentTarget.children[2].innerHTML;
       candidateRef.current = candidateList.findIndex((v) => v.name === candidateName);
     },
@@ -111,9 +112,11 @@ function RankingList({ worldcupId }: Props): JSX.Element {
         <Pagination lastPage={lastPage} currentPage={currentPage} onPageChange={onPageChange} />
       </RankingItemContainer>
       {modalOn && (
-        <BackDrop modalOn={modalOn} onToggleModal={onToggleModal}>
-          <RankingModal info={getInfoAcc(candidateList[candidateRef.current as number])} />
-        </BackDrop>
+        <Suspense fallback={<Loader />}>
+          <BackDrop modalOn={modalOn} onToggleModal={onToggleModal}>
+            <RankingModal info={getInfoAcc(candidateList[candidateRef.current as number])} />
+          </BackDrop>
+        </Suspense>
       )}
     </>
   );
