@@ -14,6 +14,8 @@ import { getImgURL, getBlurImgURL } from '../../utils/getImgURL';
 function Worldcup(): JSX.Element {
   const [isInitialized, setIsInitialized] = useState(true);
   const [pick, setPick] = useState(0);
+  const [leftImageOnloaded, setLeftImageOnloaded] = useState(false);
+  const [rightImageOnloaded, setRightImageOnloaded] = useState(false);
   const [gameInfo, setGameInfo] = useState<gameInfoData>();
   const [leftCandidate, setLeftCandidate] = useState<candidateData>();
   const [rightCandidate, setRightCandidate] = useState<candidateData>();
@@ -126,10 +128,30 @@ function Worldcup(): JSX.Element {
       <ImageContainer select={pick}>
         <VersusImage src={vsImg} select={pick} />
         <LeftImageContainer select={pick}>
-          <LeftImage src={leftCandidate ? getImgURL(leftCandidate.imgKey) : ''} onClick={onImageClick(LEFT)} />
+          <LeftBlurImage
+            onloaded={leftImageOnloaded}
+            src={leftCandidate ? getBlurImgURL(leftCandidate.imgKey) : ''}
+            onClick={onImageClick(LEFT)}
+          />
+          <LeftImage
+            onloaded={leftImageOnloaded}
+            src={leftCandidate ? getImgURL(leftCandidate.imgKey) : ''}
+            onClick={onImageClick(LEFT)}
+            onLoad={() => setLeftImageOnloaded(true)}
+          />
         </LeftImageContainer>
         <RightImageContainer select={pick}>
-          <RightImage src={rightCandidate ? getImgURL(rightCandidate.imgKey) : ''} onClick={onImageClick(RIGHT)} />
+          <RightBlurImage
+            onloaded={rightImageOnloaded}
+            src={rightCandidate ? getBlurImgURL(rightCandidate.imgKey) : ''}
+            onClick={onImageClick(RIGHT)}
+          />
+          <RightImage
+            onLoad={() => setRightImageOnloaded(true)}
+            src={rightCandidate ? getImgURL(rightCandidate.imgKey) : ''}
+            onClick={onImageClick(RIGHT)}
+            onloaded={rightImageOnloaded}
+          />
         </RightImageContainer>
       </ImageContainer>
       <NameContainer select={pick}>
@@ -257,16 +279,31 @@ const VersusImage = styled.img<{ select: number }>`
   visibility: ${({ select }) => (select === 0 ? 'visible' : 'hidden')};
 `;
 
-const LeftImage = styled.img`
+const LeftBlurImage = styled.img<{ onloaded: boolean }>`
   max-width: 100%;
   object-fit: contain;
   background-repeat: no-repeat;
+  display: ${({ onloaded }) => (onloaded ? 'none' : 'block')};
+`;
+const RightBlurImage = styled.img<{ onloaded: boolean }>`
+  max-width: 100%;
+  object-fit: contain;
+  background-repeat: no-repeat;
+  display: ${({ onloaded }) => (onloaded ? 'none' : 'block')};
 `;
 
-const RightImage = styled.img`
+const LeftImage = styled.img<{ onloaded: boolean }>`
   max-width: 100%;
   object-fit: contain;
   background-repeat: no-repeat;
+  display: ${({ onloaded }) => (onloaded ? 'flex' : 'none')};
+`;
+
+const RightImage = styled.img<{ onloaded: boolean }>`
+  max-width: 100%;
+  object-fit: contain;
+  background-repeat: no-repeat;
+  display: ${({ onloaded }) => (onloaded ? 'flex' : 'none')};
 `;
 
 export default Worldcup;
