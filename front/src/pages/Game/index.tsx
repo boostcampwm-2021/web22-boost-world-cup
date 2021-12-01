@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import styled, { keyframes, css } from 'styled-components';
 import Header from '../../components/Header';
 import vsImg from '../../images/vs.png';
-import { candidateData, gameInfoData } from '../../types/Datas';
+import { CandidateData, GameInfoData } from '../../types/Datas';
 import Gameover from '../Gameover';
 import { sendCurrentResult, sendFinalResult } from '../../apis/ranking';
 import { useApiRequest } from '../../hooks';
@@ -14,9 +14,9 @@ import getImgURL from '../../utils/getImgURL';
 function Worldcup(): JSX.Element {
   const [isInitialized, setIsInitialized] = useState(true);
   const [pick, setPick] = useState(0);
-  const [gameInfo, setGameInfo] = useState<gameInfoData>();
-  const [leftCandidate, setLeftCandidate] = useState<candidateData>();
-  const [rightCandidate, setRightCandidate] = useState<candidateData>();
+  const [gameInfo, setGameInfo] = useState<GameInfoData>();
+  const [leftCandidate, setLeftCandidate] = useState<CandidateData>();
+  const [rightCandidate, setRightCandidate] = useState<CandidateData>();
   const debouncerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const onSendCurrentResultSuccess = () => {
@@ -25,7 +25,7 @@ function Worldcup(): JSX.Element {
   const sendCurrentResultDispatcher = useApiRequest(sendCurrentResult, onSendCurrentResultSuccess);
   const sendFinalResultDispatcher = useApiRequest(sendFinalResult);
 
-  const setCandidates = useCallback((candidatesList: candidateData[]) => {
+  const setCandidates = useCallback((candidatesList: CandidateData[]) => {
     candidatesList.sort(() => Math.random() - 0.5);
     setLeftCandidate(candidatesList[0]);
     setRightCandidate(candidatesList[1]);
@@ -43,7 +43,7 @@ function Worldcup(): JSX.Element {
     setIsInitialized(false);
   }, []);
 
-  const setSessionStorage = useCallback((gameInfo: gameInfoData): void => {
+  const setSessionStorage = useCallback((gameInfo: GameInfoData): void => {
     sessionStorage.setItem('_wiziboost', JSON.stringify(gameInfo));
   }, []);
 

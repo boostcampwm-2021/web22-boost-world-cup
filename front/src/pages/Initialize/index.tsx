@@ -5,7 +5,7 @@ import Header from '../../components/Header';
 import RoundSelector from '../../components/RoundSelector';
 import logo from '../../images/logo.png';
 import { getWorldcupMetadata, getWorldcupRandomCandidates } from '../../apis/worldcups';
-import { candidateData, gameInfoData, WorldcupMetaData } from '../../types/Datas';
+import { CandidateData, GameInfoData, WorldcupMetaData } from '../../types/Datas';
 import { useApiRequest } from '../../hooks';
 import { MAIN, WORLDCUP } from '../../constants/route';
 
@@ -27,7 +27,7 @@ function Initialize(): JSX.Element {
     setCandidatesSize(totalCnt);
   };
   const getWorldcupMetadataDispatcher = useApiRequest(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
-  const onGetCandidateListSuccess = (candidateList: candidateData[]) => {
+  const onGetCandidateListSuccess = (candidateList: CandidateData[]) => {
     const gameInfo = makeGameInfo(gameRound, candidateList);
     const secretKey = process.env.REACT_APP_SECRET_KEY;
     if (!secretKey) return;
@@ -45,7 +45,7 @@ function Initialize(): JSX.Element {
 
   const roundSelector = (newAge: number) => setRound(newAge);
 
-  const makeGameInfo = (gameRound: number, candidatesList: candidateData[]): gameInfoData => ({
+  const makeGameInfo = (gameRound: number, candidatesList: CandidateData[]): GameInfoData => ({
     isCompleted: false,
     worldcupId,
     title,

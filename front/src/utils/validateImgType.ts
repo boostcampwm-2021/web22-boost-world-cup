@@ -1,6 +1,5 @@
-const validateImgType = (type: string) => {
+const validateImgType = (type: string): boolean => {
   const extension = type.split('/')[1];
-  console.log(extension);
   return ['png', 'jpg', 'jpeg', 'webp'].includes(extension);
 };
 

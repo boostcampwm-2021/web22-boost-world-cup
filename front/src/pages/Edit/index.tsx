@@ -13,7 +13,7 @@ import {
   patchWorldcupDesc,
 } from '../../apis/worldcups';
 import { createCandidates } from '../../apis/candidate';
-import { ImgInfo, WorldcupMetaData, candidateData } from '../../types/Datas';
+import { ImgInfo, WorldcupMetaData, CandidateData } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../constants/number';
 import { MAIN } from '../../constants/route';
 
@@ -25,7 +25,7 @@ function Edit(): JSX.Element {
   const [totalCnt, setTotalCnt] = useState(0);
   const [worldcupFormState, worldcupFormDispatcher] = useWorldcupForm();
   const [currentTab, onTabChange] = useTabBar();
-  const [pageItems, currentPage, offset, lastPage, onPageChange] = usePaginationAsync<candidateData>(
+  const [pageItems, currentPage, offset, lastPage, onPageChange] = usePaginationAsync<CandidateData>(
     totalCnt,
     PAGINATION_LIMIT,
     getWorldcupCandidates,
@@ -69,7 +69,7 @@ function Edit(): JSX.Element {
   }, [currentTab, worldcupId, candidates.length]);
 
   useEffect(() => {
-    const newCandidates = pageItems.map(({ id, name, imgKey: key }: candidateData) => ({
+    const newCandidates = pageItems.map(({ id, name, imgKey: key }: CandidateData) => ({
       id,
       name,
       key,

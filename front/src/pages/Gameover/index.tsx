@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHome, FaList } from 'react-icons/fa';
 import Header from '../../components/Header';
-import { candidateData } from '../../types/Datas';
+import { CandidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
 import getImgURL from '../../utils/getImgURL';
 import { MAIN } from '../../constants/route';
 
 interface Props {
-  winCandidate?: candidateData;
+  winCandidate?: CandidateData;
   title?: string;
   worldcupId?: string;
 }
