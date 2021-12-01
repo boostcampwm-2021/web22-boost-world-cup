@@ -1,7 +1,6 @@
 import React, { useState, useContext, useMemo, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { useHistory } from 'react-router';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
 import { UserStateContext } from '../../stores/userStore';
@@ -12,28 +11,22 @@ const HeaderModal = lazy(() => import('./HeaderModal'));
 
 interface Props {
   children?: React.ReactNode;
-  onResetData?: () => void;
 }
 
-function Header({ children, onResetData }: Props): JSX.Element {
+function Header({ children }: Props): JSX.Element {
   const { isLoggedIn } = useContext(UserStateContext);
   const location = useLocation();
-  const history = useHistory();
-  const url = useMemo(() => history.location.pathname.split('/')[1], []);
   const [modal, setModal] = useState(false);
   const toggleModal = () => {
     setModal(!modal);
-  };
-  const onMoveMainPage = () => {
-    if (url === '' && onResetData) {
-      onResetData();
-    } else history.push(MAIN);
   };
   return (
     <>
       {modal && <Overlay onClick={() => setModal(false)} />}
       <MainHeader>
-        <Logo onClick={onMoveMainPage}>world cup</Logo>
+        <Link to="/">
+          <Logo>world cup</Logo>
+        </Link>
         <RightHeader>
           {children}
           {isLoggedIn ? (

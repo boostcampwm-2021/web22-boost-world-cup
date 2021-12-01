@@ -2,7 +2,13 @@ import { Keyword } from '../entity/Keyword';
 import { getRepository } from 'typeorm';
 
 export const getTopRankKeywords = () => {
-  return getRepository(Keyword).createQueryBuilder('keyword').select('name').orderBy('cnt', 'DESC').limit(15).execute();
+  return getRepository(Keyword)
+    .createQueryBuilder('keyword')
+    .select('name')
+    .where('keyword.cnt != :cnt', { cnt: 0 })
+    .orderBy('cnt', 'DESC')
+    .limit(15)
+    .execute();
 };
 
 export const findByName = async (name) => {
@@ -23,4 +29,9 @@ export const create = (name) => {
 export const findOrCreate = async (name) => {
   const keyword = await findByName(name);
   return keyword ? keyword : create(name);
+};
+
+export const save = (keyword) => {
+  const keywordRepository = getRepository(Keyword);
+  return keywordRepository.save(keyword);
 };
