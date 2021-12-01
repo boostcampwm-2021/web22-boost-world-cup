@@ -20,6 +20,20 @@ function StoreBtns({ imgInfos, worldcupFormState }: Props): JSX.Element {
   const onStore: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     const { title, desc, keywords } = worldcupFormState;
+
+    /* eslint-disable no-alert */
+    if (!title) {
+      alert('제목을 입력해주세요!');
+      return;
+    }
+    if (!desc) {
+      alert('설명을 입력해주세요!');
+      return;
+    }
+    if (imgInfos.length < 4) {
+      alert('이미지를 4개 이상 업로드해주세요!');
+      return;
+    }
     createWorldcupDispatcher({ type: 'REQUEST', requestProps: [title, desc, keywords, imgInfos] });
   };
 
