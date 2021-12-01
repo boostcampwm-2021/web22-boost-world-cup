@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import MakeWorldcupForm from '../../components/MakeWorldcupForm';
@@ -20,6 +20,7 @@ import { MAIN } from '../../constants/route';
 function Edit(): JSX.Element {
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
   const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
+  const history = useHistory();
   const [addedImgs, addedImgsDispatcher] = useImgInfos();
   const [candidates, candidatesDispatcher] = useImgInfos();
   const [totalCnt, setTotalCnt] = useState(0);
@@ -40,7 +41,16 @@ function Edit(): JSX.Element {
     worldcupFormDispatcher({ type: 'ADD_KEYWORDS', payload: keywords });
     setTotalCnt(totalCnt);
   };
-  const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(getWorldcupMetadata, onGetMetadataSuccess);
+
+  const onGetMetadataFailed = () => {
+    history.push(MAIN);
+  };
+
+  const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(
+    getWorldcupMetadata,
+    onGetMetadataSuccess,
+    onGetMetadataFailed,
+  );
 
   const createCandidatesDispatcher = useApiRequest(createCandidates);
 

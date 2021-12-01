@@ -96,12 +96,19 @@ export const patchDesc = async (id: number, desc: string) => {
     .execute();
 };
 
-export const getMetaData = async (id: number, searchWord?: String) => {
+export const getMetaData = async (worldcupId: number, userId: number, searchWord?: String) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
   const [worldcup, totalCnt] = await Promise.all([
-    worldcupRepository.findOne(id, { relations: ['keywords'] }),
-    searchWord ? candidateService.getTotalCountBySearchhWord(id, searchWord) : candidateService.getTotalCount(id),
+    worldcupRepository.findOne(worldcupId, { relations: ['keywords', 'user'] }),
+    searchWord
+      ? candidateService.getTotalCountBySearchhWord(worldcupId, searchWord)
+      : candidateService.getTotalCount(worldcupId),
   ]);
+
+  if (worldcup.user.id !== userId) {
+    throw new Error('수정 권한이 없습니다.');
+  }
+
   const keywords = worldcup.keywords.map((keyword) => keyword.name);
   const { title, description } = worldcup;
   return { totalCnt, title, description, keywords };
