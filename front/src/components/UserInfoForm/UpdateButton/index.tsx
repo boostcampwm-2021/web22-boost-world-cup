@@ -1,22 +1,24 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
 import { putUser } from '../../../apis/auth';
 import { UserDispatcherContext } from '../../../stores/userStore';
 import { useApiRequest } from '../../../hooks';
+import { MAIN } from '../../../constants/route';
 
 interface Props {
   id: number;
   nickname: string;
   gender: number;
   age: number;
-  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function UpdateButton({ id, nickname, gender, age, setAuthenticated }: Props): JSX.Element {
+function UpdateButton({ id, nickname, gender, age }: Props): JSX.Element {
+  const history = useHistory();
   const userDispatcher = useContext(UserDispatcherContext);
   const onPutUserSuccess = () => {
     userDispatcher({ type: 'LOGIN', payload: { id, nickname, gender, age, isLoggedIn: true } });
-    setAuthenticated(true);
+    history.push(MAIN);
   };
   const putUserDispatcher = useApiRequest(putUser, onPutUserSuccess);
   const onSubmit = async (event: React.MouseEvent<HTMLElement>) => {
@@ -29,11 +31,7 @@ function UpdateButton({ id, nickname, gender, age, setAuthenticated }: Props): J
     putUserDispatcher({ type: 'REQUEST', requestProps: [id, nickname, gender, age] });
   };
 
-  return (
-    <>
-      <Container onClick={onSubmit}>저장하기</Container>
-    </>
-  );
+  return <Container onClick={onSubmit}>저장하기</Container>;
 }
 
 const Container = styled.button`

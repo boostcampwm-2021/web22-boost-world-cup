@@ -109,5 +109,11 @@ export const getMetaData = async (id: number, searchWord?: String) => {
 };
 
 export const removeById = async (id: number) => {
-  return getRepository(Worldcup).delete(id);
+  const worldcup = getRepository(Worldcup);
+  const { keywords } = await worldcup.findOne(id, { relations: ['keywords'] });
+  keywords.map((keyword) => {
+    keyword.cnt--;
+    keywordService.save(keyword);
+  });
+  worldcup.delete(id);
 };
