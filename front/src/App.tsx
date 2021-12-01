@@ -16,7 +16,7 @@ function App(): JSX.Element {
         <Router>
           <Switch>
             <Route path={ROUTE.ROOT} component={PAGE.Root} exact />
-            <PublicRoute path={ROUTE.MAIN} component={PAGE.Main} exact />
+            <PublicRoute path={ROUTE.MAIN} component={PAGE.Main} />
             <PublicRoute path={ROUTE.LOGIN} component={PAGE.Login} />
             <PublicRoute path={ROUTE.SIGNUP} component={PAGE.SignUp} />
             <PrivateRoute path={ROUTE.MAKE} component={PAGE.Make} />
