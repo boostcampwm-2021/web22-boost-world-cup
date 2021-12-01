@@ -10,17 +10,20 @@ const bucketController = {
   getSignedURL: async (request: Request, response: Response, next: NextFunction) => {
     const { contentTypes } = request.body;
     const presignedData = await Promise.all(
-      contentTypes.map(async (type: string) => {
-        const key = `${uuid()}.${extension(type)}`;
-        const presignedURL = await s3.getSignedUrlPromise('putObject', {
-          Bucket: process.env.NCP_BUCKET_NAME,
-          Key: key,
-          Expires: 60,
-          ContentType: type,
-          ACL: 'public-read',
-        });
-        return { presignedURL, key };
-      }),
+      contentTypes
+        .filter((type: string) => ['png', 'jpg', 'jpeg', 'webp'].includes(String(extension(type))))
+        .map(async (type: string) => {
+          const fileExtension = extension(type);
+          const key = `${uuid()}.${fileExtension}`;
+          const presignedURL = await s3.getSignedUrlPromise('putObject', {
+            Bucket: process.env.NCP_BUCKET_NAME,
+            Key: key,
+            Expires: 60,
+            ContentType: type,
+            ACL: 'public-read',
+          });
+          return { presignedURL, key };
+        }),
     );
     response.json(succeed(presignedData));
   },

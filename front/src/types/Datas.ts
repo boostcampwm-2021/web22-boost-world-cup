@@ -10,21 +10,21 @@ export interface ImgInfo {
   id: number;
 }
 
-export interface candidateData {
+export interface CandidateData {
   id: number;
   name: string;
   imgKey: string;
 }
 
-export interface gameInfoData {
+export interface GameInfoData {
   isCompleted: boolean;
   worldcupId: string;
   title: string;
   round: number;
   currentRound: number;
-  candidatesList: candidateData[];
-  selectedCandidate: candidateData[];
-  winCandidate: candidateData;
+  candidatesList: CandidateData[];
+  selectedCandidate: CandidateData[];
+  winCandidate: CandidateData;
 }
 
 export interface CommentData {

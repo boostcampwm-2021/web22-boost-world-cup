@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useUploadState, useApiRequest } from '../../hooks';
 import { getSignedURLs } from '../../apis/image';
 import getUUID from '../../utils/getUUID';
+import validateImgType from '../../utils/validateImgType';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
 import { ImgsAction, WorldcupAction } from '../../types/Actions';
 import { WorldcupState } from '../../types/States';
@@ -58,9 +59,10 @@ function MakeWorldcupForm({
       return;
     }
     const newFiles = [...files]
-      .filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name))
-      .map((file) => new File([file], file.name.trim().replace(/(.png|.jpg|.jpeg|.gif)$/, ''), { type: file.type }));
-
+      .filter(
+        (file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name) && validateImgType(file.type),
+      )
+      .map((file) => new File([file], file.name.trim().replace(/(.png|.jpg|.jpeg|.webp)$/, ''), { type: file.type }));
     const contentTypes = newFiles.map((file) => file.type);
     getSignedURLsDispatcher({ type: 'REQUEST', requestProps: [contentTypes] });
     uploadStateDispatcher({ type: 'ADD_FILES', payload: newFiles });
