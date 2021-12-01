@@ -1,4 +1,4 @@
-import React, { useState, useContext, useMemo, lazy, Suspense } from 'react';
+import React, { useState, useContext, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import '@fontsource/rancho';
@@ -24,7 +24,7 @@ function Header({ children }: Props): JSX.Element {
     <>
       {modal && <Overlay onClick={() => setModal(false)} />}
       <MainHeader>
-        <Link to="/">
+        <Link to={MAIN}>
           <Logo>world cup</Logo>
         </Link>
         <RightHeader>

@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
+import { useLocation, useHistory } from 'react-router';
 import Header from '../../components/Header';
 import Keywords from '../../components/Keywords';
 import WorldcupList from '../../components/WorldcupList';
 import SearchBar from '../../components/SearchBar';
-import { useLocation, useHistory } from 'react-router';
 import { useInfiniteScroll } from '../../hooks';
 import { getWorldcupList } from '../../apis/worldcups';
 import { Worldcup } from '../../types/Datas';
@@ -22,9 +22,9 @@ function Main(): JSX.Element {
     return '';
   }, [location]);
   const keyword = useMemo(() => {
-    const path = location.pathname.split('/')[2];
-    if (path !== 'search' && path) {
-      return path;
+    const params = new URLSearchParams(location.search).get('keyword');
+    if (params) {
+      return params;
     }
     return '';
   }, [location]);
@@ -44,7 +44,7 @@ function Main(): JSX.Element {
     setOffset(0);
     setInputWord('');
     setIsClickMore(false);
-    history.push(`/main/search?title=${inputWord}`);
+    history.push(`/search?title=${inputWord}`);
   };
   const onSearchWordChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setInputWord(target.value);
@@ -52,7 +52,7 @@ function Main(): JSX.Element {
   const onClickKeyword = (keyword: string) => {
     setOffset(0);
     setIsClickMore(false);
-    history.push(`/main/${keyword}`);
+    history.push(`/search?keyword=${keyword}`);
   };
 
   return (

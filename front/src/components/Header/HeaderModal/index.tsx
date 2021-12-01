@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { logout } from '../../../apis/auth';
 import { UserDispatcherContext } from '../../../stores/userStore';
 import { useApiRequest } from '../../../hooks';
-import { MAIN } from '../../../constants/route';
+import { MAIN, MYINFO, MYWORLDCUP, MAKE } from '../../../constants/route';
 
 interface Props {
   open: boolean;
@@ -25,13 +25,13 @@ function HeaderModal({ open, setModal }: Props): JSX.Element {
       {open ? (
         <MenuBox>
           <li>
-            <Link to="/myinfo">내 정보</Link>
+            <Link to={MYINFO}>내 정보</Link>
           </li>
           <li>
-            <Link to="/myworldcup">내가 만든 월드컵</Link>
+            <Link to={MYWORLDCUP}>내가 만든 월드컵</Link>
           </li>
           <li>
-            <Link to="/make">월드컵 만들기</Link>
+            <Link to={MAKE}>월드컵 만들기</Link>
           </li>
           <li>
             <button type="button" onClick={onLogoutBtnClick}>

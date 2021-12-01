@@ -20,9 +20,10 @@ function App(): JSX.Element {
           <Suspense fallback={<Loading />}>
             <Switch>
               <PublicRoute path={ROUTE.MAIN} component={getLazyLoadComponent('Main')} exact />
+              <PublicRoute path="/search" component={getLazyLoadComponent('Main')} />
               <PublicRoute path={ROUTE.LOGIN} component={getLazyLoadComponent('Login')} />
               <PublicRoute path={ROUTE.SIGNUP} component={getLazyLoadComponent('SiguUp')} />
-              <PrivateRoute path={ROUTE.MAKE} component={getLazyLoadComponent('Main')} />
+              <PrivateRoute path={ROUTE.MAKE} component={getLazyLoadComponent('Make')} />
               <PrivateRoute path={ROUTE.INITIALIZE} component={getLazyLoadComponent('Initialize')} />
               <PrivateRoute path={ROUTE.WORLDCUP} component={getLazyLoadComponent('Game')} />
               <PrivateRoute path={ROUTE.MYWORLDCUP} component={getLazyLoadComponent('MyWorldcup')} />
