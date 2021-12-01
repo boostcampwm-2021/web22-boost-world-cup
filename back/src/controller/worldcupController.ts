@@ -118,6 +118,11 @@ const worldcupController = {
         return response.json(succeed(comments));
       }
       const comments = await commentService.findByWorldcupId(id, offset as string, limit as string);
+      comments.map((comment) => {
+        comment.createdAt = `${comment.createdAt.getFullYear()}-${
+          comment.createdAt.getMonth() + 1
+        }-${comment.createdAt.getDate()} ${comment.createdAt.getHours()}:${comment.createdAt.getMinutes()}:${comment.createdAt.getSeconds()}`;
+      });
       response.json(succeed(comments));
     } catch (e) {
       response.status(400).json(failed('cannot get comments'));

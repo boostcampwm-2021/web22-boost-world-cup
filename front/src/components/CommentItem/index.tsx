@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { CommentData } from '../../types/Datas';
 import { deleteComment } from '../../apis/comment';
@@ -16,12 +16,6 @@ function Comment({ comment, setComments }: Props): JSX.Element {
     setComments((prevComments) => prevComments.filter((prevComment) => prevComment.commentId !== comment.commentId));
   const deleteCommentDispatcher = useApiRequest(deleteComment, onDeleteCommentSuccess);
 
-  const getDateString = useCallback((date: string) => {
-    const yymmdd = date.split('T')[0];
-    const hhmmss = date.split('T')[1].split('.')[0];
-    return `${yymmdd} ${hhmmss}`;
-  }, []);
-
   const onDeleteBtnClick: React.MouseEventHandler = () =>
     deleteCommentDispatcher({ type: 'REQUEST', requestProps: [comment.commentId] });
 
@@ -29,7 +23,7 @@ function Comment({ comment, setComments }: Props): JSX.Element {
     <Wrapper>
       <SubContainer>
         <Writer>{comment.nickname}</Writer>
-        <Date>{getDateString(comment.createdAt)}</Date>
+        <Date>{comment.createdAt}</Date>
         {userId === comment.userId && <DeleteButton onClick={onDeleteBtnClick}>삭제</DeleteButton>}
       </SubContainer>
       <Message>{comment.message}</Message>

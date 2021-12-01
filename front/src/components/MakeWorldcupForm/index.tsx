@@ -57,7 +57,10 @@ function MakeWorldcupForm({
     if (!files) {
       return;
     }
-    const newFiles = [...files].filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name));
+    const newFiles = [...files]
+      .filter((file: File) => !imgInfos.map((info: ImgInfo) => info.name).includes(file.name))
+      .map((file) => new File([file], file.name.trim().replace(/(.png|.jpg|.jpeg|.gif)$/, ''), { type: file.type }));
+
     const contentTypes = newFiles.map((file) => file.type);
     getSignedURLsDispatcher({ type: 'REQUEST', requestProps: [contentTypes] });
     uploadStateDispatcher({ type: 'ADD_FILES', payload: newFiles });
