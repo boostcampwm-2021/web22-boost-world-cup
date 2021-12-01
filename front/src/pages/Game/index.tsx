@@ -164,33 +164,6 @@ function Worldcup(): JSX.Element {
   );
 }
 
-const LeftImageContainer = styled.div<{ select: number }>`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: ${({ select }) => (select === LEFT ? `center` : `flex-end`)};
-  animation: ${({ select }) =>
-    select === RIGHT
-      ? css`
-          ${notSelected} 1s ease forwards
-        `
-      : css``};
-`;
-
-const RightImageContainer = styled.div<{ select: number }>`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  justify-content: ${({ select }) => (select === RIGHT ? `center` : `flex-start`)};
-  animation: ${({ select }) =>
-    select === LEFT
-      ? css`
-          ${notSelected} 1s ease forwards
-        `
-      : css``};
-`;
-
 const InfoContainer = styled.div`
   display: flex;
   align-items: center;
@@ -279,30 +252,55 @@ const VersusImage = styled.img<{ select: number }>`
   visibility: ${({ select }) => (select === 0 ? 'visible' : 'hidden')};
 `;
 
+const LeftImageContainer = styled.div<{ select: number }>`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: ${({ select }) => (select === LEFT ? `center` : `flex-end`)};
+  animation: ${({ select }) =>
+    select === RIGHT
+      ? css`
+          ${notSelected} 1s ease forwards
+        `
+      : css``};
+  img {
+    max-width: 100%;
+    object-fit: contain;
+    background-repeat: no-repeat;
+  }
+`;
+
+const RightImageContainer = styled.div<{ select: number }>`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  justify-content: ${({ select }) => (select === RIGHT ? `center` : `flex-start`)};
+  animation: ${({ select }) =>
+    select === LEFT
+      ? css`
+          ${notSelected} 1s ease forwards
+        `
+      : css``};
+  img {
+    max-width: 100%;
+    object-fit: contain;
+    background-repeat: no-repeat;
+  }
+`;
+
 const LeftBlurImage = styled.img<{ onloaded: boolean }>`
-  max-width: 100%;
-  object-fit: contain;
-  background-repeat: no-repeat;
   display: ${({ onloaded }) => (onloaded ? 'none' : 'block')};
 `;
 const RightBlurImage = styled.img<{ onloaded: boolean }>`
-  max-width: 100%;
-  object-fit: contain;
-  background-repeat: no-repeat;
   display: ${({ onloaded }) => (onloaded ? 'none' : 'block')};
 `;
 
 const LeftImage = styled.img<{ onloaded: boolean }>`
-  max-width: 100%;
-  object-fit: contain;
-  background-repeat: no-repeat;
   display: ${({ onloaded }) => (onloaded ? 'flex' : 'none')};
 `;
 
 const RightImage = styled.img<{ onloaded: boolean }>`
-  max-width: 100%;
-  object-fit: contain;
-  background-repeat: no-repeat;
   display: ${({ onloaded }) => (onloaded ? 'flex' : 'none')};
 `;
 
