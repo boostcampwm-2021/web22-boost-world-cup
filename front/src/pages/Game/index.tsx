@@ -9,7 +9,7 @@ import { sendCurrentResult, sendFinalResult } from '../../apis/ranking';
 import { useApiRequest } from '../../hooks';
 import { LEFT, RIGHT } from '../../constants/number';
 import { MAIN } from '../../constants/route';
-import getImgURL from '../../utils/getImgURL';
+import { getImgURL } from '../../utils/getImgURL';
 
 function Worldcup(): JSX.Element {
   const [isInitialized, setIsInitialized] = useState(true);

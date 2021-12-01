@@ -5,7 +5,7 @@ import { BsImage } from 'react-icons/bs';
 import { ImgInfo } from '../../types/Datas';
 import { useUploadImg } from '../../hooks';
 import { ImgsAction } from '../../types/Actions';
-import getImgURL from '../../utils/getImgURL';
+import { getImgURL } from '../../utils/getImgURL';
 import { IMG_PREVIEW_WIDTH, IMG_PREVIEW_HEIGHT } from '../../constants/number';
 
 interface Props {
