@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -94,4 +94,4 @@ const KeywordName = styled.h3<{ selected: boolean }>`
     color: ${({ theme }) => theme.color.gray[2]};
   }
 `;
-export default Keywords;
+export default memo(Keywords);
