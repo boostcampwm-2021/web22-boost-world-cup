@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, memo } from 'react';
 import styled from 'styled-components';
 import { WorldcupAction } from '../../types/Actions';
 
@@ -121,4 +121,4 @@ const HideText = styled.span`
   ${({ theme }) => theme.fontStyle.caption};
 `;
 
-export default KeywordInput;
+export default memo(KeywordInput);

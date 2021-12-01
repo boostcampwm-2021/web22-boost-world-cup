@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import styled from 'styled-components';
 import Comment from '../CommentItem';
 import { CommentData } from '../../types/Datas';
@@ -98,4 +98,4 @@ const Title = styled.p`
   }
 `;
 
-export default CommentList;
+export default memo(CommentList);

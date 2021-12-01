@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { AxiosResponse } from 'axios';
 import useApiRequest from './useApiRequest';
 import { INTERSECT_THRESHOLD } from '../constants/number';
@@ -48,7 +48,7 @@ const useInfiniteScroll = <T>(
     observer.unobserve(entry.target);
   };
 
-  const onClickMoreBtn = () => setIsClickMore(!isClickMore);
+  const onClickMoreBtn = useCallback(() => setIsClickMore((isClickMore) => !isClickMore), []);
 
   useEffect(() => {
     if (!isClickMore) return;

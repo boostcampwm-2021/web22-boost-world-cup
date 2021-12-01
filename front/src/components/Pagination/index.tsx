@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { BiLeftArrow, BiRightArrow } from 'react-icons/bi';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
@@ -92,4 +92,4 @@ const ArrowBtn = styled.button<{ position: 'left' | 'right' }>`
   }
 `;
 
-export default Pagination;
+export default memo(Pagination);

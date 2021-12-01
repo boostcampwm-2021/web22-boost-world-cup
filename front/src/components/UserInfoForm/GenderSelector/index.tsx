@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import styled from 'styled-components';
 import { MALE, FEMALE } from '../../../constants/number';
 
@@ -60,4 +60,4 @@ const Female = styled.div<{ gender: number }>`
   cursor: pointer;
 `;
 
-export default GenderSelector;
+export default memo(GenderSelector);

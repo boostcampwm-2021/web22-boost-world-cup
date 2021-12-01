@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { useLocation, useHistory } from 'react-router';
 import Header from '../../components/Header';
@@ -39,6 +39,21 @@ function Main(): JSX.Element {
     setIsClickMore,
   } = useInfiniteScroll<Worldcup>(FETCH_WORLDCUPS_LIMIT, getWorldcupList, [searchWord, keyword]);
 
+  const memoizedWorldcupItems = useMemo(
+    () =>
+      worldcups.map(({ id, thumbnail1, thumbnail2, title, description }) => (
+        <WorldCupItem
+          key={id}
+          id={id}
+          thumbnail1={thumbnail1}
+          thumbnail2={thumbnail2}
+          title={title}
+          desc={description}
+        />
+      )),
+    [worldcups],
+  );
+
   const onSubmit: React.MouseEventHandler = (event) => {
     event.preventDefault();
     setOffset(0);
@@ -49,11 +64,11 @@ function Main(): JSX.Element {
   const onSearchWordChange: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setInputWord(target.value);
   };
-  const onClickKeyword = (keyword: string) => {
+  const onClickKeyword = useCallback((keyword: string) => {
     setOffset(0);
     setIsClickMore(false);
     history.push(`/search?keyword=${keyword}`);
-  };
+  }, []);
 
   return (
     <Wrapper>
@@ -67,16 +82,7 @@ function Main(): JSX.Element {
         isClickMore={isClickMore}
         onClickMoreBtn={onClickMoreBtn}
       >
-        {worldcups.map(({ id, thumbnail1, thumbnail2, title, description }) => (
-          <WorldCupItem
-            key={id}
-            id={id}
-            thumbnail1={thumbnail1}
-            thumbnail2={thumbnail2}
-            title={title}
-            desc={description}
-          />
-        ))}
+        {memoizedWorldcupItems}
       </WorldcupList>
     </Wrapper>
   );
