@@ -16,9 +16,9 @@ function Worldcup(): JSX.Element {
   const [pick, setPick] = useState(0);
   const [leftImageOnloaded, setLeftImageOnloaded] = useState(false);
   const [rightImageOnloaded, setRightImageOnloaded] = useState(false);
-  const [gameInfo, setGameInfo] = useState<gameInfoData>();
-  const [leftCandidate, setLeftCandidate] = useState<candidateData>();
-  const [rightCandidate, setRightCandidate] = useState<candidateData>();
+  const [gameInfo, setGameInfo] = useState<GameInfoData>();
+  const [leftCandidate, setLeftCandidate] = useState<CandidateData>();
+  const [rightCandidate, setRightCandidate] = useState<CandidateData>();
   const debouncerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const onSendCurrentResultSuccess = () => {
