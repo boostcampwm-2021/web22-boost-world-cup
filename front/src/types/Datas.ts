@@ -65,6 +65,7 @@ export interface InfoData {
 }
 
 export interface DoughnutChartData {
+  id: number;
   value: number;
   startX: number;
   startY: number;

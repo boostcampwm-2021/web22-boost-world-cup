@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import Image from '../../Image';
 
@@ -17,26 +17,37 @@ interface RatioProp {
 
 function RankingItem({ id, imgKey, name, victoryRatio, winRatio, onClick }: ItemProps): JSX.Element {
   return (
-    <Section>
-      <LeftSection onClick={onClick}>
-        <span>{id}</span>
-        <Image width={50} height={50} imgKey={imgKey} />
-        <p>{name}</p>
-        <div />
-      </LeftSection>
-      <RightSection>
-        <Bar>
-          <Ratio width={victoryRatio} color="#e53238" />
-          <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
-        </Bar>
-        <Bar>
-          <Ratio width={winRatio} color="#0064d2" />
-          <span>{`${(winRatio * 100).toFixed(2)}%`}</span>
-        </Bar>
-      </RightSection>
-    </Section>
+    <Wrapper>
+      <Section>
+        <LeftSection onClick={onClick}>
+          <span>{id}</span>
+          <Image width={50} height={50} imgKey={imgKey} />
+          <p>{name}</p>
+          <div />
+        </LeftSection>
+        <RightSection>
+          <Bar>
+            <Ratio width={victoryRatio} color="#e53238" />
+            <span>{`${(victoryRatio * 100).toFixed(2)}%`}</span>
+          </Bar>
+          <Bar>
+            <Ratio width={winRatio} color="#0064d2" />
+            <span>{`${(winRatio * 100).toFixed(2)}%`}</span>
+          </Bar>
+        </RightSection>
+      </Section>
+      <Divider />
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const Section = styled.div`
   display: flex;
@@ -98,4 +109,11 @@ const Ratio = styled.div`
   background-color: ${(props: RatioProp) => `${props.color}`};
   opacity: 0.8;
 `;
-export default RankingItem;
+
+const Divider = styled.hr`
+  height: 1px;
+  width: 90%;
+  background-color: gray;
+  margin-bottom: 1em;
+`;
+export default memo(RankingItem);

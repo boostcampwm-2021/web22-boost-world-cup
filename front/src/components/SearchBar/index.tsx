@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import styled from 'styled-components';
 import TextInput from '../TextInput';
@@ -37,4 +37,4 @@ const SubmitButton = styled.button`
   top: 10px;
 `;
 
-export default SearchBar;
+export default memo(SearchBar);

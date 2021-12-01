@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import Loader from '../Loader';
 
@@ -63,4 +63,4 @@ const Title = styled.p`
   }
 `;
 
-export default WorldcupList;
+export default memo(WorldcupList);

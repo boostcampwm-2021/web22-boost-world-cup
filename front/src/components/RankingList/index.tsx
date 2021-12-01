@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import RankingItem from './RankingItem';
 import SearchBar from '../SearchBar';
-import RankingModal from '../RankingModal';
 import Pagination from '../Pagination';
-import BackDrop from '../BackDrop';
 import { usePaginationAsync, useThrottle, useApiRequest, useModal } from '../../hooks';
 import { getCandidateList } from '../../apis/ranking';
 import { getWorldcupMetadata } from '../../apis/worldcups';
 import { RankingData, WorldcupMetaData } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../constants/number';
+import Loader from '../Loader';
 
 interface Props {
   worldcupId: string;
 }
+const RankingModal = lazy(() => import('../RankingModal'));
+const BackDrop = lazy(() => import('../BackDrop'));
 
 function RankingList({ worldcupId }: Props): JSX.Element {
   const [inputWord, setInputWord] = useState('');
@@ -26,18 +27,21 @@ function RankingList({ worldcupId }: Props): JSX.Element {
     [inputWord, worldcupId],
     [totalCnt],
   );
-  const [modalOn, onToggleModal] = useModal();
+  const [modalOn, onToggleModal, setModalOn] = useModal();
   const onGetWorldcupMetadataSuccess = ({ totalCnt }: WorldcupMetaData) => setTotalCnt(totalCnt);
   const getWorldcupMetaDataDispatcher = useApiRequest(getWorldcupMetadata, onGetWorldcupMetadataSuccess);
   const throttledGetWorldcupMetaData = useThrottle(
     () => getWorldcupMetaDataDispatcher({ type: 'REQUEST', requestProps: [worldcupId, inputWord] }),
     500,
   );
-  const onShowRankingDetail = (event: React.MouseEvent<Element>) => {
-    onToggleModal(event);
-    const candidateName = event.currentTarget.children[2].innerHTML;
-    candidateRef.current = candidateList.findIndex((v) => v.name === candidateName);
-  };
+  const onShowRankingDetail = useCallback(
+    (event: React.MouseEvent<Element>) => {
+      setModalOn(true);
+      const candidateName = event.currentTarget.children[2].innerHTML;
+      candidateRef.current = candidateList.findIndex((v) => v.name === candidateName);
+    },
+    [candidateList],
+  );
 
   const getInfoAcc = useCallback((candidate: RankingData) => {
     return {
@@ -54,15 +58,15 @@ function RankingList({ worldcupId }: Props): JSX.Element {
     };
   }, []);
 
-  const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
+  const onSubmit = useCallback((event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setInputWord('');
-  };
+  }, []);
 
-  const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchWordChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     setInputWord(inputValue);
-  };
+  }, []);
 
   useEffect(() => {
     throttledGetWorldcupMetaData();
@@ -92,27 +96,27 @@ function RankingList({ worldcupId }: Props): JSX.Element {
         </RightCaption>
       </Caption>
       <RankingItemContainer>
-        {candidateList.map((v, index) => {
+        {candidateList.map((candidate, index) => {
           return (
-            <Wrapper key={v.id}>
-              <RankingItem
-                id={offset + index + 1}
-                imgKey={v.imgKey}
-                name={v.name}
-                victoryRatio={v.victoryRatio}
-                winRatio={v.winRatio}
-                onClick={onShowRankingDetail}
-              />
-              {index + 1 < candidateList.length ? <Divider /> : ''}
-            </Wrapper>
+            <RankingItem
+              key={candidate.id}
+              id={offset + index + 1}
+              imgKey={candidate.imgKey}
+              name={candidate.name}
+              victoryRatio={candidate.victoryRatio}
+              winRatio={candidate.winRatio}
+              onClick={onShowRankingDetail}
+            />
           );
         })}
         <Pagination lastPage={lastPage} currentPage={currentPage} onPageChange={onPageChange} />
       </RankingItemContainer>
       {modalOn && (
-        <BackDrop modalOn={modalOn} onToggleModal={onToggleModal}>
-          <RankingModal info={getInfoAcc(candidateList[candidateRef.current as number])} />
-        </BackDrop>
+        <Suspense fallback={<Loader />}>
+          <BackDrop modalOn={modalOn} onToggleModal={onToggleModal}>
+            <RankingModal info={getInfoAcc(candidateList[candidateRef.current as number])} />
+          </BackDrop>
+        </Suspense>
       )}
     </>
   );
@@ -157,24 +161,11 @@ const RightCaption = styled.div`
     }
   }
 `;
-const Wrapper = styled.div`
-  width: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+
 const RankingItemContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Divider = styled.hr`
-  height: 1px;
-  width: 90%;
-  background-color: gray;
-  margin-bottom: 1em;
 `;
 
 export default RankingList;

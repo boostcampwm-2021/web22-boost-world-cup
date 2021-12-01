@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  tabTitle: Array<string>;
+  tabTitles: Array<string>;
   currentTab: number;
   onTabChange: (pressedTab: number) => void;
 }
 
-function TabBar({ tabTitle, currentTab, onTabChange }: Props): JSX.Element {
+function TabBar({ tabTitles, currentTab, onTabChange }: Props): JSX.Element {
   return (
     <BtnsWrapper>
-      {tabTitle.map((title, index) => {
+      {tabTitles.map((title, index) => {
         return (
           <TabBtn
-            key={tabTitle.indexOf(title)}
+            key={tabTitles.indexOf(title)}
             onClick={() => onTabChange(index + 1)}
             activated={currentTab === index + 1}
             index={index}
@@ -47,4 +47,4 @@ const BtnsWrapper = styled.div`
   display: flex;
 `;
 
-export default TabBar;
+export default memo(TabBar);

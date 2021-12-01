@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { AxiosResponse } from 'axios';
 import useApiRequest from './useApiRequest';
 
@@ -10,11 +10,14 @@ const usePagination = <T>(
   const [pageItems, setItems] = useState<T[]>([]);
   const offset = limit * (currentPage - 1);
   const lastPage = Math.ceil(totalCnt / limit);
-  const onPageChange = (nextPage: number) => {
-    if (nextPage === currentPage) return;
-    if (nextPage < 1 || nextPage > lastPage) return;
-    setCurrentPage(nextPage);
-  };
+  const onPageChange = useCallback(
+    (nextPage: number) => {
+      if (nextPage === currentPage) return;
+      if (nextPage < 1 || nextPage > lastPage) return;
+      setCurrentPage(nextPage);
+    },
+    [currentPage, lastPage],
+  );
 
   useEffect(() => {
     if (currentPage > lastPage && lastPage >= 1) setCurrentPage(lastPage);

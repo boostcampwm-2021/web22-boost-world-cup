@@ -9,14 +9,16 @@ import { sendCurrentResult, sendFinalResult } from '../../apis/ranking';
 import { useApiRequest } from '../../hooks';
 import { LEFT, RIGHT } from '../../constants/number';
 import { MAIN } from '../../constants/route';
-import getImgURL from '../../utils/getImgURL';
+import { getImgURL, getBlurImgURL } from '../../utils/getImgURL';
 
 function Worldcup(): JSX.Element {
   const [isInitialized, setIsInitialized] = useState(true);
   const [pick, setPick] = useState(0);
-  const [gameInfo, setGameInfo] = useState<GameInfoData>();
-  const [leftCandidate, setLeftCandidate] = useState<CandidateData>();
-  const [rightCandidate, setRightCandidate] = useState<CandidateData>();
+  const [leftImageOnloaded, setLeftImageOnloaded] = useState(false);
+  const [rightImageOnloaded, setRightImageOnloaded] = useState(false);
+  const [gameInfo, setGameInfo] = useState<gameInfoData>();
+  const [leftCandidate, setLeftCandidate] = useState<candidateData>();
+  const [rightCandidate, setRightCandidate] = useState<candidateData>();
   const debouncerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const onSendCurrentResultSuccess = () => {
@@ -124,17 +126,33 @@ function Worldcup(): JSX.Element {
         <Round>{makeRoundText(gameInfo?.round)}</Round>
       </InfoContainer>
       <ImageContainer select={pick}>
-        <img src={vsImg} alt="versus" />
-        <LeftImage
-          imageUrl={leftCandidate ? getImgURL(leftCandidate.imgKey) : ''}
-          select={pick}
-          onClick={onImageClick(LEFT)}
-        />
-        <RightImage
-          imageUrl={rightCandidate ? getImgURL(rightCandidate.imgKey) : ''}
-          select={pick}
-          onClick={onImageClick(RIGHT)}
-        />
+        <VersusImage src={vsImg} select={pick} />
+        <LeftImageContainer select={pick}>
+          <LeftBlurImage
+            onloaded={leftImageOnloaded}
+            src={leftCandidate ? getBlurImgURL(leftCandidate.imgKey) : ''}
+            onClick={onImageClick(LEFT)}
+          />
+          <LeftImage
+            onloaded={leftImageOnloaded}
+            src={leftCandidate ? getImgURL(leftCandidate.imgKey) : ''}
+            onClick={onImageClick(LEFT)}
+            onLoad={() => setLeftImageOnloaded(true)}
+          />
+        </LeftImageContainer>
+        <RightImageContainer select={pick}>
+          <RightBlurImage
+            onloaded={rightImageOnloaded}
+            src={rightCandidate ? getBlurImgURL(rightCandidate.imgKey) : ''}
+            onClick={onImageClick(RIGHT)}
+          />
+          <RightImage
+            onLoad={() => setRightImageOnloaded(true)}
+            src={rightCandidate ? getImgURL(rightCandidate.imgKey) : ''}
+            onClick={onImageClick(RIGHT)}
+            onloaded={rightImageOnloaded}
+          />
+        </RightImageContainer>
       </ImageContainer>
       <NameContainer select={pick}>
         <LeftName select={pick}>{leftCandidate ? leftCandidate.name : ''}</LeftName>
@@ -212,14 +230,6 @@ const ImageContainer = styled.div<{ select: number }>`
   flex-direction: row;
   width: 100%;
   height: calc(100% - 100px);
-  img {
-    width: 8%;
-    position: absolute;
-    transform: translate(-50%, 0);
-    left: 50%;
-    align-self: center;
-    visibility: ${({ select }) => (select === 0 ? 'visible' : 'hidden')};
-  }
 `;
 
 const notSelected = keyframes`
@@ -231,32 +241,67 @@ const notSelected = keyframes`
   }
 `;
 
-const LeftImage = styled.div<{ imageUrl: string; select: number }>`
-  width: 100%;
-  background: url(${({ imageUrl }) => imageUrl});
-  background-size: contain;
+const VersusImage = styled.img<{ select: number }>`
+  width: 8%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  align-self: center;
+  object-fit: contain;
   background-repeat: no-repeat;
-  background-position: ${({ select }) => (select === 1 ? `center` : `right`)};
-  animation: ${({ select }) =>
-    select === 2
-      ? css`
-          ${notSelected} 1s ease forwards
-        `
-      : css``};
+  visibility: ${({ select }) => (select === 0 ? 'visible' : 'hidden')};
 `;
 
-const RightImage = styled.div<{ imageUrl: string; select: number }>`
+const LeftImageContainer = styled.div<{ select: number }>`
   width: 100%;
-  background: url(${(props) => props.imageUrl});
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: ${({ select }) => (select === 2 ? `center` : `left`)};
+  display: flex;
+  flex-direction: row;
+  justify-content: ${({ select }) => (select === LEFT ? `center` : `flex-end`)};
   animation: ${({ select }) =>
-    select === 1
+    select === RIGHT
       ? css`
           ${notSelected} 1s ease forwards
         `
       : css``};
+  img {
+    max-width: 100%;
+    object-fit: contain;
+    background-repeat: no-repeat;
+  }
+`;
+
+const RightImageContainer = styled.div<{ select: number }>`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  justify-content: ${({ select }) => (select === RIGHT ? `center` : `flex-start`)};
+  animation: ${({ select }) =>
+    select === LEFT
+      ? css`
+          ${notSelected} 1s ease forwards
+        `
+      : css``};
+  img {
+    max-width: 100%;
+    object-fit: contain;
+    background-repeat: no-repeat;
+  }
+`;
+
+const LeftBlurImage = styled.img<{ onloaded: boolean }>`
+  display: ${({ onloaded }) => (onloaded ? 'none' : 'block')};
+`;
+const RightBlurImage = styled.img<{ onloaded: boolean }>`
+  display: ${({ onloaded }) => (onloaded ? 'none' : 'block')};
+`;
+
+const LeftImage = styled.img<{ onloaded: boolean }>`
+  display: ${({ onloaded }) => (onloaded ? 'flex' : 'none')};
+`;
+
+const RightImage = styled.img<{ onloaded: boolean }>`
+  display: ${({ onloaded }) => (onloaded ? 'flex' : 'none')};
 `;
 
 export default Worldcup;

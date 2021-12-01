@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, memo } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -41,4 +41,4 @@ const Input = styled.input`
   }
 `;
 
-export default TextInput;
+export default memo(TextInput);

@@ -2,14 +2,13 @@ import React, { lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { FaTrash, FaPen, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import DeleteModal from '../DeleteModal';
-import BackDrop from '../BackDrop';
 import Image from '../Image';
 import Loader from '../Loader';
 import { useModal } from '../../hooks';
 
 const ShareModal = lazy(() => import('../ShareModal'));
-
+const DeleteModal = lazy(() => import('../DeleteModal'));
+const BackDrop = lazy(() => import('../BackDrop'));
 interface Props {
   id: number;
   thumbnail1: string;
@@ -18,7 +17,7 @@ interface Props {
   desc: string;
 }
 function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX.Element {
-  const [deleteModalOn, onToggleDeleteModal, setDeleteModalOn] = useModal();
+  const [deleteModalOn, onToggleDeleteModal] = useModal();
   const [shareModalOn, onToggleShareModal] = useModal();
   return (
     <Item>
@@ -44,16 +43,20 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
           <span>공유하기</span>
         </Share>
       </Buttons>
-      <BackDrop modalOn={shareModalOn} onToggleModal={onToggleShareModal}>
-        {shareModalOn && (
-          <Suspense fallback={<Loader />}>
+      {shareModalOn && (
+        <Suspense fallback={<Loader />}>
+          <BackDrop modalOn={shareModalOn} onToggleModal={onToggleShareModal}>
             <ShareModal id={id} />
-          </Suspense>
-        )}
-      </BackDrop>
-      <BackDrop modalOn={deleteModalOn}>
-        <DeleteModal id={id} onToggleDeleteModal={onToggleDeleteModal} setDeleteModalOn={setDeleteModalOn} />
-      </BackDrop>
+          </BackDrop>
+        </Suspense>
+      )}
+      {deleteModalOn && (
+        <Suspense fallback={<Loader />}>
+          <BackDrop modalOn={deleteModalOn}>
+            <DeleteModal id={id} onToggleDeleteModal={onToggleDeleteModal} />
+          </BackDrop>
+        </Suspense>
+      )}
     </Item>
   );
 }

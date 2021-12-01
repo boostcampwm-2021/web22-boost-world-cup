@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BsImage } from 'react-icons/bs';
-import getImgURL from '../../utils/getImgURL';
+import { getImgURL } from '../../utils/getImgURL';
 
 interface Props {
   width: number;
