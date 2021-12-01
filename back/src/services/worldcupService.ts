@@ -98,12 +98,11 @@ export const patchDesc = async (id: number, desc: string) => {
 
 export const getMetaData = async (id: number, searchWord?: String) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  const [worldcup, totalCnt, worldcupKeyword] = await Promise.all([
-    worldcupRepository.findOne(id),
-    searchWord ? candidateService.getTotalCountBySearchhWord(id, searchWord) : candidateService.getTotalCount(id),
+  const [worldcup, totalCnt] = await Promise.all([
     worldcupRepository.findOne(id, { relations: ['keywords'] }),
+    searchWord ? candidateService.getTotalCountBySearchhWord(id, searchWord) : candidateService.getTotalCount(id),
   ]);
-  const keywords = worldcupKeyword.keywords.map((keyword) => keyword.name);
+  const keywords = worldcup.keywords.map((keyword) => keyword.name);
   const { title, description } = worldcup;
   return { totalCnt, title, description, keywords };
 };
