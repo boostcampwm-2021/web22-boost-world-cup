@@ -22,7 +22,7 @@ function App(): JSX.Element {
               <PublicRoute path={ROUTE.MAIN} component={getLazyLoadComponent('Main')} exact />
               <PublicRoute path="/search" component={getLazyLoadComponent('Main')} />
               <PublicRoute path={ROUTE.LOGIN} component={getLazyLoadComponent('Login')} />
-              <PublicRoute path={ROUTE.SIGNUP} component={getLazyLoadComponent('SiguUp')} />
+              <PublicRoute path={ROUTE.SIGNUP} component={getLazyLoadComponent('SignUp')} />
               <PrivateRoute path={ROUTE.MAKE} component={getLazyLoadComponent('Make')} />
               <PrivateRoute path={ROUTE.INITIALIZE} component={getLazyLoadComponent('Initialize')} />
               <PrivateRoute path={ROUTE.WORLDCUP} component={getLazyLoadComponent('Game')} />

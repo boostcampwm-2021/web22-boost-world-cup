@@ -25,15 +25,26 @@ const worldcupController = {
   },
 
   getMetadata: async (request: Request, response: Response, next: NextFunction) => {
+    if (!request.user) {
+      return response.status(401).json(failed('Unauthorized'));
+    }
     const {
-      params: { id },
+      params: { id: worldcupId },
+      user: { id: userId },
       query: { metaonly, searchWord },
     } = request;
-    if (metaonly) {
-      const worldcupMetadata = await worldcupService.getMetaData(Number(id), String(searchWord));
-      return response.json(succeed(worldcupMetadata));
+    try {
+      if (metaonly) {
+        const worldcupMetadata = await worldcupService.getMetaData(
+          Number(worldcupId),
+          Number(userId),
+          String(searchWord),
+        );
+        return response.json(succeed(worldcupMetadata));
+      }
+    } catch (e) {
+      response.status(400).json(failed(e.message));
     }
-    response.status(400).json(failed('cannot get worldcup metadata'));
   },
 
   save: async (request: Request, response: Response, next: NextFunction) => {
@@ -52,12 +63,16 @@ const worldcupController = {
   },
 
   delete: async (request: Request, response: Response, next: NextFunction) => {
-    const { id } = request.params;
+    if (!request.user) return response.status(401).json(failed('not authorized'));
+    const {
+      params: { id: worldcupId },
+      user: { id: userId },
+    } = request;
     try {
-      await worldcupService.removeById(Number(id));
+      await worldcupService.removeById(Number(worldcupId), Number(userId));
       response.json(succeed(null));
     } catch (e) {
-      response.status(400).json(failed('cannot delete worldcup'));
+      response.status(400).json(failed(e.message));
     }
   },
 

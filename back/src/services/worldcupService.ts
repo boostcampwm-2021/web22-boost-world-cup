@@ -96,24 +96,35 @@ export const patchDesc = async (id: number, desc: string) => {
     .execute();
 };
 
-export const getMetaData = async (id: number, searchWord?: String) => {
+export const getMetaData = async (worldcupId: number, userId: number, searchWord?: String) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  const [worldcup, totalCnt, worldcupKeyword] = await Promise.all([
-    worldcupRepository.findOne(id),
-    searchWord ? candidateService.getTotalCountBySearchhWord(id, searchWord) : candidateService.getTotalCount(id),
-    worldcupRepository.findOne(id, { relations: ['keywords'] }),
+  const [worldcup, totalCnt] = await Promise.all([
+    worldcupRepository.findOne(worldcupId, { relations: ['keywords', 'user'] }),
+    searchWord
+      ? candidateService.getTotalCountBySearchhWord(worldcupId, searchWord)
+      : candidateService.getTotalCount(worldcupId),
   ]);
-  const keywords = worldcupKeyword.keywords.map((keyword) => keyword.name);
+
+  if (worldcup.user.id !== userId) {
+    throw new Error('수정 권한이 없습니다.');
+  }
+
+  const keywords = worldcup.keywords.map((keyword) => keyword.name);
   const { title, description } = worldcup;
   return { totalCnt, title, description, keywords };
 };
 
-export const removeById = async (id: number) => {
-  const worldcup = getRepository(Worldcup);
-  const { keywords } = await worldcup.findOne(id, { relations: ['keywords'] });
-  keywords.map((keyword) => {
+export const removeById = async (worldcupId: number, userId: number) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcup = await worldcupRepository.findOne(worldcupId, { relations: ['keywords', 'user'] });
+
+  if (worldcup.user.id !== userId) {
+    throw new Error('삭제 권한이 없습니다.');
+  }
+
+  worldcup.keywords.map((keyword) => {
     keyword.cnt--;
     keywordService.save(keyword);
   });
-  worldcup.delete(id);
+  await worldcupRepository.delete(worldcupId);
 };
