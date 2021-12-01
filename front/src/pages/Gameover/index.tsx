@@ -5,7 +5,7 @@ import { FaHome, FaList } from 'react-icons/fa';
 import Header from '../../components/Header';
 import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
-import getImgURL from '../../utils/getImgURL';
+import { getImgURL } from '../../utils/getImgURL';
 import { MAIN } from '../../constants/route';
 
 interface Props {
