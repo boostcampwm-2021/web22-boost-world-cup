@@ -1,4 +1,4 @@
-import React, { useState, useContext, lazy, Suspense } from 'react';
+import React, { useState, useContext, lazy, Suspense, memo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import '@fontsource/rancho';
@@ -114,4 +114,4 @@ const Overlay = styled.div`
   right: 0;
 `;
 
-export default Header;
+export default memo(Header);

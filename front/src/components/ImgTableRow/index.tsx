@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import styled from 'styled-components';
 import { ImgInfo, PreSignedData } from '../../types/Datas';
 import ImgPreView from '../ImgPreView';
@@ -122,4 +122,4 @@ const DeleteBtn = styled.button`
   }
 `;
 
-export default ImgTableRow;
+export default memo(ImgTableRow);

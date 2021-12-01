@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, memo } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -103,4 +103,4 @@ const AgeList = styled.div<{ isOpen: boolean }>`
   border-radius: 10px;
 `;
 
-export default AgeSelector;
+export default memo(AgeSelector);

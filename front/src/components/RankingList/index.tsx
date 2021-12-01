@@ -33,11 +33,14 @@ function RankingList({ worldcupId }: Props): JSX.Element {
     () => getWorldcupMetaDataDispatcher({ type: 'REQUEST', requestProps: [worldcupId, inputWord] }),
     500,
   );
-  const onShowRankingDetail = (event: React.MouseEvent<Element>) => {
-    onToggleModal(event);
-    const candidateName = event.currentTarget.children[2].innerHTML;
-    candidateRef.current = candidateList.findIndex((v) => v.name === candidateName);
-  };
+  const onShowRankingDetail = useCallback(
+    (event: React.MouseEvent<Element>) => {
+      onToggleModal(event);
+      const candidateName = event.currentTarget.children[2].innerHTML;
+      candidateRef.current = candidateList.findIndex((v) => v.name === candidateName);
+    },
+    [candidateList],
+  );
 
   const getInfoAcc = useCallback((candidate: RankingData) => {
     return {
@@ -54,15 +57,15 @@ function RankingList({ worldcupId }: Props): JSX.Element {
     };
   }, []);
 
-  const onSubmit = (event: React.MouseEvent<HTMLElement>): void => {
+  const onSubmit = useCallback((event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
     setInputWord('');
-  };
+  }, []);
 
-  const onSearchWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchWordChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     setInputWord(inputValue);
-  };
+  }, []);
 
   useEffect(() => {
     throttledGetWorldcupMetaData();
@@ -92,19 +95,17 @@ function RankingList({ worldcupId }: Props): JSX.Element {
         </RightCaption>
       </Caption>
       <RankingItemContainer>
-        {candidateList.map((v, index) => {
+        {candidateList.map((candidate, index) => {
           return (
-            <Wrapper key={v.id}>
-              <RankingItem
-                id={offset + index + 1}
-                imgKey={v.imgKey}
-                name={v.name}
-                victoryRatio={v.victoryRatio}
-                winRatio={v.winRatio}
-                onClick={onShowRankingDetail}
-              />
-              {index + 1 < candidateList.length ? <Divider /> : ''}
-            </Wrapper>
+            <RankingItem
+              key={candidate.id}
+              id={offset + index + 1}
+              imgKey={candidate.imgKey}
+              name={candidate.name}
+              victoryRatio={candidate.victoryRatio}
+              winRatio={candidate.winRatio}
+              onClick={onShowRankingDetail}
+            />
           );
         })}
         <Pagination lastPage={lastPage} currentPage={currentPage} onPageChange={onPageChange} />
@@ -157,13 +158,7 @@ const RightCaption = styled.div`
     }
   }
 `;
-const Wrapper = styled.div`
-  width: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+
 const RankingItemContainer = styled.section`
   display: flex;
   flex-direction: column;

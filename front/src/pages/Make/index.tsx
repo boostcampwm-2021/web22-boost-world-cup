@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import MakeWorldcupForm from '../../components/MakeWorldcupForm';
@@ -20,27 +20,31 @@ function Make(): JSX.Element {
     imgInfos,
     [currentTab, imgInfos.length],
   );
-  const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
+  const tabTitles = useMemo(() => ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'], []);
 
   const getSignedURLsSuccessEffect = (newImgInfos: ImgInfo[]) => {
     imgInfosDispatcher({ type: 'ADD_IMGS', payload: newImgInfos });
   };
 
+  const onTitleChange = useCallback(({ target }) => {
+    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
+  }, []);
+
+  const onDescChange = useCallback(({ target }) => {
+    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
+  }, []);
+
   return (
     <>
       <Header />
       <Content>
-        <TabBar tabTitle={tabTitle} currentTab={currentTab} onTabChange={onTabChange} />
+        <TabBar tabTitles={tabTitles} currentTab={currentTab} onTabChange={onTabChange} />
         {currentTab === 1 && (
           <MakeWorldcupForm
             imgInfos={imgInfos.slice(previewStartIdx)}
             worldcupFormState={worldcupFormState}
-            onTitleChange={({ target }) => {
-              worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
-            }}
-            onDescChange={({ target }) => {
-              worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
-            }}
+            onTitleChange={onTitleChange}
+            onDescChange={onDescChange}
             worldcupFormDispatcher={worldcupFormDispatcher}
             imgInfosDispatcher={imgInfosDispatcher}
             getSignedURLsSuccessEffect={getSignedURLsSuccessEffect}

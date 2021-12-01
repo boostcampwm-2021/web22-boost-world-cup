@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, memo } from 'react';
 import styled from 'styled-components';
 import { FaPlay, FaList, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -147,4 +147,4 @@ const Share = styled.div`
     background-color: blue;
   }
 `;
-export default WorldCupItem;
+export default memo(WorldCupItem);

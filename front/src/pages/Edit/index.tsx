@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../../components/Header';
@@ -19,7 +19,7 @@ import { MAIN } from '../../constants/route';
 
 function Edit(): JSX.Element {
   const worldcupId = useMemo(() => Number(window.location.pathname.split('/')[2]), [window.location]);
-  const tabTitle = ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'];
+  const tabTitles = useMemo(() => ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'], []);
   const [addedImgs, addedImgsDispatcher] = useImgInfos();
   const [candidates, candidatesDispatcher] = useImgInfos();
   const [totalCnt, setTotalCnt] = useState(0);
@@ -51,18 +51,24 @@ function Edit(): JSX.Element {
     createCandidatesDispatcher({ type: 'REQUEST', requestProps: [worldcupId, addedImgs] });
     addedImgsDispatcher({ type: 'ADD_IMGS', payload: addedImgs });
   };
-  const onTitleBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
-    const { title } = worldcupFormState;
-    if (title === target.value) return;
-    patchTitleDispatcher({ type: 'REQUEST', requestProps: [worldcupId, target.value] });
-    worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
-  };
-  const onDescBlur: React.FocusEventHandler<HTMLInputElement> = ({ target }) => {
-    const { desc } = worldcupFormState;
-    if (desc === target.value) return;
-    patchDescDispatcher({ type: 'REQUEST', requestProps: [worldcupId, target.value] });
-    worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
-  };
+  const onTitleBlur: React.FocusEventHandler<HTMLInputElement> = useCallback(
+    ({ target }) => {
+      const { title } = worldcupFormState;
+      if (title === target.value) return;
+      patchTitleDispatcher({ type: 'REQUEST', requestProps: [worldcupId, target.value] });
+      worldcupFormDispatcher({ type: 'CHANGE_TITLE', payload: target.value });
+    },
+    [worldcupFormState.title],
+  );
+  const onDescBlur: React.FocusEventHandler<HTMLInputElement> = useCallback(
+    ({ target }) => {
+      const { desc } = worldcupFormState;
+      if (desc === target.value) return;
+      patchDescDispatcher({ type: 'REQUEST', requestProps: [worldcupId, target.value] });
+      worldcupFormDispatcher({ type: 'CHANGE_DESC', payload: target.value });
+    },
+    [worldcupFormState.desc],
+  );
 
   useEffect(() => {
     getMetadataDispatcher({ type: 'REQUEST', requestProps: [worldcupId] });
@@ -86,7 +92,7 @@ function Edit(): JSX.Element {
     <>
       <Header />
       <Content>
-        <TabBar currentTab={currentTab} onTabChange={onTabChange} tabTitle={tabTitle} />
+        <TabBar currentTab={currentTab} onTabChange={onTabChange} tabTitles={tabTitles} />
         {currentTab === 1 && (
           <MakeWorldcupForm
             imgInfos={addedImgs}
