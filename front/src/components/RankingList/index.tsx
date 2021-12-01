@@ -168,11 +168,4 @@ const RankingItemContainer = styled.section`
   align-items: center;
 `;
 
-const Divider = styled.hr`
-  height: 1px;
-  width: 90%;
-  background-color: gray;
-  margin-bottom: 1em;
-`;
-
 export default RankingList;
