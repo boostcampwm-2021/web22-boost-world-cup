@@ -18,7 +18,7 @@ function Make(): JSX.Element {
     imgInfos.length,
     PAGINATION_LIMIT,
     imgInfos,
-    [currentTab, imgInfos.length],
+    [currentTab, imgInfos],
   );
   const tabTitles = useMemo(() => ['1. 기본정보 수정 / 이미지 업로드', '2. 이미지 이름 수정 / 삭제'], []);
 
