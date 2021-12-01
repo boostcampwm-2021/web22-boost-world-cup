@@ -14,25 +14,24 @@ function DoughnutChart({ data }: DoughnutProps): JSX.Element {
       <DoughnutSvg id="gender" width="300" height="300" viewBox="-1.5 -1.5 3 3">
         {data.map((value, index) => {
           return (
-            value.value > 0 && (
-              <path
-                d={`M ${value.startX} ${value.startY} A 1 1 0 ${value.isLargeArc} 1 ${value.endX} ${value.endY}`}
-                fill="none"
-                strokeWidth="0.4"
-                stroke={COLORS[index]}
-                strokeDasharray={`${value.targetArc}`}
-                strokeDashoffset={value.targetArc}
-              >
-                <animate
-                  attributeName="stroke-dashoffset"
-                  begin={DURATION * index}
-                  from={value.targetArc}
-                  to="0"
-                  dur={DURATION}
-                  fill="freeze"
-                />
-              </path>
-            )
+            <path
+              key={value.id}
+              d={`M ${value.startX} ${value.startY} A 1 1 0 ${value.isLargeArc} 1 ${value.endX} ${value.endY}`}
+              fill="none"
+              strokeWidth="0.4"
+              stroke={COLORS[index]}
+              strokeDasharray={`${value.targetArc}`}
+              strokeDashoffset={value.targetArc}
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                begin={DURATION * index}
+                from={value.targetArc}
+                to="0"
+                dur={DURATION}
+                fill="freeze"
+              />
+            </path>
           );
         })}
         )

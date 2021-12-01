@@ -63,7 +63,7 @@ const KeywordContainer = styled(Slider)`
     margin: 0 1em;
     background-color: ${({ theme }) => theme.color.pink};
     white-space: noWrap;
-    padding: 1em;
+    padding: 0.7em 1em 1em 1em ;
     border-radius: 25px;
     cursor: pointer;
     transition: all 300ms ease-in;

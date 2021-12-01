@@ -36,6 +36,7 @@ function RankingItem({ id, imgKey, name, victoryRatio, winRatio, onClick }: Item
           </Bar>
         </RightSection>
       </Section>
+      <Divider />
     </Wrapper>
   );
 }
@@ -107,5 +108,12 @@ const Ratio = styled.div`
   height: 36px;
   background-color: ${(props: RatioProp) => `${props.color}`};
   opacity: 0.8;
+`;
+
+const Divider = styled.hr`
+  height: 1px;
+  width: 90%;
+  background-color: gray;
+  margin-bottom: 1em;
 `;
 export default memo(RankingItem);
