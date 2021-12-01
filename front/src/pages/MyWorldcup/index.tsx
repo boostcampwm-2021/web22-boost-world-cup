@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../components/Header';
 import MyWorldCupItem from '../../components/MyWorldCupItem';
-import { WorldcupList } from '../../components';
+import WorldcupList from '../../components/WorldcupList';
 import { getMyWorldcupList } from '../../apis/worldcups';
 import { useInfiniteScroll } from '../../hooks';
 import { Worldcup } from '../../types/Datas';

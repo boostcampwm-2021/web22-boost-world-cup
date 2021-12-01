@@ -6,7 +6,7 @@ import { LOGIN } from '../../constants/route';
 import { useLoginCheck } from '../../hooks';
 
 interface Props {
-  component: (props: any) => JSX.Element;
+  component: any;
   path?: string;
 }
 

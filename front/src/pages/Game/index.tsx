@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Redirect } from 'react-router';
 import styled, { keyframes, css } from 'styled-components';
-import { Header } from '../../components';
+import Header from '../../components/Header';
 import vsImg from '../../images/vs.png';
 import { candidateData, gameInfoData } from '../../types/Datas';
 import Gameover from '../Gameover';
 import { sendCurrentResult, sendFinalResult } from '../../apis/ranking';
 import { useApiRequest } from '../../hooks';
 import { LEFT, RIGHT } from '../../constants/number';
+import { MAIN } from '../../constants/route';
 import getImgURL from '../../utils/getImgURL';
 
 function Worldcup(): JSX.Element {
@@ -111,7 +112,7 @@ function Worldcup(): JSX.Element {
     return `${round * 2}강`;
   };
 
-  if (!isInitialized) return <Redirect to="/main" />;
+  if (!isInitialized) return <Redirect to={MAIN} />;
 
   return !gameInfo?.isCompleted ? (
     <Wrapper>

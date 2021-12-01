@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Loader } from '../../components';
+import Loader from '../../components/Loader';
 
 function Loading(): JSX.Element {
   return (

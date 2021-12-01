@@ -7,3 +7,5 @@ export const LEFT = 1;
 export const RIGHT = 2;
 export const MALE = 1;
 export const FEMALE = 2;
+export const IMG_PREVIEW_WIDTH = 120;
+export const IMG_PREVIEW_HEIGHT = 120;

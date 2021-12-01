@@ -1,7 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Header, MakeWorldcupForm, ImgTable, TabBar } from '../../components';
+import Header from '../../components/Header';
+import MakeWorldcupForm from '../../components/MakeWorldcupForm';
+import TabBar from '../../components/TabBar';
+import ImgTable from '../../components/ImgTable';
 import { useTabBar, useWorldcupForm, useImgInfos, usePaginationAsync, useApiRequest } from '../../hooks';
 import {
   getWorldcupMetadata,

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Header } from '../../components';
+import Header from '../../components/Header';
 import logo from '../../images/logo.png';
 import { deleteUser } from '../../apis/auth';
 import { UserStateContext, UserDispatcherContext } from '../../stores/userStore';

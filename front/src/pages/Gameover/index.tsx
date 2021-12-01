@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHome, FaList } from 'react-icons/fa';
-import { Header } from '../../components';
+import Header from '../../components/Header';
 import { candidateData } from '../../types/Datas';
 import trophyImg from '../../images/winner.png';
 import getImgURL from '../../utils/getImgURL';
+import { MAIN } from '../../constants/route';
 
 interface Props {
   winCandidate?: candidateData;
@@ -29,7 +30,7 @@ function Gameover({ winCandidate, title, worldcupId }: Props): JSX.Element {
               <span>랭킹보기</span>
             </Button>
           </Link>
-          <Link to="/main">
+          <Link to={MAIN}>
             <Button>
               <FaHome />
               <span>메인으로</span>

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { GoMarkGithub } from 'react-icons/go';
 import { SiKakaotalk } from 'react-icons/si';
 import { FcGoogle } from 'react-icons/fc';
-import { SocialLoginButton } from '../../components';
+import SocialLoginButton from '../../components/SocialLoginButton';
 import logo from '../../images/logo.png';
 import { UserStateContext } from '../../stores/userStore';
 import { MAIN } from '../../constants/route';

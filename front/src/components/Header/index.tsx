@@ -1,10 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useMemo, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import '@fontsource/rancho';
 import { FaUserAlt } from 'react-icons/fa';
-import HeaderModal from './HeaderModal';
 import { UserStateContext } from '../../stores/userStore';
+import { MAIN, LOGIN } from '../../constants/route';
+import Loader from '../Loader';
+
+const HeaderModal = lazy(() => import('./HeaderModal'));
 
 interface Props {
   children?: React.ReactNode;
@@ -31,14 +34,18 @@ function Header({ children }: Props): JSX.Element {
           ) : (
             <Link
               to={{
-                pathname: '/login',
+                pathname: LOGIN,
                 state: { from: location.pathname },
               }}
             >
               <Login>로그인</Login>
             </Link>
           )}
-          {modal && <HeaderModal open={modal} setModal={setModal} />}
+          {modal && (
+            <Suspense fallback={<Loader />}>
+              <HeaderModal open={modal} setModal={setModal} />
+            </Suspense>
+          )}
         </RightHeader>
       </MainHeader>
     </>

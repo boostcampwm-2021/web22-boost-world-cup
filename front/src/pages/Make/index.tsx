@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Header, MakeWorldcupForm, ImgTable, TabBar, StoreBtns } from '../../components';
+import Header from '../../components/Header';
+import MakeWorldcupForm from '../../components/MakeWorldcupForm';
+import ImgTable from '../../components/ImgTable';
+import TabBar from '../../components/TabBar';
+import StoreBtns from '../../components/StoreBtns';
 import { usePaginationSync, useTabBar, useImgInfos, useWorldcupForm } from '../../hooks';
 import { ImgInfo } from '../../types/Datas';
 import { PAGINATION_LIMIT } from '../../constants/number';

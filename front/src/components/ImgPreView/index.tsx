@@ -5,6 +5,8 @@ import { BsImage } from 'react-icons/bs';
 import { ImgInfo } from '../../types/Datas';
 import { useUploadImg } from '../../hooks';
 import { ImgsAction } from '../../types/Actions';
+import getImgURL from '../../utils/getImgURL';
+import { IMG_PREVIEW_WIDTH, IMG_PREVIEW_HEIGHT } from '../../constants/number';
 
 interface Props {
   info: ImgInfo;
@@ -15,9 +17,8 @@ interface Props {
 }
 
 function ImgPreView({ info, tab, willUploadFile, presignedURL, imgInfosDispatcher }: Props): JSX.Element {
-  const IMG_URL_END_POINT = 'https://kr.object.ncloudstorage.com';
-  const resizedImgURL = `${IMG_URL_END_POINT}/image-w120h120/${info.key}.webp`;
-  const originImgURL = `${IMG_URL_END_POINT}/wiziboost-image-raw/${info.key}`;
+  const resizedImgURL = getImgURL(info.key, IMG_PREVIEW_WIDTH, IMG_PREVIEW_HEIGHT);
+  const originImgURL = getImgURL(info.key);
   const initialImgURL = tab === 1 ? originImgURL : resizedImgURL;
 
   const [imgURL, setImgURL] = useState(initialImgURL);

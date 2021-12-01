@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { FaTrash, FaPen, FaShare } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import ShareModal from '../ShareModal';
 import DeleteModal from '../DeleteModal';
 import BackDrop from '../BackDrop';
 import Image from '../Image';
+import Loader from '../Loader';
 import { useModal } from '../../hooks';
+
+const ShareModal = lazy(() => import('../ShareModal'));
 
 interface Props {
   id: number;
@@ -43,7 +45,11 @@ function MyWorldCupItem({ id, thumbnail1, thumbnail2, title, desc }: Props): JSX
         </Share>
       </Buttons>
       <BackDrop modalOn={shareModalOn} onToggleModal={onToggleShareModal}>
-        <ShareModal id={id} />
+        {shareModalOn && (
+          <Suspense fallback={<Loader />}>
+            <ShareModal id={id} />
+          </Suspense>
+        )}
       </BackDrop>
       <BackDrop modalOn={deleteModalOn}>
         <DeleteModal id={id} onToggleDeleteModal={onToggleDeleteModal} setDeleteModalOn={setDeleteModalOn} />
