@@ -107,12 +107,17 @@ export const getMetaData = async (id: number, searchWord?: String) => {
   return { totalCnt, title, description, keywords };
 };
 
-export const removeById = async (id: number) => {
-  const worldcup = getRepository(Worldcup);
-  const { keywords } = await worldcup.findOne(id, { relations: ['keywords'] });
-  keywords.map((keyword) => {
+export const removeById = async (worldcupId: number, userId: number) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcup = await worldcupRepository.findOne(worldcupId, { relations: ['keywords', 'user'] });
+
+  if (worldcup.user.id !== userId) {
+    throw new Error('삭제 권한이 없습니다.');
+  }
+
+  worldcup.keywords.map((keyword) => {
     keyword.cnt--;
     keywordService.save(keyword);
   });
-  worldcup.delete(id);
+  await worldcupRepository.delete(worldcupId);
 };

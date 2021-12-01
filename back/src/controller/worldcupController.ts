@@ -52,12 +52,16 @@ const worldcupController = {
   },
 
   delete: async (request: Request, response: Response, next: NextFunction) => {
-    const { id } = request.params;
+    if (!request.user) return response.status(401).json(failed('not authorized'));
+    const {
+      params: { id: worldcupId },
+      user: { id: userId },
+    } = request;
     try {
-      await worldcupService.removeById(Number(id));
+      await worldcupService.removeById(Number(worldcupId), Number(userId));
       response.json(succeed(null));
     } catch (e) {
-      response.status(400).json(failed('cannot delete worldcup'));
+      response.status(400).json(failed(e.message));
     }
   },
 
