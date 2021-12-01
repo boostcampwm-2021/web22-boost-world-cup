@@ -4,11 +4,10 @@ import { InfoData, DoughnutChartData } from '../../types/Datas';
 import DoughnutChart from './DoughnutChart';
 import BarChart from './BarChart';
 
-interface ModalProps {
+interface Props {
   info: InfoData;
-  onToggleModal: React.MouseEventHandler;
 }
-function RankingModal({ onToggleModal, info }: ModalProps): JSX.Element {
+function RankingModal({ info }: Props): JSX.Element {
   const [doughnutInfo, setDoughnutInfo] = useState<DoughnutChartData[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, name, male, female, ...age } = info;
@@ -32,38 +31,27 @@ function RankingModal({ onToggleModal, info }: ModalProps): JSX.Element {
     setDoughnutInfo(makeDoughnutInfo(Object.values(age)));
   }, []);
   return (
-    <Modaloverlay onClick={onToggleModal}>
-      <Modal>
-        <Header>
-          <span>{name}</span>
-        </Header>
-        {doughnutInfo.length ? (
-          <Content>
-            <Doughnut>
-              <DoughnutChart data={doughnutInfo} />
-            </Doughnut>
-            <Bar>
-              <BarChart data={{ male, female }} />
-            </Bar>
-          </Content>
-        ) : (
-          <EmptyModal>
-            <p>기록된 랭킹 기록이 없습니다.</p>
-          </EmptyModal>
-        )}
-      </Modal>
-    </Modaloverlay>
+    <Modal>
+      <Header>
+        <span>{name}</span>
+      </Header>
+      {doughnutInfo.length ? (
+        <Content>
+          <Doughnut>
+            <DoughnutChart data={doughnutInfo} />
+          </Doughnut>
+          <Bar>
+            <BarChart data={{ male, female }} />
+          </Bar>
+        </Content>
+      ) : (
+        <EmptyModal>
+          <p>기록된 랭킹 기록이 없습니다.</p>
+        </EmptyModal>
+      )}
+    </Modal>
   );
 }
-const Modaloverlay = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-`;
 const Modal = styled.div`
   position: absolute;
   top: 50%;
