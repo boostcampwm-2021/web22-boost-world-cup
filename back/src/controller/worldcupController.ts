@@ -30,16 +30,11 @@ const worldcupController = {
     }
     const {
       params: { id: worldcupId },
-      user: { id: userId },
       query: { metaonly, searchWord },
     } = request;
     try {
       if (metaonly) {
-        const worldcupMetadata = await worldcupService.getMetaData(
-          Number(worldcupId),
-          Number(userId),
-          String(searchWord),
-        );
+        const worldcupMetadata = await worldcupService.getMetaData(Number(worldcupId), String(searchWord));
         return response.json(succeed(worldcupMetadata));
       }
     } catch (e) {
