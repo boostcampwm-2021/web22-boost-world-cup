@@ -25,12 +25,10 @@ const expressLoader = (app) => {
 
   app.use('/api', indexRouter);
 
-  if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('public'));
-    app.use('*', (req, res) => {
-      res.sendFile(join(__dirname, '..', '..', '/public/index.html'));
-    });
-  }
+  app.use(express.static('public'));
+  app.use('*', (req, res) => {
+    res.sendFile(join(__dirname, '..', '..', '/public/index.html'));
+  });
 
   app.use((error: Error, requset: express.Request, response: express.Response, next: express.NextFunction) => {
     response.status(500).json({ result: 'fail', message: error.message });
