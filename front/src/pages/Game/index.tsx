@@ -101,6 +101,8 @@ function Worldcup(): JSX.Element {
             setCandidates(newGameInfo.candidatesList);
             setPick(0);
             setSessionStorage(newGameInfo);
+            setLeftImageOnloaded(false);
+            setRightImageOnloaded(false);
           }
         }, 1500);
       };
