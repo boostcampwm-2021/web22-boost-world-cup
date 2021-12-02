@@ -14,5 +14,6 @@ router.patch('/:id/title', controller.patchTitle);
 router.patch('/:id/desc', controller.patchDesc);
 router.get('/:id/candidates', controller.getCandidates);
 router.delete('/comments/:id', controller.deleteComment);
+router.get('/auth/:id', controller.getWorldcupAuth);
 
 export default router;

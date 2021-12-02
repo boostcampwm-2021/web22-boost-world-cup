@@ -37,3 +37,6 @@ export const patchWorldcupDesc = (worldcupId: number, desc: string): Promise<Axi
 
 export const deleteWorldcup = (worldcupId: number): Promise<AxiosResponse> =>
   axios.delete(`/api/worldcups/${worldcupId}`);
+
+export const getWorldcupAuth = (worldcupId: number): Promise<AxiosResponse> =>
+  axios.get(`/api/worldcups/auth/${worldcupId}`);

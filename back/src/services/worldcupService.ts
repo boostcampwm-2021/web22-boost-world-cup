@@ -76,24 +76,28 @@ export const plusTotalCnt = async (id: number) => {
   return await worldcupRepository.save(worldcup);
 };
 
-export const patchTitle = async (id: number, title: string) => {
+export const patchTitle = async (worldcupId: number, userId: number, title: string) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  return await worldcupRepository
-    .createQueryBuilder('worldcup')
-    .update(Worldcup)
-    .set({ title: title })
-    .where('worldcup.id = :id', { id: id })
-    .execute();
+  const worldcup = await worldcupRepository.findOne(worldcupId, { relations: ['user'] });
+
+  if (worldcup.user.id !== userId) {
+    throw new Error('잘못된 접근입니다.');
+  }
+
+  worldcup.title = title;
+  return await worldcupRepository.save(worldcup);
 };
 
-export const patchDesc = async (id: number, desc: string) => {
+export const patchDesc = async (worldcupId: number, userId: number, desc: string) => {
   const worldcupRepository: Repository<Worldcup> = getRepository(Worldcup);
-  return await worldcupRepository
-    .createQueryBuilder('worldcup')
-    .update(Worldcup)
-    .set({ description: desc })
-    .where('worldcup.id = :id', { id: id })
-    .execute();
+  const worldcup = await worldcupRepository.findOne(worldcupId, { relations: ['user'] });
+
+  if (worldcup.user.id !== userId) {
+    throw new Error('잘못된 접근입니다.');
+  }
+
+  worldcup.description = desc;
+  return await worldcupRepository.save(worldcup);
 };
 
 export const getMetaData = async (worldcupId: number, searchWord?: String) => {
@@ -115,7 +119,7 @@ export const removeById = async (worldcupId: number, userId: number) => {
   const worldcup = await worldcupRepository.findOne(worldcupId, { relations: ['keywords', 'user'] });
 
   if (worldcup.user.id !== userId) {
-    throw new Error('삭제 권한이 없습니다.');
+    throw new Error('잘못된 접근입니다.');
   }
 
   worldcup.keywords.map((keyword) => {
@@ -123,4 +127,13 @@ export const removeById = async (worldcupId: number, userId: number) => {
     keywordService.save(keyword);
   });
   await worldcupRepository.delete(worldcupId);
+};
+
+export const authUser = async (worldcupId: number, userId: number) => {
+  const worldcupRepository = getRepository(Worldcup);
+  const worldcup = await worldcupRepository.findOne(worldcupId, { relations: ['user'] });
+
+  if (worldcup.user.id !== userId) {
+    throw new Error('잘못된 접근입니다.');
+  }
 };

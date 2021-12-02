@@ -7,6 +7,7 @@ import TabBar from '../../components/TabBar';
 import ImgTable from '../../components/ImgTable';
 import { useTabBar, useWorldcupForm, useImgInfos, usePaginationAsync, useApiRequest } from '../../hooks';
 import {
+  getWorldcupAuth,
   getWorldcupMetadata,
   getWorldcupCandidates,
   patchWorldcupTitle,
@@ -42,18 +43,15 @@ function Edit(): JSX.Element {
     setTotalCnt(totalCnt);
   };
 
-  const onGetMetadataFailed = () => {
+  const getWorldcupAuthFailed = () => {
     history.push(MAIN);
   };
 
-  const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(
-    getWorldcupMetadata,
-    onGetMetadataSuccess,
-    onGetMetadataFailed,
-  );
+  const getMetadataDispatcher = useApiRequest<WorldcupMetaData>(getWorldcupMetadata, onGetMetadataSuccess);
 
   const createCandidatesDispatcher = useApiRequest(createCandidates);
 
+  const getWorldcupAuthDispatcher = useApiRequest(getWorldcupAuth, undefined, getWorldcupAuthFailed);
   const patchTitleDispatcher = useApiRequest(patchWorldcupTitle);
   const patchDescDispatcher = useApiRequest(patchWorldcupDesc);
 
@@ -97,6 +95,10 @@ function Edit(): JSX.Element {
   useEffect(() => {
     addedImgsDispatcher({ type: 'RESET' });
   }, [currentTab]);
+
+  useEffect(() => {
+    getWorldcupAuthDispatcher({ type: 'REQUEST', requestProps: [worldcupId] });
+  }, []);
 
   return (
     <>

@@ -17,6 +17,7 @@ const candidateController = {
   },
 
   update: async (request: Request, response: Response, next: NextFunction) => {
+    if (!request.user) return response.status(401).json(failed('not authorized'));
     const {
       params: { key },
       body: { newKey, name },
