@@ -54,6 +54,7 @@ const Container = styled.div<{ isLoading: boolean; width: number; height: number
 const Img = styled.img<{ isLoading: boolean }>`
   border-radius: 13px;
   visibility: ${({ isLoading }) => (isLoading ? 'hidden' : 'visible')};
+  object-fit: none;
 `;
 
 export default Image;
