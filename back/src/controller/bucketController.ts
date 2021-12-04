@@ -17,7 +17,7 @@ const bucketController = {
           const key = `${uuid()}.${fileExtension}`;
           const presignedURL = await s3.getSignedUrlPromise('putObject', {
             Bucket: process.env.NCP_BUCKET_NAME,
-            Key: key,
+            Key: `raw/${key}`,
             Expires: 60,
             ContentType: type,
             ACL: 'public-read',

@@ -6,22 +6,11 @@ export const deleteFromEveryBucket = (key: string) => {
     { width: 140, height: 180 },
     { width: 50, height: 50 },
   ];
-  return Promise.all([
-    s3
-      .deleteObject({
-        Bucket: process.env.NCP_BUCKET_NAME,
-        Key: key,
-      })
-      .promise(),
-    Promise.all(
-      sizes.map(({ width, height }) =>
-        s3
-          .deleteObject({
-            Bucket: `image-w${width}h${height}`,
-            Key: `${key}.webp`,
-          })
-          .promise(),
-      ),
-    ),
-  ]);
+  const resizePrefixes = sizes.map(({ width, height }) => `w${width}h${height}`);
+  const thumbnailPrefixes = ['blur', ...resizePrefixes];
+  const deleteThumbnailsPromise = thumbnailPrefixes.map((prefix) =>
+    s3.deleteObject({ Bucket: process.env.NCP_BUCKET_NAME, Key: `${prefix}/${key}.webp` }).promise(),
+  );
+  const deleteRawPromise = s3.deleteObject({ Bucket: process.env.NCP_BUCKET_NAME, Key: `raw/${key}` }).promise();
+  return Promise.all([deleteRawPromise, ...deleteThumbnailsPromise]);
 };

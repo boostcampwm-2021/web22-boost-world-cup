@@ -10,4 +10,4 @@ export const MYINFO = '/myinfo';
 export const LEAVE = '/leave';
 export const EDIT = '/edit';
 export const PROFILE = '/profile';
-export const IMG_URL_END_POINT = 'https://kr.object.ncloudstorage.com';
+export const IMG_URL_END_POINT = 'https://mdfxcszedwsi9197066.cdn.ntruss.com';
