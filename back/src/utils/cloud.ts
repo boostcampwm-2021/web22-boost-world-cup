@@ -1,7 +1,11 @@
 import s3 from '../config/s3';
 
 export const deleteFromEveryBucket = (key: string) => {
-  const sizes = [{ width: 120, height: 120 }];
+  const sizes = [
+    { width: 120, height: 120 },
+    { width: 140, height: 180 },
+    { width: 50, height: 50 },
+  ];
   return Promise.all([
     s3
       .deleteObject({
