@@ -28,7 +28,7 @@ async function resize(event) {
   try {
     const imgKey = event['object_name'];
     const newKey = `${imgKey.split('/')[1]}.webp`;
-    const img = await s3.getObject({ Bucket: 'wiziboost-image', Key: imgKey }).promise();
+    const img = await s3.getObject({ Bucket: process.env.NCP_BUCKET_NAME, Key: imgKey }).promise();
 
     const saveBlurPromise = sharp(img.Body)
       .rotate()
